@@ -351,10 +351,165 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div style="height:16px;"></div>
   </div>
 
-  <!-- DIVERSIFICATION -->
-  <div id="screen-diver" class="screen">
-    <div class="sub-nav" style="background:#f8faf0;"><span class="sub-back" onclick="goBack()">&#8249; Retour</span><span class="sub-title">Diversification</span><span style="width:44px;"></span></div>
-    <div class="coming-soon"><div class="cs-emoji">&#129365;</div><div class="cs-title">Diversification alimentaire</div><div class="cs-sub">Cet écran arrive bientôt !<br>Aliments, menus et recettes.</div></div>
+  <!-- ALIMENTATION -->
+  <div id="screen-alim" class="screen">
+    <div class="status-bar" style="background:linear-gradient(160deg,#D4884A,#B46828);">
+      <span class="st-time" style="color:#fff;">9:41</span>
+      <span class="st-icons" style="color:#fff;">&#9679;&#9679;&#9679; &#128267;</span>
+    </div>
+    <!-- Header orange/terracotta -->
+    <div style="background:linear-gradient(160deg,#D4884A,#B46828);padding:6px 20px 22px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <img src="logo.svg" style="width:36px;height:36px;" />
+          <span style="font-size:18px;font-weight:800;color:#fff;">Alimentation</span>
+        </div>
+      </div>
+      <!-- Sélecteur enfant -->
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
+          <span style="font-size:12px;font-weight:700;color:#fff;">Camille</span>
+          <span style="font-size:9px;color:rgba(255,255,255,0.65);">&#9660;</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128102;</div>
+          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);">Tom</span>
+        </div>
+      </div>
+      <!-- Bannière âge + méthode -->
+      <div style="background:rgba(255,255,255,0.18);border-radius:16px;padding:13px 15px;">
+        <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px;">&#127869; Camille a <strong>8 mois</strong> — voici ce qu'elle peut manger</div>
+        <div style="display:flex;gap:6px;">
+          <div style="background:rgba(255,255,255,0.9);border-radius:22px;padding:5px 14px;font-size:12px;font-weight:700;color:#B46828;">DME</div>
+          <div style="background:rgba(255,255,255,0.2);border-radius:22px;padding:5px 14px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.8);">Classique</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carte allaitement (visible si activé dans Profil) -->
+    <div id="alim-allait-card" style="display:none;margin:12px 16px 0;">
+      <div style="background:linear-gradient(135deg,#FFF0F5,#FFD8E8);border-radius:18px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="goTo('allait')">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:42px;height:42px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;">&#127868;</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#C0507A;">Allaitement &amp; Tire-lait</div>
+            <div style="font-size:11px;color:#E07898;margin-top:2px;">5 tétées · 180 ml tirés aujourd'hui</div>
+          </div>
+        </div>
+        <span style="font-size:18px;color:#E07898;">&#8250;</span>
+      </div>
+    </div>
+
+    <!-- Conseil texture -->
+    <div style="margin:12px 16px 0;background:#FFF8F0;border-radius:16px;padding:13px 14px;display:flex;gap:11px;align-items:flex-start;border-left:3px solid #D4884A;">
+      <span style="font-size:20px;flex-shrink:0;">&#9986;&#65039;</span>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#B46828;">Taille sécurisée à 8 mois</div>
+        <div style="font-size:12px;color:#7A5828;margin-top:3px;line-height:1.5;">Bâtonnets épais, morceaux mous, bien cuits. Tomate cerise → couper en 4 quartiers. Raisin → couper en 4 dans la longueur. Éviter tout aliment dur ou rond entier.</div>
+      </div>
+    </div>
+
+    <!-- Aliments du mois -->
+    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#129382; Aliments à cet âge</span></div>
+    <div style="padding:0 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+
+      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:32px;">&#129365;</div>
+        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Carotte</div>
+        <div style="font-size:10px;font-weight:700;color:#5A9E82;margin-top:3px;">&#10003; OK</div>
+      </div>
+      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:32px;">&#129382;</div>
+        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Brocoli</div>
+        <div style="font-size:10px;font-weight:700;color:#5A9E82;margin-top:3px;">&#10003; OK</div>
+      </div>
+      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:32px;">&#127831;</div>
+        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Poulet</div>
+        <div style="font-size:10px;font-weight:700;color:#5A9E82;margin-top:3px;">&#10003; OK</div>
+      </div>
+      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:32px;">&#127822;</div>
+        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Pomme</div>
+        <div style="font-size:10px;font-weight:700;color:#5A9E82;margin-top:3px;">&#10003; OK</div>
+      </div>
+      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:32px;">&#129381;</div>
+        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Courgette</div>
+        <div style="font-size:10px;font-weight:700;color:#5A9E82;margin-top:3px;">&#10003; OK</div>
+      </div>
+      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:32px;">&#127850;</div>
+        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Riz</div>
+        <div style="font-size:10px;font-weight:700;color:#5A9E82;margin-top:3px;">&#10003; OK</div>
+      </div>
+      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:32px;">&#127855;</div>
+        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Miel</div>
+        <div style="font-size:10px;font-weight:700;color:#D4A820;margin-top:3px;">&#9888; &lt; 1 an</div>
+      </div>
+      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:32px;">&#129380;</div>
+        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Sel</div>
+        <div style="font-size:10px;font-weight:700;color:#D4A820;margin-top:3px;">&#9888; À éviter</div>
+      </div>
+      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:32px;">&#129372;</div>
+        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Cacahuète</div>
+        <div style="font-size:10px;font-weight:700;color:#E74C3C;margin-top:3px;">&#10007; Interdit</div>
+      </div>
+
+    </div>
+
+    <!-- Légende -->
+    <div style="margin:10px 16px 0;display:flex;gap:14px;flex-wrap:wrap;padding:0 2px;">
+      <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:#5A9E82;"></div><span style="font-size:11px;color:#7F8C8D;">Autorisé</span></div>
+      <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:#D4A820;"></div><span style="font-size:11px;color:#7F8C8D;">Avec précaution</span></div>
+      <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:#E74C3C;"></div><span style="font-size:11px;color:#7F8C8D;">À éviter absolument</span></div>
+    </div>
+
+    <!-- Menu du jour -->
+    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#127869; Menu du jour</span><span style="font-size:13px;color:#D4884A;font-weight:600;cursor:pointer;">Regénérer</span></div>
+    <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;">
+
+      <div style="background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="width:42px;height:42px;border-radius:14px;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#127774;</div>
+        <div style="flex:1;">
+          <div style="font-size:11px;font-weight:700;color:#A07820;text-transform:uppercase;letter-spacing:0.5px;">Matin</div>
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-top:2px;">Bouillie de riz + compote pomme</div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="width:42px;height:42px;border-radius:14px;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#9728;&#65039;</div>
+        <div style="flex:1;">
+          <div style="font-size:11px;font-weight:700;color:#A07820;text-transform:uppercase;letter-spacing:0.5px;">Midi</div>
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-top:2px;">Purée carotte-poulet</div>
+          <div style="font-size:11px;font-style:italic;color:#9A8C7D;margin-top:2px;line-height:1.4;">Riche en bêta-carotène et protéines — parfait pour la croissance.</div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="width:42px;height:42px;border-radius:14px;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#127763;</div>
+        <div style="flex:1;">
+          <div style="font-size:11px;font-weight:700;color:#5A9E82;text-transform:uppercase;letter-spacing:0.5px;">Soir</div>
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-top:2px;">Velouté courgette + fromage blanc</div>
+          <div style="font-size:11px;font-style:italic;color:#9A8C7D;margin-top:2px;line-height:1.4;">Doux pour le soir, le repas léger facilite l'endormissement.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Rappel important -->
+    <div style="margin:12px 16px 16px;background:#FFF8F0;border-radius:16px;padding:13px 14px;display:flex;gap:11px;align-items:flex-start;border-left:3px solid #D4884A;">
+      <span style="font-size:20px;flex-shrink:0;">&#128161;</span>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#B46828;">À retenir à 8 mois</div>
+        <div style="font-size:12px;color:#7A5828;margin-top:4px;line-height:1.55;">Le lait reste l'aliment principal jusqu'à 1 an. La diversification c'est la découverte, pas le remplacement. Pas de sel, pas de sucre ajouté. Si bébé refuse, pas de panique — proposer 10-15 fois avant de conclure qu'il n'aime pas.</div>
+      </div>
+    </div>
+
   </div>
 
   <!-- SOMMEIL -->
