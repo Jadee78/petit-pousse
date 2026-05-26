@@ -699,8 +699,85 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
 
+    <!-- Carte dépliable fièvre -->
+    <div style="margin:12px 16px 0;">
+      <div onclick="toggleFievre()" style="background:linear-gradient(135deg,#FDEAEA,#F8D0D0);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;">
+        <span style="font-size:26px;flex-shrink:0;">&#127777;</span>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:800;color:#C0392B;">Bébé a de la fièvre — quoi faire ?</div>
+          <div style="font-size:11px;color:#E07070;margin-top:2px;">Bons gestes, bain, Doliprane, parler à bébé</div>
+        </div>
+        <span id="fievre-arrow" style="font-size:16px;color:#E07070;transition:transform .3s;">&#8250;</span>
+      </div>
+      <div id="fievre-content" style="display:none;background:#fff;border-radius:0 0 16px 16px;padding:16px;border:1px solid #FDEAEA;border-top:none;margin-top:-4px;">
+
+        <!-- Les bons gestes -->
+        <div style="font-size:12px;font-weight:800;color:#C0392B;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">&#10024; Les bons gestes</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <span style="font-size:15px;flex-shrink:0;">&#128167;</span>
+            <p style="font-size:13px;color:#2C3E50;line-height:1.5;"><strong>Hydrate souvent</strong> — proposer à boire régulièrement (eau, lait, tétée). La fièvre déshydrate.</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <span style="font-size:15px;flex-shrink:0;">&#128118;</span>
+            <p style="font-size:13px;color:#2C3E50;line-height:1.5;"><strong>Déshabille-le légèrement</strong> — un body suffit. Ne jamais surcouvrir, le corps doit pouvoir évacuer la chaleur.</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <span style="font-size:15px;flex-shrink:0;">&#127777;</span>
+            <p style="font-size:13px;color:#2C3E50;line-height:1.5;"><strong>Surveille régulièrement</strong> — prends la température toutes les 2 à 4h et note-la ici.</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <span style="font-size:15px;flex-shrink:0;">&#128138;</span>
+            <p style="font-size:13px;color:#2C3E50;line-height:1.5;"><strong>Doliprane si T° &gt; 38,5°</strong> ou si bébé est inconfortable, même en dessous.</p>
+          </div>
+        </div>
+
+        <!-- Pas de bain tiède -->
+        <div style="background:#FFF3CD;border-radius:12px;padding:13px 14px;margin-bottom:14px;border-left:3px solid #D4A820;">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;">
+            <span style="font-size:16px;">&#10060;</span>
+            <div style="font-size:12px;font-weight:800;color:#9A6800;">Le bain tiède pour faire baisser la fièvre : mauvaise idée</div>
+          </div>
+          <p style="font-size:12px;color:#7A5000;line-height:1.6;">On l'entend souvent, mais c'est une <strong>idée reçue</strong>. Un bain froid ou tiède provoque une contraction des vaisseaux en surface — le corps garde alors la chaleur à l'intérieur au lieu de la libérer. Résultat : la fièvre peut <strong>remonter encore plus vite</strong>. Les frissons qui suivent font d'ailleurs remonter la température. Un bain à température normale, si bébé en a envie et va bien, c'est ok — mais jamais comme traitement anti-fièvre.</p>
+        </div>
+
+        <!-- Sirop ou suppo -->
+        <div style="font-size:12px;font-weight:800;color:#C0392B;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">&#128138; Doliprane : sirop ou suppositoire ?</div>
+        <p style="font-size:13px;color:#2C3E50;line-height:1.6;margin-bottom:10px;">Les deux formes sont efficaces. En France, le <strong>suppositoire est souvent préféré pour les nourrissons</strong> — et pour de bonnes raisons :</p>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px;">
+          <div style="display:flex;gap:8px;align-items:flex-start;">
+            <div style="width:20px;height:20px;border-radius:50%;background:#FDEAEA;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#C0392B;flex-shrink:0;">1</div>
+            <p style="font-size:12px;color:#2C3E50;line-height:1.5;"><strong>Pratique la nuit</strong> — pas besoin de bien réveiller bébé, ni de le faire avaler quelque chose.</p>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;">
+            <div style="width:20px;height:20px;border-radius:50%;background:#FDEAEA;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#C0392B;flex-shrink:0;">2</div>
+            <p style="font-size:12px;color:#2C3E50;line-height:1.5;"><strong>Fonctionne même si bébé vomit</strong> — le médicament est déjà absorbé par voie rectale.</p>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;">
+            <div style="width:20px;height:20px;border-radius:50%;background:#FDEAEA;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#C0392B;flex-shrink:0;">3</div>
+            <p style="font-size:12px;color:#2C3E50;line-height:1.5;"><strong>Pas de risque de recracher</strong> — idéal si bébé refuse de boire ou est très fatigué.</p>
+          </div>
+        </div>
+        <p style="font-size:12px;color:#2C3E50;line-height:1.6;margin-bottom:10px;">Le sirop est tout aussi efficace quand bébé le tolère bien — le dosage est parfois plus précis selon le poids.</p>
+        <div style="background:#FDEAEA;border-radius:10px;padding:10px 12px;margin-bottom:14px;">
+          <div style="font-size:11px;font-weight:700;color:#C0392B;margin-bottom:4px;">&#9888;&#65039; Contre-indications du suppositoire</div>
+          <p style="font-size:11px;color:#7B241C;line-height:1.5;">Irritation ou rougeur autour des fesses · Diarrhée (absorption imprévisible). Dans ces cas, préfère le sirop ou demande conseil au pharmacien.</p>
+        </div>
+
+        <!-- Parler à bébé -->
+        <div style="background:linear-gradient(135deg,#EEF9F5,#D6F0E8);border-radius:12px;padding:13px 14px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span style="font-size:16px;">&#128172;</span>
+            <div style="font-size:12px;font-weight:800;color:#5A9E82;">Parle toujours à bébé avant</div>
+          </div>
+          <p style="font-size:12px;color:#2C3E50;line-height:1.6;">Avant de donner le médicament — quelle que soit la forme — <strong>préviens-le</strong>. <em>"Je vais te donner un médicament pour que tu te sentes mieux."</em> Pour le suppositoire surtout, on comprend que ce n'est pas très agréable d'être surpris &#128521; Bébé comprend le ton, les mots, l'intention. Comme toi, il mérite de ne pas se retrouver sans avertissement avec quelque chose d'inattendu. Ce petit geste compte vraiment.</p>
+        </div>
+
+      </div>
+    </div>
+
     <!-- Antécédents -->
-    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#128203; Antécédents</span></div>
+    <div class="sec-hd" style="margin-top:14px;"><span class="sec-t">&#128203; Antécédents</span></div>
     <div style="padding:0 16px;display:flex;flex-direction:column;gap:7px;">
 
       <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
@@ -915,6 +992,13 @@ applyAllait();
 function toggleRegression() {
   var c = document.getElementById("regression-content");
   var a = document.getElementById("regression-arrow");
+  var open = c.style.display === "block";
+  c.style.display = open ? "none" : "block";
+  a.style.transform = open ? "rotate(0deg)" : "rotate(90deg)";
+}
+function toggleFievre() {
+  var c = document.getElementById("fievre-content");
+  var a = document.getElementById("fievre-arrow");
   var open = c.style.display === "block";
   c.style.display = open ? "none" : "block";
   a.style.transform = open ? "rotate(0deg)" : "rotate(90deg)";
