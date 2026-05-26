@@ -751,9 +751,366 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
   <!-- ALLAITEMENT -->
   <div id="screen-allait" class="screen">
-    <div class="sub-nav" style="background:#f0f8f4;"><span class="sub-back" onclick="goBack()">&#8249; Retour</span><span class="sub-title">Allaitement</span><span style="width:44px;"></span></div>
-    <div class="coming-soon"><div class="cs-emoji">&#129335;</div><div class="cs-title">Allaitement & Tire-lait</div><div class="cs-sub">Cet écran arrive bientôt !<br>Log tétées, tire-lait et stockage.</div></div>
-  </div>
+    <!-- Status bar rose -->
+    <div class="status-bar" style="background:linear-gradient(160deg,#C0507A,#8A3055);">
+      <span class="st-time" style="color:#fff;">9:41</span>
+      <span class="st-icons" style="color:#fff;">&#9679;&#9679;&#9679; &#128267;</span>
+    </div>
+    <!-- Header rose -->
+    <div style="background:linear-gradient(160deg,#C0507A,#8A3055);padding:6px 20px 22px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <img src="logo.svg" style="width:36px;height:36px;" />
+          <span style="font-size:18px;font-weight:800;color:#fff;">Allaitement</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <div style="background:rgba(255,255,255,0.2);border-radius:12px;padding:6px 11px;text-align:center;min-width:50px;">
+            <div id="allait-count-day" style="font-size:18px;font-weight:800;color:#fff;line-height:1;">0</div>
+            <div style="font-size:9px;color:rgba(255,255,255,0.75);margin-top:2px;">tétées</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.2);border-radius:12px;padding:6px 11px;text-align:center;min-width:58px;">
+            <div id="allait-ml-day" style="font-size:16px;font-weight:800;color:#fff;line-height:1;">0 ml</div>
+            <div style="font-size:9px;color:rgba(255,255,255,0.75);margin-top:2px;">tirés</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
+          <span style="font-size:12px;font-weight:700;color:#fff;">Camille</span>
+          <span style="font-size:9px;color:rgba(255,255,255,0.65);">&#9660;</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onglets -->
+    <div style="padding:14px 16px 8px;display:flex;gap:6px;">
+      <div id="atab-tetee" onclick="switchAllaitTab('tetee')" style="flex:1;text-align:center;padding:9px 4px;border-radius:22px;font-size:11px;font-weight:700;cursor:pointer;background:#C0507A;color:#fff;">&#129335; Tétées</div>
+      <div id="atab-tirelait" onclick="switchAllaitTab('tirelait')" style="flex:1;text-align:center;padding:9px 4px;border-radius:22px;font-size:11px;font-weight:700;cursor:pointer;background:#F2F2F7;color:#7F8C8D;">&#127868; Tire-lait</div>
+      <div id="atab-conseils" onclick="switchAllaitTab('conseils')" style="flex:1;text-align:center;padding:9px 4px;border-radius:22px;font-size:11px;font-weight:700;cursor:pointer;background:#F2F2F7;color:#7F8C8D;">&#127775; Astuces</div>
+    </div>
+
+    <!-- ══ TAB TÉTÉES ══ -->
+    <div id="allait-section-tetee">
+      <!-- Minuteur -->
+      <div style="margin:4px 16px 12px;background:linear-gradient(135deg,#FFF0F5,#FFD8E8);border-radius:20px;padding:18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:#C0507A;">&#9201; Minuteur tétée</div>
+          <div id="allait-sein-label" style="font-size:12px;font-weight:700;background:#fff;padding:4px 12px;border-radius:20px;color:#C0507A;">&#8212;</div>
+        </div>
+        <div id="allait-timer-display" style="font-size:52px;font-weight:800;color:#8A3055;text-align:center;letter-spacing:3px;margin:8px 0 12px;font-variant-numeric:tabular-nums;">00:00</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;">
+          <button onclick="startTetee('gauche')" style="flex:1;background:#C0507A;color:#fff;border:none;border-radius:14px;padding:14px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">&#9664; Gauche</button>
+          <button onclick="startTetee('droite')" style="flex:1;background:#C0507A;color:#fff;border:none;border-radius:14px;padding:14px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Droite &#9654;</button>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button onclick="stopTetee()" style="flex:1;background:#fff;color:#C0507A;border:1.5px solid #E0A8C0;border-radius:14px;padding:12px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">&#9632; Pause</button>
+          <button onclick="saveTetee()" style="flex:1;background:#5A9E82;color:#fff;border:none;border-radius:14px;padding:12px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">&#10003; Valider</button>
+        </div>
+      </div>
+      <!-- En-tête liste -->
+      <div style="padding:2px 16px 10px;display:flex;justify-content:space-between;align-items:baseline;">
+        <div style="font-size:15px;font-weight:700;color:#2C3E50;">Aujourd&#8217;hui</div>
+        <div id="allait-last-sein" style="font-size:12px;color:#C0507A;font-weight:600;">&#8212;</div>
+      </div>
+      <div id="allait-log-list" style="padding:0 16px;display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
+    <!-- ══ TAB TIRE-LAIT ══ -->
+    <div id="allait-section-tirelait" style="display:none;padding:4px 16px;">
+      <!-- Formulaire -->
+      <div style="background:linear-gradient(135deg,#F0EEF8,#E4DFF5);border-radius:20px;padding:16px;margin-bottom:12px;">
+        <div style="font-size:13px;font-weight:700;color:#7060B0;margin-bottom:12px;">+ Nouvelle session</div>
+        <div style="font-size:11px;font-weight:700;color:#7060B0;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Sein</div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
+          <button id="tl-sein-g" onclick="selectTLSein('gauche')" style="flex:1;background:#7060B0;color:#fff;border:none;border-radius:12px;padding:11px;font-size:12px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">&#9664; Gauche</button>
+          <button id="tl-sein-d" onclick="selectTLSein('droite')" style="flex:1;background:rgba(255,255,255,0.7);color:#7060B0;border:1.5px solid #B0A0D0;border-radius:12px;padding:11px;font-size:12px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Droite &#9654;</button>
+          <button id="tl-sein-b" onclick="selectTLSein('deux')" style="flex:1;background:rgba(255,255,255,0.7);color:#7060B0;border:1.5px solid #B0A0D0;border-radius:12px;padding:11px;font-size:12px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Les 2</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
+          <div style="flex:1;">
+            <div style="font-size:11px;font-weight:700;color:#7060B0;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;">Volume (ml)</div>
+            <input id="tl-ml-input" type="number" min="0" max="500" placeholder="ex: 80" style="width:100%;background:#fff;border:1.5px solid #C8C0E0;border-radius:12px;padding:11px 13px;font-size:15px;font-family:Montserrat,sans-serif;outline:none;-webkit-appearance:none;" />
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:11px;font-weight:700;color:#7060B0;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;">Heure</div>
+            <input id="tl-heure-input" type="time" style="width:100%;background:#fff;border:1.5px solid #C8C0E0;border-radius:12px;padding:11px 13px;font-size:15px;font-family:Montserrat,sans-serif;outline:none;" />
+          </div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:#7060B0;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Stockage</div>
+        <div style="display:flex;gap:6px;margin-bottom:14px;">
+          <div id="tl-dest-frigo" onclick="selectTLDest('frigo')" style="flex:1;text-align:center;padding:10px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;background:#7060B0;color:#fff;">&#10052; Frigo</div>
+          <div id="tl-dest-congelo" onclick="selectTLDest('congelo')" style="flex:1;text-align:center;padding:10px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.7);color:#7060B0;border:1.5px solid #B0A0D0;">&#129482; Cong&#233;lo</div>
+          <div id="tl-dest-utilise" onclick="selectTLDest('utilise')" style="flex:1;text-align:center;padding:10px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.7);color:#7060B0;border:1.5px solid #B0A0D0;">&#127868; Utilis&#233;</div>
+        </div>
+        <button onclick="saveTireLait()" style="width:100%;background:#7060B0;color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">&#10003; Enregistrer</button>
+      </div>
+      <!-- Stock -->
+      <div style="margin-bottom:12px;">
+        <div style="font-size:15px;font-weight:700;color:#2C3E50;margin-bottom:10px;">Mon stock</div>
+        <div style="display:flex;gap:10px;">
+          <div style="flex:1;background:#EEF6FC;border-radius:16px;padding:14px;text-align:center;border:1.5px solid #C8E4F4;">
+            <div style="font-size:24px;margin-bottom:4px;">&#10052;</div>
+            <div id="stock-frigo" style="font-size:22px;font-weight:800;color:#2C3E50;line-height:1.2;">0 ml</div>
+            <div style="font-size:11px;color:#7F8C8D;margin-top:3px;">Frigo &#8901; max 4 jours</div>
+          </div>
+          <div style="flex:1;background:#EEECF8;border-radius:16px;padding:14px;text-align:center;border:1.5px solid #C8C0E8;">
+            <div style="font-size:24px;margin-bottom:4px;">&#129482;</div>
+            <div id="stock-congelo" style="font-size:22px;font-weight:800;color:#2C3E50;line-height:1.2;">0 ml</div>
+            <div style="font-size:11px;color:#7F8C8D;margin-top:3px;">Cong&#233;lo &#8901; max 6 mois</div>
+          </div>
+        </div>
+      </div>
+      <!-- Sessions récentes -->
+      <div style="font-size:15px;font-weight:700;color:#2C3E50;margin-bottom:10px;">Sessions r&#233;centes</div>
+      <div id="tl-log-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
+    <!-- ══ TAB ASTUCES ══ -->
+    <div id="allait-section-conseils" style="display:none;padding:4px 16px 4px;">
+
+      <!-- 🌟 Bienfaits du lait maternel -->
+      <div style="margin-bottom:10px;">
+        <div onclick="toggleAllaitSection('bienfaits')" style="background:#fff;border-radius:18px;padding:15px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);cursor:pointer;">
+          <div style="width:44px;height:44px;border-radius:14px;background:#FFE8F0;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#127775;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Bienfaits du lait maternel</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Pour b&#233;b&#233;, pour toi, pour toute la famille</div></div>
+          <div id="arrow-bienfaits" style="font-size:13px;color:#7F8C8D;transition:transform 0.3s;">&#9660;</div>
+        </div>
+        <div id="content-bienfaits" style="display:none;margin-top:6px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="margin-bottom:12px;padding-bottom:12px;border-bottom:0.5px solid #F2F2F2;">
+            <div style="font-size:12px;font-weight:700;color:#C0507A;margin-bottom:6px;">&#129335; Pour b&#233;b&#233;</div>
+            <div style="font-size:12px;color:#2C3E50;line-height:1.7;">&#8226; Contient des <strong>anticorps</strong> qui protègent contre infections, rhumes, gastros, otites<br>&#8226; Sa <strong>composition change chaque semaine</strong> selon les besoins de bébé — parfait et unique<br>&#8226; Favorise le <strong>développement du cerveau</strong> (DHA, acides gras essentiels)<br>&#8226; Réduit les risques d&#8217;allergie, d&#8217;asthme et d&#8217;obésité plus tard<br>&#8226; Meilleure digestion — fait pour son ventre</div>
+          </div>
+          <div style="margin-bottom:12px;padding-bottom:12px;border-bottom:0.5px solid #F2F2F2;">
+            <div style="font-size:12px;font-weight:700;color:#C0507A;margin-bottom:6px;">&#10024; Pour toi</div>
+            <div style="font-size:12px;color:#2C3E50;line-height:1.7;">&#8226; Aide l&#8217;utérus à reprendre sa forme plus vite (ocytocine libérée à chaque tétée)<br>&#8226; Protège contre le <strong>cancer du sein et des ovaires</strong> sur le long terme<br>&#8226; Crée un lien intense avec bébé<br>&#8226; Brûle environ <strong>500 kcal par jour</strong></div>
+          </div>
+          <div style="background:#FFF8E8;border-radius:12px;padding:12px 13px;">
+            <div style="font-size:12px;font-weight:700;color:#B46828;margin-bottom:4px;">&#128218; Ce que dit l&#8217;OMS</div>
+            <div style="font-size:12px;color:#7A5828;line-height:1.6;">Allaitement <strong>exclusif recommandé jusqu&#8217;à 6 mois</strong>, puis en complément jusqu&#8217;à 2 ans et au-delà — aussi longtemps que toi et bébé le souhaitez.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🧊 Glaçons magiques -->
+      <div style="margin-bottom:10px;">
+        <div onclick="toggleAllaitSection('glacons')" style="background:#fff;border-radius:18px;padding:15px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);cursor:pointer;">
+          <div style="width:44px;height:44px;border-radius:14px;background:#EEF6FC;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#129482;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Gla&#231;ons de lait maternel</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Coups de soleil, douleurs, dentition&#8230;</div></div>
+          <div id="arrow-glacons" style="font-size:13px;color:#7F8C8D;transition:transform 0.3s;">&#9660;</div>
+        </div>
+        <div id="content-glacons" style="display:none;margin-top:6px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="background:#EEF6FC;border-radius:12px;padding:12px 13px;margin-bottom:12px;">
+            <div style="font-size:12px;font-weight:700;color:#2C6080;margin-bottom:4px;">&#128161; Comment faire</div>
+            <div style="font-size:12px;color:#2C3E50;line-height:1.6;">Verse le lait dans un bac à glaçons &#8594; congèle. Le lait p&#233;rim&#233; pour la consommation est <strong>parfait pour &#231;a</strong> &#8212; ne jette rien !</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="font-size:20px;flex-shrink:0;">&#9728;&#65039;</div>
+              <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Coup de soleil</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">Enveloppe le glaçon dans une mousseline fine &#8594; frotte doucement sur la zone. L&#8217;effet froid + les propri&#233;t&#233;s du lait apaisent et <strong>r&#233;hydratent</strong> la peau. Marche pour b&#233;b&#233; ET pour papa, maman, grande sœur&#8230;</div></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="font-size:20px;flex-shrink:0;">&#128029;</div>
+              <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Piq&#251;re d&#8217;insecte</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">Fais fondre légèrement le glaçon et applique sur la piq&#251;re. <strong>Anti-inflammatoire naturel</strong> — apaise la d&#233;mangeaison pour toute la famille.</div></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="font-size:20px;flex-shrink:0;">&#128483;</div>
+              <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Douleurs de dentition</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">Laisse b&#233;b&#233; mordiller le glaçon emball&#233; dans une mousseline &#8594; soulage les gencives. Deux en un : soin + hydratation.</div></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="font-size:20px;flex-shrink:0;">&#129657;</div>
+              <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Petites plaies</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">Frotter doucement le glaçon sur une &#233;gratignure ou bouton aide la <strong>cicatrisation</strong> gr&#226;ce au lysozyme antibact&#233;rien du lait.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🐝 Piqûres d'insectes (section détaillée) -->
+      <div style="margin-bottom:10px;">
+        <div onclick="toggleAllaitSection('piqures')" style="background:#fff;border-radius:18px;padding:15px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);cursor:pointer;">
+          <div style="width:44px;height:44px;border-radius:14px;background:#FFF8E0;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128029;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Piq&#251;res &#8212; rem&#232;de pour toute la famille</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;">B&#233;b&#233;, papa, maman, fratrie&#8230;</div></div>
+          <div id="arrow-piqures" style="font-size:13px;color:#7F8C8D;transition:transform 0.3s;">&#9660;</div>
+        </div>
+        <div id="content-piqures" style="display:none;margin-top:6px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="background:#FFF8E0;border-radius:12px;padding:12px 13px;margin-bottom:12px;">
+            <div style="font-size:12px;font-weight:700;color:#B46828;margin-bottom:4px;">Comment &#231;a marche</div>
+            <div style="font-size:12px;color:#7A5828;line-height:1.6;">Le lait maternel contient des <strong>immunoglobulines (IgA)</strong> et des compos&#233;s anti-inflammatoires naturels qui r&#233;duisent la r&#233;action au venin.</div>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:8px;">Mode d&#8217;emploi</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="background:#F7F5EF;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+              <div style="width:24px;height:24px;border-radius:50%;background:#D4A820;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">1</div>
+              <p style="font-size:13px;color:#2C3E50;line-height:1.5;margin:2px 0 0;">Retire le dard si encore pr&#233;sent (gratte lat&#233;ralement avec un ongle)</p>
+            </div>
+            <div style="background:#F7F5EF;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+              <div style="width:24px;height:24px;border-radius:50%;background:#D4A820;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">2</div>
+              <p style="font-size:13px;color:#2C3E50;line-height:1.5;margin:2px 0 0;">Applique <strong>quelques gouttes de lait maternel</strong> directement sur la piq&#251;re</p>
+            </div>
+            <div style="background:#F7F5EF;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+              <div style="width:24px;height:24px;border-radius:50%;background:#D4A820;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">3</div>
+              <p style="font-size:13px;color:#2C3E50;line-height:1.5;margin:2px 0 0;">Laisse s&#233;cher naturellement &#8212; ou utilise un gla&#231;on de lait pour l&#8217;effet froid en plus</p>
+            </div>
+            <div style="background:#F7F5EF;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+              <div style="width:24px;height:24px;border-radius:50%;background:#D4A820;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">4</div>
+              <p style="font-size:13px;color:#2C3E50;line-height:1.5;margin:2px 0 0;">R&#233;p&#232;te 2 à 3 fois si la d&#233;mangeaison persiste</p>
+            </div>
+          </div>
+          <div style="background:#F0F8F0;border-radius:12px;padding:11px 13px;margin-top:12px;border-left:3px solid #5A9E82;">
+            <div style="font-size:12px;color:#3A6E50;line-height:1.6;">&#9989; Fonctionne pour <strong>toute la famille</strong> : b&#233;b&#233;, papa, maman, grand fr&#232;re, grande sœur &#8212; le lait maternel n&#8217;est pas que pour b&#233;b&#233; !</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🛁 Dans le bain -->
+      <div style="margin-bottom:10px;">
+        <div onclick="toggleAllaitSection('bain')" style="background:#fff;border-radius:18px;padding:15px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);cursor:pointer;">
+          <div style="width:44px;height:44px;border-radius:14px;background:#E0F4F0;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128704;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Dans le bain de b&#233;b&#233;</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Peau s&#232;che, &#233;cz&#233;ma, irritations&#8230;</div></div>
+          <div id="arrow-bain" style="font-size:13px;color:#7F8C8D;transition:transform 0.3s;">&#9660;</div>
+        </div>
+        <div id="content-bain" style="display:none;margin-top:6px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="background:#E0F4F0;border-radius:12px;padding:12px 13px;margin-bottom:12px;">
+            <div style="font-size:12px;font-weight:700;color:#2A6E5A;margin-bottom:4px;">&#128167; La recette</div>
+            <div style="font-size:12px;color:#2C3E50;line-height:1.6;">Ajoute <strong>50 à 100 ml de lait maternel</strong> dans l&#8217;eau du bain de b&#233;b&#233; &#8212; c&#8217;est tout !</div>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:8px;">Pourquoi &#231;a marche</div>
+          <div style="font-size:12px;color:#2C3E50;line-height:1.7;">&#8226; La <strong>lactoferrine</strong> et les lipides du lait hydratent et r&#233;parent la barri&#232;re cutan&#233;e<br>&#8226; Les <strong>anticorps</strong> calment les irritations et l&#8217;&#233;cz&#233;ma l&#233;ger<br>&#8226; R&#233;sultat : peau plus douce, moins rouge, moins s&#232;che<br>&#8226; Parfait pour utiliser le lait p&#233;rim&#233; pour la conso &#8212; <strong>ne jette rien !</strong></div>
+          <div style="background:#FFF8E8;border-radius:12px;padding:11px 13px;margin-top:12px;">
+            <div style="font-size:12px;color:#B46828;line-height:1.6;">&#128161; Aussi utile pour les <strong>croûtes de lait</strong> sur le cuir chevelu &#8212; masser doucement avec quelques gouttes de lait puis rincer.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🧼 Savon au lait maternel -->
+      <div style="margin-bottom:10px;">
+        <div onclick="toggleAllaitSection('savon')" style="background:#fff;border-radius:18px;padding:15px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);cursor:pointer;">
+          <div style="width:44px;height:44px;border-radius:14px;background:#F0EEF8;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#129532;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Savon maison au lait maternel</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Recette facile &#8212; parfait pour le lait inutilisable</div></div>
+          <div id="arrow-savon" style="font-size:13px;color:#7F8C8D;transition:transform 0.3s;">&#9660;</div>
+        </div>
+        <div id="content-savon" style="display:none;margin-top:6px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="background:#F0EEF8;border-radius:12px;padding:12px 13px;margin-bottom:12px;">
+            <div style="font-size:12px;font-weight:700;color:#7060B0;margin-bottom:4px;">&#129514; Ce qu&#8217;il faut</div>
+            <div style="font-size:12px;color:#2C3E50;line-height:1.7;">&#8226; 100 g de <strong>base savon glyc&#233;rine</strong> (magasin bio, Amazon, Biocoop)<br>&#8226; 35 à 40 ml de <strong>lait maternel</strong> (frais ou d&#233;congel&#233;)<br>&#8226; Quelques gouttes d&#8217;HE lavande vraie <em>(optionnel &#8212; sans parfum si pour b&#233;b&#233;)</em><br>&#8226; Un <strong>moule en silicone</strong></div>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:8px;">&#128296; Les &#233;tapes</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+            <div style="background:#F7F5EF;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+              <div style="width:24px;height:24px;border-radius:50%;background:#7060B0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">1</div>
+              <p style="font-size:13px;color:#2C3E50;line-height:1.5;margin:2px 0 0;">Fais fondre la base glyc&#233;rine au <strong>bain-marie</strong> ou au micro-ondes (30 sec, remuer, r&#233;p&#233;ter)</p>
+            </div>
+            <div style="background:#F7F5EF;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+              <div style="width:24px;height:24px;border-radius:50%;background:#7060B0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">2</div>
+              <p style="font-size:13px;color:#2C3E50;line-height:1.5;margin:2px 0 0;">Retire du feu, laisse tiédir <strong>2 à 3 minutes</strong> (important pour ne pas dénaturer le lait)</p>
+            </div>
+            <div style="background:#F7F5EF;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+              <div style="width:24px;height:24px;border-radius:50%;background:#7060B0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">3</div>
+              <p style="font-size:13px;color:#2C3E50;line-height:1.5;margin:2px 0 0;">Incorpore le lait maternel et l&#8217;HE en <strong>m&#233;langeant doucement</strong></p>
+            </div>
+            <div style="background:#F7F5EF;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+              <div style="width:24px;height:24px;border-radius:50%;background:#7060B0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">4</div>
+              <p style="font-size:13px;color:#2C3E50;line-height:1.5;margin:2px 0 0;">Verse dans le <strong>moule silicone</strong>, laisse durcir <strong>24h à temp&#233;rature ambiante</strong></p>
+            </div>
+          </div>
+          <div style="background:#F0F8F0;border-radius:12px;padding:11px 13px;border-left:3px solid #5A9E82;">
+            <div style="font-size:12px;color:#3A6E50;line-height:1.6;">&#9989; Tr&#232;s doux pour la peau, ultra-hydratant. Id&#233;al pour <strong>toute la famille</strong>. Conservation jusqu&#8217;&#224; 2 mois dans un endroit frais.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🩹 Cicatrisation -->
+      <div style="margin-bottom:10px;">
+        <div onclick="toggleAllaitSection('cicatri')" style="background:#fff;border-radius:18px;padding:15px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);cursor:pointer;">
+          <div style="width:44px;height:44px;border-radius:14px;background:#FFE8E8;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#129657;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Cicatrisation &amp; Petits bobos</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Mamelo ns, plaies, yeux coll&#233;s&#8230;</div></div>
+          <div id="arrow-cicatri" style="font-size:13px;color:#7F8C8D;transition:transform 0.3s;">&#9660;</div>
+        </div>
+        <div id="content-cicatri" style="display:none;margin-top:6px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="font-size:12px;color:#7F8C8D;line-height:1.6;margin-bottom:12px;">Le lait maternel contient du <strong>lysozyme</strong> (enzyme antibact&#233;rienne) et des anticorps &#8212; un soin naturel remarquable.</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="font-size:20px;flex-shrink:0;">&#128140;</div>
+              <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Ger&#231;ures du mamelon</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">Apr&#232;s chaque t&#233;t&#233;e, laisse quelques gouttes de lait s&#233;cher sur le mamelon &#8212; <strong>soulage et cicatrise</strong> bien mieux que la lanoline.</div></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="font-size:20px;flex-shrink:0;">&#128064;</div>
+              <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Yeux coll&#233;s de b&#233;b&#233;</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">Dacryocystite (canal lacrymal bouché) : <strong>1 à 2 gouttes de lait maternel</strong> dans chaque œil, 3 fois par jour &#8212; les anticorps nettoient et d&#233;collent naturellement.</div></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="font-size:20px;flex-shrink:0;">&#129657;</div>
+              <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Petites plaies, &#233;gratignures</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">Applique directement sur la plaie, laisse s&#233;cher. Le lysozyme joue un r&#244;le <strong>antibact&#233;rien</strong> et acc&#233;l&#232;re la cicatrisation.</div></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="font-size:20px;flex-shrink:0;">&#128149;</div>
+              <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Boutons &amp; irritations cutan&#233;es</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">Quelques gouttes sur les boutons de chaleur, l&#8217;&#233;rythème fessier l&#233;ger ou les irritations &#8212; laisse agir quelques minutes.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🤱 Positions d'allaitement -->
+      <div style="margin-bottom:10px;">
+        <div onclick="toggleAllaitSection('positions')" style="background:#fff;border-radius:18px;padding:15px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);cursor:pointer;">
+          <div style="width:44px;height:44px;border-radius:14px;background:#FFE8F0;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#129335;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Positions d&#8217;allaitement</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;">5 positions selon le moment et tes besoins</div></div>
+          <div id="arrow-positions" style="font-size:13px;color:#7F8C8D;transition:transform 0.3s;">&#9660;</div>
+        </div>
+        <div id="content-positions" style="display:none;margin-top:6px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="padding:12px 14px;border-bottom:0.5px solid #F2F2F2;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;">&#129335;</div>
+            <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Madone (berceau)</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">La plus classique &#8212; b&#233;b&#233; dans le creux du bras, ventre contre toi. Id&#233;ale pour commencer.</div></div>
+          </div>
+          <div style="padding:12px 14px;border-bottom:0.5px solid #F2F2F2;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;">&#127944;</div>
+            <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Football am&#233;ricain (axillaire)</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">B&#233;b&#233; sous le bras comme un ballon. Tr&#232;s utile apr&#232;s c&#233;sarienne (pas de pression sur la cicatrice) et en cas d&#8217;engorgement.</div></div>
+          </div>
+          <div style="padding:12px 14px;border-bottom:0.5px solid #F2F2F2;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;">&#128564;</div>
+            <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Allong&#233;e c&#244;te &#224; c&#244;te</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">Id&#233;ale pour les t&#233;t&#233;es de nuit &#8212; tu te reposes pendant que b&#233;b&#233; mange. N&#233;cessite de rester &#233;veill&#233;e.</div></div>
+          </div>
+          <div style="padding:12px 14px;border-bottom:0.5px solid #F2F2F2;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;">&#129263;</div>
+            <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Biologique (laid-back)</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">Toi inclin&#233;e confortablement, b&#233;b&#233; &#224; plat ventre sur toi. Tr&#232;s instinctif &#8212; b&#233;b&#233; trouve le sein lui-m&#234;me. R&#233;posant pour toi.</div></div>
+          </div>
+          <div style="padding:12px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;">&#129336;</div>
+            <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">&#192; cheval (position assise face &#224; toi)</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.5;">B&#233;b&#233; assis face &#224; toi, cuisses de chaque c&#244;t&#233;. Utile pour les b&#233;b&#233;s qui ont du mal &#224; s&#8217;accrocher ou en cas d&#8217;engorgement localis&#233;.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⚠️ Engorgement -->
+      <div style="margin-bottom:16px;">
+        <div onclick="toggleAllaitSection('engorgement')" style="background:#fff;border-radius:18px;padding:15px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);cursor:pointer;">
+          <div style="width:44px;height:44px;border-radius:14px;background:#FFE8D0;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#9888;&#65039;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Engorgement &#8212; que faire ?</div><div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Avant, pendant, apr&#232;s la t&#233;t&#233;e</div></div>
+          <div id="arrow-engorgement" style="font-size:13px;color:#7F8C8D;transition:transform 0.3s;">&#9660;</div>
+        </div>
+        <div id="content-engorgement" style="display:none;margin-top:6px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="background:#FFF3CD;border-radius:10px;padding:5px 10px;font-size:11px;font-weight:700;color:#B46828;flex-shrink:0;margin-top:2px;">AVANT</div>
+              <div style="font-size:12px;color:#2C3E50;line-height:1.5;">Compresse <strong>chaude</strong> sur le sein 2 min &#8212; dilate les canaux et facilite l&#8217;&#233;coulement du lait</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="background:#FFE8F0;border-radius:10px;padding:5px 10px;font-size:11px;font-weight:700;color:#C0507A;flex-shrink:0;margin-top:2px;">PENDANT</div>
+              <div style="font-size:12px;color:#2C3E50;line-height:1.5;">Masse doucement de la <strong>base du sein vers le mamelon</strong> en spirale &#8212; aide le lait &#224; descendre</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="background:#E8F8F0;border-radius:10px;padding:5px 10px;font-size:11px;font-weight:700;color:#2A6E5A;flex-shrink:0;margin-top:2px;">APR&#200;S</div>
+              <div style="font-size:12px;color:#2C3E50;line-height:1.5;">Compresse <strong>froide</strong> 10 min &#8212; d&#233;gonfle et soul&#232;ve. Feuille de chou froid dans le soutien-gorge : &#233;tonnamment tr&#232;s efficace !</div>
+            </div>
+          </div>
+          <div style="background:#FDEAEA;border-radius:12px;padding:12px 13px;margin-top:12px;border-left:3px solid #E74C3C;">
+            <div style="font-size:12px;font-weight:700;color:#C0392B;margin-bottom:4px;">&#128680; Quand consulter</div>
+            <div style="font-size:12px;color:#922B21;line-height:1.6;"><strong>Fi&#232;vre + douleur intense + rougeur</strong> sur le sein = mastite possible. Consulte rapidement ton m&#233;decin &#8212; un traitement rapide &#233;vite l&#8217;absc&#232;s.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- fin tab astuces -->
+  </div><!-- fin screen-allait -->
 
   <!-- SANTE -->
   <div id="screen-sante" class="screen">
@@ -1845,9 +2202,150 @@ function goToApp() {
   document.getElementById("screen-home").classList.add("active");
   document.getElementById("tabbar").style.display = "flex";
 }
+// ── ALLAITEMENT ──
+var allaitTimer = null;
+var allaitTimerSein = null;
+var allaitTimerSecs = 0;
+var tlSein = "gauche";
+var tlDest = "frigo";
+
+function switchAllaitTab(tab) {
+  ["tetee","tirelait","conseils"].forEach(function(t) {
+    var tabEl = document.getElementById("atab-" + t);
+    var secEl = document.getElementById("allait-section-" + t);
+    if (tabEl) { tabEl.style.background = t === tab ? "#C0507A" : "#F2F2F7"; tabEl.style.color = t === tab ? "#fff" : "#7F8C8D"; }
+    if (secEl) secEl.style.display = t === tab ? "block" : "none";
+  });
+  if (tab === "tirelait") {
+    var now = new Date();
+    var inp = document.getElementById("tl-heure-input");
+    if (inp && !inp.value) inp.value = now.getHours().toString().padStart(2,"0") + ":" + now.getMinutes().toString().padStart(2,"0");
+    renderTLLogs(); updateStock();
+  } else if (tab === "tetee") {
+    renderAllaitLogs();
+  }
+}
+
+function startTetee(sein) {
+  if (allaitTimer) clearInterval(allaitTimer);
+  allaitTimerSein = sein; allaitTimerSecs = 0; updateTimerDisplay();
+  var lbl = document.getElementById("allait-sein-label");
+  if (lbl) lbl.textContent = sein === "gauche" ? "◀ Gauche" : "Droite ▶";
+  allaitTimer = setInterval(function() { allaitTimerSecs++; updateTimerDisplay(); }, 1000);
+}
+function updateTimerDisplay() {
+  var d = document.getElementById("allait-timer-display");
+  if (d) d.textContent = Math.floor(allaitTimerSecs/60).toString().padStart(2,"0") + ":" + (allaitTimerSecs%60).toString().padStart(2,"0");
+}
+function stopTetee() { if (allaitTimer) { clearInterval(allaitTimer); allaitTimer = null; } }
+function saveTetee() {
+  if (!allaitTimerSein) return;
+  stopTetee();
+  var logs = JSON.parse(localStorage.getItem("allait-logs") || "[]");
+  var now = new Date();
+  logs.unshift({ type:"tetee", sein:allaitTimerSein, duree:allaitTimerSecs, ts:now.getTime(), heure:now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0") });
+  localStorage.setItem("allait-logs", JSON.stringify(logs.slice(0,50)));
+  allaitTimerSecs = 0; allaitTimerSein = null;
+  var lbl = document.getElementById("allait-sein-label"); if (lbl) lbl.textContent = "—";
+  updateTimerDisplay(); updateAllaitDayStats(); renderAllaitLogs();
+}
+function updateAllaitDayStats() {
+  var logs = JSON.parse(localStorage.getItem("allait-logs") || "[]");
+  var today = new Date().toDateString();
+  var tetees = logs.filter(function(l){ return l.type==="tetee" && new Date(l.ts).toDateString()===today; });
+  var ml = logs.filter(function(l){ return l.type==="tirelait" && new Date(l.ts).toDateString()===today; }).reduce(function(a,b){ return a+(b.ml||0); },0);
+  var c = document.getElementById("allait-count-day"); if (c) c.textContent = tetees.length;
+  var m = document.getElementById("allait-ml-day"); if (m) m.textContent = ml + " ml";
+  var ls = document.getElementById("allait-last-sein");
+  if (ls) ls.textContent = tetees[0] ? "Dernier : " + (tetees[0].sein==="gauche" ? "◀ Gauche" : "Droite ▶") : "—";
+}
+function renderAllaitLogs() {
+  var list = document.getElementById("allait-log-list"); if (!list) return;
+  var logs = JSON.parse(localStorage.getItem("allait-logs") || "[]");
+  var today = new Date().toDateString();
+  var tLogs = logs.filter(function(l){ return l.type==="tetee" && new Date(l.ts).toDateString()===today; });
+  if (!tLogs.length) { list.innerHTML = '<div style="text-align:center;padding:30px 20px;color:#7F8C8D;font-size:13px;">Aucune tétée enregistrée aujourd\'hui<br><span style="font-size:11px;">Lance le minuteur ci-dessus 💙</span></div>'; return; }
+  var h = "";
+  tLogs.forEach(function(l,i) {
+    var m = Math.floor(l.duree/60), s = l.duree%60;
+    var dur = m > 0 ? m+"min"+(s>0?" "+s+"s":"") : s+"s";
+    h += '<div style="background:#fff;border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 6px rgba(0,0,0,0.04);">';
+    h += '<div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:50%;background:#FFE0EE;display:flex;align-items:center;justify-content:center;font-size:18px;">🤱</div>';
+    h += '<div><div style="font-size:13px;font-weight:700;color:#2C3E50;">'+l.heure+' · '+(l.sein==="gauche"?"◀ Gauche":"Droite ▶")+'</div>';
+    h += '<div style="font-size:11px;color:#7F8C8D;margin-top:2px;">'+dur+'</div></div></div>';
+    h += '<div style="font-size:11px;font-weight:700;color:#C0507A;background:#FFE8F0;padding:3px 10px;border-radius:20px;">Tétée '+(tLogs.length-i)+'</div></div>';
+  });
+  list.innerHTML = h;
+}
+
+function selectTLSein(sein) {
+  tlSein = sein;
+  var map = {gauche:"g",droite:"d",deux:"b"};
+  Object.keys(map).forEach(function(s) {
+    var b = document.getElementById("tl-sein-"+map[s]); if (!b) return;
+    b.style.background = s===sein ? "#7060B0" : "rgba(255,255,255,0.7)";
+    b.style.color = s===sein ? "#fff" : "#7060B0";
+    b.style.border = s===sein ? "none" : "1.5px solid #B0A0D0";
+  });
+}
+function selectTLDest(dest) {
+  tlDest = dest;
+  ["frigo","congelo","utilise"].forEach(function(d) {
+    var el = document.getElementById("tl-dest-"+d); if (!el) return;
+    el.style.background = d===dest ? "#7060B0" : "rgba(255,255,255,0.7)";
+    el.style.color = d===dest ? "#fff" : "#7060B0";
+    el.style.border = d===dest ? "none" : "1.5px solid #B0A0D0";
+  });
+}
+function saveTireLait() {
+  var ml = parseInt(document.getElementById("tl-ml-input").value)||0;
+  var heure = document.getElementById("tl-heure-input").value;
+  if (ml<=0) { alert("Entre le volume en ml 😊"); return; }
+  var logs = JSON.parse(localStorage.getItem("allait-logs")||"[]");
+  var now = new Date();
+  logs.unshift({ type:"tirelait", sein:tlSein, ml:ml, dest:tlDest, heure:heure||now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0"), ts:now.getTime() });
+  localStorage.setItem("allait-logs", JSON.stringify(logs.slice(0,100)));
+  document.getElementById("tl-ml-input").value = "";
+  updateAllaitDayStats(); renderTLLogs(); updateStock();
+}
+function updateStock() {
+  var logs = JSON.parse(localStorage.getItem("allait-logs")||"[]");
+  var frigo=0, congelo=0;
+  logs.filter(function(l){return l.type==="tirelait";}).forEach(function(l){
+    if(l.dest==="frigo") frigo+=(l.ml||0);
+    else if(l.dest==="congelo") congelo+=(l.ml||0);
+  });
+  var sf=document.getElementById("stock-frigo"); if(sf) sf.textContent=frigo+" ml";
+  var sc=document.getElementById("stock-congelo"); if(sc) sc.textContent=congelo+" ml";
+}
+function renderTLLogs() {
+  var list = document.getElementById("tl-log-list"); if (!list) return;
+  var logs = JSON.parse(localStorage.getItem("allait-logs")||"[]");
+  var tl = logs.filter(function(l){return l.type==="tirelait";}).slice(0,10);
+  if (!tl.length) { list.innerHTML='<div style="text-align:center;padding:30px 20px;color:#7F8C8D;font-size:13px;">Aucune session enregistrée<br><span style="font-size:11px;">Ajoute ta première session ci-dessus 💙</span></div>'; return; }
+  var dL = {frigo:"❄️ Frigo",congelo:"🧊 Congélo",utilise:"🍼 Utilisé"};
+  var h="";
+  tl.forEach(function(l){
+    h+='<div style="background:#fff;border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 6px rgba(0,0,0,0.04);">';
+    h+='<div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:50%;background:#EEF0FF;display:flex;align-items:center;justify-content:center;font-size:18px;">🍼</div>';
+    h+='<div><div style="font-size:13px;font-weight:700;color:#2C3E50;">'+l.heure+' · '+(l.sein==="deux"?"Les 2 seins":l.sein==="gauche"?"◀ Gauche":"Droite ▶")+'</div>';
+    h+='<div style="font-size:11px;color:#7F8C8D;margin-top:2px;">'+(dL[l.dest]||l.dest)+'</div></div></div>';
+    h+='<div style="font-size:15px;font-weight:800;color:#7060B0;">'+l.ml+' ml</div></div>';
+  });
+  list.innerHTML=h;
+}
+function toggleAllaitSection(id) {
+  var c=document.getElementById("content-"+id), a=document.getElementById("arrow-"+id); if(!c) return;
+  var open=c.style.display!=="none";
+  c.style.display=open?"none":"block";
+  if(a) a.style.transform=open?"rotate(0deg)":"rotate(180deg)";
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("tabbar").style.display = "none";
   renderAlimGrid();
+  updateAllaitDayStats();
+  renderAllaitLogs();
 });
 
 </script>
