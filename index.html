@@ -162,13 +162,40 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div class="al-s">DTCaP-Hib-HepB · 3e injection · Pense à prendre RDV</div>
       </div>
     </div>
+    <!-- Carte allaitement accueil (visible si activé) -->
+    <div id="home-allait-card" style="display:none;margin:10px 16px 0;">
+      <div style="background:linear-gradient(135deg,#EEF9F5,#D6F0E8);border-radius:18px;padding:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:700;color:#5A9E82;">&#129335; Allaitement</div>
+          <div style="font-size:11px;color:#7F8C8D;">Aujourd'hui</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+          <div style="background:rgba(255,255,255,0.7);border-radius:12px;padding:10px;text-align:center;">
+            <div style="font-size:18px;font-weight:800;color:#2C3E50;">3</div>
+            <div style="font-size:10px;color:#7F8C8D;margin-top:2px;">Tétées</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.7);border-radius:12px;padding:10px;text-align:center;">
+            <div style="font-size:18px;font-weight:800;color:#2C3E50;">2h</div>
+            <div style="font-size:10px;color:#7F8C8D;margin-top:2px;">Dernière</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.7);border-radius:12px;padding:10px;text-align:center;">
+            <div style="font-size:18px;font-weight:800;color:#2C3E50;">80ml</div>
+            <div style="font-size:10px;color:#7F8C8D;margin-top:2px;">Tire-lait</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button style="flex:1;background:#5A9E82;color:#fff;border:none;border-radius:12px;padding:11px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;">+ Tétée</button>
+          <button style="flex:1;background:#fff;color:#5A9E82;border:1.5px solid #A8DFCA;border-radius:12px;padding:11px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;">+ Tire-lait</button>
+        </div>
+      </div>
+    </div>
     <div class="sec-hd"><span class="sec-t">Modules</span></div>
     <div class="mods">
       <div class="mod" onclick="goTo('vaccins')"><div class="mod-icon">&#128137;</div><div class="mod-t">Vaccins</div><div class="mod-s">Calendrier & suivi</div><div class="mod-badge">Prochain J6</div></div>
-      <div class="mod" onclick="goTo('diver')"><div class="mod-icon">&#129365;</div><div class="mod-t">Diversification</div><div class="mod-s">Aliments & menus</div><div class="mod-badge">8 mois</div></div>
-      <div class="mod" onclick="goTo('sommeil')"><div class="mod-icon">&#128564;</div><div class="mod-t">Sommeil</div><div class="mod-s">Nuit & siestes</div><div class="mod-badge">11h 20min</div></div>
-      <div class="mod" onclick="goTo('allait')"><div class="mod-icon">&#129335;</div><div class="mod-t">Allaitement</div><div class="mod-s">Tétées & tire-lait</div><div class="mod-badge">3 aujourd'hui</div></div>
-      <div class="mod" onclick="goTo('sante')"><div class="mod-icon">&#127777;</div><div class="mod-t">Santé</div><div class="mod-s">Température & notes</div><div class="mod-badge">37,2°</div></div>
+      <div class="mod" onclick="switchTab('alim')"><div class="mod-icon">&#129365;</div><div class="mod-t">Diversification</div><div class="mod-s">Aliments & menus</div><div class="mod-badge">8 mois</div></div>
+      <div class="mod" onclick="switchTab('sommeil')"><div class="mod-icon">&#128564;</div><div class="mod-t">Sommeil</div><div class="mod-s">Nuit & siestes</div><div class="mod-badge">11h 20min</div></div>
+
+      <div class="mod" onclick="switchTab('sante')"><div class="mod-icon">&#127777;</div><div class="mod-t">Santé</div><div class="mod-s">Température & notes</div><div class="mod-badge">37,2°</div></div>
       <div class="mod" onclick="goTo('eveil')"><div class="mod-icon">&#127919;</div><div class="mod-t">Éveil</div><div class="mod-s">Activités & jeux</div><div class="mod-badge">Nouveau</div></div>
     </div>
   </div>
@@ -211,8 +238,55 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
   <!-- PROFIL -->
   <div id="screen-profil" class="screen">
-    <div class="status-bar" style="background:linear-gradient(160deg,#f0f8f4,#e8f5ee);"><span class="st-time">9:41</span><span class="st-icons">&#9679;&#9679;&#9679; &#128267;</span></div>
-    <div class="coming-soon" style="margin-top:20px;"><div class="cs-emoji">&#128100;</div><div class="cs-title">Profil & Paramètres</div><div class="cs-sub">Cet écran arrive bientôt !<br>Profil de Camille et paramètres.</div></div>
+    <div class="status-bar" style="background:linear-gradient(160deg,#f0f8f4,#e8f5ee);">
+      <span class="st-time">9:41</span>
+      <span class="st-icons">&#9679;&#9679;&#9679; &#128267;</span>
+    </div>
+    <div style="padding:10px 20px 20px;background:linear-gradient(160deg,#f0f8f4,#e8f5ee);">
+      <div style="font-size:22px;font-weight:800;color:#2C3E50;letter-spacing:-0.5px;">Profil</div>
+    </div>
+    <!-- Paramètres allaitement -->
+    <div style="margin:16px 16px 0;">
+      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Mon suivi</div>
+      <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="padding:16px;display:flex;align-items:center;gap:14px;border-bottom:0.5px solid #EDE8DF;">
+          <div style="font-size:24px;">&#129335;</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:#2C3E50;">J'allaite / Je tire mon lait</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Affiche le suivi allaitement sur l'accueil</div>
+          </div>
+          <div id="toggle-allait" onclick="toggleAllait()" style="width:50px;height:28px;border-radius:14px;background:#A8DFCA;display:flex;align-items:center;padding:3px;justify-content:flex-end;cursor:pointer;transition:all .3s;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.2);"></div>
+          </div>
+        </div>
+        <div style="padding:16px;display:flex;align-items:center;gap:14px;">
+          <div style="font-size:24px;">&#128564;</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:#2C3E50;">Suivi du sommeil</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Nuits et siestes</div>
+          </div>
+          <div style="width:50px;height:28px;border-radius:14px;background:#A8DFCA;display:flex;align-items:center;padding:3px;justify-content:flex-end;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.2);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Autres paramètres -->
+    <div style="margin:16px 16px 0;">
+      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Bébé</div>
+      <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="padding:16px;display:flex;align-items:center;gap:14px;border-bottom:0.5px solid #EDE8DF;">
+          <div style="font-size:24px;">&#128118;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Camille</div><div style="font-size:12px;color:#7F8C8D;">8 mois · Née le 14 sept. 2025</div></div>
+          <div style="font-size:16px;color:#C8C8C8;">›</div>
+        </div>
+        <div style="padding:16px;display:flex;align-items:center;gap:14px;">
+          <div style="font-size:24px;">&#128102;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Tom</div><div style="font-size:12px;color:#7F8C8D;">Ajouter ses informations</div></div>
+          <div style="font-size:16px;color:#C8C8C8;">›</div>
+        </div>
+      </div>
+    </div>
   </div>
 
 
@@ -270,9 +344,9 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
   <!-- TABBAR -->
   <div id="tabbar">
     <div class="tab active" id="tab-home" onclick="switchTab('home')"><div class="tab-icon">&#127968;</div><div class="tab-lbl">Accueil</div></div>
-    <div class="tab" id="tab-sante" onclick="switchTab('sante')"><div class="tab-icon">&#127777;</div><div class="tab-lbl">Santé</div></div>
-    <div class="tab" id="tab-allait" onclick="switchTab('allait')"><div class="tab-icon">&#129335;</div><div class="tab-lbl">Allaitement</div></div>
+    <div class="tab" id="tab-alim" onclick="switchTab('alim')"><div class="tab-icon">&#127869;</div><div class="tab-lbl">Alimentation</div></div>
     <div class="tab" id="tab-sommeil" onclick="switchTab('sommeil')"><div class="tab-icon">&#128564;</div><div class="tab-lbl">Sommeil</div></div>
+    <div class="tab" id="tab-sante" onclick="switchTab('sante')"><div class="tab-icon">&#127777;</div><div class="tab-lbl">Santé</div></div>
     <div class="tab" id="tab-profil" onclick="switchTab('profil')"><div class="tab-icon">&#128100;</div><div class="tab-lbl">Profil</div></div>
   </div>
 
@@ -309,6 +383,26 @@ function updateTime() {
   document.querySelectorAll(".st-time").forEach(function(el) { el.textContent = h + ":" + m; });
 }
 updateTime(); setInterval(updateTime, 30000);
+
+// ── Allaitement toggle ──
+var allaitOn = localStorage.getItem("allait") === "1";
+function applyAllait() {
+  var homeCard = document.getElementById("home-allait-card");
+  var alimCard = document.getElementById("alim-allait-card");
+  var toggle = document.getElementById("toggle-allait");
+  if (homeCard) homeCard.style.display = allaitOn ? "block" : "none";
+  if (alimCard) alimCard.style.display = allaitOn ? "block" : "none";
+  if (toggle) {
+    toggle.style.background = allaitOn ? "#A8DFCA" : "#D5D5D5";
+    toggle.style.justifyContent = allaitOn ? "flex-end" : "flex-start";
+  }
+}
+function toggleAllait() {
+  allaitOn = !allaitOn;
+  localStorage.setItem("allait", allaitOn ? "1" : "0");
+  applyAllait();
+}
+applyAllait();
 
 function loginTab(tab) {
   document.getElementById("ltab-connect").classList.toggle("active", tab === "connect");
