@@ -817,8 +817,176 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
   <!-- EVEIL -->
   <div id="screen-eveil" class="screen">
-    <div class="sub-nav" style="background:#f8faf0;"><span class="sub-back" onclick="goBack()">&#8249; Retour</span><span class="sub-title">Éveil</span><span style="width:44px;"></span></div>
-    <div class="coming-soon"><div class="cs-emoji">&#127919;</div><div class="cs-title">Activités d'éveil</div><div class="cs-sub">Cet écran arrive bientôt !<br>Activités, jeux et comptines.</div></div>
+    <div class="status-bar" style="background:linear-gradient(160deg,#9878D8,#7858B8);">
+      <span class="st-time" style="color:rgba(255,255,255,0.85);">9:41</span>
+      <span class="st-icons" style="color:rgba(255,255,255,0.85);">&#9679;&#9679;&#9679; &#128267;</span>
+    </div>
+    <!-- Header violet -->
+    <div style="background:linear-gradient(160deg,#9878D8,#7858B8);padding:6px 20px 22px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <span onclick="goBack()" style="font-size:26px;color:rgba(255,255,255,0.85);cursor:pointer;line-height:1;margin-right:2px;">&#8249;</span>
+          <img src="logo.svg" style="width:36px;height:36px;" />
+          <span style="font-size:18px;font-weight:800;color:#fff;">Éveil</span>
+        </div>
+      </div>
+      <!-- Sélecteur enfant -->
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
+          <span style="font-size:12px;font-weight:700;color:#fff;">Camille</span>
+          <span style="font-size:9px;color:rgba(255,255,255,0.65);">&#9660;</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128102;</div>
+          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);">Tom</span>
+        </div>
+      </div>
+      <!-- Conseil âge -->
+      <div style="background:rgba(255,255,255,0.18);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;">
+        <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">&#129504;</div>
+        <div>
+          <div style="font-size:14px;font-weight:800;color:#fff;">À 8 mois, Camille explore !</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:3px;line-height:1.45;">Elle comprend la permanence des objets, imite les sons et adore attraper ce qu'elle voit.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activités du moment -->
+    <div class="sec-hd"><span class="sec-t">Activités du moment</span></div>
+    <div style="padding:0 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+      <div style="background:#fff;border-radius:18px;padding:15px 13px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 8px rgba(0,0,0,0.05);cursor:pointer;" onclick="">
+        <div style="width:48px;height:48px;border-radius:14px;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:26px;">&#9996;&#65039;</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Attraper &amp; Lâcher</div>
+          <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Motricité fine</div>
+        </div>
+        <div style="display:inline-flex;align-items:center;gap:4px;background:#FDE8D8;border-radius:20px;padding:3px 10px;align-self:flex-start;">
+          <span style="font-size:10px;">&#9200;</span>
+          <span style="font-size:11px;font-weight:700;color:#C07840;">15 min</span>
+        </div>
+      </div>
+
+      <div style="background:#fff;border-radius:18px;padding:15px 13px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 8px rgba(0,0,0,0.05);cursor:pointer;">
+        <div style="width:48px;height:48px;border-radius:14px;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:26px;">&#128483;&#65039;</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Ba-ba, ma-ma</div>
+          <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Langage</div>
+        </div>
+        <div style="display:inline-flex;align-items:center;gap:4px;background:#EEF9F5;border-radius:20px;padding:3px 10px;align-self:flex-start;">
+          <span style="font-size:10px;">&#9200;</span>
+          <span style="font-size:11px;font-weight:700;color:#5A9E82;">10 min</span>
+        </div>
+      </div>
+
+      <div style="background:#fff;border-radius:18px;padding:15px 13px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 8px rgba(0,0,0,0.05);cursor:pointer;">
+        <div style="width:48px;height:48px;border-radius:14px;background:#F2EFF9;display:flex;align-items:center;justify-content:center;font-size:26px;">&#127912;</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Textures à toucher</div>
+          <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Sensoriel</div>
+        </div>
+        <div style="display:inline-flex;align-items:center;gap:4px;background:#F2EFF9;border-radius:20px;padding:3px 10px;align-self:flex-start;">
+          <span style="font-size:10px;">&#9200;</span>
+          <span style="font-size:11px;font-weight:700;color:#8A78CC;">20 min</span>
+        </div>
+      </div>
+
+      <div style="background:#fff;border-radius:18px;padding:15px 13px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 8px rgba(0,0,0,0.05);cursor:pointer;">
+        <div style="width:48px;height:48px;border-radius:14px;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:26px;">&#129730;</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Coucou-caché</div>
+          <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Social &amp; Émotionnel</div>
+        </div>
+        <div style="display:inline-flex;align-items:center;gap:4px;background:#FFF3CD;border-radius:20px;padding:3px 10px;align-self:flex-start;">
+          <span style="font-size:10px;">&#9200;</span>
+          <span style="font-size:11px;font-weight:700;color:#A07820;">10 min</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- À essayer cette semaine -->
+    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">À essayer cette semaine</span></div>
+    <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;">
+
+      <div style="background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="width:44px;height:44px;border-radius:14px;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#129382;</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Empiler des anneaux</div>
+          <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Coordination œil-main · 10 min</div>
+        </div>
+        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 10px;border-radius:20px;flex-shrink:0;">Nouveau</div>
+      </div>
+
+      <div style="background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="width:44px;height:44px;border-radius:14px;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128218;</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Livre en tissu</div>
+          <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Langage &amp; concentration · 15 min</div>
+        </div>
+        <div style="font-size:11px;font-weight:700;background:#F2EFF9;color:#8A78CC;padding:4px 10px;border-radius:20px;flex-shrink:0;">&#9829; Favori</div>
+      </div>
+
+      <div style="background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="width:44px;height:44px;border-radius:14px;background:#F2EFF9;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#127925;</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Musique &amp; comptines</div>
+          <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Éveil auditif · 5–10 min</div>
+        </div>
+        <div style="font-size:11px;font-weight:700;background:#FFF3CD;color:#A07820;padding:4px 10px;border-radius:20px;flex-shrink:0;">&#9660; Voir</div>
+      </div>
+
+    </div>
+
+    <!-- Stades de développement -->
+    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#127775; Ce que Camille sait faire</span></div>
+    <div style="padding:0 16px;display:flex;flex-direction:column;gap:7px;">
+      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:28px;height:28px;border-radius:50%;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5A9E82;flex-shrink:0;">&#10003;</div>
+        <span style="font-size:13px;color:#2C3E50;font-weight:600;">Se tient assise sans appui</span>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:28px;height:28px;border-radius:50%;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5A9E82;flex-shrink:0;">&#10003;</div>
+        <span style="font-size:13px;color:#2C3E50;font-weight:600;">Tend les bras pour attraper</span>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:28px;height:28px;border-radius:50%;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5A9E82;flex-shrink:0;">&#10003;</div>
+        <span style="font-size:13px;color:#2C3E50;font-weight:600;">Fait "ba-ba", "da-da"</span>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:28px;height:28px;border-radius:50%;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">&#8987;</div>
+        <div style="flex:1;"><span style="font-size:13px;color:#2C3E50;font-weight:600;">Se met à 4 pattes</span><div style="font-size:11px;color:#A07820;margin-top:1px;">En cours — bientôt !</div></div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:28px;height:28px;border-radius:50%;background:#F2F2F7;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;color:#C0C0C0;">&#9711;</div>
+        <div style="flex:1;"><span style="font-size:13px;color:#7F8C8D;font-weight:600;">Se lève en s'aidant des meubles</span><div style="font-size:11px;color:#B0B0B0;margin-top:1px;">Étape suivante ~10 mois</div></div>
+      </div>
+    </div>
+
+    <!-- Comptines -->
+    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#127925; Comptines du moment</span></div>
+    <div style="margin:0 16px 16px;background:linear-gradient(135deg,#2A1A48,#1E1038);border-radius:16px;padding:14px;">
+      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Les préférées de Camille</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">&#128051;</div>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#fff;">Une souris verte</div><div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:1px;">Classique · Mémorisation</div></div>
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(152,120,216,0.4);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;cursor:pointer;">&#9654;</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">&#128040;</div>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#fff;">Petit escargot</div><div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:1px;">Rythme &amp; gestuelles</div></div>
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;cursor:pointer;">&#9654;</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">&#9995;</div>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#fff;">Bateau sur l'eau</div><div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:1px;">Imitation &amp; contact</div></div>
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;cursor:pointer;">&#9654;</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- PROFIL -->
