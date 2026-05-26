@@ -44,6 +44,8 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .child-name-active { font-size:13px; font-weight:700; color:var(--text); }
 .child-name-inactive { font-size:13px; font-weight:600; color:var(--sub); }
 .child-add { margin-left:auto; width:34px; height:34px; border-radius:50%; background:rgba(44,62,80,0.07); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:20px; color:var(--sub); cursor:pointer; }
+.ac-sexe-btn.ac-active { border-color:#5A9E82 !important; background:#EEF9F5; }
+.ac-sexe-btn.ac-active div:last-child { color:#5A9E82; }
 .bebe-pill { background:rgba(255,255,255,0.9); border-radius:16px; padding:14px 16px; display:flex; align-items:center; gap:14px; margin-top:14px; }
 .bebe-av { width:50px; height:50px; border-radius:50%; background:var(--green-lt); display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
 .bebe-name { font-size:16px; font-weight:700; color:var(--text); }
@@ -288,16 +290,16 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div class="home-greeting-sub">Bonjour Jade !</div>
       <div class="home-greeting">Bienvenue &#128075;</div>
       <div class="child-selector">
-        <div class="child-btn-active">
-          <div class="child-av">&#128103;</div>
+        <div class="child-btn-active fc-pill" onclick="switchChild(0)" style="cursor:pointer;">
+          <div class="child-av" data-child-avatar>&#128103;</div>
           <span class="child-name-active" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(44,62,80,0.5);margin-left:2px;">&#9660;</span>
         </div>
-        <div class="child-btn-inactive">
-          <div class="child-av" style="background:rgba(44,62,80,0.1);">&#128102;</div>
-          <span class="child-name-inactive">Tom</span>
+        <div class="child-btn-inactive sc-pill" onclick="switchChild(1)" style="cursor:pointer;display:none;">
+          <div class="child-av" style="background:rgba(44,62,80,0.1);" data-second-child-avatar>&#128102;</div>
+          <span class="child-name-inactive" data-second-child-name>—</span>
         </div>
-        <div class="child-add">+</div>
+        <div class="child-add" onclick="showAddChild()">+</div>
       </div>
       <div class="bebe-pill" onclick="goTo('profil-enfant')" style="cursor:pointer;">
         <div class="bebe-av">&#128118;</div>
@@ -381,15 +383,16 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
       <!-- Sélecteur enfant -->
       <div style="display:flex;gap:8px;align-items:center;">
-        <div style="display:flex;align-items:center;gap:7px;background:#A8DFCA;border-radius:22px;padding:6px 13px 6px 7px;box-shadow:0 2px 8px rgba(90,158,130,0.2);">
-          <div style="width:26px;height:26px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
+        <div class="fc-pill" onclick="switchChild(0)" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:#A8DFCA;border-radius:22px;padding:6px 13px 6px 7px;box-shadow:0 2px 8px rgba(90,158,130,0.2);">
+          <div style="width:26px;height:26px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;" data-child-avatar>&#128103;</div>
           <span style="font-size:12px;font-weight:700;color:#2C3E50;" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(44,62,80,0.5);">&#9660;</span>
         </div>
-        <div style="display:flex;align-items:center;gap:7px;background:rgba(44,62,80,0.07);border-radius:22px;padding:6px 13px 6px 7px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128102;</div>
-          <span style="font-size:12px;font-weight:600;color:#7F8C8D;">Tom</span>
+        <div class="sc-pill" onclick="switchChild(1)" style="cursor:pointer;display:none;align-items:center;gap:7px;background:rgba(44,62,80,0.07);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;" data-second-child-avatar>&#128102;</div>
+          <span style="font-size:12px;font-weight:600;color:#7F8C8D;" data-second-child-name>—</span>
         </div>
+        <div class="child-add" onclick="showAddChild()">+</div>
       </div>
     </div>
 
@@ -531,16 +534,17 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
       </div>
       <!-- Sélecteur enfant -->
-      <div style="display:flex;gap:8px;margin-bottom:14px;">
-        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;">
+        <div class="fc-pill" onclick="switchChild(0)" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;" data-child-avatar>&#128103;</div>
           <span style="font-size:12px;font-weight:700;color:#fff;" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(255,255,255,0.65);">&#9660;</span>
         </div>
-        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128102;</div>
-          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);">Tom</span>
+        <div class="sc-pill" onclick="switchChild(1)" style="cursor:pointer;display:none;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;" data-second-child-avatar>&#128102;</div>
+          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);" data-second-child-name>—</span>
         </div>
+        <div class="child-add" onclick="showAddChild()" style="background:rgba(255,255,255,0.2);color:#fff;">+</div>
       </div>
       <!-- Bannière âge + méthode -->
       <div style="background:rgba(255,255,255,0.18);border-radius:16px;padding:13px 15px;">
@@ -757,16 +761,17 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;">+</div>
       </div>
       <!-- Sélecteur enfant -->
-      <div style="display:flex;gap:8px;margin-bottom:14px;">
-        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;">
+        <div class="fc-pill" onclick="switchChild(0)" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;" data-child-avatar>&#128103;</div>
           <span style="font-size:12px;font-weight:700;color:#fff;" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(255,255,255,0.65);">&#9660;</span>
         </div>
-        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128102;</div>
-          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);">Tom</span>
+        <div class="sc-pill" onclick="switchChild(1)" style="cursor:pointer;display:none;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;" data-second-child-avatar>&#128102;</div>
+          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);" data-second-child-name>—</span>
         </div>
+        <div class="child-add" onclick="showAddChild()" style="background:rgba(255,255,255,0.2);color:#fff;">+</div>
       </div>
       <!-- Résumé nuit -->
       <div style="background:rgba(255,255,255,0.16);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;">
@@ -1292,16 +1297,17 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:#fff;">+</div>
       </div>
       <!-- Sélecteur enfant -->
-      <div style="display:flex;gap:8px;margin-bottom:14px;">
-        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;">
+        <div class="fc-pill" onclick="switchChild(0)" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;" data-child-avatar>&#128103;</div>
           <span style="font-size:12px;font-weight:700;color:#fff;" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(255,255,255,0.65);">&#9660;</span>
         </div>
-        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128102;</div>
-          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);">Tom</span>
+        <div class="sc-pill" onclick="switchChild(1)" style="cursor:pointer;display:none;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;" data-second-child-avatar>&#128102;</div>
+          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);" data-second-child-name>—</span>
         </div>
+        <div class="child-add" onclick="showAddChild()" style="background:rgba(255,255,255,0.2);color:#fff;">+</div>
       </div>
       <!-- Carte température actuelle -->
       <div style="background:rgba(255,255,255,0.18);border-radius:18px;padding:16px;display:flex;align-items:center;gap:16px;">
@@ -1572,16 +1578,17 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
       </div>
       <!-- Sélecteur enfant -->
-      <div style="display:flex;gap:8px;margin-bottom:14px;">
-        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;">
+        <div class="fc-pill" onclick="switchChild(0)" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;" data-child-avatar>&#128103;</div>
           <span style="font-size:12px;font-weight:700;color:#fff;" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(255,255,255,0.65);">&#9660;</span>
         </div>
-        <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128102;</div>
-          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);">Tom</span>
+        <div class="sc-pill" onclick="switchChild(1)" style="cursor:pointer;display:none;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;" data-second-child-avatar>&#128102;</div>
+          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);" data-second-child-name>—</span>
         </div>
+        <div class="child-add" onclick="showAddChild()" style="background:rgba(255,255,255,0.2);color:#fff;">+</div>
       </div>
       <!-- Conseil âge -->
       <div style="background:rgba(255,255,255,0.18);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;">
@@ -1914,10 +1921,15 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;" data-child-name>Camille</div><div style="font-size:12px;color:#7F8C8D;" id="params-age-dob">8 mois · Née le 14 sept. 2025</div></div>
           <div style="font-size:16px;color:#5A9E82;font-weight:700;">›</div>
         </div>
-        <div style="padding:16px;display:flex;align-items:center;gap:14px;">
-          <div style="font-size:24px;">&#128102;</div>
-          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Tom</div><div style="font-size:12px;color:#7F8C8D;">Ajouter ses informations</div></div>
-          <div style="font-size:16px;color:#C8C8C8;">›</div>
+        <div id="params-second-child-row" onclick="showAddChild()" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;display:none;">
+          <div style="font-size:24px;" data-second-child-avatar-params>&#128102;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;" data-second-child-name>—</div><div style="font-size:12px;color:#7F8C8D;">Voir le profil</div></div>
+          <div style="font-size:16px;color:#5A9E82;font-weight:700;">›</div>
+        </div>
+        <div id="params-add-child-row" onclick="showAddChild()" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;">
+          <div style="font-size:24px;">➕</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#5A9E82;">Ajouter un enfant</div><div style="font-size:12px;color:#7F8C8D;">Famille nombreuse 💙</div></div>
+          <div style="font-size:16px;color:#5A9E82;font-weight:700;">›</div>
         </div>
       </div>
     </div>
@@ -2148,6 +2160,49 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div id="recipe-sheet" onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;max-height:78vh;overflow-y:auto;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));">
       <div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 18px;"></div>
       <div id="recipe-body"></div>
+    </div>
+  </div>
+
+  <!-- MODAL AJOUT ENFANT -->
+  <div id="modal-add-child" onclick="hideAddChild()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:300;align-items:flex-end;">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px));max-height:88vh;overflow-y:auto;">
+      <div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 20px;"></div>
+      <div style="font-size:20px;font-weight:800;color:#2C3E50;margin-bottom:4px;">Nouvel enfant 🌱</div>
+      <div style="font-size:13px;color:#7F8C8D;margin-bottom:22px;">Ajoute un deuxième petit pousse à l'application</div>
+
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Prénom</div>
+        <input id="ac-prenom" type="text" placeholder="Le prénom de bébé" style="width:100%;border:2px solid #E8F5EE;border-radius:14px;padding:12px 14px;font-size:15px;font-family:inherit;color:#2C3E50;outline:none;box-sizing:border-box;" oninput="this.style.borderColor=this.value?'#5A9E82':'#E8F5EE';">
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">C'est une…</div>
+        <div style="display:flex;gap:10px;">
+          <div id="ac-sexe-fille" class="ac-sexe-btn" onclick="acSelectSexe('fille')" style="flex:1;border:2px solid #E8F5EE;border-radius:14px;padding:12px;text-align:center;cursor:pointer;transition:all 0.2s;">
+            <div style="font-size:22px;">👧</div>
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-top:4px;">Fille</div>
+          </div>
+          <div id="ac-sexe-garcon" class="ac-sexe-btn" onclick="acSelectSexe('garcon')" style="flex:1;border:2px solid #E8F5EE;border-radius:14px;padding:12px;text-align:center;cursor:pointer;transition:all 0.2s;">
+            <div style="font-size:22px;">👦</div>
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-top:4px;">Garçon</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Date de naissance</div>
+        <input id="ac-dob" type="date" style="width:100%;border:2px solid #E8F5EE;border-radius:14px;padding:12px 14px;font-size:15px;font-family:inherit;color:#2C3E50;outline:none;box-sizing:border-box;" onchange="this.style.borderColor=this.value?'#5A9E82':'#E8F5EE';">
+      </div>
+
+      <div style="margin-bottom:24px;">
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Surnom <span style="font-weight:400;color:#B0B8C1;">(optionnel)</span></div>
+        <input id="ac-surnom" type="text" placeholder="Ex: Minou, Loulou…" style="width:100%;border:2px solid #E8F5EE;border-radius:14px;padding:12px 14px;font-size:15px;font-family:inherit;color:#2C3E50;outline:none;box-sizing:border-box;">
+      </div>
+
+      <button onclick="submitNewChild()" style="width:100%;background:linear-gradient(135deg,#5A9E82,#82C8B0);border:none;border-radius:18px;padding:16px;font-size:16px;font-weight:800;color:#fff;cursor:pointer;font-family:inherit;">
+        Ajouter 🌱
+      </button>
+      <div onclick="hideAddChild()" style="text-align:center;margin-top:14px;font-size:14px;color:#B0B8C1;cursor:pointer;">Annuler</div>
     </div>
   </div>
 
@@ -2459,11 +2514,84 @@ function obGoTo(next) {
 }
 function obFinish() {
   var profile={role:obData.role,prenom:obData.prenom,sexe:obData.sexe,dob:obData.dob,surnom:obData.surnom,displayName:obData.surnom||obData.prenom};
-  localStorage.setItem("childProfile",JSON.stringify(profile));
+  var profiles=JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  profiles[0]=profile;
+  localStorage.setItem("childProfiles",JSON.stringify(profiles));
+  localStorage.setItem("activeChildIdx","0");
   applyChildProfile(profile);
+  updateChildSelectors();
   document.getElementById("screen-onboarding").classList.remove("active");
   document.getElementById("screen-home").classList.add("active");
   document.getElementById("tabbar").style.display="flex";
+}
+
+// ── Multi-enfants ──
+function switchChild(idx) {
+  var profiles=JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  if(!profiles[idx]) return;
+  localStorage.setItem("activeChildIdx",String(idx));
+  applyChildProfile(profiles[idx]);
+  updateChildSelectors();
+}
+function updateChildSelectors() {
+  var profiles=JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  var idx=parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var second=profiles[1]||null;
+  var scName=second?(second.displayName||second.prenom||"bébé"):"—";
+  var scAvatar=second?(second.sexe==="garcon"?"👦":"👧"):"👶";
+  // Mise à jour noms/avatars enfant 2
+  document.querySelectorAll("[data-second-child-name]").forEach(function(el){el.textContent=scName;});
+  document.querySelectorAll("[data-second-child-avatar]").forEach(function(el){el.textContent=scAvatar;});
+  var p2=document.querySelector("[data-second-child-avatar-params]");
+  if(p2) p2.textContent=scAvatar;
+  // Show/hide sc-pills
+  document.querySelectorAll(".sc-pill").forEach(function(el){
+    el.style.display=second?"flex":"none";
+  });
+  // Opacité active/inactive
+  document.querySelectorAll(".fc-pill").forEach(function(el){
+    el.style.opacity=idx===0?"1":"0.6";
+  });
+  document.querySelectorAll(".sc-pill").forEach(function(el){
+    el.style.opacity=idx===1?"1":"0.6";
+  });
+  // Params screen rows
+  var scRow=document.getElementById("params-second-child-row");
+  var addRow=document.getElementById("params-add-child-row");
+  if(scRow) scRow.style.display=second?"flex":"none";
+  if(addRow) addRow.style.display=second?"none":"flex";
+}
+var acSexe=null;
+function showAddChild() {
+  document.getElementById("modal-add-child").style.display="flex";
+  document.getElementById("ac-prenom").value="";
+  document.getElementById("ac-dob").value="";
+  document.getElementById("ac-surnom").value="";
+  acSexe=null;
+  document.querySelectorAll(".ac-sexe-btn").forEach(function(b){b.classList.remove("ac-active");});
+  document.getElementById("ac-prenom").style.borderColor="#E8F5EE";
+  document.getElementById("ac-dob").style.borderColor="#E8F5EE";
+}
+function hideAddChild() {
+  document.getElementById("modal-add-child").style.display="none";
+}
+function acSelectSexe(s) {
+  acSexe=s;
+  document.querySelectorAll(".ac-sexe-btn").forEach(function(b){b.classList.remove("ac-active");});
+  document.getElementById("ac-sexe-"+s).classList.add("ac-active");
+}
+function submitNewChild() {
+  var prenom=document.getElementById("ac-prenom").value.trim();
+  var dob=document.getElementById("ac-dob").value;
+  var surnom=document.getElementById("ac-surnom").value.trim();
+  if(!prenom){document.getElementById("ac-prenom").style.borderColor="#E74C3C";document.getElementById("ac-prenom").focus();return;}
+  var profile={prenom:prenom,sexe:acSexe||"fille",dob:dob||null,surnom:surnom||null,displayName:surnom||prenom};
+  var profiles=JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  if(profiles.length===0) profiles=[null];
+  profiles[1]=profile;
+  localStorage.setItem("childProfiles",JSON.stringify(profiles));
+  hideAddChild();
+  updateChildSelectors();
 }
 function obCalcAge(dob) {
   var birth=new Date(dob),now=new Date();
@@ -2507,7 +2635,8 @@ function applyChildProfile(profile) {
   if(pad && profile.dob) {
     var d = new Date(profile.dob);
     var mois = ["jan.","fév.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
-    pad.textContent = age + " · Née le " + d.getDate() + " " + mois[d.getMonth()] + " " + d.getFullYear();
+    var neeLabel = profile.sexe==="garcon" ? "Né le " : "Née le ";
+    pad.textContent = age + " · " + neeLabel + d.getDate() + " " + mois[d.getMonth()] + " " + d.getFullYear();
   }
 
   // Profil enfant — date de naissance
@@ -2683,15 +2812,25 @@ document.addEventListener("DOMContentLoaded", function() {
   updateAllaitDayStats();
   renderAllaitLogs();
   obInitWink();
-  var profile = JSON.parse(localStorage.getItem("childProfile") || "null");
-  if (!profile) {
+
+  // Rétro-compatibilité : migration ancien format → nouveau
+  var oldProfile = JSON.parse(localStorage.getItem("childProfile") || "null");
+  if (oldProfile && !localStorage.getItem("childProfiles")) {
+    localStorage.setItem("childProfiles", JSON.stringify([oldProfile]));
+    localStorage.setItem("activeChildIdx", "0");
+  }
+
+  var profiles = JSON.parse(localStorage.getItem("childProfiles") || "null");
+  if (!profiles || profiles.length === 0 || !profiles[0]) {
     document.getElementById("tabbar").style.display = "none";
     document.getElementById("screen-onboarding").classList.add("active");
     obShowStep(1);
   } else {
+    var idx = parseInt(localStorage.getItem("activeChildIdx") || "0");
     document.getElementById("tabbar").style.display = "flex";
     document.getElementById("screen-home").classList.add("active");
-    applyChildProfile(profile);
+    applyChildProfile(profiles[idx] || profiles[0]);
+    updateChildSelectors();
   }
 });
 
