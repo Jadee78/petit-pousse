@@ -132,29 +132,13 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .ob-btn-ghost { width:100%; background:transparent; color:var(--green); border:2px solid var(--green-lt); border-radius:16px; padding:14px; font-size:13px; font-weight:700; font-family:"Montserrat",sans-serif; cursor:pointer; margin-top:10px; }
 
 /* Plant character */
-#ob-plant { position:fixed; bottom:18px; left:14px; z-index:160; pointer-events:none; }
+#ob-plant { position:fixed; bottom:160px; left:14px; z-index:160; pointer-events:none; }
 #ob-plant svg { transform-origin:bottom center; animation:obPlantIdle 4s ease-in-out infinite; }
-
-/* Curtain */
-#ob-curtain { position:fixed; top:0; left:0; right:0; bottom:0; background:linear-gradient(160deg,#5A9E82,#3E8060); transform:translateY(-100%); z-index:400; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px; }
-#ob-curtain.ob-down { transform:translateY(0); transition:transform 0.5s cubic-bezier(0.4,0,0.2,1); }
-#ob-curtain.ob-up { transform:translateY(-100%); transition:transform 0.45s cubic-bezier(0.4,0,0.6,1); }
 
 @keyframes obPlantIdle {
   0%,100% { transform:rotate(8deg); }
   35% { transform:rotate(4deg); }
   70% { transform:rotate(12deg); }
-}
-@keyframes obPlantStruggle {
-  0% { transform:rotate(8deg) translateY(0); }
-  12% { transform:rotate(-12deg) translateY(-3px); }
-  25% { transform:rotate(20deg) translateY(-7px); }
-  38% { transform:rotate(-16deg) translateY(-11px); }
-  52% { transform:rotate(18deg) translateY(-14px); }
-  65% { transform:rotate(-10deg) translateY(-18px); }
-  78% { transform:rotate(8deg) translateY(-21px); }
-  90% { transform:rotate(3deg) translateY(-22px); }
-  100% { transform:rotate(5deg) translateY(-22px); }
 }
 @keyframes obStepIn {
   from { opacity:0; transform:translateY(16px); }
@@ -282,12 +266,6 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <path d="M28 16.5 Q33 20 38 16.5" stroke="#2C3E50" stroke-width="1.8" fill="none" stroke-linecap="round"/>
       </svg>
     </div>
-  </div>
-
-  <!-- RIDEAU (global, au-dessus de tout) -->
-  <div id="ob-curtain">
-    <img src="logo.svg" style="width:60px;height:60px;opacity:0.9;" />
-    <div style="font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.3px;">Petit Pousse</div>
   </div>
 
   <!-- ACCUEIL -->
@@ -2477,33 +2455,15 @@ function obNext() {
 function obSkipSurnom() { if(obAnimating) return; obData.surnom=null; obGoTo(6); }
 
 function obGoTo(next) {
-  if(obAnimating) return; obAnimating=true;
-  var ps=document.querySelector("#ob-plant svg");
-  if(ps) { ps.style.animation="none"; setTimeout(function(){ps.style.animation="obPlantStruggle 0.75s ease-in-out forwards";},10); }
-  setTimeout(function() {
-    var c=document.getElementById("ob-curtain"); c.className="ob-down";
-    setTimeout(function(){
-      obShowStep(next); c.className="ob-up";
-      setTimeout(function(){
-        c.className=""; obAnimating=false;
-        if(ps) ps.style.animation="obPlantIdle 4s ease-in-out infinite";
-      },460);
-    },520);
-  },450);
+  obShowStep(next);
 }
 function obFinish() {
   var profile={role:obData.role,prenom:obData.prenom,sexe:obData.sexe,dob:obData.dob,surnom:obData.surnom,displayName:obData.surnom||obData.prenom};
   localStorage.setItem("childProfile",JSON.stringify(profile));
   applyChildProfile(profile);
-  obAnimating=true;
-  var c=document.getElementById("ob-curtain"); c.className="ob-down";
-  setTimeout(function(){
-    document.getElementById("screen-onboarding").classList.remove("active");
-    document.getElementById("screen-home").classList.add("active");
-    document.getElementById("tabbar").style.display="flex";
-    c.className="ob-up";
-    setTimeout(function(){c.className="";obAnimating=false;},460);
-  },520);
+  document.getElementById("screen-onboarding").classList.remove("active");
+  document.getElementById("screen-home").classList.add("active");
+  document.getElementById("tabbar").style.display="flex";
 }
 function obCalcAge(dob) {
   var birth=new Date(dob),now=new Date();
