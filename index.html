@@ -405,8 +405,53 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
 
+    <!-- Régression du sommeil -->
+    <div style="margin:12px 16px 0;">
+      <div onclick="toggleRegression()" style="background:linear-gradient(135deg,#FDE8D8,#F8D0B8);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;">
+        <span style="font-size:26px;flex-shrink:0;">&#128168;</span>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:800;color:#7A4830;">Au secours ! La régression du sommeil a frappé</div>
+          <div style="font-size:11px;color:#9A6848;margin-top:2px;">Comprendre & traverser cette phase difficile</div>
+        </div>
+        <span id="regression-arrow" style="font-size:16px;color:#9A6848;transition:transform .3s;">&#8250;</span>
+      </div>
+      <!-- Contenu dépliable -->
+      <div id="regression-content" style="display:none;background:#fff;border-radius:0 0 16px 16px;padding:16px;border:1px solid #FDE8D8;border-top:none;margin-top:-4px;">
+        <div style="font-size:13px;font-weight:700;color:#F0A888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">&#10067; C'est quoi ?</div>
+        <p style="font-size:13px;color:#2C3E50;line-height:1.6;margin-bottom:14px;">La régression du sommeil est une période temporaire où bébé — qui dormait bien — se remet à se réveiller souvent la nuit. C'est normal, ça arrive à tous les bébés. Les pics les plus courants : <strong>4 mois, 8-10 mois, 12 mois et 18 mois</strong>.</p>
+
+        <div style="font-size:13px;font-weight:700;color:#F0A888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">&#129504; Pourquoi ça arrive ?</div>
+        <p style="font-size:13px;color:#2C3E50;line-height:1.6;margin-bottom:14px;">Bébé traverse une <strong>grande évolution</strong> — cerveau, motricité, langage. Son cerveau est en pleine ébullition ! Il peut aussi traverser des <strong>angoisses de séparation</strong> ou pousser des dents. Son sommeil se déstructure temporairement le temps qu'il intègre tout ça.</p>
+
+        <div style="font-size:13px;font-weight:700;color:#F0A888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">&#128161; Comment gérer ?</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#F0A888;flex-shrink:0;">1</div>
+            <p style="font-size:13px;color:#2C3E50;line-height:1.5;"><strong>Garde la routine du soir</strong> — bain, câlin, chanson. La régularité rassure bébé.</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#F0A888;flex-shrink:0;">2</div>
+            <p style="font-size:13px;color:#2C3E50;line-height:1.5;"><strong>Réponds à ses besoins</strong> sans culpabiliser. C'est une phase, pas une habitude définitive.</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#F0A888;flex-shrink:0;">3</div>
+            <p style="font-size:13px;color:#2C3E50;line-height:1.5;"><strong>Les bruits blancs</strong> aident à masquer les bruits extérieurs qui le réveillent.</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#F0A888;flex-shrink:0;">4</div>
+            <p style="font-size:13px;color:#2C3E50;line-height:1.5;"><strong>Repose-toi toi aussi</strong> — demande de l'aide, alternez les nuits avec le papa.</p>
+          </div>
+        </div>
+
+        <div style="background:#FFF3CD;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:16px;flex-shrink:0;">&#10084;&#65039;</span>
+          <p style="font-size:12px;color:#7A6800;line-height:1.5;font-style:italic;"><strong>Pour maman et papa :</strong> c'est épuisant, vous avez le droit d'être fatigués. La régression dure en général <strong>2 à 6 semaines</strong>. Ça passe, promis &#128578;</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Playlist dodo -->
-    <div class="sec-hd"><span class="sec-t">Playlist dodo</span></div>
+    <div class="sec-hd" style="margin-top:6px;"><span class="sec-t">Playlist dodo</span></div>
     <div style="margin:0 16px 8px;background:linear-gradient(135deg,#2A4A60,#1E3448);border-radius:16px;padding:14px;">
       <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">&#127754; Bruits blancs</div>
       <div style="font-size:11px;font-style:italic;color:rgba(255,255,255,0.45);line-height:1.5;margin-bottom:12px;">Le bruit blanc rappelle à bébé le son du ventre maternel — il apaise les pleurs et favorise l'endormissement. Et oui, ça marche aussi pour maman et papa &#128521;</div>
@@ -617,6 +662,13 @@ function toggleAllait() {
 }
 applyAllait();
 
+function toggleRegression() {
+  var c = document.getElementById("regression-content");
+  var a = document.getElementById("regression-arrow");
+  var open = c.style.display === "block";
+  c.style.display = open ? "none" : "block";
+  a.style.transform = open ? "rotate(0deg)" : "rotate(90deg)";
+}
 function loginTab(tab) {
   document.getElementById("ltab-connect").classList.toggle("active", tab === "connect");
   document.getElementById("ltab-signup").classList.toggle("active", tab === "signup");
