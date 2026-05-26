@@ -428,8 +428,112 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:#E74C3C;"></div><span style="font-size:11px;color:#7F8C8D;">À éviter</span></div>
     </div>
 
+    <!-- Guide de découpe DME -->
+    <div style="margin:14px 16px 0;">
+      <div onclick="toggleDMEGuide()" style="background:#fff;border-radius:18px;padding:15px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);cursor:pointer;">
+        <div style="width:44px;height:44px;border-radius:14px;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128298;</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:700;color:#2C3E50;">Guide de d&#233;coupe DME</div>
+          <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Comment couper chaque aliment selon l'&#226;ge</div>
+        </div>
+        <div id="dme-guide-arrow" style="font-size:13px;color:#7F8C8D;transition:transform 0.3s;">&#9660;</div>
+      </div>
+      <div id="dme-guide-content" style="display:none;margin-top:6px;">
+
+        <!-- Règle d'or -->
+        <div style="background:linear-gradient(135deg,#FFF8E1,#FFF3CD);border-radius:16px;padding:14px 15px;margin-bottom:8px;border-left:3px solid #D4884A;">
+          <div style="font-size:13px;font-weight:700;color:#B46828;margin-bottom:4px;">&#9995;&#65039; La r&#232;gle du doigt</div>
+          <div style="font-size:12px;color:#7A5828;line-height:1.6;">Chaque morceau doit avoir la <strong>taille et l'&#233;paisseur de ton index</strong>. Mou, tendre, bien cuit. B&#233;b&#233; doit pouvoir l'&#233;craser entre gencives et langue sans effort.</div>
+        </div>
+
+        <!-- Par type d'aliment -->
+        <div style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+
+          <div style="padding:12px 14px;border-bottom:0.5px solid #F2F2F2;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;margin-top:1px;">&#129381;</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;">L&#233;gumes durs <span style="font-weight:400;color:#7F8C8D;">(carotte, patate douce, betterave)</span></div>
+              <div style="font-size:12px;color:#5A7A5A;margin-top:3px;line-height:1.5;">&#8594; <strong>B&#226;tonnets &#233;pais</strong> cuits vapeur jusqu'&#224; &#234;tre fondants. Tester avec l'ongle&#160;: doit s'&#233;craser facilement.</div>
+            </div>
+          </div>
+
+          <div style="padding:12px 14px;border-bottom:0.5px solid #F2F2F2;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;margin-top:1px;">&#129362;</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;">L&#233;gumes tendres <span style="font-weight:400;color:#7F8C8D;">(courgette, brocoli, haricot)</span></div>
+              <div style="font-size:12px;color:#5A7A5A;margin-top:3px;line-height:1.5;">&#8594; <strong>Grosses fleurettes</strong> ou b&#226;tonnets. Haricots verts&#160;: enlever les fils et cuire entiers.</div>
+            </div>
+          </div>
+
+          <div style="padding:12px 14px;border-bottom:0.5px solid #F2F2F2;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;margin-top:1px;">&#127820;</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;">Fruits mous <span style="font-weight:400;color:#7F8C8D;">(banane, p&#234;che, mangue, avocat)</span></div>
+              <div style="font-size:12px;color:#5A7A5A;margin-top:3px;line-height:1.5;">&#8594; <strong>B&#226;tonnets ou quartiers &#233;pais.</strong> Laisser un peu de peau sur la banane pour que b&#233;b&#233; puisse attraper sans glisser.</div>
+            </div>
+          </div>
+
+          <div style="padding:12px 14px;border-bottom:0.5px solid #F2F2F2;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;margin-top:1px;">&#9888;&#65039;</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#C0392B;">Tomate cerise &amp; raisin &#8212; DANGER</div>
+              <div style="font-size:12px;color:#A03020;margin-top:3px;line-height:1.5;">&#8594; <strong>Toujours couper en 4 dans la longueur</strong> (en croix). Jamais en rondelle. La forme ronde peut bloquer les voies respiratoires.</div>
+            </div>
+          </div>
+
+          <div style="padding:12px 14px;border-bottom:0.5px solid #F2F2F2;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;margin-top:1px;">&#127822;</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;">Pomme &amp; poire <span style="font-weight:400;color:#7F8C8D;">(durs)</span></div>
+              <div style="font-size:12px;color:#5A7A5A;margin-top:3px;line-height:1.5;">&#8594; Cuits &#224; la vapeur en quartiers, ou <strong>r&#226;p&#233;s finement</strong> si crus. La pomme crue enti&#232;re avant 12 mois = risque d'&#233;touffement.</div>
+            </div>
+          </div>
+
+          <div style="padding:12px 14px;border-bottom:0.5px solid #F2F2F2;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;margin-top:1px;">&#127839;</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;">Viandes <span style="font-weight:400;color:#7F8C8D;">(poulet, dinde, b&#339;uf)</span></div>
+              <div style="font-size:12px;color:#5A7A5A;margin-top:3px;line-height:1.5;">&#8594; <strong>Lani&#232;res dans le sens des fibres</strong> pour que b&#233;b&#233; puisse effilocher. Jamais en cube compact difficile &#224; m&#226;cher.</div>
+            </div>
+          </div>
+
+          <div style="padding:12px 14px;border-bottom:0.5px solid #F2F2F2;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;margin-top:1px;">&#129424;</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;">Poissons <span style="font-weight:400;color:#7F8C8D;">(cabillaud, sole, saumon)</span></div>
+              <div style="font-size:12px;color:#5A7A5A;margin-top:3px;line-height:1.5;">&#8594; <strong>Gros flocons</strong>, bien cuit &#224; la vapeur. <strong>V&#233;rifier 2&#215; les ar&#234;tes</strong> avec les doigts avant de servir.</div>
+            </div>
+          </div>
+
+          <div style="padding:12px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <div style="font-size:22px;flex-shrink:0;margin-top:1px;">&#129370;</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;">&#338;ufs</div>
+              <div style="font-size:12px;color:#5A7A5A;margin-top:3px;line-height:1.5;">&#8594; <strong>Brouill&#233;s en gros morceaux</strong>, omelette en lani&#232;res, ou dur en quartiers. Jamais &#224; la coque (blanc non cuit) avant 12 mois.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Ne jamais donner entier -->
+        <div style="background:#FFF0EE;border-radius:16px;padding:14px 15px;margin-top:8px;border-left:3px solid #E74C3C;">
+          <div style="font-size:13px;font-weight:700;color:#C0392B;margin-bottom:6px;">&#10060; Ne jamais donner entier</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <div style="background:#fff;border-radius:20px;padding:4px 11px;font-size:12px;color:#E74C3C;font-weight:600;border:1px solid #FCCAC0;">&#127815; Raisin</div>
+            <div style="background:#fff;border-radius:20px;padding:4px 11px;font-size:12px;color:#E74C3C;font-weight:600;border:1px solid #FCCAC0;">&#127813; Tomate cerise</div>
+            <div style="background:#fff;border-radius:20px;padding:4px 11px;font-size:12px;color:#E74C3C;font-weight:600;border:1px solid #FCCAC0;">&#127829; Cerise</div>
+            <div style="background:#fff;border-radius:20px;padding:4px 11px;font-size:12px;color:#E74C3C;font-weight:600;border:1px solid #FCCAC0;">&#129387; Noisette</div>
+            <div style="background:#fff;border-radius:20px;padding:4px 11px;font-size:12px;color:#E74C3C;font-weight:600;border:1px solid #FCCAC0;">&#129386; Cacahu&#232;te</div>
+            <div style="background:#fff;border-radius:20px;padding:4px 11px;font-size:12px;color:#E74C3C;font-weight:600;border:1px solid #FCCAC0;">&#129337; Bonbon dur</div>
+            <div style="background:#fff;border-radius:20px;padding:4px 11px;font-size:12px;color:#E74C3C;font-weight:600;border:1px solid #FCCAC0;">Raisin sec entier</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <!-- Menu du jour -->
-    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#127869; Menu du jour</span><span style="font-size:13px;color:#D4884A;font-weight:600;cursor:pointer;">Regénérer</span></div>
+    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#127869; Menu du jour</span><span style="font-size:13px;color:#D4884A;font-weight:600;cursor:pointer;">Reg&#233;n&#233;rer</span></div>
     <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;">
 
       <div style="background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
@@ -1108,6 +1212,139 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
 
+    <!-- Langage des signes bébé -->
+    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#128588; Langage des signes b&#233;b&#233;</span></div>
+
+    <!-- Intro card -->
+    <div style="margin:0 16px;background:linear-gradient(135deg,#F2EFF9,#E8E0F4);border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;">
+      <div style="font-size:26px;flex-shrink:0;">&#129504;</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#5A3E8A;margin-bottom:4px;">Pourquoi signer avec b&#233;b&#233;&#160;?</div>
+        <div style="font-size:12px;color:#6A5A8A;line-height:1.6;">Les b&#233;b&#233;s comprennent avant de parler. Les signes leur permettent d'exprimer leurs besoins d&#232;s 6-9 mois, r&#233;duisant la frustration et renfor&#231;ant le lien. &#199;a n'emp&#234;che pas la parole — au contraire, &#231;a l'acc&#233;l&#232;re !</div>
+      </div>
+    </div>
+
+    <!-- Signes essentiels -->
+    <div style="margin:10px 16px 0;">
+      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Les 8 signes &#224; apprendre en premier</div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+
+        <div style="background:#fff;border-radius:16px;padding:13px 15px;display:flex;align-items:flex-start;gap:13px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="width:44px;height:44px;border-radius:14px;background:#F0EBF8;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#127868;</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;">LAIT / BOIRE</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.45;">Ouvrir et fermer le poing comme si on pressait un citron. R&#233;p&#233;ter plusieurs fois en rythme.</div>
+          </div>
+          <div style="background:#F0EBF8;border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;color:#8A68C8;flex-shrink:0;">D&#232;s 6 m</div>
+        </div>
+
+        <div style="background:#fff;border-radius:16px;padding:13px 15px;display:flex;align-items:flex-start;gap:13px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="width:44px;height:44px;border-radius:14px;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#127869;</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;">MANGER</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.45;">Rassembler les 5 doigts en bouquet et les porter r&#233;p&#233;titivement vers la bouche.</div>
+          </div>
+          <div style="background:#EEF9F5;border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;color:#5A9E82;flex-shrink:0;">D&#232;s 6 m</div>
+        </div>
+
+        <div style="background:#fff;border-radius:16px;padding:13px 15px;display:flex;align-items:flex-start;gap:13px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="width:44px;height:44px;border-radius:14px;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128077;</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;">ENCORE / J'EN VEUX</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.45;">Rassembler les 5 doigts d'une main et toucher r&#233;p&#233;titivement la paume de l'autre main.</div>
+          </div>
+          <div style="background:#FFF3CD;border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;color:#A07820;flex-shrink:0;">D&#232;s 7 m</div>
+        </div>
+
+        <div style="background:#fff;border-radius:16px;padding:13px 15px;display:flex;align-items:flex-start;gap:13px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="width:44px;height:44px;border-radius:14px;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#10060;</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;">FINI / PLUS</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.45;">Les deux mains ouvertes, paumes vers le bas, secouer vers l'ext&#233;rieur &#224; deux reprises.</div>
+          </div>
+          <div style="background:#FDE8D8;border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;color:#C07840;flex-shrink:0;">D&#232;s 7 m</div>
+        </div>
+
+        <div style="background:#fff;border-radius:16px;padding:13px 15px;display:flex;align-items:flex-start;gap:13px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="width:44px;height:44px;border-radius:14px;background:#F2EFF9;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128564;</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;">DODO / SOMMEIL</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.45;">Incliner doucement la t&#234;te et poser la joue sur la paume de la main ouverte, yeux ferm&#233;s.</div>
+          </div>
+          <div style="background:#F2EFF9;border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;color:#8A78CC;flex-shrink:0;">D&#232;s 6 m</div>
+        </div>
+
+        <div style="background:#fff;border-radius:16px;padding:13px 15px;display:flex;align-items:flex-start;gap:13px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="width:44px;height:44px;border-radius:14px;background:#FFE0EC;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128103;</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;">MAMAN</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.45;">Main ouverte, toucher le menton avec le pouce. Comme si on caressait une barbe imaginaire sous le menton.</div>
+          </div>
+          <div style="background:#FFE0EC;border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;color:#C05878;flex-shrink:0;">D&#232;s 8 m</div>
+        </div>
+
+        <div style="background:#fff;border-radius:16px;padding:13px 15px;display:flex;align-items:flex-start;gap:13px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="width:44px;height:44px;border-radius:14px;background:#E0F0FF;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128102;</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;">PAPA</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.45;">Main ouverte, toucher le front avec le pouce. Identique &#224; "maman" mais geste au front.</div>
+          </div>
+          <div style="background:#E0F0FF;border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;color:#4078B8;flex-shrink:0;">D&#232;s 8 m</div>
+        </div>
+
+        <div style="background:#fff;border-radius:16px;padding:13px 15px;display:flex;align-items:flex-start;gap:13px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+          <div style="width:44px;height:44px;border-radius:14px;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128591;</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;">MERCI</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;line-height:1.45;">Porter les doigts r&#233;unis du menton vers l'avant et le bas, comme envoyer un bisou de remerciement.</div>
+          </div>
+          <div style="background:#EEF9F5;border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;color:#5A9E82;flex-shrink:0;">D&#232;s 9 m</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Liens YouTube -->
+    <div style="margin:14px 16px 0;">
+      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">&#127909; Apprendre en vid&#233;o</div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+
+        <a href="https://www.youtube.com/results?search_query=langage+des+signes+b%C3%A9b%C3%A9+makaton+fran%C3%A7ais" target="_blank" style="text-decoration:none;">
+          <div style="background:linear-gradient(135deg,#FF3B30,#CC2020);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;">
+            <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#9654;</div>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:700;color:#fff;">Makaton b&#233;b&#233; &#8212; Tutoriels fran&#231;ais</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;">Rechercher sur YouTube</div>
+            </div>
+            <div style="font-size:16px;color:rgba(255,255,255,0.7);">&#8250;</div>
+          </div>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=signes+b%C3%A9b%C3%A9+apprendre+communication" target="_blank" style="text-decoration:none;">
+          <div style="background:linear-gradient(135deg,#FF3B30,#CC2020);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;">
+            <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#9654;</div>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:700;color:#fff;">Signes b&#233;b&#233; &#8212; Communication pr&#233;coce</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;">Rechercher sur YouTube</div>
+            </div>
+            <div style="font-size:16px;color:rgba(255,255,255,0.7);">&#8250;</div>
+          </div>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=baby+sign+language+fran%C3%A7ais+d%C3%A9butant" target="_blank" style="text-decoration:none;">
+          <div style="background:linear-gradient(135deg,#FF3B30,#CC2020);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;margin-bottom:8px;">
+            <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#9654;</div>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:700;color:#fff;">Baby sign language &#8212; D&#233;butant</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;">Rechercher sur YouTube</div>
+            </div>
+            <div style="font-size:16px;color:rgba(255,255,255,0.7);">&#8250;</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
   </div>
 
   <!-- PROFIL -->
@@ -1586,6 +1823,13 @@ function switchRecipeTab(tab) {
 function closeRecipe() {
   document.getElementById("recipe-overlay").style.display = "none";
   currentFoodData = null;
+}
+function toggleDMEGuide() {
+  var c = document.getElementById("dme-guide-content");
+  var a = document.getElementById("dme-guide-arrow");
+  var open = c.style.display !== "none";
+  c.style.display = open ? "none" : "block";
+  a.style.transform = open ? "" : "rotate(180deg)";
 }
 
 function loginTab(tab) {
