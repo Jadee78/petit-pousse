@@ -99,10 +99,196 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .lf-sep-txt { font-size:12px; color:var(--sub); }
 .lf-social { width:100%; background:#fff; border:1.5px solid var(--line); color:var(--text); border-radius:14px; padding:14px; font-size:14px; font-weight:600; font-family:"Montserrat",sans-serif; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; }
 .lf-foot { font-size:12px; color:var(--sub); margin-top:20px; text-align:center; line-height:1.6; }
+
+/* ══ ONBOARDING ══ */
+#screen-onboarding { background:linear-gradient(160deg,#f0f8f4 0%,#e8f5ee 60%,#f5f0f8 100%); padding-bottom:0; overflow:hidden; }
+.ob-wrap { display:flex; flex-direction:column; padding:90px 28px 190px; min-height:100vh; }
+.ob-dots { display:flex; gap:7px; justify-content:center; position:fixed; top:50px; left:0; right:0; z-index:150; }
+.ob-dot { width:8px; height:8px; border-radius:50%; background:rgba(90,158,130,0.2); transition:all 0.4s ease; flex-shrink:0; }
+.ob-dot.active { width:22px; border-radius:4px; background:var(--green); }
+.ob-dot.done { background:var(--green); opacity:0.4; }
+.ob-content { display:flex; flex-direction:column; align-items:center; text-align:center; animation:obStepIn 0.4s ease-out; }
+.ob-illus { font-size:68px; margin-bottom:20px; line-height:1; }
+.ob-title { font-size:22px; font-weight:800; color:var(--text); line-height:1.35; margin-bottom:10px; }
+.ob-sub { font-size:15px; color:var(--sub); line-height:1.65; margin-bottom:8px; }
+.ob-italic { font-size:14px; color:var(--green); font-style:italic; line-height:1.6; margin-bottom:5px; }
+.ob-tiny { font-size:12px; color:var(--sub); font-style:italic; opacity:0.75; }
+.ob-input { width:100%; background:#fff; border:2px solid var(--green-lt); border-radius:18px; padding:16px 20px; font-size:18px; font-weight:700; color:var(--text); font-family:"Montserrat",sans-serif; outline:none; text-align:center; margin-top:22px; transition:border-color .2s; -webkit-appearance:none; }
+.ob-input:focus { border-color:var(--green); box-shadow:0 0 0 4px rgba(90,158,130,0.1); }
+.ob-choices { display:flex; flex-direction:column; gap:12px; width:100%; margin-top:22px; }
+.ob-choice { background:#fff; border:2px solid var(--green-lt); border-radius:20px; padding:16px 20px; display:flex; align-items:center; gap:16px; cursor:pointer; transition:all .2s; box-shadow:0 2px 12px rgba(0,0,0,0.04); -webkit-tap-highlight-color:transparent; }
+.ob-choice:active, .ob-choice.selected { border-color:var(--green); background:var(--green-bg); transform:scale(0.98); }
+.ob-choice-icon { font-size:30px; flex-shrink:0; }
+.ob-choice-label { font-size:16px; font-weight:700; color:var(--text); text-align:left; }
+.ob-sexe-choices { display:flex; gap:14px; width:100%; margin-top:22px; }
+.ob-sexe-card { flex:1; background:#fff; border:2px solid var(--green-lt); border-radius:24px; padding:26px 14px; display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; transition:all .2s; box-shadow:0 2px 12px rgba(0,0,0,0.04); }
+.ob-sexe-card:active, .ob-sexe-card.selected { border-color:var(--green); background:var(--green-bg); transform:scale(0.97); }
+.ob-sexe-icon { font-size:46px; }
+.ob-sexe-label { font-size:15px; font-weight:700; color:var(--text); }
+.ob-bottom { position:fixed; bottom:0; left:0; right:0; padding:16px 28px 44px; background:linear-gradient(to top,rgba(240,248,244,1) 65%,rgba(240,248,244,0)); z-index:150; pointer-events:none; }
+.ob-bottom button { pointer-events:all; }
+.ob-btn { width:100%; background:var(--green); color:#fff; border:none; border-radius:18px; padding:18px; font-size:16px; font-weight:800; font-family:"Montserrat",sans-serif; cursor:pointer; box-shadow:0 4px 20px rgba(90,158,130,0.3); transition:opacity .15s; }
+.ob-btn:active { opacity:0.85; }
+.ob-btn-ghost { width:100%; background:transparent; color:var(--green); border:2px solid var(--green-lt); border-radius:16px; padding:14px; font-size:13px; font-weight:700; font-family:"Montserrat",sans-serif; cursor:pointer; margin-top:10px; }
+
+/* Plant character */
+#ob-plant { position:fixed; bottom:18px; left:14px; z-index:160; pointer-events:none; }
+#ob-plant svg { transform-origin:bottom center; animation:obPlantIdle 4s ease-in-out infinite; }
+
+/* Curtain */
+#ob-curtain { position:fixed; top:0; left:0; right:0; bottom:0; background:linear-gradient(160deg,#5A9E82,#3E8060); transform:translateY(-100%); z-index:400; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px; }
+#ob-curtain.ob-down { transform:translateY(0); transition:transform 0.5s cubic-bezier(0.4,0,0.2,1); }
+#ob-curtain.ob-up { transform:translateY(-100%); transition:transform 0.45s cubic-bezier(0.4,0,0.6,1); }
+
+@keyframes obPlantIdle {
+  0%,100% { transform:rotate(8deg); }
+  35% { transform:rotate(4deg); }
+  70% { transform:rotate(12deg); }
+}
+@keyframes obPlantStruggle {
+  0% { transform:rotate(8deg) translateY(0); }
+  12% { transform:rotate(-12deg) translateY(-3px); }
+  25% { transform:rotate(20deg) translateY(-7px); }
+  38% { transform:rotate(-16deg) translateY(-11px); }
+  52% { transform:rotate(18deg) translateY(-14px); }
+  65% { transform:rotate(-10deg) translateY(-18px); }
+  78% { transform:rotate(8deg) translateY(-21px); }
+  90% { transform:rotate(3deg) translateY(-22px); }
+  100% { transform:rotate(5deg) translateY(-22px); }
+}
+@keyframes obStepIn {
+  from { opacity:0; transform:translateY(16px); }
+  to { opacity:1; transform:translateY(0); }
+}
 </style>
 </head>
 <body>
 <div id="app">
+
+  <!-- ONBOARDING -->
+  <div id="screen-onboarding" class="screen">
+    <!-- Progress dots -->
+    <div class="ob-dots">
+      <div class="ob-dot" id="ob-dot-1"></div>
+      <div class="ob-dot" id="ob-dot-2"></div>
+      <div class="ob-dot" id="ob-dot-3"></div>
+      <div class="ob-dot" id="ob-dot-4"></div>
+      <div class="ob-dot" id="ob-dot-5"></div>
+      <div class="ob-dot" id="ob-dot-6"></div>
+    </div>
+    <div class="ob-wrap">
+
+      <!-- Étape 1 : Rôle -->
+      <div id="ob-s1" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#128106;</div>
+        <div class="ob-title">Bonjour&nbsp;!</div>
+        <div class="ob-sub">Avant tout&#8230; tu es&nbsp;?</div>
+        <div class="ob-choices">
+          <div class="ob-choice" id="ob-choice-maman" onclick="obSelectRole('maman')">
+            <span class="ob-choice-icon">&#128105;</span>
+            <div><div class="ob-choice-label">Maman</div></div>
+          </div>
+          <div class="ob-choice" id="ob-choice-papa" onclick="obSelectRole('papa')">
+            <span class="ob-choice-icon">&#128104;</span>
+            <div><div class="ob-choice-label">Papa</div></div>
+          </div>
+          <div class="ob-choice" id="ob-choice-autre" onclick="obSelectRole('autre')">
+            <span class="ob-choice-icon">&#129505;</span>
+            <div><div class="ob-choice-label">Autre</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 2 : Prénom -->
+      <div id="ob-s2" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#127807;</div>
+        <div class="ob-title">Bienvenue chez<br>Petit Pousse&nbsp;!</div>
+        <div class="ob-sub">Dis-moi comment s&#8217;appelle le petit pousse&nbsp;?</div>
+        <input id="ob-prenom" class="ob-input" type="text" placeholder="Pr&#233;nom de b&#233;b&#233;&#8230;" autocomplete="off" />
+      </div>
+
+      <!-- Étape 3 : Sexe -->
+      <div id="ob-s3" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#128118;</div>
+        <div class="ob-title">C&#8217;est&#8230;</div>
+        <div class="ob-sexe-choices">
+          <div class="ob-sexe-card" id="ob-sexe-fille" onclick="obSelectSexe('fille')">
+            <span class="ob-sexe-icon">&#128103;</span>
+            <span class="ob-sexe-label">Une fille</span>
+          </div>
+          <div class="ob-sexe-card" id="ob-sexe-garcon" onclick="obSelectSexe('garcon')">
+            <span class="ob-sexe-icon">&#128102;</span>
+            <span class="ob-sexe-label">Un gar&#231;on</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 4 : Date de naissance -->
+      <div id="ob-s4" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#127874;</div>
+        <div id="ob-dob-title" class="ob-title"></div>
+        <div id="ob-dob-italic" class="ob-italic"></div>
+        <div class="ob-tiny">(et oui, ici on pense aussi &#224; maman et papa &#128153;)</div>
+        <input id="ob-dob" class="ob-input" type="date" />
+      </div>
+
+      <!-- Étape 5 : Surnom -->
+      <div id="ob-s5" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#128172;</div>
+        <div class="ob-title">On l&#8217;appelle comment&nbsp;?</div>
+        <div class="ob-sub">Un petit surnom d&#8217;amour&nbsp;?</div>
+        <input id="ob-surnom" class="ob-input" type="text" autocomplete="off" />
+      </div>
+
+      <!-- Étape 6 : Bienvenue -->
+      <div id="ob-s6" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#10024;</div>
+        <div id="ob-final-title" class="ob-title"></div>
+        <div class="ob-sub">Petit Pousse est l&#224; pour accompagner toute la famille &#128153;</div>
+        <div id="ob-summary" style="background:#fff;border-radius:20px;padding:18px 20px;margin-top:20px;width:100%;box-shadow:0 2px 12px rgba(0,0,0,0.06);"></div>
+      </div>
+
+    </div>
+
+    <!-- Boutons -->
+    <div class="ob-bottom">
+      <button id="ob-main-btn" class="ob-btn" onclick="obNext()" style="display:none;"></button>
+      <button id="ob-ghost-btn" class="ob-btn-ghost" onclick="obSkipSurnom()" style="display:none;"></button>
+    </div>
+
+    <!-- Petite plante — bas gauche, regarde vers la droite (le contenu), cligne de l'œil -->
+    <div id="ob-plant">
+      <svg width="64" height="84" viewBox="0 0 64 84">
+        <!-- pot -->
+        <path d="M22 69 L42 69 L39 81 L25 81Z" fill="#A0784A"/>
+        <rect x="18" y="63" width="28" height="7" rx="3.5" fill="#B08050"/>
+        <!-- tige ondulée -->
+        <path d="M30 63 Q28 51 30 39 Q32 27 30 17" stroke="#5A9E82" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <!-- feuille gauche -->
+        <path d="M30 49 Q15 45 13 33 Q25 28 30 41" fill="#7EC8A0"/>
+        <!-- feuille droite -->
+        <path d="M30 38 Q45 33 47 22 Q35 19 30 31" fill="#5A9E82"/>
+        <!-- tête — légèrement décalée vers la droite pour regarder le contenu -->
+        <circle cx="33" cy="13" r="10.5" fill="#A8E0C0"/>
+        <!-- œil gauche (fixe) -->
+        <circle cx="29" cy="12" r="2.2" fill="#2C3E50"/>
+        <circle cx="29.9" cy="11.2" r="0.85" fill="#fff"/>
+        <!-- œil droit (cligne !) — état ouvert -->
+        <circle id="ob-eye-open" cx="37" cy="11" r="2.2" fill="#2C3E50"/>
+        <circle id="ob-eye-shine" cx="37.9" cy="10.2" r="0.85" fill="#fff"/>
+        <!-- œil droit — état fermé (clin d'œil, caché par défaut) -->
+        <path id="ob-eye-closed" d="M34.8 11 Q37 9 39.2 11" stroke="#2C3E50" stroke-width="2" fill="none" stroke-linecap="round" display="none"/>
+        <!-- sourire -->
+        <path d="M28 16.5 Q33 20 38 16.5" stroke="#2C3E50" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- RIDEAU (global, au-dessus de tout) -->
+  <div id="ob-curtain">
+    <img src="logo.svg" style="width:60px;height:60px;opacity:0.9;" />
+    <div style="font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.3px;">Petit Pousse</div>
+  </div>
 
   <!-- ACCUEIL -->
   <div id="screen-home" class="screen">
@@ -1929,7 +2115,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
   </div>
 
   <!-- LOGIN / INSCRIPTION -->
-  <div id="screen-login" class="screen active" style="padding-bottom:0;">
+  <div id="screen-login" class="screen" style="padding-bottom:0;">
     <div class="login-wrap">
       <div class="login-logo">
         <img src="logo.svg" />
@@ -2202,6 +2388,155 @@ function goToApp() {
   document.getElementById("screen-home").classList.add("active");
   document.getElementById("tabbar").style.display = "flex";
 }
+// ══ ONBOARDING ══
+var obStep = 0;
+var obData = { role:null, prenom:null, sexe:null, dob:null, surnom:null };
+var obAnimating = false;
+
+function obUpdateDots(n) {
+  for (var i=1;i<=6;i++) {
+    var d=document.getElementById("ob-dot-"+i); if(!d) continue;
+    d.className = i<n ? "ob-dot done" : i===n ? "ob-dot active" : "ob-dot";
+  }
+}
+function obShowStep(n) {
+  obStep = n; obUpdateDots(n);
+  for (var i=1;i<=6;i++) {
+    var s=document.getElementById("ob-s"+i); if(!s) continue;
+    s.style.display = i===n ? "flex" : "none";
+    if(i===n){s.style.flexDirection="column";s.style.alignItems="center";}
+  }
+  var mb=document.getElementById("ob-main-btn"), gb=document.getElementById("ob-ghost-btn");
+  mb.style.display="none"; gb.style.display="none";
+  if(n===1||n===3) {
+    // auto-advance, pas de bouton
+  } else if(n===2) {
+    mb.style.display="block"; mb.textContent="Suivant →";
+  } else if(n===4) {
+    var e=obData.sexe==="garcon"?"":"e";
+    document.getElementById("ob-dob-title").textContent="Quand est né"+e+" "+obData.prenom+" ? 🎂";
+    var roleStr=obData.role==="maman"?"maman":obData.role==="papa"?"papa":"parent";
+    var acc=obData.role==="maman"?"e":"";
+    document.getElementById("ob-dob-italic").textContent="Quand es-tu devenu"+acc+" "+roleStr+" ?";
+    document.getElementById("ob-dob").max=new Date().toISOString().slice(0,10);
+    mb.style.display="block"; mb.textContent="Suivant →";
+  } else if(n===5) {
+    var si=document.getElementById("ob-surnom"); si.placeholder=obData.prenom+"..."; si.value="";
+    mb.style.display="block"; mb.textContent="Suivant →";
+    gb.style.display="block"; gb.textContent="Non, "+obData.prenom+" c’est très bien ! 🌱";
+  } else if(n===6) {
+    var dn=obData.surnom||obData.prenom;
+    document.getElementById("ob-final-title").textContent="Bienvenue "+dn+" ! 🌱";
+    var age=obData.dob?obCalcAge(obData.dob):"—";
+    var sl=obData.sexe==="garcon"?"👦 Garçon":"👧 Fille";
+    var rl=obData.role==="maman"?"👩 Maman":obData.role==="papa"?"👨 Papa":"🩷 Parent";
+    document.getElementById("ob-summary").innerHTML=
+      '<div style="display:flex;flex-direction:column;gap:10px;">'+
+      obRow("Prénom affiché",dn)+
+      (obData.surnom?obRow("Prénom complet",obData.prenom):"")+
+      obRow("Sexe",sl)+obRow("Âge",age)+obRow("Tu es",rl)+'</div>';
+    mb.style.display="block"; mb.textContent="C’est parti ! 🌱";
+  }
+}
+function obRow(l,v){return'<div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;color:#7F8C8D;">'+l+'</span><span style="font-size:13px;font-weight:700;color:#2C3E50;">'+v+'</span></div>';}
+
+function obSelectRole(role) {
+  if(obAnimating) return;
+  obData.role=role;
+  ["maman","papa","autre"].forEach(function(r){
+    var el=document.getElementById("ob-choice-"+r); if(el) el.className="ob-choice"+(r===role?" selected":"");
+  });
+  setTimeout(function(){obGoTo(2);},350);
+}
+function obSelectSexe(sexe) {
+  if(obAnimating) return;
+  obData.sexe=sexe;
+  ["fille","garcon"].forEach(function(s){
+    var el=document.getElementById("ob-sexe-"+s); if(el) el.className="ob-sexe-card"+(s===sexe?" selected":"");
+  });
+  setTimeout(function(){obGoTo(4);},350);
+}
+function obNext() {
+  if(obAnimating) return;
+  if(obStep===2) {
+    var v=document.getElementById("ob-prenom").value.trim();
+    if(!v){document.getElementById("ob-prenom").style.borderColor="#E74C3C";return;}
+    obData.prenom=v.charAt(0).toUpperCase()+v.slice(1);
+    obGoTo(3);
+  } else if(obStep===4) {
+    var d=document.getElementById("ob-dob").value;
+    if(!d){document.getElementById("ob-dob").style.borderColor="#E74C3C";return;}
+    obData.dob=d; obGoTo(5);
+  } else if(obStep===5) {
+    var s=document.getElementById("ob-surnom").value.trim();
+    obData.surnom=s?s.charAt(0).toUpperCase()+s.slice(1):null; obGoTo(6);
+  } else if(obStep===6) {
+    obFinish();
+  }
+}
+function obSkipSurnom() { if(obAnimating) return; obData.surnom=null; obGoTo(6); }
+
+function obGoTo(next) {
+  if(obAnimating) return; obAnimating=true;
+  var ps=document.querySelector("#ob-plant svg");
+  if(ps) { ps.style.animation="none"; setTimeout(function(){ps.style.animation="obPlantStruggle 0.75s ease-in-out forwards";},10); }
+  setTimeout(function() {
+    var c=document.getElementById("ob-curtain"); c.className="ob-down";
+    setTimeout(function(){
+      obShowStep(next); c.className="ob-up";
+      setTimeout(function(){
+        c.className=""; obAnimating=false;
+        if(ps) ps.style.animation="obPlantIdle 4s ease-in-out infinite";
+      },460);
+    },520);
+  },450);
+}
+function obFinish() {
+  var profile={role:obData.role,prenom:obData.prenom,sexe:obData.sexe,dob:obData.dob,surnom:obData.surnom,displayName:obData.surnom||obData.prenom};
+  localStorage.setItem("childProfile",JSON.stringify(profile));
+  applyChildProfile(profile);
+  obAnimating=true;
+  var c=document.getElementById("ob-curtain"); c.className="ob-down";
+  setTimeout(function(){
+    document.getElementById("screen-onboarding").classList.remove("active");
+    document.getElementById("screen-home").classList.add("active");
+    document.getElementById("tabbar").style.display="flex";
+    c.className="ob-up";
+    setTimeout(function(){c.className="";obAnimating=false;},460);
+  },520);
+}
+function obCalcAge(dob) {
+  var birth=new Date(dob),now=new Date();
+  var m=(now.getFullYear()-birth.getFullYear())*12+(now.getMonth()-birth.getMonth());
+  if(now.getDate()<birth.getDate()) m--;
+  if(m<0) return "À naître bientôt 🌱";
+  if(m===0) return "Nouveau-né 🌱";
+  if(m<24) return m+" mois";
+  var y=Math.floor(m/12),r=m%12;
+  return y+" an"+(y>1?"s":"")+(r?" et "+r+" mois":"");
+}
+function applyChildProfile(profile) {
+  if(!profile) return;
+  var name=profile.displayName||profile.prenom||"bébé";
+  var age=profile.dob?obCalcAge(profile.dob):"8 mois";
+  var avatar=profile.sexe==="garcon"?"👦":"👧";
+  var role=profile.role||"";
+  document.querySelectorAll("[data-child-name]").forEach(function(el){el.textContent=name;});
+  document.querySelectorAll("[data-child-age]").forEach(function(el){el.textContent=age;});
+  document.querySelectorAll("[data-child-avatar]").forEach(function(el){el.textContent=avatar;});
+  var g=document.querySelector(".home-greeting-sub");
+  if(g) g.textContent="Bonjour "+(role==="maman"?"maman":role==="papa"?"papa":"toi")+" !";
+}
+function obInitWink() {
+  setInterval(function(){
+    if(!document.getElementById("screen-onboarding").classList.contains("active")) return;
+    var eo=document.getElementById("ob-eye-open"),es=document.getElementById("ob-eye-shine"),ec=document.getElementById("ob-eye-closed");
+    if(!eo) return;
+    eo.setAttribute("display","none"); es.setAttribute("display","none"); ec.setAttribute("display","block");
+    setTimeout(function(){eo.setAttribute("display","block");es.setAttribute("display","block");ec.setAttribute("display","none");},190);
+  },3800);
+}
+
 // ── ALLAITEMENT ──
 var allaitTimer = null;
 var allaitTimerSein = null;
@@ -2342,10 +2677,20 @@ function toggleAllaitSection(id) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  document.getElementById("tabbar").style.display = "none";
   renderAlimGrid();
   updateAllaitDayStats();
   renderAllaitLogs();
+  obInitWink();
+  var profile = JSON.parse(localStorage.getItem("childProfile") || "null");
+  if (!profile) {
+    document.getElementById("tabbar").style.display = "none";
+    document.getElementById("screen-onboarding").classList.add("active");
+    obShowStep(1);
+  } else {
+    document.getElementById("tabbar").style.display = "flex";
+    document.getElementById("screen-home").classList.add("active");
+    applyChildProfile(profile);
+  }
 });
 
 </script>
