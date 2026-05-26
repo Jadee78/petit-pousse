@@ -290,7 +290,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div class="child-selector">
         <div class="child-btn-active">
           <div class="child-av">&#128103;</div>
-          <span class="child-name-active">Camille</span>
+          <span class="child-name-active" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(44,62,80,0.5);margin-left:2px;">&#9660;</span>
         </div>
         <div class="child-btn-inactive">
@@ -302,12 +302,12 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div class="bebe-pill" onclick="goTo('profil-enfant')" style="cursor:pointer;">
         <div class="bebe-av">&#128118;</div>
         <div>
-          <div class="bebe-name">Camille</div>
-          <div class="bebe-age">8 mois et 12 jours</div>
+          <div class="bebe-name" data-child-name>Camille</div>
+          <div class="bebe-age" data-child-age>8 mois</div>
         </div>
         <div class="bebe-badge">
-          <div class="bebe-badge-val">8</div>
-          <div class="bebe-badge-lbl">mois</div>
+          <div class="bebe-badge-val" id="bebe-badge-months">8</div>
+          <div class="bebe-badge-lbl" id="bebe-badge-unit">mois</div>
         </div>
         <div style="margin-left:4px;color:#7F8C8D;font-size:16px;">&#8250;</div>
       </div>
@@ -357,7 +357,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div class="sec-hd"><span class="sec-t">Modules</span></div>
     <div class="mods">
       <div class="mod" onclick="goTo('vaccins')"><div class="mod-icon">&#128137;</div><div class="mod-t">Vaccins</div><div class="mod-s">Calendrier & suivi</div><div class="mod-badge">Prochain J6</div></div>
-      <div class="mod" onclick="switchTab('alim')"><div class="mod-icon">&#129365;</div><div class="mod-t">Diversification</div><div class="mod-s">Aliments & menus</div><div class="mod-badge">8 mois</div></div>
+      <div class="mod" onclick="switchTab('alim')"><div class="mod-icon">&#129365;</div><div class="mod-t">Diversification</div><div class="mod-s">Aliments & menus</div><div class="mod-badge" data-child-age>8 mois</div></div>
       <div class="mod" onclick="switchTab('sommeil')"><div class="mod-icon">&#128564;</div><div class="mod-t">Sommeil</div><div class="mod-s">Nuit & siestes</div><div class="mod-badge">11h 20min</div></div>
 
       <div class="mod" onclick="switchTab('sante')"><div class="mod-icon">&#127777;</div><div class="mod-t">Santé</div><div class="mod-s">Température & notes</div><div class="mod-badge">37,2°</div></div>
@@ -383,7 +383,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="display:flex;gap:8px;align-items:center;">
         <div style="display:flex;align-items:center;gap:7px;background:#A8DFCA;border-radius:22px;padding:6px 13px 6px 7px;box-shadow:0 2px 8px rgba(90,158,130,0.2);">
           <div style="width:26px;height:26px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
-          <span style="font-size:12px;font-weight:700;color:#2C3E50;">Camille</span>
+          <span style="font-size:12px;font-weight:700;color:#2C3E50;" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(44,62,80,0.5);">&#9660;</span>
         </div>
         <div style="display:flex;align-items:center;gap:7px;background:rgba(44,62,80,0.07);border-radius:22px;padding:6px 13px 6px 7px;">
@@ -413,7 +413,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <span style="font-size:18px;flex-shrink:0;">&#9888;&#65039;</span>
       <div>
         <div style="font-size:13px;font-weight:700;color:#7A6800;">Pense à prendre RDV !</div>
-        <div style="font-size:12px;color:#9A8000;margin-top:3px;line-height:1.45;">Le vaccin des 9 mois de Camille approche. Appelle le pédiatre cette semaine.</div>
+        <div style="font-size:12px;color:#9A8000;margin-top:3px;line-height:1.45;" data-child-tpl="Le vaccin des 9 mois de [name] approche. Appelle le pédiatre cette semaine.">Le vaccin des 9 mois de Camille approche. Appelle le pédiatre cette semaine.</div>
       </div>
     </div>
 
@@ -534,7 +534,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="display:flex;gap:8px;margin-bottom:14px;">
         <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
           <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
-          <span style="font-size:12px;font-weight:700;color:#fff;">Camille</span>
+          <span style="font-size:12px;font-weight:700;color:#fff;" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(255,255,255,0.65);">&#9660;</span>
         </div>
         <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
@@ -544,7 +544,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
       <!-- Bannière âge + méthode -->
       <div style="background:rgba(255,255,255,0.18);border-radius:16px;padding:13px 15px;">
-        <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px;">&#127869; Camille a <strong>8 mois</strong> — voici ce qu'elle peut manger</div>
+        <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px;" id="alim-age-banner" data-child-tpl="🍽 [name] a <strong>[age]</strong> — voici ce qu'elle peut manger">&#127869; Camille a <strong>8 mois</strong> — voici ce qu'elle peut manger</div>
         <div style="display:flex;gap:6px;">
           <div style="background:rgba(255,255,255,0.9);border-radius:22px;padding:5px 14px;font-size:12px;font-weight:700;color:#B46828;">DME</div>
           <div style="background:rgba(255,255,255,0.2);border-radius:22px;padding:5px 14px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.8);">Classique</div>
@@ -570,7 +570,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div style="margin:12px 16px 0;background:#FFF8F0;border-radius:16px;padding:13px 14px;display:flex;gap:11px;align-items:flex-start;border-left:3px solid #D4884A;">
       <span style="font-size:20px;flex-shrink:0;">&#9986;&#65039;</span>
       <div>
-        <div style="font-size:13px;font-weight:700;color:#B46828;">Taille sécurisée à 8 mois</div>
+        <div style="font-size:13px;font-weight:700;color:#B46828;" data-child-tpl="Taille sécurisée à [age]">Taille sécurisée à 8 mois</div>
         <div style="font-size:12px;color:#7A5828;margin-top:3px;line-height:1.5;">Bâtonnets épais, morceaux mous, bien cuits. Tomate cerise → couper en 4. Raisin → couper en 4 dans la longueur. Jamais d'aliment dur ou rond entier.</div>
       </div>
     </div>
@@ -760,7 +760,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="display:flex;gap:8px;margin-bottom:14px;">
         <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
           <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
-          <span style="font-size:12px;font-weight:700;color:#fff;">Camille</span>
+          <span style="font-size:12px;font-weight:700;color:#fff;" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(255,255,255,0.65);">&#9660;</span>
         </div>
         <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
@@ -825,8 +825,8 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div style="margin:12px 16px 0;background:#EEF9F5;border-radius:16px;padding:13px 14px;display:flex;gap:11px;align-items:flex-start;">
       <span style="font-size:20px;">&#128161;</span>
       <div>
-        <div style="font-size:13px;font-weight:700;color:#5A9E82;">Conseil à 8 mois</div>
-        <div style="font-size:12px;color:#2C5050;margin-top:3px;line-height:1.5;">Camille a besoin de 12 à 15h de sommeil par jour. 2 siestes encore normales à cet âge.</div>
+        <div style="font-size:13px;font-weight:700;color:#5A9E82;" data-child-tpl="Conseil à [age]">Conseil à 8 mois</div>
+        <div style="font-size:12px;color:#2C5050;margin-top:3px;line-height:1.5;" data-child-tpl="[name] a besoin de 12 à 15h de sommeil par jour. 2 siestes encore normales à cet âge.">Camille a besoin de 12 à 15h de sommeil par jour. 2 siestes encore normales à cet âge.</div>
       </div>
     </div>
 
@@ -941,7 +941,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="display:flex;gap:8px;">
         <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
           <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
-          <span style="font-size:12px;font-weight:700;color:#fff;">Camille</span>
+          <span style="font-size:12px;font-weight:700;color:#fff;" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(255,255,255,0.65);">&#9660;</span>
         </div>
       </div>
@@ -1295,7 +1295,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="display:flex;gap:8px;margin-bottom:14px;">
         <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
           <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
-          <span style="font-size:12px;font-weight:700;color:#fff;">Camille</span>
+          <span style="font-size:12px;font-weight:700;color:#fff;" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(255,255,255,0.65);">&#9660;</span>
         </div>
         <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
@@ -1575,7 +1575,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="display:flex;gap:8px;margin-bottom:14px;">
         <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.25);border-radius:22px;padding:6px 13px 6px 7px;">
           <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
-          <span style="font-size:12px;font-weight:700;color:#fff;">Camille</span>
+          <span style="font-size:12px;font-weight:700;color:#fff;" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(255,255,255,0.65);">&#9660;</span>
         </div>
         <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border-radius:22px;padding:6px 13px 6px 7px;">
@@ -1587,7 +1587,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="background:rgba(255,255,255,0.18);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;">
         <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">&#129504;</div>
         <div>
-          <div style="font-size:14px;font-weight:800;color:#fff;">À 8 mois, Camille explore !</div>
+          <div style="font-size:14px;font-weight:800;color:#fff;" data-child-tpl="À [age], [name] explore !">À 8 mois, Camille explore !</div>
           <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:3px;line-height:1.45;">Elle comprend la permanence des objets, imite les sons et adore attraper ce qu'elle voit.</div>
         </div>
       </div>
@@ -1688,7 +1688,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
 
     <!-- Stades de développement -->
-    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#127775; Ce que Camille sait faire</span></div>
+    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t" data-child-tpl="✨ Ce que [name] sait faire">&#127775; Ce que Camille sait faire</span></div>
     <div style="padding:0 16px;display:flex;flex-direction:column;gap:7px;">
       <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
         <div style="width:28px;height:28px;border-radius:50%;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5A9E82;flex-shrink:0;">&#10003;</div>
@@ -1715,7 +1715,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <!-- Comptines -->
     <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#127925; Comptines du moment</span></div>
     <div style="margin:0 16px 16px;background:linear-gradient(135deg,#2A1A48,#1E1038);border-radius:16px;padding:14px;">
-      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Les préférées de Camille</div>
+      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;" data-child-tpl="Les préférées de [name]">Les préférées de Camille</div>
       <div style="display:flex;flex-direction:column;gap:10px;">
         <div style="display:flex;align-items:center;gap:10px;">
           <div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">&#128051;</div>
@@ -1911,7 +1911,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
         <div onclick="goTo('profil-enfant')" style="padding:16px;display:flex;align-items:center;gap:14px;border-bottom:0.5px solid #EDE8DF;cursor:pointer;">
           <div style="font-size:24px;">&#128118;</div>
-          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Camille</div><div style="font-size:12px;color:#7F8C8D;">8 mois · Née le 14 sept. 2025</div></div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;" data-child-name>Camille</div><div style="font-size:12px;color:#7F8C8D;" id="params-age-dob">8 mois · Née le 14 sept. 2025</div></div>
           <div style="font-size:16px;color:#5A9E82;font-weight:700;">›</div>
         </div>
         <div style="padding:16px;display:flex;align-items:center;gap:14px;">
@@ -1933,7 +1933,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div style="background:linear-gradient(160deg,#f0f8f4,#e8f5ee);padding:6px 20px 20px;">
       <div style="display:flex;align-items:center;justify-content:space-between;">
         <span onclick="goBack()" style="font-size:26px;color:#5A9E82;cursor:pointer;line-height:1;">&#8249;</span>
-        <span style="font-size:16px;font-weight:800;color:#2C3E50;">Profil de Camille</span>
+        <span style="font-size:16px;font-weight:800;color:#2C3E50;" data-child-tpl="Profil de [name]">Profil de Camille</span>
         <span style="font-size:13px;font-weight:700;color:#5A9E82;cursor:pointer;">Modifier</span>
       </div>
     </div>
@@ -1943,9 +1943,9 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="position:absolute;right:-20px;top:-20px;width:100px;height:100px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>
       <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0;">&#128103;</div>
       <div>
-        <div style="font-size:22px;font-weight:800;color:#fff;">Camille</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.8);margin-top:2px;">8 mois et 12 jours</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:2px;">Née le 14 septembre 2025</div>
+        <div style="font-size:22px;font-weight:800;color:#fff;" data-child-name>Camille</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.8);margin-top:2px;" data-child-age>8 mois</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:2px;" id="profil-naissance">Née le 14 septembre 2025</div>
       </div>
     </div>
 
@@ -2477,15 +2477,57 @@ function obCalcAge(dob) {
 }
 function applyChildProfile(profile) {
   if(!profile) return;
-  var name=profile.displayName||profile.prenom||"bébé";
-  var age=profile.dob?obCalcAge(profile.dob):"8 mois";
-  var avatar=profile.sexe==="garcon"?"👦":"👧";
-  var role=profile.role||"";
+  var name = profile.displayName||profile.prenom||"bébé";
+  var age  = profile.dob ? obCalcAge(profile.dob) : "8 mois";
+  var months = profile.dob ? obCalcMonths(profile.dob) : 8;
+  var avatar = profile.sexe==="garcon" ? "👦" : "👧";
+  var role   = profile.role||"";
+
+  // Éléments simples
   document.querySelectorAll("[data-child-name]").forEach(function(el){el.textContent=name;});
   document.querySelectorAll("[data-child-age]").forEach(function(el){el.textContent=age;});
   document.querySelectorAll("[data-child-avatar]").forEach(function(el){el.textContent=avatar;});
-  var g=document.querySelector(".home-greeting-sub");
-  if(g) g.textContent="Bonjour "+(role==="maman"?"maman":role==="papa"?"papa":"toi")+" !";
+
+  // Éléments avec template [name] / [age]
+  document.querySelectorAll("[data-child-tpl]").forEach(function(el){
+    el.innerHTML = el.getAttribute("data-child-tpl")
+      .replace(/\[name\]/g, name)
+      .replace(/\[age\]/g, age)
+      .replace(/\[months\]/g, months);
+  });
+
+  // Badge accueil (chiffre + unité)
+  var bm = document.getElementById("bebe-badge-months");
+  var bu = document.getElementById("bebe-badge-unit");
+  if(bm) bm.textContent = months < 24 ? months : Math.floor(months/12);
+  if(bu) bu.textContent = months < 24 ? "mois" : "ans";
+
+  // Paramètres — ligne "8 mois · Née le..."
+  var pad = document.getElementById("params-age-dob");
+  if(pad && profile.dob) {
+    var d = new Date(profile.dob);
+    var mois = ["jan.","fév.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+    pad.textContent = age + " · Née le " + d.getDate() + " " + mois[d.getMonth()] + " " + d.getFullYear();
+  }
+
+  // Profil enfant — date de naissance
+  var pn = document.getElementById("profil-naissance");
+  if(pn && profile.dob) {
+    var dn = new Date(profile.dob);
+    var moisL = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+    var pref = profile.sexe==="garcon" ? "Né le " : "Née le ";
+    pn.textContent = pref + dn.getDate() + " " + moisL[dn.getMonth()] + " " + dn.getFullYear();
+  }
+
+  // Accueil — bonjour
+  var g = document.querySelector(".home-greeting-sub");
+  if(g) g.textContent = "Bonjour " + (role==="maman"?"maman":role==="papa"?"papa":"toi") + " !";
+}
+function obCalcMonths(dob) {
+  var birth=new Date(dob), now=new Date();
+  var m=(now.getFullYear()-birth.getFullYear())*12+(now.getMonth()-birth.getMonth());
+  if(now.getDate()<birth.getDate()) m--;
+  return Math.max(0,m);
 }
 function obInitWink() {
   setInterval(function(){
