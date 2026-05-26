@@ -31,7 +31,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .home-header { background:linear-gradient(160deg,#f0f8f4 0%,#e8f5ee 100%); padding:10px 20px 22px; }
 .hd-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
 .brand { display:flex; align-items:center; gap:9px; }
-.brand-logo { width:40px; height:40px; background:var(--green-lt); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; }
+.brand-logo { width:44px; height:44px; display:flex; align-items:center; justify-content:center; }
 .brand-name { font-size:18px; font-weight:800; color:var(--text); letter-spacing:-0.3px; }
 .bell-btn { width:36px; height:36px; border-radius:50%; background:rgba(44,62,80,0.08); display:flex; align-items:center; justify-content:center; position:relative; cursor:pointer; }
 .bell-dot { position:absolute; top:7px; right:7px; width:8px; height:8px; background:var(--peach); border-radius:50%; border:1.5px solid #f0f8f4; }
@@ -77,13 +77,35 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .sub-nav { background:var(--card); padding:54px 20px 14px; display:flex; align-items:center; gap:12px; border-bottom:0.5px solid var(--line); position:sticky; top:0; z-index:10; }
 .sub-back { color:var(--green); font-size:15px; font-weight:600; cursor:pointer; }
 .sub-title { font-size:16px; font-weight:700; color:var(--text); flex:1; text-align:center; }
+
+/* ══ ÉCRAN LOGIN ══ */
+#screen-login { background: linear-gradient(160deg, #f0f8f4 0%, #e8f4ee 50%, #fff 100%); }
+.login-wrap { display:flex; flex-direction:column; align-items:center; padding:60px 28px 40px; min-height:100vh; }
+.login-logo { display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:40px; }
+.login-logo img { width:80px; height:80px; }
+.login-logo-name { font-size:28px; font-weight:800; color:var(--text); letter-spacing:-0.5px; }
+.login-logo-tag { font-size:13px; color:var(--sub); margin-top:-6px; }
+.login-tabs { display:flex; background:rgba(44,62,80,0.07); border-radius:14px; padding:3px; margin-bottom:28px; width:100%; }
+.ltab { flex:1; text-align:center; font-size:14px; font-weight:700; padding:10px; border-radius:11px; cursor:pointer; transition:all .2s; color:var(--sub); }
+.ltab.active { background:#fff; color:var(--green); box-shadow:0 1px 8px rgba(0,0,0,0.08); }
+.login-form { width:100%; display:flex; flex-direction:column; gap:14px; }
+.lf-label { font-size:12px; font-weight:700; color:var(--sub); margin-bottom:4px; letter-spacing:0.5px; text-transform:uppercase; }
+.lf-input { width:100%; background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:14px 16px; font-size:15px; color:var(--text); font-family:"Montserrat",sans-serif; outline:none; transition:border-color .2s; -webkit-appearance:none; }
+.lf-input:focus { border-color:var(--green); }
+.lf-btn { width:100%; background:var(--green); color:#fff; border:none; border-radius:14px; padding:16px; font-size:16px; font-weight:700; font-family:"Montserrat",sans-serif; cursor:pointer; margin-top:6px; transition:opacity .2s; }
+.lf-btn:active { opacity:0.85; }
+.lf-sep { display:flex; align-items:center; gap:10px; margin:4px 0; }
+.lf-sep-line { flex:1; height:0.5px; background:var(--line); }
+.lf-sep-txt { font-size:12px; color:var(--sub); }
+.lf-social { width:100%; background:#fff; border:1.5px solid var(--line); color:var(--text); border-radius:14px; padding:14px; font-size:14px; font-weight:600; font-family:"Montserrat",sans-serif; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; }
+.lf-foot { font-size:12px; color:var(--sub); margin-top:20px; text-align:center; line-height:1.6; }
 </style>
 </head>
 <body>
 <div id="app">
 
   <!-- ACCUEIL -->
-  <div id="screen-home" class="screen active">
+  <div id="screen-home" class="screen">
     <div class="status-bar" style="background:linear-gradient(160deg,#f0f8f4,#e8f5ee);">
       <span class="st-time">9:41</span>
       <span class="st-icons">&#9679;&#9679;&#9679; &#128267;</span>
@@ -91,7 +113,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div class="home-header">
       <div class="hd-row">
         <div class="brand">
-          <img src="logo.png" style="width:40px;height:40px;border-radius:12px;object-fit:cover;" />
+          <img src="logo.svg" style="width:44px;height:44px;" />
           <span class="brand-name">Petit Pousse</span>
         </div>
         <div class="bell-btn">
@@ -193,6 +215,58 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div class="coming-soon" style="margin-top:20px;"><div class="cs-emoji">&#128100;</div><div class="cs-title">Profil & Paramètres</div><div class="cs-sub">Cet écran arrive bientôt !<br>Profil de Camille et paramètres.</div></div>
   </div>
 
+
+  <!-- LOGIN / INSCRIPTION -->
+  <div id="screen-login" class="screen active" style="padding-bottom:0;">
+    <div class="login-wrap">
+      <div class="login-logo">
+        <img src="logo.svg" />
+        <div class="login-logo-name">Petit Pousse</div>
+        <div class="login-logo-tag">Le carnet de santé digital</div>
+      </div>
+      <div class="login-tabs">
+        <div class="ltab active" id="ltab-connect" onclick="loginTab('connect')">Connexion</div>
+        <div class="ltab" id="ltab-signup" onclick="loginTab('signup')">Inscription</div>
+      </div>
+      <!-- Connexion -->
+      <div class="login-form" id="lform-connect">
+        <div>
+          <div class="lf-label">Email</div>
+          <input class="lf-input" type="email" placeholder="votre@email.com" />
+        </div>
+        <div>
+          <div class="lf-label">Mot de passe</div>
+          <input class="lf-input" type="password" placeholder="••••••••" />
+        </div>
+        <button class="lf-btn" onclick="goToApp()">Se connecter</button>
+        <div class="lf-sep"><div class="lf-sep-line"></div><div class="lf-sep-txt">ou</div><div class="lf-sep-line"></div></div>
+        <button class="lf-social">🍎&nbsp; Continuer avec Apple</button>
+        <button class="lf-social">🔵&nbsp; Continuer avec Google</button>
+        <div class="lf-foot">Mot de passe oublié ?</div>
+      </div>
+      <!-- Inscription -->
+      <div class="login-form" id="lform-signup" style="display:none;">
+        <div>
+          <div class="lf-label">Prénom</div>
+          <input class="lf-input" type="text" placeholder="Votre prénom" />
+        </div>
+        <div>
+          <div class="lf-label">Email</div>
+          <input class="lf-input" type="email" placeholder="votre@email.com" />
+        </div>
+        <div>
+          <div class="lf-label">Mot de passe</div>
+          <input class="lf-input" type="password" placeholder="Minimum 8 caractères" />
+        </div>
+        <button class="lf-btn" onclick="goToApp()">Créer mon compte</button>
+        <div class="lf-sep"><div class="lf-sep-line"></div><div class="lf-sep-txt">ou</div><div class="lf-sep-line"></div></div>
+        <button class="lf-social">🍎&nbsp; Continuer avec Apple</button>
+        <button class="lf-social">🔵&nbsp; Continuer avec Google</button>
+        <div class="lf-foot">En créant un compte, vous acceptez<br>nos conditions d'utilisation</div>
+      </div>
+    </div>
+  </div>
+
   <!-- TABBAR -->
   <div id="tabbar">
     <div class="tab active" id="tab-home" onclick="switchTab('home')"><div class="tab-icon">&#127968;</div><div class="tab-lbl">Accueil</div></div>
@@ -235,6 +309,22 @@ function updateTime() {
   document.querySelectorAll(".st-time").forEach(function(el) { el.textContent = h + ":" + m; });
 }
 updateTime(); setInterval(updateTime, 30000);
+
+function loginTab(tab) {
+  document.getElementById("ltab-connect").classList.toggle("active", tab === "connect");
+  document.getElementById("ltab-signup").classList.toggle("active", tab === "signup");
+  document.getElementById("lform-connect").style.display = tab === "connect" ? "flex" : "none";
+  document.getElementById("lform-signup").style.display = tab === "signup" ? "flex" : "none";
+}
+function goToApp() {
+  document.getElementById("screen-login").classList.remove("active");
+  document.getElementById("screen-home").classList.add("active");
+  document.getElementById("tabbar").style.display = "flex";
+}
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("tabbar").style.display = "none";
+});
+
 </script>
 </body>
 </html>
