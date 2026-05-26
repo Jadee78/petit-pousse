@@ -202,8 +202,112 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
   <!-- VACCINS -->
   <div id="screen-vaccins" class="screen">
-    <div class="sub-nav" style="background:#f0f8f4;"><span class="sub-back" onclick="goBack()">&#8249; Retour</span><span class="sub-title">Vaccins</span><span style="width:44px;"></span></div>
-    <div class="coming-soon"><div class="cs-emoji">&#128137;</div><div class="cs-title">Calendrier vaccinal</div><div class="cs-sub">Cet écran arrive bientôt !<br>Suivi complet des vaccins de Camille.</div></div>
+    <div class="status-bar" style="background:linear-gradient(160deg,#f0f8f4,#e8f5ee);">
+      <span class="st-time">9:41</span>
+      <span class="st-icons">&#9679;&#9679;&#9679; &#128267;</span>
+    </div>
+    <!-- Header -->
+    <div style="background:linear-gradient(160deg,#f0f8f4,#e8f5ee);padding:6px 20px 20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <img src="logo.svg" style="width:36px;height:36px;" />
+          <span style="font-size:18px;font-weight:800;color:#2C3E50;">Vaccins</span>
+        </div>
+      </div>
+      <!-- Sélecteur enfant -->
+      <div style="display:flex;gap:8px;align-items:center;">
+        <div style="display:flex;align-items:center;gap:7px;background:#A8DFCA;border-radius:22px;padding:6px 13px 6px 7px;box-shadow:0 2px 8px rgba(90,158,130,0.2);">
+          <div style="width:26px;height:26px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;">&#128103;</div>
+          <span style="font-size:12px;font-weight:700;color:#2C3E50;">Camille</span>
+          <span style="font-size:9px;color:rgba(44,62,80,0.5);">&#9660;</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;background:rgba(44,62,80,0.07);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;">&#128102;</div>
+          <span style="font-size:12px;font-weight:600;color:#7F8C8D;">Tom</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prochain RDV -->
+    <div style="margin:14px 16px 0;background:linear-gradient(135deg,#82C8B0,#60A890);border-radius:20px;padding:18px;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-15px;bottom:-15px;width:80px;height:80px;background:rgba(255,255,255,0.07);border-radius:50%;"></div>
+      <div style="font-size:46px;flex-shrink:0;">&#128137;</div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:rgba(44,62,80,0.6);letter-spacing:1px;text-transform:uppercase;">Prochain rendez-vous</div>
+        <div style="font-size:19px;font-weight:800;color:#2C3E50;margin-top:3px;">Vaccin 9 mois</div>
+        <div style="font-size:12px;color:rgba(44,62,80,0.65);margin-top:3px;">Lundi 15 juin 2026 · 10h30</div>
+        <div style="margin-top:10px;display:inline-flex;align-items:center;gap:6px;background:rgba(44,62,80,0.1);border-radius:20px;padding:5px 12px;">
+          <span style="font-size:12px;">&#9200;</span>
+          <span style="font-size:12px;font-weight:700;color:#2C3E50;">Dans 18 jours</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alerte -->
+    <div style="margin:10px 16px 0;background:#FFF3CD;border-radius:16px;padding:13px 14px;display:flex;gap:10px;align-items:flex-start;border-left:3px solid #D4A820;">
+      <span style="font-size:18px;flex-shrink:0;">&#9888;&#65039;</span>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#7A6800;">Pense à prendre RDV !</div>
+        <div style="font-size:12px;color:#9A8000;margin-top:3px;line-height:1.45;">Le vaccin des 9 mois de Camille approche. Appelle le pédiatre cette semaine.</div>
+      </div>
+    </div>
+
+    <!-- Checklist -->
+    <div class="sec-hd"><span class="sec-t">Checklist RDV</span></div>
+    <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;">
+      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:22px;height:22px;border-radius:50%;background:#EEF9F5;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;color:#5A9E82;">&#10003;</div>
+        <span style="font-size:14px;color:#7F8C8D;text-decoration:line-through;">Prendre RDV chez le pédiatre</span>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:22px;height:22px;border-radius:6px;background:#F2F2F7;flex-shrink:0;"></div>
+        <span style="font-size:14px;color:#2C3E50;">Sortir le carnet de santé</span>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:22px;height:22px;border-radius:6px;background:#F2F2F7;flex-shrink:0;"></div>
+        <span style="font-size:14px;color:#2C3E50;">Préparer mes questions pour le pédiatre</span>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:22px;height:22px;border-radius:6px;background:#F2F2F7;flex-shrink:0;"></div>
+        <span style="font-size:14px;color:#2C3E50;">Prévoir paracétamol après le vaccin</span>
+      </div>
+    </div>
+
+    <!-- Calendrier vaccinal -->
+    <div class="sec-hd"><span class="sec-t">Calendrier vaccinal</span></div>
+    <div style="padding:0 16px;display:flex;flex-direction:column;gap:7px;">
+      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:10px;height:10px;border-radius:50%;background:#5A9E82;flex-shrink:0;"></div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#2C3E50;">DTCaP-Hib-HepB</div><div style="font-size:11px;color:#7F8C8D;margin-top:2px;">2 mois</div></div>
+        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Fait &#10003;</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:10px;height:10px;border-radius:50%;background:#5A9E82;flex-shrink:0;"></div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#2C3E50;">Méningocoque B</div><div style="font-size:11px;color:#7F8C8D;margin-top:2px;">3 mois</div></div>
+        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Fait &#10003;</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:10px;height:10px;border-radius:50%;background:#5A9E82;flex-shrink:0;"></div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#2C3E50;">DTCaP-Hib-HepB (2e dose)</div><div style="font-size:11px;color:#7F8C8D;margin-top:2px;">4 mois</div></div>
+        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Fait &#10003;</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:10px;height:10px;border-radius:50%;background:#5A9E82;flex-shrink:0;"></div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#2C3E50;">Méningocoque B (2e dose)</div><div style="font-size:11px;color:#7F8C8D;margin-top:2px;">5 mois</div></div>
+        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Fait &#10003;</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;border:1.5px solid #A8DFCA;background:#EEF9F5;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:10px;height:10px;border-radius:50%;background:#D4A820;flex-shrink:0;"></div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">ROR + Méningocoque C</div><div style="font-size:11px;color:#7F8C8D;margin-top:2px;">9 mois · en cours</div></div>
+        <div style="font-size:11px;font-weight:700;background:#FFF3CD;color:#D4A820;padding:4px 11px;border-radius:20px;">Bient&#244;t</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="width:10px;height:10px;border-radius:50%;background:#EDE8DF;flex-shrink:0;"></div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#2C3E50;">DTCaP rappel</div><div style="font-size:11px;color:#7F8C8D;margin-top:2px;">11 mois</div></div>
+        <div style="font-size:11px;font-weight:700;background:#F2F2F7;color:#7F8C8D;padding:4px 11px;border-radius:20px;">&#192; venir</div>
+      </div>
+    </div>
+    <div style="height:16px;"></div>
   </div>
 
   <!-- DIVERSIFICATION -->
