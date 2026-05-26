@@ -406,67 +406,25 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <span style="font-size:20px;flex-shrink:0;">&#9986;&#65039;</span>
       <div>
         <div style="font-size:13px;font-weight:700;color:#B46828;">Taille sécurisée à 8 mois</div>
-        <div style="font-size:12px;color:#7A5828;margin-top:3px;line-height:1.5;">Bâtonnets épais, morceaux mous, bien cuits. Tomate cerise → couper en 4 quartiers. Raisin → couper en 4 dans la longueur. Éviter tout aliment dur ou rond entier.</div>
+        <div style="font-size:12px;color:#7A5828;margin-top:3px;line-height:1.5;">Bâtonnets épais, morceaux mous, bien cuits. Tomate cerise → couper en 4. Raisin → couper en 4 dans la longueur. Jamais d'aliment dur ou rond entier.</div>
       </div>
     </div>
 
-    <!-- Aliments du mois -->
-    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#129382; Aliments à cet âge</span></div>
-    <div style="padding:0 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-
-      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:32px;">&#129365;</div>
-        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Carotte</div>
-        <div style="font-size:10px;font-weight:700;color:#5A9E82;margin-top:3px;">&#10003; OK</div>
-      </div>
-      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:32px;">&#129382;</div>
-        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Brocoli</div>
-        <div style="font-size:10px;font-weight:700;color:#5A9E82;margin-top:3px;">&#10003; OK</div>
-      </div>
-      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:32px;">&#127831;</div>
-        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Poulet</div>
-        <div style="font-size:10px;font-weight:700;color:#5A9E82;margin-top:3px;">&#10003; OK</div>
-      </div>
-      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:32px;">&#127822;</div>
-        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Pomme</div>
-        <div style="font-size:10px;font-weight:700;color:#5A9E82;margin-top:3px;">&#10003; OK</div>
-      </div>
-      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:32px;">&#129381;</div>
-        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Courgette</div>
-        <div style="font-size:10px;font-weight:700;color:#5A9E82;margin-top:3px;">&#10003; OK</div>
-      </div>
-      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:32px;">&#127850;</div>
-        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Riz</div>
-        <div style="font-size:10px;font-weight:700;color:#5A9E82;margin-top:3px;">&#10003; OK</div>
-      </div>
-      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:32px;">&#127855;</div>
-        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Miel</div>
-        <div style="font-size:10px;font-weight:700;color:#D4A820;margin-top:3px;">&#9888; &lt; 1 an</div>
-      </div>
-      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:32px;">&#129380;</div>
-        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Sel</div>
-        <div style="font-size:10px;font-weight:700;color:#D4A820;margin-top:3px;">&#9888; À éviter</div>
-      </div>
-      <div style="background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:32px;">&#129372;</div>
-        <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:4px;">Cacahuète</div>
-        <div style="font-size:10px;font-weight:700;color:#E74C3C;margin-top:3px;">&#10007; Interdit</div>
-      </div>
-
+    <!-- Onglets catégories -->
+    <div style="padding:14px 16px 10px;display:flex;gap:6px;">
+      <div id="atab-legumes" onclick="showAlimTab('legumes')" style="flex:1;text-align:center;padding:9px 4px;border-radius:22px;font-size:11px;font-weight:700;cursor:pointer;background:#D4884A;color:#fff;">&#129382; Légumes</div>
+      <div id="atab-fruits" onclick="showAlimTab('fruits')" style="flex:1;text-align:center;padding:9px 4px;border-radius:22px;font-size:11px;font-weight:700;cursor:pointer;background:#F2F2F7;color:#7F8C8D;">&#127822; Fruits</div>
+      <div id="atab-viandes" onclick="showAlimTab('viandes')" style="flex:1;text-align:center;padding:9px 4px;border-radius:22px;font-size:11px;font-weight:700;cursor:pointer;background:#F2F2F7;color:#7F8C8D;">&#127831; Viandes</div>
     </div>
+
+    <!-- Grille aliments (rendue par JS) -->
+    <div id="alim-grid" style="padding:0 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"></div>
 
     <!-- Légende -->
-    <div style="margin:10px 16px 0;display:flex;gap:14px;flex-wrap:wrap;padding:0 2px;">
+    <div style="margin:10px 16px 0;display:flex;gap:12px;flex-wrap:wrap;">
       <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:#5A9E82;"></div><span style="font-size:11px;color:#7F8C8D;">Autorisé</span></div>
       <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:#D4A820;"></div><span style="font-size:11px;color:#7F8C8D;">Avec précaution</span></div>
-      <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:#E74C3C;"></div><span style="font-size:11px;color:#7F8C8D;">À éviter absolument</span></div>
+      <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:#E74C3C;"></div><span style="font-size:11px;color:#7F8C8D;">À éviter</span></div>
     </div>
 
     <!-- Menu du jour -->
@@ -1256,6 +1214,14 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
   </div>
 
+  <!-- MODAL RECETTE -->
+  <div id="recipe-overlay" onclick="closeRecipe()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;align-items:flex-end;">
+    <div id="recipe-sheet" onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;max-height:78vh;overflow-y:auto;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));">
+      <div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 18px;"></div>
+      <div id="recipe-body"></div>
+    </div>
+  </div>
+
   <!-- TABBAR -->
   <div id="tabbar">
     <div class="tab active" id="tab-home" onclick="switchTab('home')"><div class="tab-icon">&#127968;</div><div class="tab-lbl">Accueil</div></div>
@@ -1333,6 +1299,120 @@ function toggleFievre() {
   c.style.display = open ? "none" : "block";
   a.style.transform = open ? "rotate(0deg)" : "rotate(90deg)";
 }
+// ── Alimentation : base de données ──
+var currentAlimTab = "legumes";
+var currentFoodData = null;
+var foodDB = {
+  legumes:[
+    {id:"carotte",e:"&#129365;",n:"Carotte",s:"ok",desc:"Douce et sucrée naturellement, riche en bêta-carotène. Idéale pour commencer.",dme:["Bâtonnets épais cuits vapeur — faciles à attraper et à tenir","Rondelles épaisses cuites au four avec un filet d'huile","Entière avec fanes comme poignée naturelle (bio de préférence)"],puree:["Purée carotte seule + lait maternel — douceur naturelle","Velouté carotte + patate douce : le duo parfait","Carotte + pomme cuite : sucré-salé adoré des bébés"]},
+    {id:"courgette",e:"&#129362;",n:"Courgette",s:"ok",desc:"Très douce, neutre en goût, facile à digérer. Parfaite pour les premiers essais.",dme:["Bâtonnets avec la peau cuits vapeur — la peau tient mieux en main","Rondelles épaisses sautées à l'huile d'olive","Moitiés cuites au four, bien fondantes"],puree:["Velouté courgette + fromage blanc — très doux","Purée courgette + riz + lait : texture crémeuse","Courgette + carotte + une pincée de cumin"]},
+    {id:"brocoli",e:"&#129382;",n:"Brocoli",s:"ok",desc:"Riche en vitamines C et K. Goût plus prononcé — introduire progressivement.",dme:["Bouquets cuits vapeur : la tige fait une poignée naturelle parfaite","Florettes bien cuites, se défont doucement sous les gencives","Rôti au four avec filet d'huile d'olive"],puree:["Velouté brocoli + fromage blanc (adoucit le goût)","Purée brocoli + courgette + pomme de terre","Mélangé dans une soupe de légumes verts"]},
+    {id:"patatedouce",e:"&#127840;",n:"Patate douce",s:"ok",desc:"Naturellement sucrée, riche en bêta-carotène. Un favori des bébés !",dme:["Bâtonnets rôtis au four — légèrement caramélisés, irrésistibles","Rondelles épaisses cuites vapeur","Moitiés cuites au four, la peau tient bien pour les petites mains"],puree:["Purée patate douce seule + lait maternel — épaisse et onctueuse","Patate douce + carotte + une pincée de noix de muscade","Patate douce + pomme cuite + cannelle : dessert ou repas"]},
+    {id:"potiron",e:"&#127875;",n:"Potiron / Butternut",s:"ok",desc:"Riche en vitamines A et C, saveur douce et sucrée.",dme:["Cubes rôtis au four — tendres et légèrement caramélisés","Bâtonnets épais cuits vapeur","Grillé en tranches avec huile d'olive"],puree:["Velouté potiron + patate douce + une noisette de beurre","Soupe butternut + lait de coco (petite quantité)","Potiron + carotte + une trace de curcuma"]},
+    {id:"epinards",e:"&#129388;",n:"Épinards",s:"ok",desc:"Riche en fer et folates. Goût fort — à mélanger avec d'autres légumes.",dme:["Feuilles bien cuites dans des pancakes de légumes bébé","Difficiles seuls — mieux intégrés dans un mélange"],puree:["Purée épinards + pomme de terre + beurre","Velouté épinards + fromage frais + trace de citron","Épinards mixés en petite quantité dans une soupe de carottes"]},
+    {id:"petitspois",e:"&#127808;",n:"Petits pois",s:"ok",desc:"Riches en protéines végétales et en fibres. Enlever la peau fine pour les purées.",dme:["Légèrement écrasés entre les doigts avant de proposer","Sur une tartine de purée maison étalée","Mélangés à du riz cuit bien mou"],puree:["Purée petits pois (tamiser pour enlever la peau)","Velouté petits pois + menthe fraîche : frais et léger","Petits pois + carotte + beurre"]},
+    {id:"haricots",e:"&#127807;",n:"Haricots verts",s:"ok",desc:"Source de fibres, vitamines et fer. Cuire bien à fond.",dme:["Entiers bien cuits — les bébés adorent les tenir comme des baguettes","Coupés en tronçons si trop longs pour la petite bouche","Poêlés avec une noisette de beurre"],puree:["Purée haricots verts + pomme de terre + beurre","Velouté haricots verts + patate douce : sucré-salé","Mixés dans un potage de légumes verts"]},
+    {id:"tomate",e:"&#127813;",n:"Tomate",s:"ok",desc:"Toujours cuite à cet âge. Source de lycopène et vitamine C.",dme:["Demi-tomates cerises cuites à la poêle","Tomates cerises confites au four sans sel","Tranches de tomate cuite dans une omelette bébé"],puree:["Sauce tomate maison sans sel + huile d'olive","Coulis de tomate dans un velouté de légumes","Tomate + carotte + basilic mixés"]},
+    {id:"poivron",e:"&#127798;",n:"Poivron rouge cuit",s:"ok",desc:"Cuit, il devient très doux et sucré. Source de vitamine C.",dme:["Lanières cuites longtemps — très fondantes sous les gencives","Rôti au four, peau retirée, en gros morceaux","Dans une omelette molle coupée en bâtonnets"],puree:["Purée poivron rouge + tomate — couleur magnifique","Soupe poivron + carotte + un peu d'origan","Mixé dans une sauce de légumes rouges"]},
+    {id:"aubergine",e:"&#127814;",n:"Aubergine",s:"ok",desc:"Bien cuite, elle devient très fondante. Toujours cuire à fond.",dme:["Bâtonnets rôtis au four avec huile d'olive — fondants","Tranchettes cuites à la poêle","Caviar d'aubergine comme trempette pour les légumes"],puree:["Caviar d'aubergine + fromage blanc","Purée aubergine + tomate + herbes douces","Aubergine rôtie mixée + courgette"]},
+    {id:"betterave",e:"&#128997;",n:"Betterave",s:"warn",desc:"Riche en nitrates — max 1-2 fois/semaine. Attention aux taches, ça colore tout !",dme:["Bâtonnets cuits — mettre un tablier, ça tache !","Cubes cuits, goût terreux que certains bébés adorent"],puree:["Purée betterave + fromage blanc (couleur rose magnifique)","Betterave + pomme de terre + beurre","Mixée en petite quantité dans une soupe de légumes"]},
+    {id:"celeri",e:"&#129367;",n:"Céleri",s:"warn",desc:"Goût très fort, allergène potentiel. Introduire seul en petite quantité.",dme:["Branches cuites très longuement pour attendrir","Introduire seul d'abord pour surveiller la réaction"],puree:["Une branche dans un velouté de légumes pour aromatiser","Purée pomme de terre + céleri (très peu) + beurre"]}
+  ],
+  fruits:[
+    {id:"pomme",e:"&#127822;",n:"Pomme",s:"ok",desc:"Le classique des bébés. Cuite ou très mûre crue. Sans sucre ajouté.",dme:["Bâtonnets de pomme très mûre crue — Pink Lady bien mûre","Cuite vapeur en bâtonnets — très tendre","Moitiés cuites au four avec une pincée de cannelle"],puree:["Compote pomme nature sans sucre","Pomme + poire + vanille (gousse grattée) — le trio parfait","Pomme cuite + patate douce : sucré-salé adoré"]},
+    {id:"poire",e:"&#127821;",n:"Poire",s:"ok",desc:"Très douce, facile à digérer. Choisir bien mûre, Williams ou conférence.",dme:["Bâtonnets de poire bien mûre — fondante naturellement","Moitiés cuites vapeur","La poire conférence très mûre peut se donner crue en lamelles fines"],puree:["Compote poire + banane — super crémeuse","Purée poire + fromage blanc","Poire + pomme + une pincée de cardamome"]},
+    {id:"banane",e:"&#127820;",n:"Banane",s:"ok",desc:"L'alliée des mamans pressées — prête en 5 sec, aucune cuisson. Choisir bien mûre.",dme:["Moitiés entières — bébé mord et arrache lui-même","Rondelles épaisses faciles à pincer","Écrasée sur une tartine de pain mou ou mélangée à de l'avocat"],puree:["Banane écrasée à la fourchette + lait maternel","Banane + pomme cuite — le classique indémodable","Banana pancake bébé : banane écrasée + œuf, cuit sans matière grasse"]},
+    {id:"mangue",e:"&#129389;",n:"Mangue",s:"ok",desc:"Riche en vitamines A et C. Bien mûre, elle est naturellement sucrée et fondante.",dme:["Lamelles de mangue bien mûre sans peau","Bâtonnets épais — s'écrase facilement","Technique 'hérisson' : inciser la peau et retourner"],puree:["Purée mangue + banane — exotique et crémeuse","Mangue + poire : douceur tropicale","Smoothie mangue + lait maternel pour commencer"]},
+    {id:"avocat",e:"&#129361;",n:"Avocat",s:"ok",desc:"Plein de bonnes graisses pour le développement du cerveau. Toujours cru.",dme:["Moitiés avec peau — la coque sert de cuillère naturelle !","Tranches épaisses sans peau","Écrasé à la fourchette, texture fondante idéale"],puree:["Avocat écrasé + lait maternel + trace de citron","Guacamole bébé : avocat + carotte cuite râpée","Avocat + banane : combo doux, crémeux et nutritif"]},
+    {id:"peche",e:"&#127825;",n:"Pêche / Abricot",s:"ok",desc:"Riches en vitamines et en douceur. Cuire légèrement si pas parfaitement mûrs.",dme:["Moitiés dénoyautées bien mûres — fondantes naturellement","Cuites vapeur ou poêlées si pas encore très mûres","Grillées avec une noisette de beurre : caramélisées, délicieuses"],puree:["Compote pêche-abricot sans sucre — l'été en bocal","Purée pêche + fromage blanc : onctueux","Pêche + pomme + une pincée de cardamome"]},
+    {id:"melon",e:"&#127816;",n:"Melon",s:"ok",desc:"Source d'eau et de vitamines. Choisir très mûr et sucré naturellement.",dme:["Tranches épaisses sans pépins bien mûres","Bâtonnets que bébé peut sucer longuement","La croûte épaisse tient bien dans les petites mains"],puree:["Purée melon + banane — fraîche, sans cuisson","Smoothie melon + poire + lait maternel","Melon + framboise (bien mûre) mixés"]},
+    {id:"fraise",e:"&#127827;",n:"Fraise",s:"warn",desc:"Allergène potentiel — introduire seule, en petite quantité. Surveiller 24h après.",dme:["Coupées en 4 bien mûres, queue retirée","À introduire seule d'abord pour surveiller toute réaction","Éviter si antécédents d'allergie dans la famille"],puree:["Purée fraise + banane (adoucit l'acidité)","Compote fraise + pomme — classique","Fraise + fromage blanc : dessert rosé"]},
+    {id:"kiwi",e:"&#129373;",n:"Kiwi",s:"warn",desc:"Acidité + allergène potentiel — introduire progressivement, petite quantité.",dme:["En petits morceaux mûrs, introduire progressivement","Surveiller toute réaction cutanée ou digestive"],puree:["Purée kiwi + banane (la banane adoucit l'acidité)","Mélangé en petite quantité dans une compote de fruits doux"]},
+    {id:"orange",e:"&#127818;",n:"Orange / Agrumes",s:"warn",desc:"Trop acide seule à cet âge. En toute petite quantité dans des préparations.",dme:["Quartiers sans pépins ni membrane, très mûrs","Jus fraîchement pressé, dilué dans un peu d'eau"],puree:["Quelques gouttes dans une compote de pomme","Zeste (bio) dans une purée de pêche ou mangue"]}
+  ],
+  viandes:[
+    {id:"poulet",e:"&#127831;",n:"Poulet",s:"ok",desc:"La viande la plus douce pour commencer. Blanc de préférence, sans peau.",dme:["Blanc cuit vapeur — effiloché naturellement sous les gencives","Pilon cuit, tenu comme une poignée (surveiller l'os)","Boulettes de poulet haché cuites au four — sans sel ni épices"],puree:["Purée poulet + carotte — le grand classique","Velouté poulet + légumes verts + lait maternel","Hachis poulet + pomme de terre + courgette"]},
+    {id:"dinde",e:"&#129411;",n:"Dinde",s:"ok",desc:"Plus maigre que le poulet, très digestible. Un excellent choix.",dme:["Blanc de dinde cuit vapeur en bâtonnets","Effiloché dans des légumes cuits, se mélange bien","Boulettes de dinde hachée cuites au four"],puree:["Purée dinde + courgette + fromage blanc","Hachis dinde + patate douce","Dinde mixée dans un velouté de légumes verts"]},
+    {id:"boeuf",e:"&#129385;",n:"Bœuf",s:"ok",desc:"Riche en fer et zinc. Choisir haché ou effiloché longuement cuit.",dme:["Boulettes de bœuf haché cuites — tendres et faciles à tenir","Bœuf effiloché après cuisson longue (bourguignon bébé)","Hachis parmentier bébé (sans sel)"],puree:["Hachis bœuf + purée de légumes mélangés","Bœuf mixé dans un velouté carotte-pomme de terre","Bolognaise bébé : bœuf + tomate maison, sans sel ni sucre"]},
+    {id:"veau",e:"&#129385;",n:"Veau",s:"ok",desc:"Très tendre, facile à digérer — idéal pour introduire la viande rouge.",dme:["Escalope cuite vapeur en lanières — fondante","Veau haché en petites boulettes cuites","Effiloché dans du bouillon de légumes maison"],puree:["Purée veau + carotte + pomme de terre","Blanquette de veau mixée (sans sel ni crème)","Veau + courgette + un soupçon de fromage frais"]},
+    {id:"agneau",e:"&#128017;",n:"Agneau",s:"ok",desc:"Goût plus prononcé mais très riche en fer. Cuire longuement pour attendrir.",dme:["Côtelette cuite, l'os sert de poignée (bien surveiller)","Effiloché après cuisson longue — fondant"],puree:["Purée agneau + courgette + menthe fraîche","Tajine d'agneau mixé + abricot sec trempé","Agneau + petits pois + pomme de terre"]},
+    {id:"cabillaud",e:"&#128031;",n:"Cabillaud",s:"ok",desc:"Poisson blanc très doux, peu gras. Vérifier absolument l'absence d'arêtes.",dme:["Filet cuit en papillote — se défait naturellement en gros morceaux","Vérifier chaque morceau avec les doigts pour les arêtes","Cuit vapeur avec un filet de citron et herbes douces"],puree:["Purée cabillaud + pomme de terre + beurre","Velouté cabillaud + petits pois : marin et doux","Cabillaud + carotte + courgette mixés"]},
+    {id:"saumon",e:"&#128032;",n:"Saumon",s:"ok",desc:"Riche en oméga-3 pour le cerveau et les yeux de bébé. 1-2 fois par semaine.",dme:["Filet cuit vapeur ou papillote en gros morceaux","Vérifier attentivement chaque morceau pour les arêtes","Rillettes de saumon maison (sans sel) sur pain mou"],puree:["Purée saumon + courgette + fromage blanc","Velouté saumon + épinards : coloré et nutritif","Saumon + pomme de terre + trace d'aneth"]},
+    {id:"sole",e:"&#128031;",n:"Sole / Merlu",s:"ok",desc:"Poissons blancs très doux, naturellement sans arêtes. Idéals pour débuter.",dme:["Filet de sole cuit vapeur — fondant dès la première bouchée","Naturellement sans arêtes, idéal en toute sérénité"],puree:["Purée sole + pomme de terre + beurre : ultra-douce","Velouté poisson blanc + carotte","Sole + courgette + fromage frais"]},
+    {id:"oeuf",e:"&#129370;",n:"Œuf",s:"ok",desc:"Introduire progressivement : jaune d'abord, puis œuf entier. Toujours bien cuit.",dme:["Œuf brouillé bien cuit en petits morceaux — facile à saisir","Omelette épaisse coupée en bâtonnets","Pancake bébé : œuf + banane écrasée, sans matière grasse"],puree:["Jaune d'œuf dur mixé dans une purée de légumes","Œuf à la coque très cuit + mouillettes de pain mou","Purée légumes verts + œuf : protéines complètes"]},
+    {id:"charcuterie",e:"&#128683;",n:"Charcuterie",s:"no",desc:"Trop salée, trop grasse, pleine de nitrites — à éviter absolument avant 3 ans.",dme:["À éviter complètement — trop de sel pour les reins de bébé"],puree:["Jamais dans les purées bébé non plus"]}
+  ]
+};
+
+function showAlimTab(tab) {
+  currentAlimTab = tab;
+  ["legumes","fruits","viandes"].forEach(function(t) {
+    var el = document.getElementById("atab-" + t);
+    if (el) { el.style.background = t === tab ? "#D4884A" : "#F2F2F7"; el.style.color = t === tab ? "#fff" : "#7F8C8D"; }
+  });
+  renderAlimGrid();
+}
+function renderAlimGrid() {
+  var grid = document.getElementById("alim-grid");
+  if (!grid) return;
+  var foods = foodDB[currentAlimTab];
+  var sc = {ok:"#5A9E82",warn:"#D4A820",no:"#E74C3C"};
+  var sb = {ok:"#EEF9F5",warn:"#FFF3CD",no:"#FDEAEA"};
+  var sl = {ok:"&#10003; OK",warn:"&#9888; Attention",no:"&#10007; &#192; &#233;viter"};
+  var h = "";
+  foods.forEach(function(f) {
+    h += '<div style="background:#fff;border-radius:16px;padding:12px 8px 10px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.05);cursor:pointer;" onclick="openRecipe(\'' + f.id + '\')">';
+    h += '<div style="font-size:28px;line-height:1.3;">' + f.e + '</div>';
+    h += '<div style="font-size:11px;font-weight:700;color:#2C3E50;margin-top:5px;line-height:1.3;">' + f.n + '</div>';
+    h += '<div style="font-size:10px;font-weight:700;color:' + sc[f.s] + ';background:' + sb[f.s] + ';border-radius:20px;padding:2px 6px;margin:5px auto 0;display:inline-block;">' + sl[f.s] + '</div></div>';
+  });
+  grid.innerHTML = h;
+}
+function openRecipe(id) {
+  currentFoodData = null;
+  ["legumes","fruits","viandes"].forEach(function(cat) {
+    foodDB[cat].forEach(function(f) { if (f.id === id) currentFoodData = f; });
+  });
+  if (!currentFoodData) return;
+  renderRecipeModal();
+  document.getElementById("recipe-overlay").style.display = "flex";
+}
+function renderRecipeModal() {
+  var f = currentFoodData;
+  var sc = {ok:"#5A9E82",warn:"#D4A820",no:"#E74C3C"};
+  var sb = {ok:"#EEF9F5",warn:"#FFF3CD",no:"#FDEAEA"};
+  var sl = {ok:"&#10003; OK &#224; 8 mois",warn:"&#9888; Avec pr&#233;caution",no:"&#10007; &#192; &#233;viter"};
+  var h = '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">';
+  h += '<div style="display:flex;align-items:center;gap:12px;"><div style="font-size:44px;line-height:1;">' + f.e + '</div><div><div style="font-size:19px;font-weight:800;color:#2C3E50;">' + f.n + '</div><div style="font-size:11px;font-weight:700;color:' + sc[f.s] + ';background:' + sb[f.s] + ';display:inline-block;padding:2px 10px;border-radius:20px;margin-top:3px;">' + sl[f.s] + '</div></div></div>';
+  h += '<div onclick="closeRecipe()" style="width:32px;height:32px;border-radius:50%;background:#F2F2F7;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;color:#7F8C8D;flex-shrink:0;">&#10005;</div></div>';
+  h += '<p style="font-size:12px;color:#7F8C8D;line-height:1.5;margin-bottom:14px;font-style:italic;">' + f.desc + '</p>';
+  h += '<div style="display:flex;gap:0;background:#F2F2F7;border-radius:12px;padding:3px;margin-bottom:14px;">';
+  h += '<div id="rtab-dme" onclick="switchRecipeTab(\'dme\')" style="flex:1;text-align:center;padding:9px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;background:#D4884A;color:#fff;">&#9997;&#65039; En DME</div>';
+  h += '<div id="rtab-puree" onclick="switchRecipeTab(\'puree\')" style="flex:1;text-align:center;padding:9px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:#7F8C8D;">&#129379; En pur&#233;e</div></div>';
+  h += '<div id="recipe-tab-content">' + renderRecipeItems(f.dme) + '</div>';
+  document.getElementById("recipe-body").innerHTML = h;
+}
+function renderRecipeItems(items) {
+  var h = '<div style="display:flex;flex-direction:column;gap:8px;">';
+  items.forEach(function(item, i) {
+    h += '<div style="background:#F7F5EF;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">';
+    h += '<div style="width:24px;height:24px;border-radius:50%;background:#D4884A;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;min-width:24px;">' + (i+1) + '</div>';
+    h += '<p style="font-size:13px;color:#2C3E50;line-height:1.5;margin:2px 0 0;">' + item + '</p></div>';
+  });
+  return h + '</div>';
+}
+function switchRecipeTab(tab) {
+  if (!currentFoodData) return;
+  document.getElementById("recipe-tab-content").innerHTML = renderRecipeItems(tab === "dme" ? currentFoodData.dme : currentFoodData.puree);
+  var d = document.getElementById("rtab-dme"), p = document.getElementById("rtab-puree");
+  if (tab === "dme") { d.style.background="#D4884A"; d.style.color="#fff"; p.style.background="transparent"; p.style.color="#7F8C8D"; }
+  else { p.style.background="#D4884A"; p.style.color="#fff"; d.style.background="transparent"; d.style.color="#7F8C8D"; }
+}
+function closeRecipe() {
+  document.getElementById("recipe-overlay").style.display = "none";
+  currentFoodData = null;
+}
+
 function loginTab(tab) {
   document.getElementById("ltab-connect").classList.toggle("active", tab === "connect");
   document.getElementById("ltab-signup").classList.toggle("active", tab === "signup");
@@ -1346,6 +1426,7 @@ function goToApp() {
 }
 document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("tabbar").style.display = "none";
+  renderAlimGrid();
 });
 
 </script>
