@@ -218,6 +218,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div class="ob-dot" id="ob-dot-6"></div>
       <div class="ob-dot" id="ob-dot-7"></div>
       <div class="ob-dot" id="ob-dot-8"></div>
+      <div class="ob-dot" id="ob-dot-9"></div>
     </div>
     <div class="ob-wrap">
 
@@ -323,11 +324,59 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <input id="ob-surnom" class="ob-input" type="text" autocomplete="off" />
       </div>
 
-      <!-- Étape 8 : Fratrie -->
+      <!-- Étape 8 : Poids & Taille -->
       <div id="ob-s8" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#9878;&#65039;</div>
+        <div class="ob-title" id="ob-pt-title">Et physiquement&nbsp;?</div>
+        <div class="ob-sub" id="ob-pt-sub">Poids et taille de b&#233;b&#233; — pour suivre sa jolie courbe &#128200;</div>
+        <div style="display:flex;gap:12px;margin-top:22px;width:100%;">
+          <div style="flex:1;">
+            <div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Poids (kg)</div>
+            <input id="ob-poids" class="ob-input" type="number" inputmode="decimal" step="0.1" min="0" max="30" placeholder="ex&#160;: 7,2" style="margin-top:0;text-align:center;" />
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Taille (cm)</div>
+            <input id="ob-taille" class="ob-input" type="number" inputmode="decimal" step="0.5" min="0" max="120" placeholder="ex&#160;: 68" style="margin-top:0;text-align:center;" />
+          </div>
+        </div>
+        <div class="ob-tiny" style="margin-top:14px;">Ces infos permettent de tracer la courbe de croissance &#127807;</div>
+      </div>
+
+      <!-- Étape 9 : Allaitement -->
+      <div id="ob-s9" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#129337;</div>
+        <div class="ob-title" id="ob-allait-title">Et pour se nourrir&nbsp;?</div>
+        <div class="ob-sub">On adapte les modules qui s&#8217;affichent rien que pour toi &#128153;</div>
+        <div class="ob-choices" style="margin-top:22px;">
+          <div class="ob-choice" id="ob-allait-tetee" onclick="obSelectAllait('tetee')">
+            <span class="ob-choice-icon">&#129337;</span>
+            <div>
+              <div class="ob-choice-label">Allaitement maternel</div>
+              <div style="font-size:12px;color:#7F8C8D;margin-top:3px;">Le module allaitement s&#8217;affichera &#128150;</div>
+            </div>
+          </div>
+          <div class="ob-choice" id="ob-allait-biberon" onclick="obSelectAllait('biberon')">
+            <span class="ob-choice-icon">&#127868;</span>
+            <div>
+              <div class="ob-choice-label">Biberon / Lait infantile</div>
+              <div style="font-size:12px;color:#7F8C8D;margin-top:3px;">Pas de soucis, tout est l&#224; pour toi aussi !</div>
+            </div>
+          </div>
+          <div class="ob-choice" id="ob-allait-mixte" onclick="obSelectAllait('mixte')">
+            <span class="ob-choice-icon">&#127800;</span>
+            <div>
+              <div class="ob-choice-label">Les deux (allaitement mixte)</div>
+              <div style="font-size:12px;color:#7F8C8D;margin-top:3px;">Les deux s&#8217;afficheront, &#233;videmment &#128521;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 10 : Fratrie -->
+      <div id="ob-s10" class="ob-content" style="display:none;">
         <div class="ob-illus">&#128106;</div>
         <div class="ob-title" id="ob-fratrie-title">A-t-il/elle une fratrie&nbsp;?</div>
-        <div class="ob-sub">Tu peux aussi les ajouter plus tard</div>
+        <div class="ob-sub">Tu peux aussi les ajouter plus tard, pas de pression &#128521;</div>
         <div class="ob-choices" style="margin-top:22px;">
           <div class="ob-choice" onclick="obSelectFratrie('sibling')">
             <span class="ob-choice-icon">&#128118;</span>
@@ -344,11 +393,11 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
       </div>
 
-      <!-- Étape 9 : 2e enfant -->
-      <div id="ob-s9" class="ob-content" style="display:none;">
+      <!-- Étape 11 : 2e enfant -->
+      <div id="ob-s11" class="ob-content" style="display:none;">
         <div class="ob-illus">&#127807;</div>
-        <div class="ob-title" id="ob-s9-title">Et l&#8217;autre petit pousse&nbsp;?</div>
-        <div class="ob-sub">Quelques infos rapides</div>
+        <div class="ob-title" id="ob-s11-title">Et l&#8217;autre petit pousse&nbsp;?</div>
+        <div class="ob-sub">Quelques infos rapides &#128522;</div>
         <input id="ob-prenom2" class="ob-input" type="text" placeholder="Pr&#233;nom&#8230;" autocomplete="off" style="margin-top:18px;" />
         <div class="ob-sexe-choices" style="margin-top:14px;">
           <div class="ob-sexe-card" id="ob-sexe2-fille" onclick="obSelectSexe2('fille')">
@@ -361,10 +410,20 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           </div>
         </div>
         <input id="ob-dob2" class="ob-input" type="date" style="margin-top:14px;" />
+        <div style="display:flex;gap:12px;margin-top:14px;width:100%;">
+          <div style="flex:1;">
+            <div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Poids (kg)</div>
+            <input id="ob-poids2" class="ob-input" type="number" inputmode="decimal" step="0.1" min="0" max="30" placeholder="ex&#160;: 4,5" style="margin-top:0;text-align:center;" />
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Taille (cm)</div>
+            <input id="ob-taille2" class="ob-input" type="number" inputmode="decimal" step="0.5" min="0" max="120" placeholder="ex&#160;: 55" style="margin-top:0;text-align:center;" />
+          </div>
+        </div>
       </div>
 
-      <!-- Étape 10 : Bienvenue final -->
-      <div id="ob-s10" class="ob-content" style="display:none;">
+      <!-- Étape 12 : Bienvenue final -->
+      <div id="ob-s12" class="ob-content" style="display:none;">
         <div class="ob-illus">&#10024;</div>
         <div id="ob-final-title" class="ob-title"></div>
         <div class="ob-sub">Petit Pousse est l&#224; pour accompagner toute la famille &#128153;</div>
@@ -2560,23 +2619,23 @@ function goToApp() {
 }
 // ══ ONBOARDING ══
 var obStep = 0;
-var obData = { role:null, contact:null, contactType:"email", pin:null, pinConfirm:null, pinPhase:1, pinEntry:"", prenom:null, sexe:null, dob:null, surnom:null, fratrie:null, prenom2:null, sexe2:null, dob2:null };
+var obData = { role:null, contact:null, contactType:"email", pin:null, pinConfirm:null, pinPhase:1, pinEntry:"", prenom:null, sexe:null, dob:null, surnom:null, poids:null, taille:null, allaitement:null, fratrie:null, prenom2:null, sexe2:null, dob2:null, poids2:null, taille2:null };
 var obAnimating = false;
 
-// Dot mapping: step → dot index
-var OB_DOT_MAP = {1:1, 2:2, 3:3, 4:4, 5:4, 6:5, 7:6, 8:7, 9:7, 10:8};
-var OB_TOTAL_STEPS = 10;
+// Dot mapping: step → dot index (9 dots total)
+var OB_DOT_MAP = {1:1, 2:2, 3:3, 4:4, 5:4, 6:5, 7:6, 8:7, 9:8, 10:8, 11:8, 12:9};
+var OB_TOTAL_STEPS = 12;
 
 function obUpdateDots(n) {
   var dot = OB_DOT_MAP[n] || n;
-  for (var i=1;i<=8;i++) {
+  for (var i=1;i<=9;i++) {
     var d=document.getElementById("ob-dot-"+i); if(!d) continue;
     d.className = i<dot ? "ob-dot done" : i===dot ? "ob-dot active" : "ob-dot";
   }
 }
 function obShowStep(n) {
   obStep = n; obUpdateDots(n);
-  for (var i=1;i<=10;i++) {
+  for (var i=1;i<=12;i++) {
     var s=document.getElementById("ob-s"+i); if(!s) continue;
     s.style.display = i===n ? "flex" : "none";
     if(i===n){s.style.flexDirection="column";s.style.alignItems="center";}
@@ -2584,8 +2643,8 @@ function obShowStep(n) {
   var mb=document.getElementById("ob-main-btn"), gb=document.getElementById("ob-ghost-btn");
   mb.style.display="none"; gb.style.display="none";
 
-  if(n===1||n===5) {
-    // auto-advance via selection
+  if(n===1||n===5||n===9||n===10) {
+    // auto-advance via selection, pas de bouton
   } else if(n===2) {
     mb.style.display="block"; mb.textContent="Suivant →";
     gb.style.display="block"; gb.textContent="Passer pour l’instant";
@@ -2612,37 +2671,48 @@ function obShowStep(n) {
     mb.style.display="block"; mb.textContent="Suivant →";
     gb.style.display="block"; gb.textContent="Non, "+obData.prenom+" c’est très bien ! 🌱";
   } else if(n===8) {
-    var fn=obData.surnom||obData.prenom;
-    document.getElementById("ob-fratrie-title").textContent="Est-ce que "+fn+" a une fratrie ?";
-    var nonLbl=obData.sexe==="garcon"?"Non, c’est tout !":"Non, c’est tout !";
-    document.getElementById("ob-fratrie-non-lbl").textContent=nonLbl;
-  } else if(n===9) {
-    var ttl=obData.fratrie==="twin"?"Et son jumeau / sa jumelle ?":"Et l’autre petit pousse ?";
-    document.getElementById("ob-s9-title").textContent=ttl;
+    var fn8=obData.surnom||obData.prenom;
+    document.getElementById("ob-pt-title").textContent="Et physiquement, "+fn8+" ?";
+    document.getElementById("ob-pt-sub").textContent=fn8+" pèse combien ? Et fait quelle taille ? 🐣";
+    document.getElementById("ob-poids").value="";
+    document.getElementById("ob-taille").value="";
+    mb.style.display="block"; mb.textContent="Suivant →";
+    gb.style.display="block"; gb.textContent="Passer (je n'ai pas les chiffres là)";
+  } else if(n===10) {
+    var fn10=obData.surnom||obData.prenom;
+    document.getElementById("ob-fratrie-title").textContent="Est-ce que "+fn10+" a une fratrie ?";
+    document.getElementById("ob-fratrie-non-lbl").textContent="Non, c'est tout !";
+  } else if(n===11) {
+    var ttl11=obData.fratrie==="twin"?"Et son jumeau / sa jumelle ?":"Et l'autre petit pousse ?";
+    document.getElementById("ob-s11-title").textContent=ttl11;
     document.getElementById("ob-prenom2").value="";
     document.getElementById("ob-prenom2").style.borderColor="";
     document.getElementById("ob-dob2").max=new Date().toISOString().slice(0,10);
+    document.getElementById("ob-poids2").value="";
+    document.getElementById("ob-taille2").value="";
     obData.sexe2=null;
     ["fille","garcon"].forEach(function(s){
       var el=document.getElementById("ob-sexe2-"+s); if(el) el.className="ob-sexe-card";
     });
     mb.style.display="block"; mb.textContent="Suivant →";
     gb.style.display="block"; gb.textContent="Ajouter plus tard";
-  } else if(n===10) {
+  } else if(n===12) {
     var dn=obData.surnom||obData.prenom;
     document.getElementById("ob-final-title").textContent="Bienvenue "+dn+" ! 🌱";
     var age=obData.dob?obCalcAge(obData.dob):"—";
     var sl=obData.sexe==="garcon"?"👦 Garçon":"👧 Fille";
     var rl=obData.role==="maman"?"👩 Maman":obData.role==="papa"?"👨 Papa":"🩷 Parent";
-    var ctxt=obData.contact?"<br><span style=’font-size:11px;color:#7F8C8D;’>"+obData.contact+"</span>":"";
-    var siblTxt=obData.prenom2?"<br><span style=’font-size:12px;color:#5A9E82;’>+ "+obData.prenom2+"</span>":"";
+    var allaitLbl=obData.allaitement==="tetee"?"🤱 Allaitement":obData.allaitement==="biberon"?"🍼 Biberon":"🌸 Mixte";
+    var poidsStr=(obData.poids||obData.taille)?((obData.poids?obData.poids+" kg":"—")+" · "+(obData.taille?obData.taille+" cm":"—")):"Non renseigné";
     document.getElementById("ob-summary").innerHTML=
-      ‘<div style="display:flex;flex-direction:column;gap:10px;">’+
-      obRow("Prénom affiché",dn+(obData.surnom?"":siblTxt))+
-      (obData.surnom?obRow("Prénom complet",obData.prenom):"")+
-      (obData.prenom2?obRow("Fratrie",obData.prenom2):"")+
-      obRow("Sexe",sl)+obRow("Âge",age)+obRow("Tu es",rl+(ctxt?"<br><span style=’font-size:11px;color:#7F8C8D;’>"+obData.contact+"</span>":""))+’</div>’;
-    mb.style.display="block"; mb.textContent="C’est parti ! 🌱";
+      '<div style="display:flex;flex-direction:column;gap:10px;">'+
+      obRow("Prénom",dn)+(obData.surnom?obRow("Prénom complet",obData.prenom):"")+
+      obRow("Sexe",sl)+obRow("Âge",age)+
+      obRow("Poids / Taille",poidsStr)+
+      obRow("Alimentation",allaitLbl)+
+      (obData.prenom2?obRow("Fratrie","+ "+obData.prenom2):"")+
+      obRow("Tu es",rl)+(obData.contact?obRow("Contact",obData.contact):"")+"</div>";
+    mb.style.display="block"; mb.textContent="C'est parti ! 🌱";
   }
 }
 function obRow(l,v){return’<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;"><span style="font-size:13px;color:#7F8C8D;">’+l+’</span><span style="font-size:13px;font-weight:700;color:#2C3E50;">’+v+’</span></div>’;}
@@ -2720,7 +2790,16 @@ function obSelectSexe2(sexe) {
 }
 function obSelectFratrie(type) {
   obData.fratrie=type;
-  if(type==="none") { obGoTo(10); } else { obGoTo(9); }
+  if(type==="none") { obGoTo(12); } else { obGoTo(11); }
+}
+function obSelectAllait(type) {
+  if(obAnimating) return;
+  obData.allaitement=type;
+  ["tetee","biberon","mixte"].forEach(function(t){
+    var el=document.getElementById("ob-allait-"+t); if(el) el.className="ob-choice"+(t===type?" selected":"");
+  });
+  localStorage.setItem("allait", (type==="tetee"||type==="mixte") ? "1" : "0");
+  setTimeout(function(){ obGoTo(10); }, 350);
 }
 function obNext() {
   if(obAnimating) return;
@@ -2740,16 +2819,23 @@ function obNext() {
   } else if(obStep===7) {
     var s=document.getElementById("ob-surnom").value.trim();
     obData.surnom=s?s.charAt(0).toUpperCase()+s.slice(1):null; obGoTo(8);
-  } else if(obStep===9) {
+  } else if(obStep===8) {
+    obData.poids=document.getElementById("ob-poids").value||null;
+    obData.taille=document.getElementById("ob-taille").value||null;
+    obGoTo(9);
+  } else if(obStep===11) {
     var p=document.getElementById("ob-prenom2").value.trim();
     if(p) {
       obData.prenom2=p.charAt(0).toUpperCase()+p.slice(1);
+      obData.sexe2=obData.sexe2||"fille";
       obData.dob2=document.getElementById("ob-dob2").value||null;
+      obData.poids2=document.getElementById("ob-poids2").value||null;
+      obData.taille2=document.getElementById("ob-taille2").value||null;
     } else {
-      obData.prenom2=null; obData.sexe2=null; obData.dob2=null;
+      obData.prenom2=null; obData.sexe2=null; obData.dob2=null; obData.poids2=null; obData.taille2=null;
     }
-    obGoTo(10);
-  } else if(obStep===10) {
+    obGoTo(12);
+  } else if(obStep===12) {
     obFinish();
   }
 }
@@ -2757,7 +2843,8 @@ function obGhost() {
   if(obAnimating) return;
   if(obStep===2) { obData.contact=null; obGoTo(3); }
   else if(obStep===7) { obData.surnom=null; obGoTo(8); }
-  else if(obStep===9) { obData.prenom2=null; obData.sexe2=null; obData.dob2=null; obGoTo(10); }
+  else if(obStep===8) { obData.poids=null; obData.taille=null; obGoTo(9); }
+  else if(obStep===11) { obData.prenom2=null; obData.sexe2=null; obData.dob2=null; obData.poids2=null; obData.taille2=null; obGoTo(12); }
 }
 function obSkipSurnom() { obGhost(); }
 
@@ -2765,12 +2852,15 @@ function obGoTo(next) {
   obShowStep(next);
 }
 function obFinish() {
-  var profile={role:obData.role,prenom:obData.prenom,sexe:obData.sexe,dob:obData.dob,surnom:obData.surnom,displayName:obData.surnom||obData.prenom};
+  var profile={role:obData.role,prenom:obData.prenom,sexe:obData.sexe,dob:obData.dob,surnom:obData.surnom,displayName:obData.surnom||obData.prenom,poids:obData.poids,taille:obData.taille,allaitement:obData.allaitement};
   var profiles=JSON.parse(localStorage.getItem("childProfiles")||"[]");
   profiles[0]=profile;
   if(obData.prenom2) {
-    var p2={prenom:obData.prenom2,sexe:obData.sexe2||"fille",dob:obData.dob2||null,displayName:obData.prenom2};
+    var p2={prenom:obData.prenom2,sexe:obData.sexe2||"fille",dob:obData.dob2||null,displayName:obData.prenom2,poids:obData.poids2,taille:obData.taille2};
     profiles[1]=p2;
+  }
+  if(obData.allaitement) {
+    localStorage.setItem("allait",(obData.allaitement==="tetee"||obData.allaitement==="mixte")?"1":"0");
   }
   localStorage.setItem("childProfiles",JSON.stringify(profiles));
   localStorage.setItem("activeChildIdx","0");
