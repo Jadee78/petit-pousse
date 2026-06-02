@@ -219,6 +219,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div class="ob-dot" id="ob-dot-7"></div>
       <div class="ob-dot" id="ob-dot-8"></div>
       <div class="ob-dot" id="ob-dot-9"></div>
+      <div class="ob-dot" id="ob-dot-10"></div>
     </div>
     <div class="ob-wrap">
 
@@ -373,7 +374,85 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
 
       <!-- Étape 10 : Fratrie -->
+            <!-- Étape 10 : RGO -->
       <div id="ob-s10" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#127754;</div>
+        <div class="ob-title" id="ob-rgo-title">Et le RGO&#160;?</div>
+        <div class="ob-sub">Reflux gastro-&#339;sophagien &#8212; super fr&#233;quent chez les b&#233;b&#233;s &#128153;</div>
+        <div class="ob-choices" style="margin-top:22px;">
+          <div class="ob-choice" onclick="obSelectRGO('oui')">
+            <span class="ob-choice-icon">&#9989;</span>
+            <div>
+              <div class="ob-choice-label">Oui, diagnostiqu&#233; par un m&#233;decin</div>
+              <div style="font-size:12px;color:#7F8C8D;margin-top:3px;">On va tout suivre avec toi &#128150;</div>
+            </div>
+          </div>
+          <div class="ob-choice" onclick="obSelectRGO('suspecte')">
+            <span class="ob-choice-icon">&#129300;</span>
+            <div>
+              <div class="ob-choice-label">On pense que oui (pas encore confirm&#233;)</div>
+              <div style="font-size:12px;color:#7F8C8D;margin-top:3px;">Les conseils seront l&#224; pour toi !</div>
+            </div>
+          </div>
+          <div class="ob-choice" onclick="obSelectRGO('non')">
+            <span class="ob-choice-icon">&#127807;</span>
+            <div>
+              <div class="ob-choice-label">Non, &#231;a va !</div>
+              <div style="font-size:12px;color:#7F8C8D;margin-top:3px;">Super &#128521;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 11 : RGO Traitement -->
+      <div id="ob-s11" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#128138;</div>
+        <div class="ob-title" id="ob-rgo-trt-title">Un traitement en cours&#160;?</div>
+        <div class="ob-sub">Si le m&#233;decin a prescrit quelque chose, on le note !</div>
+        <!-- Toggle oui/non traitement -->
+        <div style="display:flex;gap:10px;margin-top:20px;width:100%;">
+          <div id="ob-trt-oui" onclick="obSelectTraitement(true)"
+            style="flex:1;background:#fff;border:2px solid #A8DFCA;border-radius:16px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;">
+            <div style="font-size:22px;margin-bottom:4px;">&#128138;</div>
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;">Oui</div>
+          </div>
+          <div id="ob-trt-non" onclick="obSelectTraitement(false)"
+            style="flex:1;background:#fff;border:2px solid #A8DFCA;border-radius:16px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;">
+            <div style="font-size:22px;margin-bottom:4px;">&#127807;</div>
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;">Non</div>
+          </div>
+        </div>
+        <!-- Choix médicament (caché par défaut) -->
+        <div id="ob-trt-details" style="display:none;width:100%;margin-top:16px;">
+          <div style="font-size:12px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Lequel&#160;?</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div id="ob-med-inexium" onclick="obSelectMed('inexium')"
+              style="background:#fff;border:2px solid #EDE8DF;border-radius:14px;padding:12px 14px;cursor:pointer;transition:all .2s;">
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;">Inexium (&#233;soméprazole)</div>
+              <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Inhibiteur de pompe &#224; protons &#183; Sur ordonnance</div>
+            </div>
+            <div id="ob-med-gaviscon" onclick="obSelectMed('gaviscon')"
+              style="background:#fff;border:2px solid #EDE8DF;border-radius:14px;padding:12px 14px;cursor:pointer;transition:all .2s;">
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;">Gaviscon nourrisson</div>
+              <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Alginate &#183; Barrière m&#233;canique &#183; Avec prescription</div>
+            </div>
+            <div id="ob-med-autre" onclick="obSelectMed('autre')"
+              style="background:#fff;border:2px solid #EDE8DF;border-radius:14px;padding:12px 14px;cursor:pointer;transition:all .2s;">
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;">Autre</div>
+              <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Précise ci-dessous</div>
+            </div>
+          </div>
+          <input id="ob-med-autre-input" class="ob-input" type="text" placeholder="Nom du traitement..." style="margin-top:10px;display:none;" autocomplete="off" />
+          <!-- Date de fin si Inexium -->
+          <div id="ob-inexium-datefin" style="display:none;margin-top:14px;background:#FFF8E8;border-radius:14px;padding:14px;">
+            <div style="font-size:12px;font-weight:700;color:#A06010;margin-bottom:8px;">&#128197; Date de fin de traitement pr&#233;vue</div>
+            <input id="ob-datefin-input" class="ob-input" type="date" style="margin-top:0;background:#fff;" />
+            <div style="font-size:11px;color:#A06010;margin-top:8px;font-style:italic;line-height:1.55;">Un rappel s&#8217;affichera 2 semaines avant &#8212; et on te rappellera d&#8217;arr&#234;ter <strong style="font-style:normal;">progressivement</strong>&#160;!</div>
+          </div>
+        </div>
+      </div>
+
+<div id="ob-s12" class="ob-content" style="display:none;">
         <div class="ob-illus">&#128106;</div>
         <div class="ob-title" id="ob-fratrie-title">A-t-il/elle une fratrie&nbsp;?</div>
         <div class="ob-sub">Tu peux aussi les ajouter plus tard, pas de pression &#128521;</div>
@@ -394,9 +473,9 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
 
       <!-- Étape 11 : 2e enfant -->
-      <div id="ob-s11" class="ob-content" style="display:none;">
+      <div id="ob-s13" class="ob-content" style="display:none;">
         <div class="ob-illus">&#127807;</div>
-        <div class="ob-title" id="ob-s11-title">Et l&#8217;autre petit pousse&nbsp;?</div>
+        <div class="ob-title" id="ob-s13-title">Et l&#8217;autre petit pousse&nbsp;?</div>
         <div class="ob-sub">Quelques infos rapides &#128522;</div>
         <input id="ob-prenom2" class="ob-input" type="text" placeholder="Pr&#233;nom&#8230;" autocomplete="off" style="margin-top:18px;" />
         <div class="ob-sexe-choices" style="margin-top:14px;">
@@ -423,7 +502,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
 
       <!-- Étape 12 : Bienvenue final -->
-      <div id="ob-s12" class="ob-content" style="display:none;">
+      <div id="ob-s14" class="ob-content" style="display:none;">
         <div class="ob-illus">&#10024;</div>
         <div id="ob-final-title" class="ob-title"></div>
         <div class="ob-sub">Petit Pousse est l&#224; pour accompagner toute la famille &#128153;</div>
@@ -1747,6 +1826,147 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
 
+    <!-- Section RGO (affichée si profile.rgo != "non") -->
+    <div id="sante-rgo-section" style="display:none;padding:0 16px;margin-top:12px;">
+
+      <!-- Carte statut + traitement -->
+      <div style="background:linear-gradient(135deg,#E8F4FD,#D0E8FA);border-radius:18px;padding:16px;border-left:4px solid #5BA8D4;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <span style="font-size:26px;flex-shrink:0;">&#127754;</span>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:800;color:#2C3E50;">RGO</div>
+            <div id="rgo-statut-badge" style="font-size:11px;font-weight:700;background:#5BA8D4;color:#fff;padding:2px 10px;border-radius:20px;display:inline-block;margin-top:3px;">Diagnostiqu&#233;</div>
+          </div>
+          <div onclick="toggleRGOEdit()" style="font-size:12px;color:#5BA8D4;font-weight:700;cursor:pointer;background:rgba(91,168,212,0.12);padding:6px 12px;border-radius:10px;">Modifier &#8250;</div>
+        </div>
+        <!-- Traitement -->
+        <div id="rgo-trt-bloc" style="display:none;background:rgba(255,255,255,0.65);border-radius:14px;padding:12px 14px;">
+          <div style="font-size:10px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Traitement en cours</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <div>
+              <div id="rgo-med-name" style="font-size:14px;font-weight:700;color:#2C3E50;">&#8212;</div>
+              <div id="rgo-date-display" style="font-size:12px;color:#7F8C8D;margin-top:2px;"></div>
+            </div>
+            <div id="rgo-countdown-badge" style="background:#5BA8D4;color:#fff;border-radius:12px;padding:5px 12px;font-size:11px;font-weight:700;display:none;">&#8212;</div>
+          </div>
+          <!-- Inexium : note arrêt progressif + date fin éditable -->
+          <div id="rgo-inexium-bloc" style="display:none;margin-top:12px;background:#FFF8E8;border-radius:12px;padding:12px 14px;border-left:3px solid #E8A020;">
+            <div style="font-size:12px;font-weight:800;color:#A06010;margin-bottom:6px;">&#9888;&#65039; Arr&#234;t progressif obligatoire</div>
+            <div style="font-size:12px;color:#7A5010;line-height:1.65;font-style:italic;">
+              L&#8217;&#233;soméprazole (Inexium) est un inhibiteur de pompe &#224; protons (IPP).
+              Son arr&#234;t brutal provoque un <strong style="font-style:normal;">effet rebond acide</strong>&#160;: les pompes,
+              sur-compens&#233;es pendant le traitement, produisent davantage d&#8217;acide.
+              R&#233;sultat : les sympt&#244;mes s&#8217;aggravent temporairement et peuvent d&#233;courager l&#8217;arr&#234;t.<br><br>
+              La bonne m&#233;thode&#160;: r&#233;duire la dose <strong style="font-style:normal;">progressivement sur 2 &#224; 4 semaines</strong>,
+              toujours en accord avec le p&#233;diatre.
+              <strong style="font-style:normal;">Jamais du jour au lendemain.</strong>
+            </div>
+            <div style="margin-top:12px;">
+              <div style="font-size:11px;font-weight:700;color:#A06010;margin-bottom:6px;">&#128197; Date de fin de traitement pr&#233;vue</div>
+              <input id="rgo-datefin-edit" type="date" onchange="saveRGODateFin(this.value)"
+                style="background:#fff;border:1.5px solid #E8A020;border-radius:10px;padding:10px 14px;font-size:14px;font-family:Montserrat,sans-serif;color:#2C3E50;width:100%;-webkit-appearance:none;" />
+              <div style="font-size:11px;color:#A06010;margin-top:6px;font-style:italic;">Un rappel s&#8217;affichera 2 semaines avant la fin &#128276;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conseils RGO accordion -->
+      <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.05);margin-bottom:12px;">
+        <div onclick="toggleRGOTips()" style="display:flex;align-items:center;justify-content:space-between;padding:15px 16px;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:18px;">&#128161;</span>
+            <span style="font-size:14px;font-weight:700;color:#2C3E50;">Conseils RGO</span>
+            <span style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:2px 8px;border-radius:20px;">10 astuces</span>
+          </div>
+          <div id="rgo-tips-arrow" style="font-size:18px;color:#7F8C8D;transition:transform 0.25s;">&#8250;</div>
+        </div>
+        <div id="rgo-tips-content" style="display:none;padding:0 14px 16px;display:flex;flex-direction:column;gap:10px;">
+          <!-- Tip 1 -->
+          <div style="background:#F7F5EF;border-radius:14px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:20px;flex-shrink:0;">&#129336;</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:3px;">Position apr&#232;s les repas</div>
+              <div style="font-size:12px;color:#7F8C8D;line-height:1.55;">Tiens b&#233;b&#233; droit (contre toi ou en &#233;charpe) pendant <strong>20 &#224; 30 minutes</strong> apr&#232;s chaque t&#233;t&#233;e. La gravit&#233; est ton allie&#233;e.</div>
+            </div>
+          </div>
+          <!-- Tip 2 -->
+          <div style="background:#F7F5EF;border-radius:14px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:20px;flex-shrink:0;">&#127868;</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:3px;">Fractionner les repas</div>
+              <div style="font-size:12px;color:#7F8C8D;line-height:1.55;">Plus souvent, mais moins &#224; la fois. Si biberon : r&#233;duis le volume par t&#233;t&#233;e et propose plus fr&#233;quemment. Un estomac trop plein = plus de reflux.</div>
+            </div>
+          </div>
+          <!-- Tip 3 -->
+          <div style="background:#F7F5EF;border-radius:14px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:20px;flex-shrink:0;">&#128716;</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:3px;">Incliner le matelas</div>
+              <div style="font-size:12px;color:#7F8C8D;line-height:1.55;">15 &#224; 30° sous le <strong>pied du lit</strong> (jamais sous la t&#234;te, ni coussin &#8212; risque d&#8217;asphyxie). Un livre sous les pieds du lit suffit.</div>
+            </div>
+          </div>
+          <!-- Tip 4 -->
+          <div style="background:#F7F5EF;border-radius:14px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:20px;flex-shrink:0;">&#128085;</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:3px;">&#201;viter la compression</div>
+              <div style="font-size:12px;color:#7F8C8D;line-height:1.55;">V&#234;tements pas trop serr&#233;s &#224; la taille. Pas de si&#232;ge auto ou transat juste apr&#232;s le repas &#8212; la position semi-allonge pousse l&#8217;acide vers le haut.</div>
+            </div>
+          </div>
+          <!-- Tip 5 -->
+          <div style="background:#F7F5EF;border-radius:14px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:20px;flex-shrink:0;">&#129337;</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:3px;">Si allaitement&#160;: positionner autrement</div>
+              <div style="font-size:12px;color:#7F8C8D;line-height:1.55;">Essaie la <strong>position football</strong> (b&#233;b&#233; sous le bras, t&#234;te au sein, pieds derri&#232;re toi) ou <strong>semi-assise</strong> pour r&#233;duire la pression sur l&#8217;&#339;sophage.</div>
+            </div>
+          </div>
+          <!-- Tip 6 -->
+          <div style="background:#F7F5EF;border-radius:14px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:20px;flex-shrink:0;">&#127868;</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:3px;">Si biberon&#160;: t&#233;tine &#224; d&#233;bit lent</div>
+              <div style="font-size:12px;color:#7F8C8D;line-height:1.55;">T&#233;tine d&#233;bit 1 ou lent, b&#233;b&#233; inclin&#233; &#224; 45°. Fais des pauses toutes les 30&#160;ml environ pour faire roter. L&#8217;air aval&#233; aggrave le reflux.</div>
+            </div>
+          </div>
+          <!-- Tip 7 -->
+          <div style="background:#F7F5EF;border-radius:14px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:20px;flex-shrink:0;">&#128168;</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:3px;">Les rots&#160;: prends le temps</div>
+              <div style="font-size:12px;color:#7F8C8D;line-height:1.55;">Syst&#233;matiques apr&#232;s chaque sein ou toutes les 50-60 ml. Position droite, dos en &#233;ventail, tapote doucement. Pas de rot = air prisonnier = reflux garanti.</div>
+            </div>
+          </div>
+          <!-- Tip 8 -->
+          <div style="background:#F0F8FF;border-radius:14px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;border-left:3px solid #E74C3C;">
+            <span style="font-size:20px;flex-shrink:0;">&#128164;</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#E74C3C;margin-bottom:3px;">Dodo sur le dos&#160;: non-n&#233;gociable</div>
+              <div style="font-size:12px;color:#7F8C8D;line-height:1.55;">M&#234;me avec le RGO, b&#233;b&#233; dort sur le dos &#8212; c&#8217;est la seule position s&#251;re contre la mort subite. Le matelas inclin&#233; (sous le pied du lit) est le seul am&#233;nagement autoris&#233;.</div>
+            </div>
+          </div>
+          <!-- Tip 9 -->
+          <div style="background:#F7F5EF;border-radius:14px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:20px;flex-shrink:0;">&#129365;</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:3px;">Diversification&#160;: aliments &#224; &#233;viter</div>
+              <div style="font-size:12px;color:#7F8C8D;line-height:1.55;">Agrumes, tomates, chocolat, aliments gras&#160;: ils rel&#226;chent le sphincter inf&#233;rieur de l&#8217;&#339;sophage. &#192; limiter tant que le RGO n&#8217;est pas stabilisé.</div>
+            </div>
+          </div>
+          <!-- Tip 10 -->
+          <div style="background:#FDEAEA;border-radius:14px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;border-left:3px solid #E74C3C;">
+            <span style="font-size:20px;flex-shrink:0;">&#128680;</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#C0392B;margin-bottom:3px;">Signaux d&#8217;alarme &#8212; consulte vite</div>
+              <div style="font-size:12px;color:#7B241C;line-height:1.55;">Refus persistant de manger &#183; Prise de poids insuffisante &#183; Sang dans les r&#233;gurgitations &#183; Douleurs intenses &#183; Apn&#233;es. <strong>Appelle le m&#233;decin sans attendre.</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
     <!-- Conseil -->
     <div style="margin:12px 16px 16px;background:#FDEAEA;border-radius:16px;padding:13px 14px;display:flex;gap:11px;align-items:flex-start;border-left:3px solid #E89898;">
       <span style="font-size:20px;flex-shrink:0;">&#128680;</span>
@@ -2619,23 +2839,23 @@ function goToApp() {
 }
 // ══ ONBOARDING ══
 var obStep = 0;
-var obData = { role:null, contact:null, contactType:"email", pin:null, pinConfirm:null, pinPhase:1, pinEntry:"", prenom:null, sexe:null, dob:null, surnom:null, poids:null, taille:null, allaitement:null, fratrie:null, prenom2:null, sexe2:null, dob2:null, poids2:null, taille2:null };
+var obData = { role:null, contact:null, contactType:"email", pin:null, pinConfirm:null, pinPhase:1, pinEntry:"", prenom:null, sexe:null, dob:null, surnom:null, poids:null, taille:null, allaitement:null, rgo:null, rgoTraitement:false, rgoMed:null, rgoDateFin:null, fratrie:null, prenom2:null, sexe2:null, dob2:null, poids2:null, taille2:null };
 var obAnimating = false;
 
 // Dot mapping: step → dot index (9 dots total)
-var OB_DOT_MAP = {1:1, 2:2, 3:3, 4:4, 5:4, 6:5, 7:6, 8:7, 9:8, 10:8, 11:8, 12:9};
-var OB_TOTAL_STEPS = 12;
+var OB_DOT_MAP = {1:1, 2:2, 3:3, 4:4, 5:4, 6:5, 7:6, 8:7, 9:8, 10:9, 11:9, 12:9, 13:9, 14:10};
+var OB_TOTAL_STEPS = 14;
 
 function obUpdateDots(n) {
   var dot = OB_DOT_MAP[n] || n;
-  for (var i=1;i<=9;i++) {
+  for (var i=1;i<=10;i++) {
     var d=document.getElementById("ob-dot-"+i); if(!d) continue;
     d.className = i<dot ? "ob-dot done" : i===dot ? "ob-dot active" : "ob-dot";
   }
 }
 function obShowStep(n) {
   obStep = n; obUpdateDots(n);
-  for (var i=1;i<=12;i++) {
+  for (var i=1;i<=14;i++) {
     var s=document.getElementById("ob-s"+i); if(!s) continue;
     s.style.display = i===n ? "flex" : "none";
     if(i===n){s.style.flexDirection="column";s.style.alignItems="center";}
@@ -2643,7 +2863,7 @@ function obShowStep(n) {
   var mb=document.getElementById("ob-main-btn"), gb=document.getElementById("ob-ghost-btn");
   mb.style.display="none"; gb.style.display="none";
 
-  if(n===1||n===5||n===9||n===10) {
+  if(n===1||n===5||n===9||n===10||n===12) {
     // auto-advance via selection, pas de bouton
   } else if(n===2) {
     mb.style.display="block"; mb.textContent="Suivant →";
@@ -2680,11 +2900,27 @@ function obShowStep(n) {
     gb.style.display="block"; gb.textContent="Passer (je n'ai pas les chiffres là)";
   } else if(n===10) {
     var fn10=obData.surnom||obData.prenom;
-    document.getElementById("ob-fratrie-title").textContent="Est-ce que "+fn10+" a une fratrie ?";
-    document.getElementById("ob-fratrie-non-lbl").textContent="Non, c'est tout !";
+    document.getElementById("ob-rgo-title").textContent="Et le RGO, "+fn10+" ?";
+    // auto-advance via obSelectRGO
   } else if(n===11) {
-    var ttl11=obData.fratrie==="twin"?"Et son jumeau / sa jumelle ?":"Et l'autre petit pousse ?";
-    document.getElementById("ob-s11-title").textContent=ttl11;
+    document.getElementById("ob-trt-details").style.display="none";
+    document.getElementById("ob-inexium-datefin").style.display="none";
+    document.getElementById("ob-med-autre-input").style.display="none";
+    document.getElementById("ob-trt-oui").style.borderColor="#A8DFCA";
+    document.getElementById("ob-trt-non").style.borderColor="#A8DFCA";
+    ["inexium","gaviscon","autre"].forEach(function(m){
+      var el=document.getElementById("ob-med-"+m); if(el) el.style.borderColor="#EDE8DF";
+    });
+    obData.rgoTraitement=false; obData.rgoMed=null; obData.rgoDateFin=null;
+    mb.style.display="block"; mb.textContent="Suivant →";
+    gb.style.display="block"; gb.textContent="Passer cette étape";
+  } else if(n===12) {
+    var fn12=obData.surnom||obData.prenom;
+    document.getElementById("ob-fratrie-title").textContent="Est-ce que "+fn12+" a une fratrie ?";
+    document.getElementById("ob-fratrie-non-lbl").textContent="Non, c'est tout !";
+  } else if(n===13) {
+    var ttl13=obData.fratrie==="twin"?"Et son jumeau / sa jumelle ?":"Et l'autre petit pousse ?";
+    document.getElementById("ob-s13-title").textContent=ttl13;
     document.getElementById("ob-prenom2").value="";
     document.getElementById("ob-prenom2").style.borderColor="";
     document.getElementById("ob-dob2").max=new Date().toISOString().slice(0,10);
@@ -2696,7 +2932,7 @@ function obShowStep(n) {
     });
     mb.style.display="block"; mb.textContent="Suivant →";
     gb.style.display="block"; gb.textContent="Ajouter plus tard";
-  } else if(n===12) {
+  } else if(n===14) {
     var dn=obData.surnom||obData.prenom;
     document.getElementById("ob-final-title").textContent="Bienvenue "+dn+" ! 🌱";
     var age=obData.dob?obCalcAge(obData.dob):"—";
@@ -2704,17 +2940,20 @@ function obShowStep(n) {
     var rl=obData.role==="maman"?"👩 Maman":obData.role==="papa"?"👨 Papa":"🩷 Parent";
     var allaitLbl=obData.allaitement==="tetee"?"🤱 Allaitement":obData.allaitement==="biberon"?"🍼 Biberon":"🌸 Mixte";
     var poidsStr=(obData.poids||obData.taille)?((obData.poids?obData.poids+" kg":"—")+" · "+(obData.taille?obData.taille+" cm":"—")):"Non renseigné";
+    var rgoLbl=obData.rgo==="oui"?"🌊 RGO diagnostiqué":obData.rgo==="suspecte"?"🤔 RGO suspecté":"Non";
     document.getElementById("ob-summary").innerHTML=
       '<div style="display:flex;flex-direction:column;gap:10px;">'+
       obRow("Prénom",dn)+(obData.surnom?obRow("Prénom complet",obData.prenom):"")+
       obRow("Sexe",sl)+obRow("Âge",age)+
       obRow("Poids / Taille",poidsStr)+
       obRow("Alimentation",allaitLbl)+
+      obRow("RGO",rgoLbl)+
+      (obData.rgoMed?obRow("Traitement",obData.rgoMed):"")+
       (obData.prenom2?obRow("Fratrie","+ "+obData.prenom2):"")+
       obRow("Tu es",rl)+(obData.contact?obRow("Contact",obData.contact):"")+"</div>";
     mb.style.display="block"; mb.textContent="C'est parti ! 🌱";
   }
-}
+}}
 function obRow(l,v){return’<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;"><span style="font-size:13px;color:#7F8C8D;">’+l+’</span><span style="font-size:13px;font-weight:700;color:#2C3E50;">’+v+’</span></div>’;}
 
 // Contact type
@@ -2790,7 +3029,33 @@ function obSelectSexe2(sexe) {
 }
 function obSelectFratrie(type) {
   obData.fratrie=type;
-  if(type==="none") { obGoTo(12); } else { obGoTo(11); }
+  if(type==="none") { obGoTo(14); } else { obGoTo(13); }
+}
+function obSelectRGO(val) {
+  if(obAnimating) return;
+  obData.rgo=val;
+  if(val==="non") { obGoTo(12); } else { obGoTo(11); }
+}
+function obSelectTraitement(oui) {
+  obData.rgoTraitement=oui;
+  document.getElementById("ob-trt-oui").style.borderColor=oui?"#5A9E82":"#A8DFCA";
+  document.getElementById("ob-trt-oui").style.background=oui?"#EEF9F5":"#fff";
+  document.getElementById("ob-trt-non").style.borderColor=!oui?"#5A9E82":"#A8DFCA";
+  document.getElementById("ob-trt-non").style.background=!oui?"#EEF9F5":"#fff";
+  document.getElementById("ob-trt-details").style.display=oui?"flex":"none";
+  if(oui) document.getElementById("ob-trt-details").style.flexDirection="column";
+  if(!oui) { obData.rgoMed=null; obData.rgoDateFin=null; }
+}
+function obSelectMed(med) {
+  obData.rgoMed=med;
+  ["inexium","gaviscon","autre"].forEach(function(m){
+    var el=document.getElementById("ob-med-"+m);
+    if(el) { el.style.borderColor=m===med?"#5A9E82":"#EDE8DF"; el.style.background=m===med?"#EEF9F5":"#fff"; }
+  });
+  document.getElementById("ob-med-autre-input").style.display=med==="autre"?"block":"none";
+  document.getElementById("ob-inexium-datefin").style.display=med==="inexium"?"block":"none";
+  var today=new Date(); today.setMonth(today.getMonth()+2);
+  if(med==="inexium") document.getElementById("ob-datefin-input").value=today.toISOString().slice(0,10);
 }
 function obSelectAllait(type) {
   if(obAnimating) return;
@@ -2824,6 +3089,15 @@ function obNext() {
     obData.taille=document.getElementById("ob-taille").value||null;
     obGoTo(9);
   } else if(obStep===11) {
+    if(obData.rgoTraitement && obData.rgoMed==="autre") {
+      var av=document.getElementById("ob-med-autre-input").value.trim();
+      if(av) obData.rgoMed=av;
+    }
+    if(obData.rgoTraitement && obData.rgoMed==="inexium") {
+      obData.rgoDateFin=document.getElementById("ob-datefin-input").value||null;
+    }
+    obGoTo(12);
+  } else if(obStep===13) {
     var p=document.getElementById("ob-prenom2").value.trim();
     if(p) {
       obData.prenom2=p.charAt(0).toUpperCase()+p.slice(1);
@@ -2834,8 +3108,8 @@ function obNext() {
     } else {
       obData.prenom2=null; obData.sexe2=null; obData.dob2=null; obData.poids2=null; obData.taille2=null;
     }
-    obGoTo(12);
-  } else if(obStep===12) {
+    obGoTo(14);
+  } else if(obStep===14) {
     obFinish();
   }
 }
@@ -2844,7 +3118,8 @@ function obGhost() {
   if(obStep===2) { obData.contact=null; obGoTo(3); }
   else if(obStep===7) { obData.surnom=null; obGoTo(8); }
   else if(obStep===8) { obData.poids=null; obData.taille=null; obGoTo(9); }
-  else if(obStep===11) { obData.prenom2=null; obData.sexe2=null; obData.dob2=null; obData.poids2=null; obData.taille2=null; obGoTo(12); }
+  else if(obStep===11) { obData.rgoTraitement=false; obData.rgoMed=null; obData.rgoDateFin=null; obGoTo(12); }
+  else if(obStep===13) { obData.prenom2=null; obData.sexe2=null; obData.dob2=null; obData.poids2=null; obData.taille2=null; obGoTo(14); }
 }
 function obSkipSurnom() { obGhost(); }
 
@@ -2852,7 +3127,7 @@ function obGoTo(next) {
   obShowStep(next);
 }
 function obFinish() {
-  var profile={role:obData.role,prenom:obData.prenom,sexe:obData.sexe,dob:obData.dob,surnom:obData.surnom,displayName:obData.surnom||obData.prenom,poids:obData.poids,taille:obData.taille,allaitement:obData.allaitement};
+  var profile={role:obData.role,prenom:obData.prenom,sexe:obData.sexe,dob:obData.dob,surnom:obData.surnom,displayName:obData.surnom||obData.prenom,poids:obData.poids,taille:obData.taille,allaitement:obData.allaitement,rgo:obData.rgo,rgoTraitement:obData.rgoTraitement,rgoMed:obData.rgoMed,rgoDateFin:obData.rgoDateFin};
   var profiles=JSON.parse(localStorage.getItem("childProfiles")||"[]");
   profiles[0]=profile;
   if(obData.prenom2) {
@@ -3130,6 +3405,7 @@ function applyChildProfile(profile) {
 
   // Mise à jour des données dynamiques (milestone + vaccin)
   updateDynamicHome(profile);
+  renderRGOSection(profile);
 }
 function obCalcMonths(dob) {
   var birth=new Date(dob), now=new Date();
@@ -3284,6 +3560,68 @@ function toggleAllaitSection(id) {
   var open=c.style.display!=="none";
   c.style.display=open?"none":"block";
   if(a) a.style.transform=open?"rotate(0deg)":"rotate(180deg)";
+}
+
+// ══ RGO ══
+function toggleRGOTips() {
+  var c=document.getElementById("rgo-tips-content");
+  var a=document.getElementById("rgo-tips-arrow");
+  var open=c.style.display!=="none"&&c.style.display!=="";
+  c.style.display=open?"none":"flex";
+  if(!open) c.style.flexDirection="column";
+  if(a) a.style.transform=open?"rotate(0deg)":"rotate(90deg)";
+}
+function toggleRGOEdit() {
+  // Future: modal to edit RGO info
+}
+function saveRGODateFin(val) {
+  var profiles=JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  var idx=parseInt(localStorage.getItem("activeChildIdx")||"0");
+  if(profiles[idx]) { profiles[idx].rgoDateFin=val; localStorage.setItem("childProfiles",JSON.stringify(profiles)); }
+  renderRGOSection(profiles[idx]);
+}
+function renderRGOSection(profile) {
+  var sec=document.getElementById("sante-rgo-section");
+  if(!sec) return;
+  if(!profile||!profile.rgo||profile.rgo==="non") { sec.style.display="none"; return; }
+  sec.style.display="block";
+  // Badge statut
+  var badge=document.getElementById("rgo-statut-badge");
+  if(badge) {
+    badge.textContent=profile.rgo==="oui"?"Diagnostiqué":"Suspecté";
+    badge.style.background=profile.rgo==="oui"?"#5BA8D4":"#F0A060";
+  }
+  // Traitement
+  var trtBloc=document.getElementById("rgo-trt-bloc");
+  if(profile.rgoTraitement&&profile.rgoMed) {
+    trtBloc.style.display="block";
+    var medMap={"inexium":"Inexium (ésoméprazole)","gaviscon":"Gaviscon nourrisson"};
+    document.getElementById("rgo-med-name").textContent=medMap[profile.rgoMed]||profile.rgoMed;
+    // Date fin
+    var dateFin=profile.rgoDateFin;
+    var dateDisp=document.getElementById("rgo-date-display");
+    var cntBadge=document.getElementById("rgo-countdown-badge");
+    if(dateFin) {
+      var df=new Date(dateFin), now=new Date();
+      var days=Math.ceil((df-now)/86400000);
+      var mo=["jan.","fév.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+      dateDisp.textContent="Fin prévue : "+df.getDate()+" "+mo[df.getMonth()]+" "+df.getFullYear();
+      cntBadge.style.display="block";
+      if(days<=0) { cntBadge.textContent="Terminé !"; cntBadge.style.background="#5A9E82"; }
+      else if(days<=14) { cntBadge.textContent="J-"+days+" ⚠️"; cntBadge.style.background="#E8A020"; }
+      else { cntBadge.textContent="J-"+days; cntBadge.style.background="#5BA8D4"; }
+      var editInput=document.getElementById("rgo-datefin-edit");
+      if(editInput) editInput.value=dateFin;
+    } else {
+      dateDisp.textContent="Date de fin non renseignée";
+      cntBadge.style.display="none";
+    }
+    // Inexium bloc
+    var inexBloc=document.getElementById("rgo-inexium-bloc");
+    if(inexBloc) inexBloc.style.display=profile.rgoMed==="inexium"?"block":"none";
+  } else {
+    trtBloc.style.display="none";
+  }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
