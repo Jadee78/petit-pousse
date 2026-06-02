@@ -146,10 +146,65 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
   from { opacity:0; transform:translateY(16px); }
   to { opacity:1; transform:translateY(0); }
 }
+/* ══ LOCK SCREEN ══ */
+#screen-lock { background:linear-gradient(160deg,#f0f8f4 0%,#e8f5ee 60%,#f5f0f8 100%); flex-direction:column; align-items:center; justify-content:flex-start; padding:80px 28px 40px; }
+#screen-lock.active { display:flex !important; }
+.lock-logo { display:flex; flex-direction:column; align-items:center; gap:8px; margin-bottom:32px; }
+.lock-logo img { width:64px; height:64px; }
+.lock-greeting { font-size:22px; font-weight:800; color:var(--text); margin-top:4px; text-align:center; }
+.lock-sub { font-size:14px; color:var(--sub); margin-top:4px; text-align:center; }
+.lock-dots { display:flex; gap:16px; margin:20px 0 28px; }
+.lock-dot { width:16px; height:16px; border-radius:50%; background:rgba(90,158,130,0.2); transition:background .15s; }
+.lock-dot.filled { background:var(--green); }
+.lock-pad { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; width:280px; }
+.lock-key { background:#fff; border:none; border-radius:18px; height:64px; font-size:24px; font-weight:700; color:var(--text); font-family:Montserrat,sans-serif; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,0.07); transition:background .1s; -webkit-tap-highlight-color:transparent; }
+.lock-key:active { background:var(--green-lt); }
+.lock-err { font-size:13px; color:#E74C3C; margin-top:14px; min-height:20px; text-align:center; }
+/* ══ PIN CRÉATION (onboarding) ══ */
+.ob-pin-dots { display:flex; gap:14px; margin:24px 0 18px; }
+.ob-pin-dot { width:18px; height:18px; border-radius:50%; background:rgba(90,158,130,0.2); transition:background .15s; }
+.ob-pin-dot.filled { background:var(--green); }
+.ob-pin-pad { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; width:100%; max-width:280px; }
+.ob-pin-key { background:#fff; border:none; border-radius:16px; height:58px; font-size:22px; font-weight:700; color:var(--text); font-family:Montserrat,sans-serif; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.06); transition:background .1s; -webkit-tap-highlight-color:transparent; }
+.ob-pin-key:active { background:var(--green-lt); }
+/* ══ CONTACT TOGGLE ══ */
+.ob-contact-toggle { display:flex; background:rgba(44,62,80,0.07); border-radius:14px; padding:3px; margin-top:20px; width:100%; }
+.ob-ct-btn { flex:1; text-align:center; font-size:13px; font-weight:700; padding:10px; border-radius:11px; cursor:pointer; transition:all .2s; color:var(--sub); }
+.ob-ct-btn.active { background:#fff; color:var(--green); box-shadow:0 1px 8px rgba(0,0,0,0.08); }
 </style>
 </head>
 <body>
 <div id="app">
+
+  <!-- LOCK SCREEN -->
+  <div id="screen-lock" class="screen">
+    <div class="lock-logo">
+      <img src="logo.svg" />
+      <div class="lock-greeting" id="lock-greeting">Bonjour &#128075;</div>
+      <div class="lock-sub">Entre ton code pour continuer</div>
+    </div>
+    <div class="lock-dots">
+      <div class="lock-dot" id="ld-1"></div>
+      <div class="lock-dot" id="ld-2"></div>
+      <div class="lock-dot" id="ld-3"></div>
+      <div class="lock-dot" id="ld-4"></div>
+    </div>
+    <div class="lock-pad">
+      <button class="lock-key" onclick="lockKey('1')">1</button>
+      <button class="lock-key" onclick="lockKey('2')">2</button>
+      <button class="lock-key" onclick="lockKey('3')">3</button>
+      <button class="lock-key" onclick="lockKey('4')">4</button>
+      <button class="lock-key" onclick="lockKey('5')">5</button>
+      <button class="lock-key" onclick="lockKey('6')">6</button>
+      <button class="lock-key" onclick="lockKey('7')">7</button>
+      <button class="lock-key" onclick="lockKey('8')">8</button>
+      <button class="lock-key" onclick="lockKey('9')">9</button>
+      <div></div>
+      <button class="lock-key" onclick="lockKey('0')">0</button>
+      <button class="lock-key" style="font-size:18px;" onclick="lockDel()">&#9003;</button>
+    </div>
+    <div class="lock-err" id="lock-err"></div>
+  </div>
 
   <!-- ONBOARDING -->
   <div id="screen-onboarding" class="screen">
@@ -161,6 +216,8 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div class="ob-dot" id="ob-dot-4"></div>
       <div class="ob-dot" id="ob-dot-5"></div>
       <div class="ob-dot" id="ob-dot-6"></div>
+      <div class="ob-dot" id="ob-dot-7"></div>
+      <div class="ob-dot" id="ob-dot-8"></div>
     </div>
     <div class="ob-wrap">
 
@@ -185,16 +242,56 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
       </div>
 
-      <!-- Étape 2 : Prénom -->
+      <!-- Étape 2 : Contact -->
       <div id="ob-s2" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#128236;</div>
+        <div class="ob-title">Tes coordonn&#233;es</div>
+        <div class="ob-sub">Pour ne jamais perdre tes donn&#233;es &#128153;</div>
+        <div class="ob-contact-toggle">
+          <div class="ob-ct-btn active" id="ob-ct-email" onclick="obSelectContact('email')">Email</div>
+          <div class="ob-ct-btn" id="ob-ct-phone" onclick="obSelectContact('phone')">T&#233;l&#233;phone</div>
+        </div>
+        <input id="ob-contact-input" class="ob-input" type="email" placeholder="ton@email.com" autocomplete="off" style="margin-top:14px;" />
+      </div>
+
+      <!-- Étape 3 : PIN création -->
+      <div id="ob-s3" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#128272;</div>
+        <div class="ob-title" id="ob-pin-title">Cr&#233;e ton code secret</div>
+        <div class="ob-sub" id="ob-pin-sub">4 chiffres &#183; Garde-le bien&nbsp;!</div>
+        <div class="ob-pin-dots">
+          <div class="ob-pin-dot" id="opd-1"></div>
+          <div class="ob-pin-dot" id="opd-2"></div>
+          <div class="ob-pin-dot" id="opd-3"></div>
+          <div class="ob-pin-dot" id="opd-4"></div>
+        </div>
+        <div class="ob-pin-pad">
+          <button class="ob-pin-key" onclick="obPinKey('1')">1</button>
+          <button class="ob-pin-key" onclick="obPinKey('2')">2</button>
+          <button class="ob-pin-key" onclick="obPinKey('3')">3</button>
+          <button class="ob-pin-key" onclick="obPinKey('4')">4</button>
+          <button class="ob-pin-key" onclick="obPinKey('5')">5</button>
+          <button class="ob-pin-key" onclick="obPinKey('6')">6</button>
+          <button class="ob-pin-key" onclick="obPinKey('7')">7</button>
+          <button class="ob-pin-key" onclick="obPinKey('8')">8</button>
+          <button class="ob-pin-key" onclick="obPinKey('9')">9</button>
+          <div></div>
+          <button class="ob-pin-key" onclick="obPinKey('0')">0</button>
+          <button class="ob-pin-key" style="font-size:18px;" onclick="obPinDel()">&#9003;</button>
+        </div>
+        <div id="ob-pin-err" style="font-size:13px;color:#E74C3C;margin-top:12px;min-height:18px;text-align:center;"></div>
+      </div>
+
+      <!-- Étape 4 : Prénom -->
+      <div id="ob-s4" class="ob-content" style="display:none;">
         <div class="ob-illus">&#127807;</div>
         <div class="ob-title">Bienvenue chez<br>Petit Pousse&nbsp;!</div>
-        <div class="ob-sub">Dis-moi comment s&#8217;appelle le petit pousse&nbsp;?</div>
+        <div class="ob-sub">Comment s&#8217;appelle le petit pousse&nbsp;?</div>
         <input id="ob-prenom" class="ob-input" type="text" placeholder="Pr&#233;nom de b&#233;b&#233;&#8230;" autocomplete="off" />
       </div>
 
-      <!-- Étape 3 : Sexe -->
-      <div id="ob-s3" class="ob-content" style="display:none;">
+      <!-- Étape 5 : Sexe -->
+      <div id="ob-s5" class="ob-content" style="display:none;">
         <div class="ob-illus">&#128118;</div>
         <div class="ob-title">C&#8217;est&#8230;</div>
         <div class="ob-sexe-choices">
@@ -209,8 +306,8 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
       </div>
 
-      <!-- Étape 4 : Date de naissance -->
-      <div id="ob-s4" class="ob-content" style="display:none;">
+      <!-- Étape 6 : Date de naissance -->
+      <div id="ob-s6" class="ob-content" style="display:none;">
         <div class="ob-illus">&#127874;</div>
         <div id="ob-dob-title" class="ob-title"></div>
         <div id="ob-dob-italic" class="ob-italic"></div>
@@ -218,16 +315,56 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <input id="ob-dob" class="ob-input" type="date" />
       </div>
 
-      <!-- Étape 5 : Surnom -->
-      <div id="ob-s5" class="ob-content" style="display:none;">
+      <!-- Étape 7 : Surnom -->
+      <div id="ob-s7" class="ob-content" style="display:none;">
         <div class="ob-illus">&#128172;</div>
         <div class="ob-title">On l&#8217;appelle comment&nbsp;?</div>
         <div class="ob-sub">Un petit surnom d&#8217;amour&nbsp;?</div>
         <input id="ob-surnom" class="ob-input" type="text" autocomplete="off" />
       </div>
 
-      <!-- Étape 6 : Bienvenue -->
-      <div id="ob-s6" class="ob-content" style="display:none;">
+      <!-- Étape 8 : Fratrie -->
+      <div id="ob-s8" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#128106;</div>
+        <div class="ob-title" id="ob-fratrie-title">A-t-il/elle une fratrie&nbsp;?</div>
+        <div class="ob-sub">Tu peux aussi les ajouter plus tard</div>
+        <div class="ob-choices" style="margin-top:22px;">
+          <div class="ob-choice" onclick="obSelectFratrie('sibling')">
+            <span class="ob-choice-icon">&#128118;</span>
+            <div><div class="ob-choice-label">Un fr&#232;re ou une s&#339;ur</div></div>
+          </div>
+          <div class="ob-choice" onclick="obSelectFratrie('twin')">
+            <span class="ob-choice-icon">&#129309;</span>
+            <div><div class="ob-choice-label">Un jumeau / une jumelle</div></div>
+          </div>
+          <div class="ob-choice" onclick="obSelectFratrie('none')">
+            <span class="ob-choice-icon">&#127807;</span>
+            <div><div class="ob-choice-label" id="ob-fratrie-non-lbl">Non, c&#8217;est tout !</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 9 : 2e enfant -->
+      <div id="ob-s9" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#127807;</div>
+        <div class="ob-title" id="ob-s9-title">Et l&#8217;autre petit pousse&nbsp;?</div>
+        <div class="ob-sub">Quelques infos rapides</div>
+        <input id="ob-prenom2" class="ob-input" type="text" placeholder="Pr&#233;nom&#8230;" autocomplete="off" style="margin-top:18px;" />
+        <div class="ob-sexe-choices" style="margin-top:14px;">
+          <div class="ob-sexe-card" id="ob-sexe2-fille" onclick="obSelectSexe2('fille')">
+            <span class="ob-sexe-icon">&#128103;</span>
+            <span class="ob-sexe-label">Fille</span>
+          </div>
+          <div class="ob-sexe-card" id="ob-sexe2-garcon" onclick="obSelectSexe2('garcon')">
+            <span class="ob-sexe-icon">&#128102;</span>
+            <span class="ob-sexe-label">Gar&#231;on</span>
+          </div>
+        </div>
+        <input id="ob-dob2" class="ob-input" type="date" style="margin-top:14px;" />
+      </div>
+
+      <!-- Étape 10 : Bienvenue final -->
+      <div id="ob-s10" class="ob-content" style="display:none;">
         <div class="ob-illus">&#10024;</div>
         <div id="ob-final-title" class="ob-title"></div>
         <div class="ob-sub">Petit Pousse est l&#224; pour accompagner toute la famille &#128153;</div>
@@ -239,7 +376,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <!-- Boutons -->
     <div class="ob-bottom">
       <button id="ob-main-btn" class="ob-btn" onclick="obNext()" style="display:none;"></button>
-      <button id="ob-ghost-btn" class="ob-btn-ghost" onclick="obSkipSurnom()" style="display:none;"></button>
+      <button id="ob-ghost-btn" class="ob-btn-ghost" onclick="obGhost()" style="display:none;"></button>
     </div>
 
     <!-- Petite plante — bas gauche, regarde vers la droite (le contenu), cligne de l'œil -->
@@ -314,19 +451,19 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div style="margin-left:4px;color:#7F8C8D;font-size:16px;">&#8250;</div>
       </div>
     </div>
-    <div class="milestone">
+    <div class="milestone" id="home-milestone">
       <div class="ms-emoji">&#127874;</div>
       <div>
-        <div class="ms-tag">Bientôt</div>
-        <div class="ms-title">9 mois dans 18 jours !</div>
-        <div class="ms-sub">Visite médicale à prévoir · Nouvelles saveurs</div>
+        <div class="ms-tag">Bient&#244;t</div>
+        <div class="ms-title" id="home-milestone-title">9 mois dans 18 jours !</div>
+        <div class="ms-sub" id="home-milestone-sub">Visite m&#233;dicale &#224; pr&#233;voir &#183; Nouvelles saveurs</div>
       </div>
     </div>
-    <div class="alert-strip">
+    <div class="alert-strip" id="home-vacc-strip">
       <div class="al-icon">&#128137;</div>
       <div>
-        <div class="al-t">Vaccin dans 6 jours</div>
-        <div class="al-s">DTCaP-Hib-HepB · 3e injection · Pense à prendre RDV</div>
+        <div class="al-t" id="home-vacc-title">Vaccin dans 6 jours</div>
+        <div class="al-s" id="home-vacc-sub">DTCaP-Hib-HepB &#183; 3e injection &#183; Pense &#224; prendre RDV</div>
       </div>
     </div>
     <!-- Carte allaitement accueil (visible si activé) -->
@@ -358,7 +495,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
     <div class="sec-hd"><span class="sec-t">Modules</span></div>
     <div class="mods">
-      <div class="mod" onclick="goTo('vaccins')"><div class="mod-icon">&#128137;</div><div class="mod-t">Vaccins</div><div class="mod-s">Calendrier & suivi</div><div class="mod-badge">Prochain J6</div></div>
+      <div class="mod" onclick="goTo('vaccins')"><div class="mod-icon">&#128137;</div><div class="mod-t">Vaccins</div><div class="mod-s">Calendrier & suivi</div><div class="mod-badge" id="mod-badge-vaccin">Prochain J6</div></div>
       <div class="mod" onclick="switchTab('alim')"><div class="mod-icon">&#129365;</div><div class="mod-t">Diversification</div><div class="mod-s">Aliments & menus</div><div class="mod-badge" data-child-age>8 mois</div></div>
       <div class="mod" onclick="switchTab('sommeil')"><div class="mod-icon">&#128564;</div><div class="mod-t">Sommeil</div><div class="mod-s">Nuit & siestes</div><div class="mod-badge">11h 20min</div></div>
 
@@ -402,11 +539,11 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="font-size:46px;flex-shrink:0;">&#128137;</div>
       <div>
         <div style="font-size:10px;font-weight:700;color:rgba(44,62,80,0.6);letter-spacing:1px;text-transform:uppercase;">Prochain rendez-vous</div>
-        <div style="font-size:19px;font-weight:800;color:#2C3E50;margin-top:3px;">Vaccin 9 mois</div>
-        <div style="font-size:12px;color:rgba(44,62,80,0.65);margin-top:3px;">Lundi 15 juin 2026 · 10h30</div>
+        <div id="vacc-rdv-name" style="font-size:19px;font-weight:800;color:#2C3E50;margin-top:3px;">Vaccin 9 mois</div>
+        <div id="vacc-rdv-date" style="font-size:12px;color:rgba(44,62,80,0.65);margin-top:3px;">Lundi 15 juin 2026</div>
         <div style="margin-top:10px;display:inline-flex;align-items:center;gap:6px;background:rgba(44,62,80,0.1);border-radius:20px;padding:5px 12px;">
           <span style="font-size:12px;">&#9200;</span>
-          <span style="font-size:12px;font-weight:700;color:#2C3E50;">Dans 18 jours</span>
+          <span id="vacc-rdv-days" style="font-size:12px;font-weight:700;color:#2C3E50;">Dans 18 jours</span>
         </div>
       </div>
     </div>
@@ -2423,29 +2560,46 @@ function goToApp() {
 }
 // ══ ONBOARDING ══
 var obStep = 0;
-var obData = { role:null, prenom:null, sexe:null, dob:null, surnom:null };
+var obData = { role:null, contact:null, contactType:"email", pin:null, pinConfirm:null, pinPhase:1, pinEntry:"", prenom:null, sexe:null, dob:null, surnom:null, fratrie:null, prenom2:null, sexe2:null, dob2:null };
 var obAnimating = false;
 
+// Dot mapping: step → dot index
+var OB_DOT_MAP = {1:1, 2:2, 3:3, 4:4, 5:4, 6:5, 7:6, 8:7, 9:7, 10:8};
+var OB_TOTAL_STEPS = 10;
+
 function obUpdateDots(n) {
-  for (var i=1;i<=6;i++) {
+  var dot = OB_DOT_MAP[n] || n;
+  for (var i=1;i<=8;i++) {
     var d=document.getElementById("ob-dot-"+i); if(!d) continue;
-    d.className = i<n ? "ob-dot done" : i===n ? "ob-dot active" : "ob-dot";
+    d.className = i<dot ? "ob-dot done" : i===dot ? "ob-dot active" : "ob-dot";
   }
 }
 function obShowStep(n) {
   obStep = n; obUpdateDots(n);
-  for (var i=1;i<=6;i++) {
+  for (var i=1;i<=10;i++) {
     var s=document.getElementById("ob-s"+i); if(!s) continue;
     s.style.display = i===n ? "flex" : "none";
     if(i===n){s.style.flexDirection="column";s.style.alignItems="center";}
   }
   var mb=document.getElementById("ob-main-btn"), gb=document.getElementById("ob-ghost-btn");
   mb.style.display="none"; gb.style.display="none";
-  if(n===1||n===3) {
-    // auto-advance, pas de bouton
+
+  if(n===1||n===5) {
+    // auto-advance via selection
   } else if(n===2) {
     mb.style.display="block"; mb.textContent="Suivant →";
+    gb.style.display="block"; gb.textContent="Passer pour l’instant";
+  } else if(n===3) {
+    // PIN pad — no button, auto-advance on 4 digits
+    obData.pinPhase=1; obData.pinEntry=""; obData.pin=null; obData.pinConfirm=null;
+    document.getElementById("ob-pin-title").textContent="Crée ton code secret";
+    document.getElementById("ob-pin-sub").textContent="4 chiffres · Garde-le bien !";
+    document.getElementById("ob-pin-err").textContent="";
+    obUpdatePinDots(0);
   } else if(n===4) {
+    mb.style.display="block"; mb.textContent="Suivant →";
+    document.getElementById("ob-prenom").style.borderColor="";
+  } else if(n===6) {
     var e=obData.sexe==="garcon"?"":"e";
     document.getElementById("ob-dob-title").textContent="Quand est né"+e+" "+obData.prenom+" ? 🎂";
     var roleStr=obData.role==="maman"?"maman":obData.role==="papa"?"papa":"parent";
@@ -2453,25 +2607,94 @@ function obShowStep(n) {
     document.getElementById("ob-dob-italic").textContent="Quand es-tu devenu"+acc+" "+roleStr+" ?";
     document.getElementById("ob-dob").max=new Date().toISOString().slice(0,10);
     mb.style.display="block"; mb.textContent="Suivant →";
-  } else if(n===5) {
+  } else if(n===7) {
     var si=document.getElementById("ob-surnom"); si.placeholder=obData.prenom+"..."; si.value="";
     mb.style.display="block"; mb.textContent="Suivant →";
     gb.style.display="block"; gb.textContent="Non, "+obData.prenom+" c’est très bien ! 🌱";
-  } else if(n===6) {
+  } else if(n===8) {
+    var fn=obData.surnom||obData.prenom;
+    document.getElementById("ob-fratrie-title").textContent="Est-ce que "+fn+" a une fratrie ?";
+    var nonLbl=obData.sexe==="garcon"?"Non, c’est tout !":"Non, c’est tout !";
+    document.getElementById("ob-fratrie-non-lbl").textContent=nonLbl;
+  } else if(n===9) {
+    var ttl=obData.fratrie==="twin"?"Et son jumeau / sa jumelle ?":"Et l’autre petit pousse ?";
+    document.getElementById("ob-s9-title").textContent=ttl;
+    document.getElementById("ob-prenom2").value="";
+    document.getElementById("ob-prenom2").style.borderColor="";
+    document.getElementById("ob-dob2").max=new Date().toISOString().slice(0,10);
+    obData.sexe2=null;
+    ["fille","garcon"].forEach(function(s){
+      var el=document.getElementById("ob-sexe2-"+s); if(el) el.className="ob-sexe-card";
+    });
+    mb.style.display="block"; mb.textContent="Suivant →";
+    gb.style.display="block"; gb.textContent="Ajouter plus tard";
+  } else if(n===10) {
     var dn=obData.surnom||obData.prenom;
     document.getElementById("ob-final-title").textContent="Bienvenue "+dn+" ! 🌱";
     var age=obData.dob?obCalcAge(obData.dob):"—";
     var sl=obData.sexe==="garcon"?"👦 Garçon":"👧 Fille";
     var rl=obData.role==="maman"?"👩 Maman":obData.role==="papa"?"👨 Papa":"🩷 Parent";
+    var ctxt=obData.contact?"<br><span style=’font-size:11px;color:#7F8C8D;’>"+obData.contact+"</span>":"";
+    var siblTxt=obData.prenom2?"<br><span style=’font-size:12px;color:#5A9E82;’>+ "+obData.prenom2+"</span>":"";
     document.getElementById("ob-summary").innerHTML=
-      '<div style="display:flex;flex-direction:column;gap:10px;">'+
-      obRow("Prénom affiché",dn)+
+      ‘<div style="display:flex;flex-direction:column;gap:10px;">’+
+      obRow("Prénom affiché",dn+(obData.surnom?"":siblTxt))+
       (obData.surnom?obRow("Prénom complet",obData.prenom):"")+
-      obRow("Sexe",sl)+obRow("Âge",age)+obRow("Tu es",rl)+'</div>';
+      (obData.prenom2?obRow("Fratrie",obData.prenom2):"")+
+      obRow("Sexe",sl)+obRow("Âge",age)+obRow("Tu es",rl+(ctxt?"<br><span style=’font-size:11px;color:#7F8C8D;’>"+obData.contact+"</span>":""))+’</div>’;
     mb.style.display="block"; mb.textContent="C’est parti ! 🌱";
   }
 }
-function obRow(l,v){return'<div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;color:#7F8C8D;">'+l+'</span><span style="font-size:13px;font-weight:700;color:#2C3E50;">'+v+'</span></div>';}
+function obRow(l,v){return’<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;"><span style="font-size:13px;color:#7F8C8D;">’+l+’</span><span style="font-size:13px;font-weight:700;color:#2C3E50;">’+v+’</span></div>’;}
+
+// Contact type
+function obSelectContact(type) {
+  obData.contactType=type;
+  document.getElementById("ob-ct-email").className="ob-ct-btn"+(type==="email"?" active":"");
+  document.getElementById("ob-ct-phone").className="ob-ct-btn"+(type==="phone"?" active":"");
+  var inp=document.getElementById("ob-contact-input");
+  inp.type=type==="email"?"email":"tel";
+  inp.placeholder=type==="email"?"ton@email.com":"06 xx xx xx xx";
+  inp.value="";
+}
+
+// PIN creation pad
+function obUpdatePinDots(len) {
+  for(var i=1;i<=4;i++){
+    var d=document.getElementById("opd-"+i); if(d) d.className="ob-pin-dot"+(i<=len?" filled":"");
+  }
+}
+function obPinKey(k) {
+  if(obData.pinEntry.length>=4) return;
+  obData.pinEntry+=k;
+  obUpdatePinDots(obData.pinEntry.length);
+  if(obData.pinEntry.length===4) {
+    setTimeout(function(){
+      if(obData.pinPhase===1) {
+        obData.pin=obData.pinEntry; obData.pinEntry="";
+        obData.pinPhase=2;
+        document.getElementById("ob-pin-title").textContent="Confirme ton code";
+        document.getElementById("ob-pin-sub").textContent="Entre-le une 2e fois";
+        document.getElementById("ob-pin-err").textContent="";
+        obUpdatePinDots(0);
+      } else {
+        if(obData.pinEntry===obData.pin) {
+          obData.pinConfirm=obData.pinEntry;
+          obGoTo(4);
+        } else {
+          obData.pinEntry=""; obUpdatePinDots(0);
+          document.getElementById("ob-pin-err").textContent="Code incorrect, réessaie";
+          obData.pinPhase=1; obData.pin=null;
+          document.getElementById("ob-pin-title").textContent="Crée ton code secret";
+          document.getElementById("ob-pin-sub").textContent="4 chiffres · Garde-le bien !";
+        }
+      }
+    },180);
+  }
+}
+function obPinDel() {
+  if(obData.pinEntry.length>0) { obData.pinEntry=obData.pinEntry.slice(0,-1); obUpdatePinDots(obData.pinEntry.length); }
+}
 
 function obSelectRole(role) {
   if(obAnimating) return;
@@ -2487,27 +2710,56 @@ function obSelectSexe(sexe) {
   ["fille","garcon"].forEach(function(s){
     var el=document.getElementById("ob-sexe-"+s); if(el) el.className="ob-sexe-card"+(s===sexe?" selected":"");
   });
-  setTimeout(function(){obGoTo(4);},350);
+  setTimeout(function(){obGoTo(6);},350);
+}
+function obSelectSexe2(sexe) {
+  obData.sexe2=sexe;
+  ["fille","garcon"].forEach(function(s){
+    var el=document.getElementById("ob-sexe2-"+s); if(el) el.className="ob-sexe-card"+(s===sexe?" selected":"");
+  });
+}
+function obSelectFratrie(type) {
+  obData.fratrie=type;
+  if(type==="none") { obGoTo(10); } else { obGoTo(9); }
 }
 function obNext() {
   if(obAnimating) return;
   if(obStep===2) {
+    var v=document.getElementById("ob-contact-input").value.trim();
+    obData.contact=v||null;
+    obGoTo(3);
+  } else if(obStep===4) {
     var v=document.getElementById("ob-prenom").value.trim();
     if(!v){document.getElementById("ob-prenom").style.borderColor="#E74C3C";return;}
     obData.prenom=v.charAt(0).toUpperCase()+v.slice(1);
-    obGoTo(3);
-  } else if(obStep===4) {
+    obGoTo(5);
+  } else if(obStep===6) {
     var d=document.getElementById("ob-dob").value;
     if(!d){document.getElementById("ob-dob").style.borderColor="#E74C3C";return;}
-    obData.dob=d; obGoTo(5);
-  } else if(obStep===5) {
+    obData.dob=d; obGoTo(7);
+  } else if(obStep===7) {
     var s=document.getElementById("ob-surnom").value.trim();
-    obData.surnom=s?s.charAt(0).toUpperCase()+s.slice(1):null; obGoTo(6);
-  } else if(obStep===6) {
+    obData.surnom=s?s.charAt(0).toUpperCase()+s.slice(1):null; obGoTo(8);
+  } else if(obStep===9) {
+    var p=document.getElementById("ob-prenom2").value.trim();
+    if(p) {
+      obData.prenom2=p.charAt(0).toUpperCase()+p.slice(1);
+      obData.dob2=document.getElementById("ob-dob2").value||null;
+    } else {
+      obData.prenom2=null; obData.sexe2=null; obData.dob2=null;
+    }
+    obGoTo(10);
+  } else if(obStep===10) {
     obFinish();
   }
 }
-function obSkipSurnom() { if(obAnimating) return; obData.surnom=null; obGoTo(6); }
+function obGhost() {
+  if(obAnimating) return;
+  if(obStep===2) { obData.contact=null; obGoTo(3); }
+  else if(obStep===7) { obData.surnom=null; obGoTo(8); }
+  else if(obStep===9) { obData.prenom2=null; obData.sexe2=null; obData.dob2=null; obGoTo(10); }
+}
+function obSkipSurnom() { obGhost(); }
 
 function obGoTo(next) {
   obShowStep(next);
@@ -2516,13 +2768,55 @@ function obFinish() {
   var profile={role:obData.role,prenom:obData.prenom,sexe:obData.sexe,dob:obData.dob,surnom:obData.surnom,displayName:obData.surnom||obData.prenom};
   var profiles=JSON.parse(localStorage.getItem("childProfiles")||"[]");
   profiles[0]=profile;
+  if(obData.prenom2) {
+    var p2={prenom:obData.prenom2,sexe:obData.sexe2||"fille",dob:obData.dob2||null,displayName:obData.prenom2};
+    profiles[1]=p2;
+  }
   localStorage.setItem("childProfiles",JSON.stringify(profiles));
   localStorage.setItem("activeChildIdx","0");
+  if(obData.contact||obData.pin) {
+    var acc={contact:obData.contact,contactType:obData.contactType,pin:obData.pin};
+    localStorage.setItem("accountData",JSON.stringify(acc));
+  }
   applyChildProfile(profile);
   updateChildSelectors();
   document.getElementById("screen-onboarding").classList.remove("active");
   document.getElementById("screen-home").classList.add("active");
   document.getElementById("tabbar").style.display="flex";
+}
+
+// ══ LOCK SCREEN ══
+var lockEntry = "";
+function lockUpdateDots(len) {
+  for(var i=1;i<=4;i++){
+    var d=document.getElementById("ld-"+i); if(d) d.className="lock-dot"+(i<=len?" filled":"");
+  }
+}
+function lockKey(k) {
+  if(lockEntry.length>=4) return;
+  lockEntry+=k;
+  lockUpdateDots(lockEntry.length);
+  if(lockEntry.length===4) {
+    setTimeout(function(){
+      var acc=JSON.parse(localStorage.getItem("accountData")||"null");
+      if(acc && acc.pin && lockEntry===acc.pin) {
+        document.getElementById("screen-lock").classList.remove("active");
+        document.getElementById("screen-home").classList.add("active");
+        document.getElementById("tabbar").style.display="flex";
+        var profiles=JSON.parse(localStorage.getItem("childProfiles")||"[]");
+        var idx=parseInt(localStorage.getItem("activeChildIdx")||"0");
+        applyChildProfile(profiles[idx]||profiles[0]);
+        updateChildSelectors();
+      } else {
+        lockEntry=""; lockUpdateDots(0);
+        document.getElementById("lock-err").textContent="Code incorrect, réessaie";
+        setTimeout(function(){ document.getElementById("lock-err").textContent=""; },2000);
+      }
+    },150);
+  }
+}
+function lockDel() {
+  if(lockEntry.length>0){ lockEntry=lockEntry.slice(0,-1); lockUpdateDots(lockEntry.length); }
 }
 
 // ── Multi-enfants ──
@@ -2593,6 +2887,98 @@ function submitNewChild() {
   hideAddChild();
   updateChildSelectors();
 }
+// ══ DONNÉES DYNAMIQUES ══
+var VACC_SCHEDULE = [
+  {m:2,  name:"DTCaP-Hib-HepB + Méningocoque B", short:"DTCaP · 1re injection"},
+  {m:4,  name:"DTCaP-Hib-HepB + Méningocoque B", short:"DTCaP · 2e injection"},
+  {m:5,  name:"Méningocoque B rappel",            short:"Méningocoque B · rappel"},
+  {m:11, name:"DTCaP-Hib-HepB + Méningocoque B + Pneumocoque", short:"DTCaP · 3e injection"},
+  {m:12, name:"ROR + Méningocoque C",             short:"ROR · 1re injection"},
+  {m:16, name:"DTCaP-Hib-HepB + Méningocoque C rappel", short:"DTCaP rappel"},
+  {m:18, name:"ROR 2e injection",                 short:"ROR · 2e injection"},
+  {m:24, name:"Hépatite A (voyages)",             short:"Hépatite A"}
+];
+
+function calcNextVaccine(dob) {
+  var birth=new Date(dob), now=new Date();
+  var months=(now.getFullYear()-birth.getFullYear())*12+(now.getMonth()-birth.getMonth());
+  if(now.getDate()<birth.getDate()) months--;
+  for(var i=0;i<VACC_SCHEDULE.length;i++) {
+    if(VACC_SCHEDULE[i].m > months) {
+      var vd=new Date(birth);
+      vd.setMonth(birth.getMonth()+VACC_SCHEDULE[i].m);
+      var days=Math.ceil((vd-now)/(86400000));
+      return {name:VACC_SCHEDULE[i].name, short:VACC_SCHEDULE[i].short, days:days, date:vd};
+    }
+  }
+  return null;
+}
+function calcNextMilestone(dob) {
+  var birth=new Date(dob), now=new Date();
+  var months=(now.getFullYear()-birth.getFullYear())*12+(now.getMonth()-birth.getMonth());
+  if(now.getDate()<birth.getDate()) months--;
+  var next=months+1;
+  var nd=new Date(birth);
+  nd.setMonth(birth.getMonth()+next);
+  var days=Math.ceil((nd-now)/(86400000));
+  return {months:next, days:days<0?0:days};
+}
+var MILESTONE_SUB = {
+  2:"Sourires sociaux · Commence à suivre des yeux",
+  3:"Tient sa tête · Premiers gazouillements",
+  4:"Se retourne · Rit aux éclats",
+  5:"Attrape les objets · Se tient assis avec appui",
+  6:"Diversification alimentaire · Premiers solides",
+  7:"Rampe / se traîne · Syllabes ba-da-ma",
+  8:"S'assoit seul · Objet permanent",
+  9:"Visite médicale à prévoir · Nouvelles saveurs",
+  10:"Debout avec appui · Imitation",
+  11:"Premiers pas proche · Comprend son prénom",
+  12:"Premiers mots · Bilan pédiatre des 12 mois",
+  15:"Court · Empile les cubes",
+  18:"Vocabulaire qui s'enrichit · Mini-crises normales",
+  24:"Phrases de 2 mots · Grand bilan des 2 ans"
+};
+function getMilestoneSub(m) {
+  if(MILESTONE_SUB[m]) return MILESTONE_SUB[m];
+  if(m<12) return "Nouvelles découvertes chaque jour";
+  return "Bilan pédiatre à prévoir";
+}
+function updateDynamicHome(profile) {
+  if(!profile || !profile.dob) return;
+  // Milestone
+  var ms=calcNextMilestone(profile.dob);
+  var msEl=document.getElementById("home-milestone-title");
+  if(msEl) msEl.textContent="Bientôt "+ms.months+" mois dans "+(ms.days===0?"moins d'un jour":ms.days+" jour"+(ms.days>1?"s":""))+" !";
+  var msSub=document.getElementById("home-milestone-sub");
+  if(msSub) msSub.textContent=getMilestoneSub(ms.months);
+  // Vaccin alert
+  var vacc=calcNextVaccine(profile.dob);
+  var strip=document.getElementById("home-vacc-strip");
+  if(vacc && strip) {
+    strip.style.display="flex";
+    var vt=document.getElementById("home-vacc-title");
+    var vs=document.getElementById("home-vacc-sub");
+    if(vt) vt.textContent = vacc.days<=0 ? "Vaccin à faire !" : "Vaccin dans "+vacc.days+" jour"+(vacc.days>1?"s":"");
+    if(vs) vs.textContent = vacc.short+" · Pense à prendre RDV";
+    // Module badge
+    var mb=document.getElementById("mod-badge-vaccin");
+    if(mb) mb.textContent = vacc.days<=0 ? "Urgent !" : "J-"+vacc.days;
+    // Écran vaccins
+    var vn=document.getElementById("vacc-rdv-name");
+    var vd=document.getElementById("vacc-rdv-date");
+    var vdy=document.getElementById("vacc-rdv-days");
+    if(vn) vn.textContent=vacc.name;
+    if(vd) {
+      var mo=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+      vd.textContent=vacc.date.getDate()+" "+mo[vacc.date.getMonth()]+" "+vacc.date.getFullYear();
+    }
+    if(vdy) vdy.textContent = vacc.days<=0 ? "Dès maintenant !" : "Dans "+vacc.days+" jour"+(vacc.days>1?"s":"");
+  } else if(strip) {
+    strip.style.display="none";
+  }
+}
+
 function obCalcAge(dob) {
   var birth=new Date(dob),now=new Date();
   var m=(now.getFullYear()-birth.getFullYear())*12+(now.getMonth()-birth.getMonth());
@@ -2651,6 +3037,9 @@ function applyChildProfile(profile) {
   // Accueil — bonjour
   var g = document.querySelector(".home-greeting-sub");
   if(g) g.textContent = "Bonjour " + (role==="maman"?"maman":role==="papa"?"papa":"toi") + " !";
+
+  // Mise à jour des données dynamiques (milestone + vaccin)
+  updateDynamicHome(profile);
 }
 function obCalcMonths(dob) {
   var birth=new Date(dob), now=new Date();
@@ -2826,11 +3215,25 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("screen-onboarding").classList.add("active");
     obShowStep(1);
   } else {
-    var idx = parseInt(localStorage.getItem("activeChildIdx") || "0");
-    document.getElementById("tabbar").style.display = "flex";
-    document.getElementById("screen-home").classList.add("active");
-    applyChildProfile(profiles[idx] || profiles[0]);
-    updateChildSelectors();
+    var acc = JSON.parse(localStorage.getItem("accountData") || "null");
+    if (acc && acc.pin) {
+      // Compte avec PIN → écran de verrouillage
+      document.getElementById("tabbar").style.display = "none";
+      document.getElementById("screen-lock").classList.add("active");
+      lockEntry = "";
+      lockUpdateDots(0);
+      document.getElementById("lock-err").textContent = "";
+      var idx2 = parseInt(localStorage.getItem("activeChildIdx") || "0");
+      var p = (profiles[idx2] || profiles[0]);
+      var name = p ? (p.displayName || p.prenom || "") : "";
+      if (name) document.getElementById("lock-greeting").textContent = "Bonjour " + name + " 👋";
+    } else {
+      var idx = parseInt(localStorage.getItem("activeChildIdx") || "0");
+      document.getElementById("tabbar").style.display = "flex";
+      document.getElementById("screen-home").classList.add("active");
+      applyChildProfile(profiles[idx] || profiles[0]);
+      updateChildSelectors();
+    }
   }
 });
 
