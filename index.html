@@ -2448,94 +2448,43 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
 
     <!-- Allergies -->
-    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#9888;&#65039; Allergies connues</span><span style="font-size:13px;color:#5A9E82;font-weight:600;cursor:pointer;">+ Ajouter</span></div>
-    <div style="padding:0 16px;">
-      <div style="background:#EEF9F5;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;">
-        <div style="font-size:28px;">&#128522;</div>
-        <div>
-          <div style="font-size:14px;font-weight:700;color:#5A9E82;">Aucune allergie connue</div>
-          <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Introduire les allergènes un par un, surveiller 48h</div>
-        </div>
-      </div>
+    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#9888;&#65039; Allergies connues</span><span onclick="showAddAllergie()" style="font-size:13px;color:#5A9E82;font-weight:600;cursor:pointer;">+ Ajouter</span></div>
+    <div style="padding:0 16px;" id="allergies-list">
+      <!-- rendu dynamique -->
     </div>
 
     <!-- Premières fois -->
-    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#11088; Premières fois</span><span style="font-size:13px;color:#5A9E82;font-weight:600;cursor:pointer;">+ Ajouter</span></div>
-    <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;">
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:38px;height:38px;border-radius:12px;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#128522;</div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">Premier sourire</div><div style="font-size:11px;color:#7F8C8D;margin-top:1px;">6 semaines · 27 oct. 2025</div></div>
-        <div style="font-size:14px;color:#5A9E82;">&#10003;</div>
-      </div>
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:38px;height:38px;border-radius:12px;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#128483;&#65039;</div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">Premiers babillages</div><div style="font-size:11px;color:#7F8C8D;margin-top:1px;">3 mois · Janv. 2026</div></div>
-        <div style="font-size:14px;color:#5A9E82;">&#10003;</div>
-      </div>
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:38px;height:38px;border-radius:12px;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#9996;&#65039;</div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">Attrape un objet</div><div style="font-size:11px;color:#7F8C8D;margin-top:1px;">4 mois · Fév. 2026</div></div>
-        <div style="font-size:14px;color:#5A9E82;">&#10003;</div>
-      </div>
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:38px;height:38px;border-radius:12px;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#129365;</div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">Premier aliment solide</div><div style="font-size:11px;color:#7F8C8D;margin-top:1px;">5 mois et demi · Purée de carotte</div></div>
-        <div style="font-size:14px;color:#5A9E82;">&#10003;</div>
-      </div>
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:38px;height:38px;border-radius:12px;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#129464;</div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">Assise sans appui</div><div style="font-size:11px;color:#7F8C8D;margin-top:1px;">7 mois · Avril 2026</div></div>
-        <div style="font-size:14px;color:#5A9E82;">&#10003;</div>
-      </div>
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:38px;height:38px;border-radius:12px;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#128027;</div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">À 4 pattes</div><div style="font-size:11px;color:#D4A820;margin-top:1px;">En cours — bientôt !</div></div>
-        <div style="font-size:16px;">&#8987;</div>
-      </div>
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:38px;height:38px;border-radius:12px;background:#F2F2F7;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#129445;</div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#7F8C8D;">Première dent</div><div style="font-size:11px;color:#B0B0B0;margin-top:1px;">Pas encore</div></div>
-        <div style="font-size:16px;">&#9711;</div>
-      </div>
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:38px;height:38px;border-radius:12px;background:#F2F2F7;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#128167;</div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#7F8C8D;">Premier mot</div><div style="font-size:11px;color:#B0B0B0;margin-top:1px;">Vers 10-12 mois</div></div>
-        <div style="font-size:16px;">&#9711;</div>
-      </div>
-
-      <div style="background:#F7F5EF;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;border:1.5px dashed #D8D4CC;cursor:pointer;">
-        <div style="width:38px;height:38px;border-radius:12px;background:#EDE8DF;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;color:#7F8C8D;">+</div>
-        <div style="font-size:13px;color:#7F8C8D;font-weight:600;">Ajouter une première fois</div>
-      </div>
-
+    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#11088; Premières fois</span><span onclick="showAddPremiereFois()" style="font-size:13px;color:#5A9E82;font-weight:600;cursor:pointer;">+ Ajouter</span></div>
+    <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;" id="premieres-fois-list">
+      <!-- rendu dynamique -->
     </div>
 
     <!-- Infos médicales -->
     <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#128203; Infos médicales</span></div>
     <div style="padding:0 16px 16px;">
       <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div style="padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:0.5px solid #EDE8DF;">
+        <div onclick="editInfoMed('groupeSanguin')" style="padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:0.5px solid #EDE8DF;cursor:pointer;">
           <span style="font-size:20px;">&#129658;</span>
           <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">Groupe sanguin</div></div>
-          <div style="font-size:13px;font-weight:700;color:#7F8C8D;">A+</div>
+          <div style="font-size:13px;font-weight:700;color:#7F8C8D;" id="profil-gs">—</div>
+          <div style="font-size:14px;color:#5A9E82;margin-left:4px;">&#62;</div>
         </div>
-        <div style="padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:0.5px solid #EDE8DF;">
+        <div onclick="editInfoMed('pediatre')" style="padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:0.5px solid #EDE8DF;cursor:pointer;">
           <span style="font-size:20px;">&#128104;&#8205;&#9877;&#65039;</span>
           <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">Pédiatre</div></div>
-          <div style="font-size:13px;color:#7F8C8D;">Dr. Lefèvre</div>
+          <div style="font-size:13px;color:#7F8C8D;" id="profil-pediatre">—</div>
+          <div style="font-size:14px;color:#5A9E82;margin-left:4px;">&#62;</div>
+        </div>
+        <div onclick="editInfoMed('telephone')" style="padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:0.5px solid #EDE8DF;cursor:pointer;">
+          <span style="font-size:20px;">&#128222;</span>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">Téléphone pédiatre</div></div>
+          <div style="font-size:13px;color:#7F8C8D;" id="profil-tel">—</div>
+          <div style="font-size:14px;color:#5A9E82;margin-left:4px;">&#62;</div>
         </div>
         <div style="padding:14px 16px;display:flex;align-items:center;gap:12px;">
-          <span style="font-size:20px;">&#128222;</span>
+          <span style="font-size:20px;">&#128680;</span>
           <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">Urgences pédiatriques</div></div>
-          <div style="font-size:13px;font-weight:700;color:#E74C3C;">15</div>
+          <div style="font-size:13px;font-weight:700;color:#E74C3C;"><a href="tel:15" style="color:#E74C3C;text-decoration:none;">15</a></div>
         </div>
       </div>
     </div>
@@ -2644,6 +2593,124 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
   </div>
 
+  <!-- TOAST BIENVENUE -->
+  <div id="toast-bienvenue" style="display:none;position:fixed;bottom:80px;left:16px;right:16px;z-index:600;pointer-events:none;">
+    <div style="background:linear-gradient(135deg,#5A9E82,#3A7E62);border-radius:20px;padding:18px 20px;box-shadow:0 8px 32px rgba(90,158,130,0.35);pointer-events:all;">
+      <div style="display:flex;align-items:flex-start;gap:14px;">
+        <div style="font-size:36px;flex-shrink:0;">&#127807;</div>
+        <div style="flex:1;">
+          <div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:5px;">Bienvenue dans Petit Pousse !</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.85);line-height:1.55;">C'est le moment d'explorer l'app de A à Z — remplis le profil de bébé, découvre toutes les rubriques, et personalise chaque section &#128153;</div>
+        </div>
+        <div onclick="hideToastBienvenue()" style="color:rgba(255,255,255,0.7);font-size:20px;cursor:pointer;flex-shrink:0;">&#215;</div>
+      </div>
+      <button onclick="goTo('profil-enfant');hideToastBienvenue();" style="width:100%;margin-top:14px;background:rgba(255,255,255,0.2);color:#fff;border:1.5px solid rgba(255,255,255,0.4);border-radius:14px;padding:12px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Remplir le profil de b&#233;b&#233; &#8594;</button>
+    </div>
+  </div>
+
+  <!-- MODAL ALLERGIE -->
+  <div id="modal-allergie" style="display:none;position:fixed;inset:0;z-index:500;align-items:flex-end;justify-content:center;background:rgba(44,62,80,0.5);">
+    <div style="background:#F7F5EF;border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:440px;max-height:85vh;overflow-y:auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div style="font-size:17px;font-weight:800;color:#2C3E50;">Ajouter une allergie</div>
+        <div onclick="hideAddAllergie()" style="width:32px;height:32px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#7F8C8D;">&#215;</div>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Allergène</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;" id="allergie-emoji-grid">
+        <div onclick="selectAllergieEmoji('&#129394;','Noix / cacahuètes')" class="al-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:14px;padding:10px 4px;text-align:center;cursor:pointer;">
+          <div style="font-size:24px;">&#129394;</div><div style="font-size:10px;color:#7F8C8D;margin-top:3px;">Noix</div>
+        </div>
+        <div onclick="selectAllergieEmoji('&#129371;','Lait / produits laitiers')" class="al-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:14px;padding:10px 4px;text-align:center;cursor:pointer;">
+          <div style="font-size:24px;">&#129371;</div><div style="font-size:10px;color:#7F8C8D;margin-top:3px;">Lait</div>
+        </div>
+        <div onclick="selectAllergieEmoji('&#127798;','Gluten / blé')" class="al-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:14px;padding:10px 4px;text-align:center;cursor:pointer;">
+          <div style="font-size:24px;">&#127798;</div><div style="font-size:10px;color:#7F8C8D;margin-top:3px;">Gluten</div>
+        </div>
+        <div onclick="selectAllergieEmoji('&#129361;','Oeufs')" class="al-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:14px;padding:10px 4px;text-align:center;cursor:pointer;">
+          <div style="font-size:24px;">&#129361;</div><div style="font-size:10px;color:#7F8C8D;margin-top:3px;">Oeufs</div>
+        </div>
+        <div onclick="selectAllergieEmoji('&#128031;','Poisson')" class="al-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:14px;padding:10px 4px;text-align:center;cursor:pointer;">
+          <div style="font-size:24px;">&#128031;</div><div style="font-size:10px;color:#7F8C8D;margin-top:3px;">Poisson</div>
+        </div>
+        <div onclick="selectAllergieEmoji('&#129408;','Crustacés')" class="al-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:14px;padding:10px 4px;text-align:center;cursor:pointer;">
+          <div style="font-size:24px;">&#129408;</div><div style="font-size:10px;color:#7F8C8D;margin-top:3px;">Fruits mer</div>
+        </div>
+        <div onclick="selectAllergieEmoji('&#127815;','Soja')" class="al-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:14px;padding:10px 4px;text-align:center;cursor:pointer;">
+          <div style="font-size:24px;">&#127815;</div><div style="font-size:10px;color:#7F8C8D;margin-top:3px;">Soja</div>
+        </div>
+        <div onclick="selectAllergieEmoji('&#127807;','Autre')" class="al-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:14px;padding:10px 4px;text-align:center;cursor:pointer;">
+          <div style="font-size:24px;">&#127807;</div><div style="font-size:10px;color:#7F8C8D;margin-top:3px;">Autre</div>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Description</div>
+      <input id="allergie-desc" type="text" class="lf-input" placeholder="Ex : allergie au lait de vache diagnostiquée..." autocomplete="off" style="margin-bottom:14px;" />
+      <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Sévérité</div>
+      <div style="display:flex;gap:8px;margin-bottom:20px;" id="allergie-severite-btns">
+        <div onclick="selectAllergieSev('legere')" id="alsev-legere" style="flex:1;background:#fff;border:2px solid #E8F5EE;border-radius:14px;padding:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;color:#7F8C8D;">Légère</div>
+        <div onclick="selectAllergieSev('moderee')" id="alsev-moderee" style="flex:1;background:#fff;border:2px solid #E8F5EE;border-radius:14px;padding:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;color:#7F8C8D;">Modérée</div>
+        <div onclick="selectAllergieSev('severe')" id="alsev-severe" style="flex:1;background:#fff;border:2px solid #E8F5EE;border-radius:14px;padding:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;color:#7F8C8D;">Sévère</div>
+      </div>
+      <button onclick="saveAllergie()" class="lf-btn">Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- MODAL PREMIÈRE FOIS -->
+  <div id="modal-pf" style="display:none;position:fixed;inset:0;z-index:500;align-items:flex-end;justify-content:center;background:rgba(44,62,80,0.5);">
+    <div style="background:#F7F5EF;border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:440px;max-height:85vh;overflow-y:auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div style="font-size:17px;font-weight:800;color:#2C3E50;">Première fois</div>
+        <div onclick="hideAddPremiereFois()" style="width:32px;height:32px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#7F8C8D;">&#215;</div>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Moment</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:16px;">
+        <div onclick="selectPFEmoji('&#128522;')" class="pf-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:8px 2px;text-align:center;cursor:pointer;font-size:22px;">&#128522;</div>
+        <div onclick="selectPFEmoji('&#129445;')" class="pf-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:8px 2px;text-align:center;cursor:pointer;font-size:22px;">&#129445;</div>
+        <div onclick="selectPFEmoji('&#129317;')" class="pf-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:8px 2px;text-align:center;cursor:pointer;font-size:22px;">&#129317;</div>
+        <div onclick="selectPFEmoji('&#128167;')" class="pf-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:8px 2px;text-align:center;cursor:pointer;font-size:22px;">&#128167;</div>
+        <div onclick="selectPFEmoji('&#129463;')" class="pf-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:8px 2px;text-align:center;cursor:pointer;font-size:22px;">&#129463;</div>
+        <div onclick="selectPFEmoji('&#129365;')" class="pf-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:8px 2px;text-align:center;cursor:pointer;font-size:22px;">&#129365;</div>
+        <div onclick="selectPFEmoji('&#128704;')" class="pf-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:8px 2px;text-align:center;cursor:pointer;font-size:22px;">&#128704;</div>
+        <div onclick="selectPFEmoji('&#9996;&#65039;')" class="pf-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:8px 2px;text-align:center;cursor:pointer;font-size:22px;">&#9996;&#65039;</div>
+        <div onclick="selectPFEmoji('&#127926;')" class="pf-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:8px 2px;text-align:center;cursor:pointer;font-size:22px;">&#127926;</div>
+        <div onclick="selectPFEmoji('&#11088;')" class="pf-emoji-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:8px 2px;text-align:center;cursor:pointer;font-size:22px;">&#11088;</div>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Description</div>
+      <input id="pf-desc" type="text" class="lf-input" placeholder="Ex : Premier sourire, Premiers pas..." autocomplete="off" style="margin-bottom:14px;" />
+      <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Date <span style="font-weight:400;color:#B0B8C1;">(optionnel)</span></div>
+      <input id="pf-date" type="date" class="lf-input" style="margin-bottom:20px;" />
+      <button onclick="savePremiereFois()" class="lf-btn">Enregistrer &#10024;</button>
+    </div>
+  </div>
+
+  <!-- MODAL INFO MÉDICALE -->
+  <div id="modal-infoMed" style="display:none;position:fixed;inset:0;z-index:500;align-items:flex-end;justify-content:center;background:rgba(44,62,80,0.5);">
+    <div style="background:#F7F5EF;border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:440px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div style="font-size:17px;font-weight:800;color:#2C3E50;" id="infoMed-title">Modifier</div>
+        <div onclick="hideInfoMed()" style="width:32px;height:32px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#7F8C8D;">&#215;</div>
+      </div>
+      <!-- Groupe sanguin : sélecteur -->
+      <div id="infoMed-gs-options" style="display:none;margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Choisir le groupe</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;" id="gs-grid">
+          <div onclick="selectGS('A+')" class="gs-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:12px 4px;text-align:center;font-size:14px;font-weight:700;color:#2C3E50;cursor:pointer;">A+</div>
+          <div onclick="selectGS('A-')" class="gs-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:12px 4px;text-align:center;font-size:14px;font-weight:700;color:#2C3E50;cursor:pointer;">A-</div>
+          <div onclick="selectGS('B+')" class="gs-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:12px 4px;text-align:center;font-size:14px;font-weight:700;color:#2C3E50;cursor:pointer;">B+</div>
+          <div onclick="selectGS('B-')" class="gs-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:12px 4px;text-align:center;font-size:14px;font-weight:700;color:#2C3E50;cursor:pointer;">B-</div>
+          <div onclick="selectGS('AB+')" class="gs-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:12px 4px;text-align:center;font-size:14px;font-weight:700;color:#2C3E50;cursor:pointer;">AB+</div>
+          <div onclick="selectGS('AB-')" class="gs-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:12px 4px;text-align:center;font-size:14px;font-weight:700;color:#2C3E50;cursor:pointer;">AB-</div>
+          <div onclick="selectGS('O+')" class="gs-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:12px 4px;text-align:center;font-size:14px;font-weight:700;color:#2C3E50;cursor:pointer;">O+</div>
+          <div onclick="selectGS('O-')" class="gs-btn" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:12px 4px;text-align:center;font-size:14px;font-weight:700;color:#2C3E50;cursor:pointer;">O-</div>
+        </div>
+      </div>
+      <!-- Champ texte (pédiatre, téléphone) -->
+      <div id="infoMed-input-wrap" style="display:none;margin-bottom:20px;">
+        <input id="infoMed-input" type="text" class="lf-input" placeholder="" autocomplete="off" />
+      </div>
+      <button onclick="saveInfoMed()" class="lf-btn" id="infoMed-save-btn">Enregistrer</button>
+    </div>
+  </div>
+
   <!-- MODAL ÉDITION PROFIL ENFANT -->
   <div id="modal-edit-profil" style="display:none;position:fixed;inset:0;z-index:500;align-items:flex-end;justify-content:center;background:rgba(44,62,80,0.5);">
     <div style="background:#F7F5EF;border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;">
@@ -2718,10 +2785,12 @@ function switchTab(id) {
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   var tab = document.getElementById("tab-" + id);
   if (tab) tab.classList.add("active");
+  setTimeout(function(){ maybeShowRubriqueMsg(id); }, 300);
 }
 function goTo(id) {
   showScreen(id); hist.push(id);
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  setTimeout(function(){ maybeShowRubriqueMsg(id); }, 300);
 }
 function goBack() {
   hist.pop();
@@ -3209,7 +3278,9 @@ function obFinish() {
     profiles[1]=p2;
   }
   if(obData.allaitement) {
-    localStorage.setItem("allait",(obData.allaitement==="tetee"||obData.allaitement==="mixte")?"1":"0");
+    var allaitActive = (obData.allaitement==="tetee"||obData.allaitement==="mixte");
+    localStorage.setItem("allait", allaitActive ? "1" : "0");
+    allaitOn = allaitActive;
   }
   localStorage.setItem("childProfiles",JSON.stringify(profiles));
   localStorage.setItem("activeChildIdx","0");
@@ -3218,10 +3289,13 @@ function obFinish() {
     localStorage.setItem("accountData",JSON.stringify(acc));
   }
   applyChildProfile(profile);
+  applyAllait();
+  updateHomeAllaitCard();
   updateChildSelectors();
   document.getElementById("screen-onboarding").classList.remove("active");
   document.getElementById("screen-home").classList.add("active");
   document.getElementById("tabbar").style.display="flex";
+  setTimeout(showToastBienvenue, 800);
 }
 
 // ══ LOCK SCREEN ══
@@ -3483,6 +3557,12 @@ function applyChildProfile(profile) {
   if (pp) pp.innerHTML = profile.poids ? profile.poids+'<span style="font-size:13px;"> kg</span>' : '—';
   if (pt) pt.innerHTML = profile.taille ? profile.taille+'<span style="font-size:13px;"> cm</span>' : '—';
 
+  // Infos médicales dynamiques
+  applyInfoMedDisplay(profile);
+  // Allergies + premières fois
+  renderAllergies(profile);
+  renderPremieresFois(profile);
+
   // Mise à jour des données dynamiques (milestone + vaccin)
   updateDynamicHome(profile);
   renderRGOSection(profile);
@@ -3702,6 +3782,239 @@ function renderRGOSection(profile) {
   } else {
     trtBloc.style.display="none";
   }
+}
+
+// ── TOAST BIENVENUE ──
+function showToastBienvenue() {
+  var shown = localStorage.getItem("welcomeShown");
+  if (shown) return;
+  localStorage.setItem("welcomeShown","1");
+  var el = document.getElementById("toast-bienvenue");
+  if (!el) return;
+  el.style.display = "block";
+  el.style.opacity = "0";
+  el.style.transform = "translateY(20px)";
+  el.style.transition = "all 0.4s ease";
+  setTimeout(function(){ el.style.opacity="1"; el.style.transform="translateY(0)"; }, 50);
+  setTimeout(hideToastBienvenue, 12000);
+}
+function hideToastBienvenue() {
+  var el = document.getElementById("toast-bienvenue");
+  if (!el) return;
+  el.style.opacity = "0"; el.style.transform = "translateY(20px)";
+  setTimeout(function(){ el.style.display="none"; }, 400);
+}
+
+// ── PREMIER ACCÈS RUBRIQUE (message contextuel) ──
+var RUBRIQUE_MSG = {
+  allait: { title:"Allaitement & Tire-lait", txt:"Ici tu peux chronométrer chaque tétée (sein gauche ou droit), noter tes sessions tire-lait avec le volume et la destination, et retrouver toutes les astuces sur l'allaitement. Je te laisse remplir tes infos !" },
+  sante:  { title:"Santé", txt:"Retrouve ici les conseils en cas de fièvre, la gestion du RGO, et toutes les infos médicales. Note les symptômes, les traitements en cours. Je te laisse remplir tes infos !" },
+  sommeil:{ title:"Sommeil", txt:"Suis les nuits et siestes de bébé, retrouve les repères de sommeil selon l'âge, et les conseils pour les régressions. Je te laisse remplir tes infos !" },
+  alim:   { title:"Alimentation", txt:"Découvre quels aliments introduire selon l'âge, avec les guides DME et purée pour chaque aliment. Je te laisse remplir tes infos !" },
+  vaccins:{ title:"Vaccins", txt:"Ton calendrier vaccinal complet, le prochain rendez-vous calculé automatiquement selon la date de naissance de bébé. Je te laisse remplir tes infos !" },
+  eveil:  { title:"Éveil", txt:"Activités adaptées à l'âge de bébé, stades de développement, comptines, signes bébé. Je te laisse remplir tes infos !" },
+  "profil-enfant": { title:"Profil de bébé", txt:"C'est ici que tu notes tout sur bébé : allergies, premières fois, groupe sanguin, pédiatre, traitements en cours. Plus c'est complet, plus l'app est utile ! Je te laisse remplir tes infos !" }
+};
+function maybeShowRubriqueMsg(id) {
+  var info = RUBRIQUE_MSG[id];
+  if (!info) return;
+  var key = "rubrique_seen_" + id;
+  if (localStorage.getItem(key)) return;
+  localStorage.setItem(key, "1");
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;z-index:800;display:flex;align-items:center;justify-content:center;background:rgba(44,62,80,0.55);padding:24px;";
+  overlay.innerHTML = '<div style="background:#fff;border-radius:24px;padding:28px 22px;max-width:380px;width:100%;box-shadow:0 16px 48px rgba(0,0,0,0.18);">' +
+    '<div style="font-size:36px;text-align:center;margin-bottom:12px;">&#127807;</div>' +
+    '<div style="font-size:17px;font-weight:800;color:#2C3E50;text-align:center;margin-bottom:12px;">' + info.title + '</div>' +
+    '<div style="font-size:14px;color:#7F8C8D;line-height:1.7;text-align:center;margin-bottom:22px;">' + info.txt + '</div>' +
+    '<button onclick="this.closest(\'div[style*=fixed]\').remove();" style="width:100%;background:#5A9E82;color:#fff;border:none;border-radius:16px;padding:15px;font-size:15px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">C\'est parti ! &#128153;</button>' +
+    '</div>';
+  document.body.appendChild(overlay);
+}
+
+// ── ALLERGIES ──
+var allergieEmoji = "&#127807;";
+var allergieEmojiTxt = "Autre";
+var allergieSev = "legere";
+function showAddAllergie() {
+  allergieEmoji = "&#127807;"; allergieEmojiTxt = "Autre"; allergieSev = "legere";
+  document.getElementById("allergie-desc").value = "";
+  document.querySelectorAll(".al-emoji-btn").forEach(function(b){ b.style.borderColor="#E8F5EE"; b.style.background="#fff"; });
+  document.querySelectorAll(".al-emoji-btn")[7].style.borderColor="#5A9E82"; document.querySelectorAll(".al-emoji-btn")[7].style.background="#EEF9F5";
+  selectAllergieSev("legere");
+  document.getElementById("modal-allergie").style.display = "flex";
+}
+function hideAddAllergie() { document.getElementById("modal-allergie").style.display = "none"; }
+function selectAllergieEmoji(emoji, label) {
+  allergieEmoji = emoji; allergieEmojiTxt = label;
+  document.querySelectorAll(".al-emoji-btn").forEach(function(b){ b.style.borderColor="#E8F5EE"; b.style.background="#fff"; });
+  event.currentTarget.style.borderColor="#5A9E82"; event.currentTarget.style.background="#EEF9F5";
+}
+function selectAllergieSev(sev) {
+  allergieSev = sev;
+  ["legere","moderee","severe"].forEach(function(s){
+    var el=document.getElementById("alsev-"+s); if(!el) return;
+    el.style.borderColor = s===sev?"#5A9E82":"#E8F5EE";
+    el.style.background = s===sev?"#EEF9F5":"#fff";
+    el.style.color = s===sev?"#2C3E50":"#7F8C8D";
+  });
+}
+function saveAllergie() {
+  var desc = document.getElementById("allergie-desc").value.trim();
+  if (!desc) { document.getElementById("allergie-desc").style.borderColor="#E74C3C"; document.getElementById("allergie-desc").focus(); return; }
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var profiles = JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  if (!profiles[idx]) return;
+  if (!profiles[idx].allergies) profiles[idx].allergies = [];
+  profiles[idx].allergies.push({ emoji:allergieEmoji, label:allergieEmojiTxt, desc:desc, sev:allergieSev });
+  localStorage.setItem("childProfiles", JSON.stringify(profiles));
+  hideAddAllergie();
+  renderAllergies(profiles[idx]);
+}
+function renderAllergies(profile) {
+  var list = document.getElementById("allergies-list"); if (!list) return;
+  var items = (profile && profile.allergies) || [];
+  if (!items.length) {
+    list.innerHTML = '<div style="background:#EEF9F5;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;">' +
+      '<div style="font-size:28px;">&#128522;</div>' +
+      '<div><div style="font-size:14px;font-weight:700;color:#5A9E82;">Aucune allergie connue</div>' +
+      '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Introduire les all&#233;rg&#232;nes un par un, surveiller 48h</div></div></div>';
+    return;
+  }
+  var sevColor = {legere:"#5A9E82",moderee:"#E8A020",severe:"#E74C3C"};
+  var sevLabel = {legere:"L&#233;g&#232;re",moderee:"Mod&#233;r&#233;e",severe:"S&#233;v&#232;re"};
+  var h = "";
+  items.forEach(function(a, i) {
+    h += '<div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);margin-bottom:8px;">';
+    h += '<div style="width:38px;height:38px;border-radius:12px;background:#FFF0F0;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">' + a.emoji + '</div>';
+    h += '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">' + a.desc + '</div>';
+    h += '<div style="font-size:11px;margin-top:2px;"><span style="color:' + (sevColor[a.sev]||"#5A9E82") + ';font-weight:700;">' + (sevLabel[a.sev]||a.sev) + '</span></div></div>';
+    h += '<div onclick="deleteAllergie(' + i + ')" style="font-size:18px;color:#C0C0C0;cursor:pointer;padding:4px;">&#215;</div></div>';
+  });
+  list.innerHTML = h;
+}
+function deleteAllergie(i) {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var profiles = JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  if (!profiles[idx] || !profiles[idx].allergies) return;
+  profiles[idx].allergies.splice(i,1);
+  localStorage.setItem("childProfiles",JSON.stringify(profiles));
+  renderAllergies(profiles[idx]);
+}
+
+// ── PREMIÈRES FOIS ──
+var pfEmoji = "&#11088;";
+function showAddPremiereFois() {
+  pfEmoji = "&#11088;";
+  document.getElementById("pf-desc").value = "";
+  document.getElementById("pf-date").value = "";
+  document.querySelectorAll(".pf-emoji-btn").forEach(function(b){ b.style.borderColor="#E8F5EE"; b.style.background="#fff"; });
+  document.getElementById("modal-pf").style.display = "flex";
+}
+function hideAddPremiereFois() { document.getElementById("modal-pf").style.display = "none"; }
+function selectPFEmoji(e) {
+  pfEmoji = e;
+  document.querySelectorAll(".pf-emoji-btn").forEach(function(b){ b.style.borderColor="#E8F5EE"; b.style.background="#fff"; });
+  event.currentTarget.style.borderColor="#5A9E82"; event.currentTarget.style.background="#EEF9F5";
+}
+function savePremiereFois() {
+  var desc = document.getElementById("pf-desc").value.trim();
+  if (!desc) { document.getElementById("pf-desc").style.borderColor="#E74C3C"; document.getElementById("pf-desc").focus(); return; }
+  var date = document.getElementById("pf-date").value;
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var profiles = JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  if (!profiles[idx]) return;
+  if (!profiles[idx].premieresFois) profiles[idx].premieresFois = [];
+  profiles[idx].premieresFois.unshift({ emoji:pfEmoji, desc:desc, date:date||null });
+  localStorage.setItem("childProfiles",JSON.stringify(profiles));
+  hideAddPremiereFois();
+  renderPremieresFois(profiles[idx]);
+}
+function renderPremieresFois(profile) {
+  var list = document.getElementById("premieres-fois-list"); if (!list) return;
+  var items = (profile && profile.premieresFois) || [];
+  if (!items.length) {
+    list.innerHTML = '<div onclick="showAddPremiereFois()" style="background:#F7F5EF;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;border:1.5px dashed #D8D4CC;cursor:pointer;">' +
+      '<div style="width:38px;height:38px;border-radius:12px;background:#EDE8DF;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;color:#7F8C8D;">+</div>' +
+      '<div style="font-size:13px;color:#7F8C8D;font-weight:600;">Note la premi&#232;re fois de b&#233;b&#233;</div></div>';
+    return;
+  }
+  var mois = ["jan.","f&#233;v.","mars","avr.","mai","juin","juil.","ao&#251;t","sept.","oct.","nov.","d&#233;c."];
+  var h = "";
+  items.forEach(function(pf, i) {
+    var dateTxt = "";
+    if (pf.date) { var d = new Date(pf.date); dateTxt = " · " + d.getDate() + " " + mois[d.getMonth()] + " " + d.getFullYear(); }
+    h += '<div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">';
+    h += '<div style="width:38px;height:38px;border-radius:12px;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">' + pf.emoji + '</div>';
+    h += '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">' + pf.desc + '</div>';
+    if (dateTxt) h += '<div style="font-size:11px;color:#7F8C8D;margin-top:1px;">' + dateTxt + '</div>';
+    h += '</div>';
+    h += '<div onclick="deletePF(' + i + ')" style="font-size:18px;color:#C0C0C0;cursor:pointer;padding:4px;">&#215;</div></div>';
+  });
+  h += '<div onclick="showAddPremiereFois()" style="background:#F7F5EF;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;border:1.5px dashed #D8D4CC;cursor:pointer;margin-top:4px;">' +
+    '<div style="width:38px;height:38px;border-radius:12px;background:#EDE8DF;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;color:#7F8C8D;">+</div>' +
+    '<div style="font-size:13px;color:#7F8C8D;font-weight:600;">En ajouter une autre</div></div>';
+  list.innerHTML = h;
+}
+function deletePF(i) {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var profiles = JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  if (!profiles[idx] || !profiles[idx].premieresFois) return;
+  profiles[idx].premieresFois.splice(i,1);
+  localStorage.setItem("childProfiles",JSON.stringify(profiles));
+  renderPremieresFois(profiles[idx]);
+}
+
+// ── INFOS MÉDICALES ──
+var infoMedField = null;
+function editInfoMed(field) {
+  infoMedField = field;
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var profiles = JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  var p = profiles[idx] || {};
+  var titles = {groupeSanguin:"Groupe sanguin", pediatre:"Pédiatre", telephone:"Téléphone pédiatre"};
+  document.getElementById("infoMed-title").textContent = titles[field] || "Modifier";
+  document.getElementById("infoMed-gs-options").style.display = field==="groupeSanguin" ? "block" : "none";
+  document.getElementById("infoMed-input-wrap").style.display = field!=="groupeSanguin" ? "block" : "none";
+  document.getElementById("infoMed-save-btn").style.display = field!=="groupeSanguin" ? "block" : "none";
+  if (field !== "groupeSanguin") {
+    var ph = {pediatre:"Dr. Martin...", telephone:"06 xx xx xx xx"};
+    document.getElementById("infoMed-input").placeholder = ph[field] || "";
+    document.getElementById("infoMed-input").type = field==="telephone" ? "tel" : "text";
+    document.getElementById("infoMed-input").value = p[field] || "";
+  }
+  document.querySelectorAll(".gs-btn").forEach(function(b){ b.style.borderColor="#E8F5EE"; b.style.background="#fff"; });
+  if (p.groupeSanguin) {
+    document.querySelectorAll(".gs-btn").forEach(function(b){ if(b.textContent.trim()===p.groupeSanguin){b.style.borderColor="#5A9E82";b.style.background="#EEF9F5";} });
+  }
+  document.getElementById("modal-infoMed").style.display = "flex";
+}
+function hideInfoMed() { document.getElementById("modal-infoMed").style.display = "none"; }
+function selectGS(val) {
+  document.querySelectorAll(".gs-btn").forEach(function(b){ b.style.borderColor="#E8F5EE"; b.style.background="#fff"; });
+  event.currentTarget.style.borderColor="#5A9E82"; event.currentTarget.style.background="#EEF9F5";
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var profiles = JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  if (!profiles[idx]) return;
+  profiles[idx].groupeSanguin = val;
+  localStorage.setItem("childProfiles",JSON.stringify(profiles));
+  applyInfoMedDisplay(profiles[idx]);
+  setTimeout(hideInfoMed, 300);
+}
+function saveInfoMed() {
+  var val = document.getElementById("infoMed-input").value.trim();
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var profiles = JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  if (!profiles[idx]) return;
+  profiles[idx][infoMedField] = val || null;
+  localStorage.setItem("childProfiles",JSON.stringify(profiles));
+  applyInfoMedDisplay(profiles[idx]);
+  hideInfoMed();
+}
+function applyInfoMedDisplay(profile) {
+  var gs = document.getElementById("profil-gs"); if(gs) gs.textContent = profile.groupeSanguin || "—";
+  var ped = document.getElementById("profil-pediatre"); if(ped) ped.textContent = profile.pediatre || "—";
+  var tel = document.getElementById("profil-tel"); if(tel) tel.textContent = profile.telephone || "—";
 }
 
 // ── ALLAITEMENT ACCUEIL ──
