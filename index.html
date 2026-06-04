@@ -1569,7 +1569,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           <img src="logo.svg" style="width:36px;height:36px;" />
           <span style="font-size:18px;font-weight:800;color:#fff;">Santé</span>
         </div>
-        <div style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:#fff;">+</div>
+        <div onclick="showAddMed()" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:#fff;">+</div>
       </div>
       <!-- Sélecteur enfant -->
       <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;">
@@ -1585,122 +1585,33 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div class="child-add" onclick="showAddChild()" style="background:rgba(255,255,255,0.2);color:#fff;">+</div>
       </div>
       <!-- Carte température actuelle -->
-      <div style="background:rgba(255,255,255,0.18);border-radius:18px;padding:16px;display:flex;align-items:center;gap:16px;">
+      <div onclick="showAddTemp()" style="background:rgba(255,255,255,0.18);border-radius:18px;padding:16px;display:flex;align-items:center;gap:16px;cursor:pointer;">
         <div style="width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">&#127777;</div>
         <div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.65);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Dernière mesure · 14h00</div>
-          <div style="font-size:32px;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1;">37,2°</div>
-          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(100,220,150,0.3);border-radius:20px;padding:3px 10px;margin-top:5px;">
-            <div style="width:7px;height:7px;border-radius:50%;background:#7FFFB2;"></div>
-            <span style="font-size:11px;font-weight:700;color:#fff;">Normale</span>
+          <div style="font-size:11px;color:rgba(255,255,255,0.65);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;" id="sante-temp-time">Appuie pour noter une mesure</div>
+          <div style="font-size:32px;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1;" id="sante-temp-val">—</div>
+          <div id="sante-temp-badge" style="display:none;align-items:center;gap:5px;border-radius:20px;padding:3px 10px;margin-top:5px;background:rgba(100,220,150,0.3);">
+            <div id="sante-temp-dot" style="width:7px;height:7px;border-radius:50%;background:#7FFFB2;flex-shrink:0;"></div>
+            <span id="sante-temp-label" style="font-size:11px;font-weight:700;color:#fff;">Normale</span>
           </div>
         </div>
-        <div style="margin-left:auto;background:rgba(255,255,255,0.2);border-radius:14px;padding:10px 14px;text-align:center;flex-shrink:0;">
-          <div style="font-size:22px;">&#128522;</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.7);margin-top:3px;font-weight:600;">Pas de<br>fièvre</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Médicaments du jour -->
-    <div class="sec-hd"><span class="sec-t">&#128138; Médicaments du jour</span></div>
-    <div style="padding:0 16px;display:flex;flex-direction:column;gap:10px;">
-
-      <!-- Doliprane -->
-      <div style="background:#fff;border-radius:18px;padding:15px;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <div>
-            <div style="font-size:14px;font-weight:700;color:#2C3E50;">Doliprane 2,4%</div>
-            <div style="font-size:11px;color:#7F8C8D;margin-top:1px;">1,5 ml · Si besoin · Max 4 doses/j</div>
-          </div>
-          <div style="background:#FDEAEA;border-radius:10px;padding:4px 10px;font-size:11px;font-weight:700;color:#C0392B;">Si fièvre</div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
-          <div style="text-align:center;">
-            <div style="width:40px;height:40px;border-radius:12px;background:#EEF9F5;border:2px solid #A8DFCA;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto;">&#10003;</div>
-            <div style="font-size:10px;color:#7F8C8D;margin-top:4px;">Matin</div>
-          </div>
-          <div style="text-align:center;">
-            <div style="width:40px;height:40px;border-radius:12px;background:#EEF9F5;border:2px solid #A8DFCA;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto;">&#10003;</div>
-            <div style="font-size:10px;color:#7F8C8D;margin-top:4px;">Midi</div>
-          </div>
-          <div style="text-align:center;">
-            <div style="width:40px;height:40px;border-radius:12px;background:#F7F5EF;border:2px dashed #D8D4CC;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto;color:#C0C0C0;">+</div>
-            <div style="font-size:10px;color:#7F8C8D;margin-top:4px;">Goûter</div>
-          </div>
-          <div style="text-align:center;">
-            <div style="width:40px;height:40px;border-radius:12px;background:#F7F5EF;border:2px dashed #D8D4CC;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto;color:#C0C0C0;">+</div>
-            <div style="font-size:10px;color:#7F8C8D;margin-top:4px;">Soir</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Amoxicilline -->
-      <div style="background:#fff;border-radius:18px;padding:15px;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <div>
-            <div style="font-size:14px;font-weight:700;color:#2C3E50;">Amoxicilline</div>
-            <div style="font-size:11px;color:#7F8C8D;margin-top:1px;">2,5 ml · 2 fois/j · Antibiotique</div>
-          </div>
-          <div style="background:#EEF9F5;border-radius:10px;padding:4px 10px;font-size:11px;font-weight:700;color:#5A9E82;">J3 / 7</div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
-          <div style="text-align:center;">
-            <div style="width:40px;height:40px;border-radius:12px;background:#EEF9F5;border:2px solid #A8DFCA;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto;">&#10003;</div>
-            <div style="font-size:10px;color:#7F8C8D;margin-top:4px;">Matin</div>
-          </div>
-          <div style="text-align:center;">
-            <div style="width:40px;height:40px;border-radius:12px;background:#F7F5EF;border:2px dashed #D8D4CC;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto;color:#C0C0C0;">+</div>
-            <div style="font-size:10px;color:#7F8C8D;margin-top:4px;">Soir</div>
-          </div>
-        </div>
-        <div style="margin-top:10px;background:#FFF3CD;border-radius:10px;padding:8px 12px;">
-          <div style="font-size:11px;color:#9A8000;line-height:1.4;">&#9888;&#65039; Finir le traitement même si bébé va mieux — 4 jours restants</div>
+        <div style="margin-left:auto;background:rgba(255,255,255,0.2);border-radius:14px;padding:10px 14px;text-align:center;flex-shrink:0;" id="sante-temp-emoji-wrap">
+          <div style="font-size:22px;" id="sante-temp-emoji">&#128295;</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.7);margin-top:3px;font-weight:600;" id="sante-temp-emoji-lbl">+ Mesure</div>
         </div>
       </div>
     </div>
+
+    <!-- RGO en haut si actif -->
+    <div id="sante-rgo-top-banner" style="display:none;margin:10px 16px 0;"></div>
+
+    <!-- Médicaments -->
+    <div class="sec-hd"><span class="sec-t">&#128138; Médicaments</span><span onclick="showAddMed()" style="font-size:13px;color:#C86878;font-weight:600;cursor:pointer;">+ Ajouter</span></div>
+    <div id="meds-list" style="padding:0 16px;display:flex;flex-direction:column;gap:10px;"></div>
 
     <!-- Températures du jour -->
-    <div class="sec-hd"><span class="sec-t">&#127777; Températures du jour</span><span style="font-size:13px;color:#C86878;font-weight:600;cursor:pointer;">+ Ajouter</span></div>
-    <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;">
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:10px;height:10px;border-radius:50%;background:#5A9E82;flex-shrink:0;"></div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:#2C3E50;">36,8°</div>
-          <div style="font-size:11px;color:#7F8C8D;margin-top:1px;">8h00 · Rectale</div>
-        </div>
-        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Normale</div>
-      </div>
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:10px;height:10px;border-radius:50%;background:#D4A820;flex-shrink:0;"></div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:#2C3E50;">38,1°</div>
-          <div style="font-size:11px;color:#7F8C8D;margin-top:1px;">11h30 · Axillaire</div>
-        </div>
-        <div style="font-size:11px;font-weight:700;background:#FFF3CD;color:#D4A820;padding:4px 11px;border-radius:20px;">Légère</div>
-      </div>
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:10px;height:10px;border-radius:50%;background:#5A9E82;flex-shrink:0;"></div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:#2C3E50;">37,4°</div>
-          <div style="font-size:11px;color:#7F8C8D;margin-top:1px;">13h00 · Après Doliprane</div>
-        </div>
-        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Normale</div>
-      </div>
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:10px;height:10px;border-radius:50%;background:#5A9E82;flex-shrink:0;"></div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:#2C3E50;">37,2°</div>
-          <div style="font-size:11px;color:#7F8C8D;margin-top:1px;">14h00 · Rectale</div>
-        </div>
-        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Normale</div>
-      </div>
-
-    </div>
+    <div class="sec-hd" style="margin-top:6px;"><span class="sec-t">&#127777; Températures du jour</span><span onclick="showAddTemp()" style="font-size:13px;color:#C86878;font-weight:600;cursor:pointer;">+ Ajouter</span></div>
+    <div id="temps-list" style="padding:0 16px;display:flex;flex-direction:column;gap:8px;"></div>
 
     <!-- Repères température -->
     <div style="margin:10px 16px 0;background:#F0F4FF;border-radius:16px;padding:13px 14px;">
@@ -1799,31 +1710,13 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
 
     <!-- Antécédents -->
-    <div class="sec-hd" style="margin-top:14px;"><span class="sec-t">&#128203; Antécédents</span></div>
-    <div style="padding:0 16px;display:flex;flex-direction:column;gap:7px;">
+    <div class="sec-hd" style="margin-top:14px;"><span class="sec-t">&#128203; Antécédents</span><span onclick="showAddAntecedent()" style="font-size:13px;color:#C86878;font-weight:600;cursor:pointer;">+ Ajouter</span></div>
+    <div id="antecedents-list" style="padding:0 16px;display:flex;flex-direction:column;gap:7px;"></div>
 
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:38px;height:38px;border-radius:12px;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">&#128565;</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Otite</div>
-          <div style="font-size:11px;color:#7F8C8D;margin-top:1px;">Fév. 2026 · Traitement antibiotique 10j</div>
-        </div>
-        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Guéri &#10003;</div>
-      </div>
-
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:38px;height:38px;border-radius:12px;background:#FDE8D8;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">&#127751;</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Bronchiolite</div>
-          <div style="font-size:11px;color:#7F8C8D;margin-top:1px;">Déc. 2025 · Kinésithérapie respiratoire</div>
-        </div>
-        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Guéri &#10003;</div>
-      </div>
-
-      <div style="background:#F7F5EF;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;border:1.5px dashed #D8D4CC;cursor:pointer;">
-        <div style="width:38px;height:38px;border-radius:12px;background:#EDE8DF;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;color:#7F8C8D;">+</div>
-        <div style="font-size:13px;color:#7F8C8D;font-weight:600;">Ajouter un antécédent</div>
-      </div>
+    <!-- Notes Santé -->
+    <div class="sec-hd" style="margin-top:14px;"><span class="sec-t">&#128221; Notes</span></div>
+    <div style="padding:0 16px 8px;">
+      <textarea id="sante-notes-input" onchange="saveSanteNotes()" oninput="saveSanteNotes()" placeholder="Notes libres : symptômes, observations, questions pour le médecin..." style="width:100%;background:#fff;border:1.5px solid #EDE8DF;border-radius:16px;padding:14px 16px;font-size:13px;color:#2C3E50;font-family:Montserrat,sans-serif;resize:none;height:100px;outline:none;-webkit-appearance:none;"></textarea>
     </div>
 
     <!-- Section RGO (affichée si profile.rgo != "non") -->
@@ -2590,6 +2483,108 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         Ajouter 🌱
       </button>
       <div onclick="hideAddChild()" style="text-align:center;margin-top:14px;font-size:14px;color:#B0B8C1;cursor:pointer;">Annuler</div>
+    </div>
+  </div>
+
+  <!-- MODAL AJOUTER MÉDICAMENT -->
+  <div id="modal-add-med" style="display:none;position:fixed;inset:0;z-index:500;align-items:flex-end;justify-content:center;background:rgba(44,62,80,0.5);">
+    <div style="background:#F7F5EF;border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div style="font-size:17px;font-weight:800;color:#2C3E50;">Ajouter un médicament</div>
+        <div onclick="hideAddMed()" style="width:32px;height:32px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#7F8C8D;">&#215;</div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Nom du médicament</div>
+        <input id="med-name" type="text" class="lf-input" placeholder="Ex: Doliprane, Amoxicilline..." autocomplete="off" />
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Dosage <span style="font-weight:400;color:#B0B8C1;">(optionnel)</span></div>
+        <input id="med-dose" type="text" class="lf-input" placeholder="Ex: 1,5 ml, 1 comprimé..." autocomplete="off" />
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Prises par jour</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;" id="med-slots-grid">
+          <div onclick="toggleMedSlot(this,'Matin')" data-slot="Matin" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:9px 14px;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">Matin</div>
+          <div onclick="toggleMedSlot(this,'Midi')" data-slot="Midi" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:9px 14px;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">Midi</div>
+          <div onclick="toggleMedSlot(this,'Goûter')" data-slot="Goûter" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:9px 14px;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">Goûter</div>
+          <div onclick="toggleMedSlot(this,'Soir')" data-slot="Soir" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:9px 14px;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">Soir</div>
+          <div onclick="toggleMedSlot(this,'Nuit')" data-slot="Nuit" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:9px 14px;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">Nuit</div>
+          <div onclick="toggleMedSlot(this,'Si besoin')" data-slot="Si besoin" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:9px 14px;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">Si besoin</div>
+        </div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Type</div>
+        <div style="display:flex;gap:8px;">
+          <div id="med-type-siBesoin" onclick="selectMedType('siBesoin')" style="flex:1;background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:10px;text-align:center;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">Si besoin</div>
+          <div id="med-type-traitement" onclick="selectMedType('traitement')" style="flex:1;background:#EEF9F5;border:2px solid #5A9E82;border-radius:12px;padding:10px;text-align:center;font-size:12px;font-weight:700;color:#2C3E50;cursor:pointer;">Traitement</div>
+        </div>
+      </div>
+      <div id="med-duree-wrap" style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Durée du traitement <span style="font-weight:400;color:#B0B8C1;">(optionnel)</span></div>
+        <input id="med-duree" type="text" class="lf-input" placeholder="Ex: 7 jours, 10 jours..." autocomplete="off" />
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Note <span style="font-weight:400;color:#B0B8C1;">(optionnel)</span></div>
+        <input id="med-note" type="text" class="lf-input" placeholder="Ex: après le repas, max 4 doses/j..." autocomplete="off" />
+      </div>
+      <button onclick="saveMed()" style="width:100%;background:#C86878;color:#fff;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- MODAL AJOUTER TEMPÉRATURE -->
+  <div id="modal-add-temp" style="display:none;position:fixed;inset:0;z-index:500;align-items:flex-end;justify-content:center;background:rgba(44,62,80,0.5);">
+    <div style="background:#F7F5EF;border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:440px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div style="font-size:17px;font-weight:800;color:#2C3E50;">Nouvelle mesure</div>
+        <div onclick="hideAddTemp()" style="width:32px;height:32px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#7F8C8D;">&#215;</div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Température (°C)</div>
+        <input id="temp-val" type="number" inputmode="decimal" step="0.1" min="35" max="42" class="lf-input" placeholder="Ex: 37.5" style="font-size:22px;font-weight:800;text-align:center;" />
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Méthode de mesure</div>
+        <div style="display:flex;gap:8px;" id="temp-method-btns">
+          <div onclick="selectTempMethod('Rectale')" id="tm-Rectale" style="flex:1;background:#C86878;color:#fff;border:2px solid #C86878;border-radius:12px;padding:10px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;">Rectale</div>
+          <div onclick="selectTempMethod('Axillaire')" id="tm-Axillaire" style="flex:1;background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:10px;text-align:center;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">Axillaire</div>
+          <div onclick="selectTempMethod('Frontale')" id="tm-Frontale" style="flex:1;background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:10px;text-align:center;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">Frontale</div>
+        </div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Heure</div>
+        <input id="temp-heure" type="time" class="lf-input" />
+      </div>
+      <button onclick="saveTemp()" style="width:100%;background:#C86878;color:#fff;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- MODAL AJOUTER ANTÉCÉDENT -->
+  <div id="modal-add-ant" style="display:none;position:fixed;inset:0;z-index:500;align-items:flex-end;justify-content:center;background:rgba(44,62,80,0.5);">
+    <div style="background:#F7F5EF;border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:440px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div style="font-size:17px;font-weight:800;color:#2C3E50;">Antécédent médical</div>
+        <div onclick="hideAddAntecedent()" style="width:32px;height:32px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#7F8C8D;">&#215;</div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Maladie / Événement</div>
+        <input id="ant-desc" type="text" class="lf-input" placeholder="Ex: Otite, Bronchiolite, Chute..." autocomplete="off" />
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Détails <span style="font-weight:400;color:#B0B8C1;">(optionnel)</span></div>
+        <input id="ant-detail" type="text" class="lf-input" placeholder="Ex: Traitement 10j, Kiné resp..." autocomplete="off" />
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Date <span style="font-weight:400;color:#B0B8C1;">(optionnel)</span></div>
+        <input id="ant-date" type="date" class="lf-input" />
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:700;color:#C86878;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Statut</div>
+        <div style="display:flex;gap:8px;">
+          <div onclick="selectAntStatut('gueri')" id="ant-stat-gueri" style="flex:1;background:#EEF9F5;border:2px solid #5A9E82;border-radius:12px;padding:10px;text-align:center;font-size:12px;font-weight:700;color:#2C3E50;cursor:pointer;">Guéri &#10003;</div>
+          <div onclick="selectAntStatut('encours')" id="ant-stat-encours" style="flex:1;background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:10px;text-align:center;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">En cours</div>
+        </div>
+      </div>
+      <button onclick="saveAntecedent()" style="width:100%;background:#C86878;color:#fff;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>
     </div>
   </div>
 
@@ -3584,6 +3579,12 @@ function applyChildProfile(profile) {
   // Mise à jour des données dynamiques (milestone + vaccin)
   updateDynamicHome(profile);
   renderRGOSection(profile);
+  // Santé dynamique
+  renderMeds();
+  renderTemps();
+  updateSanteTempHeader();
+  renderAntecedents();
+  loadSanteNotes();
 }
 function obCalcMonths(dob) {
   var birth=new Date(dob), now=new Date();
@@ -3760,9 +3761,18 @@ function saveRGODateFin(val) {
 }
 function renderRGOSection(profile) {
   var sec=document.getElementById("sante-rgo-section");
+  var banner=document.getElementById("sante-rgo-top-banner");
   if(!sec) return;
-  if(!profile||!profile.rgo||profile.rgo==="non") { sec.style.display="none"; return; }
+  if(!profile||!profile.rgo||profile.rgo==="non") { sec.style.display="none"; if(banner) banner.style.display="none"; return; }
   sec.style.display="block";
+  // Bandeau RGO en haut de l'écran Santé
+  if(banner) {
+    banner.style.display="block";
+    var rgoLabel=profile.rgo==="oui"?"Diagnostiqué":"Suspecté";
+    var medMap={"inexium":"Inexium","gaviscon":"Gaviscon nourrisson"};
+    var medTxt=(profile.rgoTraitement&&profile.rgoMed)?"<div style='font-size:11px;color:#5BA8D4;font-weight:600;margin-top:2px;'>Traitement : "+(medMap[profile.rgoMed]||profile.rgoMed)+"</div>":"";
+    banner.innerHTML='<div style="background:linear-gradient(135deg,#D0E8FA,#BDD8F0);border-radius:16px;padding:12px 15px;display:flex;align-items:center;gap:12px;border-left:4px solid #5BA8D4;"><div style="font-size:22px;flex-shrink:0;">&#127754;</div><div style="flex:1;"><div style="font-size:13px;font-weight:800;color:#2C3E50;">RGO '+rgoLabel+'</div>'+medTxt+'</div><div onclick="document.getElementById(\'sante-rgo-section\').scrollIntoView({behavior:\'smooth\'})" style="font-size:11px;font-weight:700;color:#5BA8D4;background:rgba(91,168,212,0.15);padding:6px 10px;border-radius:10px;cursor:pointer;white-space:nowrap;">Voir &#8594;</div></div>';
+  }
   // Badge statut
   var badge=document.getElementById("rgo-statut-badge");
   if(badge) {
@@ -4123,6 +4133,252 @@ function saveEditProfil() {
   updateChildSelectors();
 }
 
+// ── SANTÉ — MÉDICAMENTS ──
+var medType = "traitement";
+var medSlotsSelected = [];
+function showAddMed() {
+  medType = "traitement"; medSlotsSelected = [];
+  document.getElementById("med-name").value = "";
+  document.getElementById("med-dose").value = "";
+  document.getElementById("med-duree").value = "";
+  document.getElementById("med-note").value = "";
+  document.querySelectorAll("#med-slots-grid > div").forEach(function(b){
+    b.style.borderColor="#E8F5EE"; b.style.background="#fff"; b.style.color="#7F8C8D";
+  });
+  selectMedType("traitement");
+  document.getElementById("modal-add-med").style.display = "flex";
+}
+function hideAddMed() { document.getElementById("modal-add-med").style.display = "none"; }
+function toggleMedSlot(el, slot) {
+  var i = medSlotsSelected.indexOf(slot);
+  if (i === -1) {
+    medSlotsSelected.push(slot);
+    el.style.borderColor = "#C86878"; el.style.background = "#FDEAEA"; el.style.color = "#C86878";
+  } else {
+    medSlotsSelected.splice(i, 1);
+    el.style.borderColor = "#E8F5EE"; el.style.background = "#fff"; el.style.color = "#7F8C8D";
+  }
+}
+function selectMedType(type) {
+  medType = type;
+  var sb = type === "siBesoin";
+  var sbEl = document.getElementById("med-type-siBesoin");
+  var trEl = document.getElementById("med-type-traitement");
+  if (sbEl) { sbEl.style.background = sb?"#EEF9F5":"#fff"; sbEl.style.borderColor = sb?"#5A9E82":"#E8F5EE"; sbEl.style.color = sb?"#2C3E50":"#7F8C8D"; }
+  if (trEl) { trEl.style.background = !sb?"#EEF9F5":"#fff"; trEl.style.borderColor = !sb?"#5A9E82":"#E8F5EE"; trEl.style.color = !sb?"#2C3E50":"#7F8C8D"; }
+  var dw = document.getElementById("med-duree-wrap"); if (dw) dw.style.display = sb?"none":"block";
+}
+function saveMed() {
+  var name = document.getElementById("med-name").value.trim();
+  if (!name) { document.getElementById("med-name").style.borderColor="#E74C3C"; document.getElementById("med-name").focus(); return; }
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var key = "sante-meds-"+idx;
+  var meds = JSON.parse(localStorage.getItem(key)||"[]");
+  meds.push({ id:Date.now(), name:name, dose:document.getElementById("med-dose").value.trim(), slots:medSlotsSelected.length?medSlotsSelected.slice():["Si besoin"], type:medType, duree:document.getElementById("med-duree").value.trim(), note:document.getElementById("med-note").value.trim() });
+  localStorage.setItem(key, JSON.stringify(meds));
+  hideAddMed(); renderMeds();
+}
+function renderMeds() {
+  var list = document.getElementById("meds-list"); if (!list) return;
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var meds = JSON.parse(localStorage.getItem("sante-meds-"+idx)||"[]");
+  if (!meds.length) {
+    list.innerHTML = '<div onclick="showAddMed()" style="background:#F7F5EF;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;border:1.5px dashed #D8D4CC;cursor:pointer;"><div style="width:38px;height:38px;border-radius:12px;background:#EDE8DF;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;color:#7F8C8D;">+</div><div style="font-size:13px;color:#7F8C8D;font-weight:600;">Ajouter un m&#233;dicament</div></div>';
+    return;
+  }
+  var today = new Date(), yyyy = today.getFullYear(), mm = String(today.getMonth()+1).padStart(2,"0"), dd = String(today.getDate()).padStart(2,"0");
+  var checks = JSON.parse(localStorage.getItem("sante-checks-"+idx+"-"+yyyy+mm+dd)||"{}");
+  var h = "";
+  meds.forEach(function(med) {
+    h += '<div style="background:#fff;border-radius:14px;padding:14px 15px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">';
+    h += '<div style="display:flex;align-items:flex-start;gap:10px;">';
+    h += '<div style="width:38px;height:38px;border-radius:12px;background:#FDEAEA;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#128138;</div>';
+    h += '<div style="flex:1;"><div style="font-size:13px;font-weight:800;color:#2C3E50;">'+med.name+(med.dose?' <span style="font-weight:500;color:#7F8C8D;">&#183; '+med.dose+'</span>':'')+'</div>';
+    if (med.type==="traitement"&&med.duree) h += '<div style="font-size:11px;color:#5A9E82;margin-top:2px;font-weight:600;">Traitement '+med.duree+'</div>';
+    if (med.note) h += '<div style="font-size:11px;color:#7F8C8D;margin-top:2px;">'+med.note+'</div>';
+    h += '</div><div onclick="deleteMed('+med.id+')" style="font-size:18px;color:#C0C0C0;cursor:pointer;padding:4px;flex-shrink:0;">&#215;</div></div>';
+    if (med.slots&&med.slots.length) {
+      h += '<div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;">';
+      med.slots.forEach(function(slot) {
+        var ck = checks[med.id+"-"+slot];
+        h += '<div onclick="toggleMedCheck('+med.id+',\''+slot+'\')" style="display:flex;align-items:center;gap:6px;background:'+(ck?"#EEF9F5":"rgba(44,62,80,0.06)")+';border-radius:10px;padding:7px 12px;cursor:pointer;border:1.5px solid '+(ck?"#5A9E82":"transparent")+';"><div style="width:18px;height:18px;border-radius:5px;border:1.5px solid '+(ck?"#5A9E82":"#B0B8C1")+';background:'+(ck?"#5A9E82":"#fff")+';display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0;">'+(ck?"&#10003;":"")+'</div><span style="font-size:12px;font-weight:700;color:'+(ck?"#5A9E82":"#2C3E50")+';">'+slot+'</span></div>';
+      });
+      h += '</div>';
+    }
+    h += '</div>';
+  });
+  list.innerHTML = h;
+}
+function toggleMedCheck(medId, slot) {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var today = new Date(), yyyy = today.getFullYear(), mm = String(today.getMonth()+1).padStart(2,"0"), dd = String(today.getDate()).padStart(2,"0");
+  var key = "sante-checks-"+idx+"-"+yyyy+mm+dd;
+  var checks = JSON.parse(localStorage.getItem(key)||"{}");
+  checks[medId+"-"+slot] = !checks[medId+"-"+slot];
+  localStorage.setItem(key, JSON.stringify(checks));
+  renderMeds();
+}
+function deleteMed(medId) {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var key = "sante-meds-"+idx;
+  var meds = JSON.parse(localStorage.getItem(key)||"[]").filter(function(m){ return m.id!==medId; });
+  localStorage.setItem(key, JSON.stringify(meds)); renderMeds();
+}
+
+// ── SANTÉ — TEMPÉRATURES ──
+var tempMethodSel = "Rectale";
+function showAddTemp() {
+  tempMethodSel = "Rectale";
+  document.getElementById("temp-val").value = "";
+  var now = new Date();
+  document.getElementById("temp-heure").value = String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
+  selectTempMethod("Rectale");
+  document.getElementById("modal-add-temp").style.display = "flex";
+}
+function hideAddTemp() { document.getElementById("modal-add-temp").style.display = "none"; }
+function selectTempMethod(method) {
+  tempMethodSel = method;
+  ["Rectale","Axillaire","Frontale"].forEach(function(m){
+    var el = document.getElementById("tm-"+m); if (!el) return;
+    var a = m===method;
+    el.style.background = a?"#C86878":"#fff"; el.style.borderColor = a?"#C86878":"#E8F5EE"; el.style.color = a?"#fff":"#7F8C8D";
+  });
+}
+function saveTemp() {
+  var valStr = document.getElementById("temp-val").value;
+  var val = parseFloat(valStr);
+  if (!valStr||isNaN(val)||val<34||val>43) { document.getElementById("temp-val").style.borderColor="#E74C3C"; document.getElementById("temp-val").focus(); return; }
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var key = "sante-temps-"+idx;
+  var temps = JSON.parse(localStorage.getItem(key)||"[]");
+  temps.unshift({ id:Date.now(), val:val, method:tempMethodSel, heure:document.getElementById("temp-heure").value, date:new Date().toISOString().slice(0,10) });
+  if (temps.length>30) temps=temps.slice(0,30);
+  localStorage.setItem(key, JSON.stringify(temps));
+  hideAddTemp(); renderTemps(); updateSanteTempHeader();
+}
+function renderTemps() {
+  var list = document.getElementById("temps-list"); if (!list) return;
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var temps = JSON.parse(localStorage.getItem("sante-temps-"+idx)||"[]");
+  var today = new Date().toISOString().slice(0,10);
+  var todayTemps = temps.filter(function(t){ return t.date===today; });
+  if (!todayTemps.length) {
+    list.innerHTML = '<div onclick="showAddTemp()" style="background:#F7F5EF;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;border:1.5px dashed #D8D4CC;cursor:pointer;"><div style="width:38px;height:38px;border-radius:12px;background:#EDE8DF;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;color:#7F8C8D;">&#127777;</div><div style="font-size:13px;color:#7F8C8D;font-weight:600;">Aucune mesure aujourd\'hui</div></div>';
+    return;
+  }
+  var h = "";
+  todayTemps.forEach(function(t) {
+    var v = parseFloat(t.val);
+    var color = v>=38.5?"#E74C3C":v>=38?"#D4A820":"#5A9E82";
+    var label = v>=38.5?"Fièvre":v>=38?"Légère":"Normale";
+    h += '<div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);"><div style="width:46px;height:46px;border-radius:50%;background:'+color+'22;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:13px;font-weight:800;color:'+color+';">'+v.toFixed(1)+'&#176;</span></div><div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">'+label+'</div><div style="font-size:11px;color:#7F8C8D;margin-top:2px;">'+(t.heure||"--:--")+' &#183; '+(t.method||"Rectale")+'</div></div><div onclick="deleteTemp('+t.id+')" style="font-size:18px;color:#C0C0C0;cursor:pointer;padding:4px;">&#215;</div></div>';
+  });
+  list.innerHTML = h;
+}
+function updateSanteTempHeader() {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var temps = JSON.parse(localStorage.getItem("sante-temps-"+idx)||"[]");
+  var today = new Date().toISOString().slice(0,10);
+  var td = temps.filter(function(t){ return t.date===today; });
+  var timeEl=document.getElementById("sante-temp-time"), valEl=document.getElementById("sante-temp-val"), badgeEl=document.getElementById("sante-temp-badge"), dotEl=document.getElementById("sante-temp-dot"), labelEl=document.getElementById("sante-temp-label"), emojiEl=document.getElementById("sante-temp-emoji"), emojiLblEl=document.getElementById("sante-temp-emoji-lbl");
+  if (!td.length) {
+    if(timeEl) timeEl.textContent="Appuie pour noter une mesure";
+    if(valEl) valEl.textContent="—";
+    if(badgeEl) badgeEl.style.display="none";
+    if(emojiEl) emojiEl.innerHTML="&#127777;";
+    if(emojiLblEl) emojiLblEl.textContent="+ Mesure";
+    return;
+  }
+  var last=td[0], v=parseFloat(last.val);
+  if(timeEl) timeEl.textContent="Dernière mesure &#183; "+(last.heure||"--:--");
+  if(valEl) valEl.textContent=v.toFixed(1)+"°C";
+  if(badgeEl) { badgeEl.style.display="flex"; }
+  var color=v>=38.5?"#E74C3C":v>=38?"#D4A820":"#7FFFB2", bg=v>=38.5?"rgba(231,76,60,0.25)":v>=38?"rgba(212,168,32,0.25)":"rgba(100,220,150,0.3)", lbl=v>=38.5?"Fièvre":v>=38?"Légère":"Normale";
+  if(dotEl) dotEl.style.background=color;
+  if(labelEl) labelEl.textContent=lbl;
+  if(badgeEl) badgeEl.style.background=bg;
+  if(emojiEl) emojiEl.textContent=v>=38.5?"🔴":v>=38?"🟡":"✅";
+  if(emojiLblEl) emojiLblEl.textContent=td.length+" mesure"+(td.length>1?"s":"");
+}
+function deleteTemp(tempId) {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var key = "sante-temps-"+idx;
+  var temps = JSON.parse(localStorage.getItem(key)||"[]").filter(function(t){ return t.id!==tempId; });
+  localStorage.setItem(key, JSON.stringify(temps)); renderTemps(); updateSanteTempHeader();
+}
+
+// ── SANTÉ — ANTÉCÉDENTS ──
+var antStatutSel = "gueri";
+function showAddAntecedent() {
+  antStatutSel = "gueri";
+  document.getElementById("ant-desc").value = "";
+  document.getElementById("ant-detail").value = "";
+  document.getElementById("ant-date").value = "";
+  selectAntStatut("gueri");
+  document.getElementById("modal-add-ant").style.display = "flex";
+}
+function hideAddAntecedent() { document.getElementById("modal-add-ant").style.display = "none"; }
+function selectAntStatut(statut) {
+  antStatutSel = statut;
+  ["gueri","encours"].forEach(function(s){
+    var el = document.getElementById("ant-stat-"+s); if (!el) return;
+    var a = s===statut;
+    el.style.background = a?"#EEF9F5":"#fff"; el.style.borderColor = a?"#5A9E82":"#E8F5EE"; el.style.color = a?"#2C3E50":"#7F8C8D";
+  });
+}
+function saveAntecedent() {
+  var desc = document.getElementById("ant-desc").value.trim();
+  if (!desc) { document.getElementById("ant-desc").style.borderColor="#E74C3C"; document.getElementById("ant-desc").focus(); return; }
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var key = "sante-ants-"+idx;
+  var ants = JSON.parse(localStorage.getItem(key)||"[]");
+  ants.unshift({ id:Date.now(), desc:desc, detail:document.getElementById("ant-detail").value.trim(), date:document.getElementById("ant-date").value||null, statut:antStatutSel });
+  localStorage.setItem(key, JSON.stringify(ants));
+  hideAddAntecedent(); renderAntecedents();
+}
+function renderAntecedents() {
+  var list = document.getElementById("antecedents-list"); if (!list) return;
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var ants = JSON.parse(localStorage.getItem("sante-ants-"+idx)||"[]");
+  if (!ants.length) {
+    list.innerHTML = '<div onclick="showAddAntecedent()" style="background:#F7F5EF;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;border:1.5px dashed #D8D4CC;cursor:pointer;"><div style="width:38px;height:38px;border-radius:12px;background:#EDE8DF;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;color:#7F8C8D;">+</div><div style="font-size:13px;color:#7F8C8D;font-weight:600;">Aucun ant&#233;c&#233;dent not&#233;</div></div>';
+    return;
+  }
+  var mois=["jan.","fév.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+  var h = "";
+  ants.forEach(function(a) {
+    var g = a.statut==="gueri";
+    var dateTxt="";
+    if (a.date) { var dObj=new Date(a.date); dateTxt=dObj.getDate()+" "+mois[dObj.getMonth()]+" "+dObj.getFullYear(); }
+    h += '<div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:flex-start;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">';
+    h += '<div style="width:38px;height:38px;border-radius:12px;background:'+(g?"#EEF9F5":"#FDEAEA")+';display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">'+(g?"&#10003;":"&#128198;")+'</div>';
+    h += '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">'+a.desc+'</div>';
+    if (a.detail) h += '<div style="font-size:11px;color:#7F8C8D;margin-top:2px;">'+a.detail+'</div>';
+    if (dateTxt) h += '<div style="font-size:11px;color:#7F8C8D;margin-top:2px;">'+dateTxt+'</div>';
+    h += '<div style="margin-top:4px;"><span style="font-size:10px;font-weight:700;color:'+(g?"#5A9E82":"#C86878")+';background:'+(g?"#EEF9F5":"#FDEAEA")+';padding:2px 8px;border-radius:20px;">'+(g?"Guéri":"En cours")+'</span></div></div>';
+    h += '<div onclick="deleteAntecedent('+a.id+')" style="font-size:18px;color:#C0C0C0;cursor:pointer;padding:4px;flex-shrink:0;">&#215;</div></div>';
+  });
+  list.innerHTML = h;
+}
+function deleteAntecedent(antId) {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var key = "sante-ants-"+idx;
+  var ants = JSON.parse(localStorage.getItem(key)||"[]").filter(function(a){ return a.id!==antId; });
+  localStorage.setItem(key, JSON.stringify(ants)); renderAntecedents();
+}
+
+// ── SANTÉ — NOTES ──
+function saveSanteNotes() {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var el = document.getElementById("sante-notes-input"); if (!el) return;
+  localStorage.setItem("sante-notes-"+idx, el.value);
+}
+function loadSanteNotes() {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var el = document.getElementById("sante-notes-input"); if (!el) return;
+  el.value = localStorage.getItem("sante-notes-"+idx)||"";
+}
+
 // ── PARTAGER ──
 function shareApp() {
   var url = "https://begonie-gregaire-9c7b7l.netlify.app";
@@ -4144,6 +4400,11 @@ document.addEventListener("DOMContentLoaded", function() {
   updateAllaitDayStats();
   renderAllaitLogs();
   updateHomeAllaitCard();
+  renderMeds();
+  renderTemps();
+  updateSanteTempHeader();
+  renderAntecedents();
+  loadSanteNotes();
   obInitWink();
 
   // Rétro-compatibilité : migration ancien format → nouveau
