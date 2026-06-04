@@ -2720,7 +2720,25 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
 
       <div style="margin-bottom:14px;">
-        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Prénom</div>
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Tu es…</div>
+        <div style="display:flex;gap:8px;">
+          <div id="ep-role-maman" onclick="epSelectRole('maman')" style="flex:1;border:2px solid #E8F5EE;border-radius:14px;padding:10px;text-align:center;cursor:pointer;transition:all 0.2s;">
+            <div style="font-size:22px;">&#128105;</div>
+            <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:3px;">Maman</div>
+          </div>
+          <div id="ep-role-papa" onclick="epSelectRole('papa')" style="flex:1;border:2px solid #E8F5EE;border-radius:14px;padding:10px;text-align:center;cursor:pointer;transition:all 0.2s;">
+            <div style="font-size:22px;">&#128104;</div>
+            <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:3px;">Papa</div>
+          </div>
+          <div id="ep-role-autre" onclick="epSelectRole('autre')" style="flex:1;border:2px solid #E8F5EE;border-radius:14px;padding:10px;text-align:center;cursor:pointer;transition:all 0.2s;">
+            <div style="font-size:22px;">&#129505;</div>
+            <div style="font-size:12px;font-weight:700;color:#2C3E50;margin-top:3px;">Autre</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Prénom de bébé</div>
         <input id="ep-prenom" type="text" class="lf-input" placeholder="Prénom de bébé…" autocomplete="off" />
       </div>
 
@@ -4043,18 +4061,29 @@ function updateHomeAllaitCard() {
 
 // ── MODIFIER PROFIL ENFANT ──
 var epSexe = null;
+var epRole = null;
+function epSelectRole(role) {
+  epRole = role;
+  ["maman","papa","autre"].forEach(function(r) {
+    var el = document.getElementById("ep-role-"+r); if(!el) return;
+    el.style.borderColor = r===role ? "#5A9E82" : "#E8F5EE";
+    el.style.background = r===role ? "#EEF9F5" : "#fff";
+  });
+}
 function showEditProfil() {
   var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
   var profiles = JSON.parse(localStorage.getItem("childProfiles")||"[]");
   var p = profiles[idx] || profiles[0];
   if (!p) return;
   epSexe = p.sexe || "fille";
+  epRole = p.role || "maman";
   document.getElementById("ep-prenom").value = p.prenom || "";
   document.getElementById("ep-surnom").value = p.surnom || "";
   document.getElementById("ep-dob").value = p.dob || "";
   document.getElementById("ep-poids").value = p.poids || "";
   document.getElementById("ep-taille").value = p.taille || "";
   epSelectSexe(epSexe);
+  epSelectRole(epRole);
   document.getElementById("modal-edit-profil").style.display = "flex";
 }
 function hideEditProfil() {
@@ -4085,6 +4114,7 @@ function saveEditProfil() {
   profiles[idx].displayName = surnom || prenom;
   profiles[idx].dob = dob || profiles[idx].dob;
   profiles[idx].sexe = epSexe || profiles[idx].sexe;
+  profiles[idx].role = epRole || profiles[idx].role;
   if (poids) profiles[idx].poids = parseFloat(poids);
   if (taille) profiles[idx].taille = parseFloat(taille);
   localStorage.setItem("childProfiles", JSON.stringify(profiles));
