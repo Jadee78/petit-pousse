@@ -605,29 +605,29 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
     <!-- Carte allaitement accueil (visible si activé) -->
-    <div id="home-allait-card" style="display:none;margin:10px 16px 0;">
-      <div style="background:linear-gradient(135deg,#EEF9F5,#D6F0E8);border-radius:18px;padding:16px;">
+    <div id="home-allait-card" style="display:none;margin:10px 16px 0;" onclick="goTo('allait')" style="cursor:pointer;">
+      <div style="background:linear-gradient(135deg,#EEF9F5,#D6F0E8);border-radius:18px;padding:16px;cursor:pointer;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
           <div style="font-size:13px;font-weight:700;color:#5A9E82;">&#129335; Allaitement</div>
-          <div style="font-size:11px;color:#7F8C8D;">Aujourd'hui</div>
+          <div style="font-size:11px;color:#7F8C8D;" id="home-allait-date">Aujourd'hui</div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
           <div style="background:rgba(255,255,255,0.7);border-radius:12px;padding:10px;text-align:center;">
-            <div style="font-size:18px;font-weight:800;color:#2C3E50;">3</div>
+            <div style="font-size:18px;font-weight:800;color:#2C3E50;" id="home-allait-tetees">0</div>
             <div style="font-size:10px;color:#7F8C8D;margin-top:2px;">Tétées</div>
           </div>
           <div style="background:rgba(255,255,255,0.7);border-radius:12px;padding:10px;text-align:center;">
-            <div style="font-size:18px;font-weight:800;color:#2C3E50;">2h</div>
+            <div style="font-size:18px;font-weight:800;color:#2C3E50;" id="home-allait-derniere">—</div>
             <div style="font-size:10px;color:#7F8C8D;margin-top:2px;">Dernière</div>
           </div>
           <div style="background:rgba(255,255,255,0.7);border-radius:12px;padding:10px;text-align:center;">
-            <div style="font-size:18px;font-weight:800;color:#2C3E50;">80ml</div>
+            <div style="font-size:18px;font-weight:800;color:#2C3E50;" id="home-allait-tl">0ml</div>
             <div style="font-size:10px;color:#7F8C8D;margin-top:2px;">Tire-lait</div>
           </div>
         </div>
         <div style="display:flex;gap:8px;">
-          <button style="flex:1;background:#5A9E82;color:#fff;border:none;border-radius:12px;padding:11px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;">+ Tétée</button>
-          <button style="flex:1;background:#fff;color:#5A9E82;border:1.5px solid #A8DFCA;border-radius:12px;padding:11px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;">+ Tire-lait</button>
+          <button onclick="event.stopPropagation();goTo('allait');switchAllaitTab('tetee');" style="flex:1;background:#5A9E82;color:#fff;border:none;border-radius:12px;padding:11px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;">+ Tétée</button>
+          <button onclick="event.stopPropagation();goTo('allait');switchAllaitTab('tirelait');" style="flex:1;background:#fff;color:#5A9E82;border:1.5px solid #A8DFCA;border-radius:12px;padding:11px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;">+ Tire-lait</button>
         </div>
       </div>
     </div>
@@ -2349,6 +2349,28 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
       </div>
     </div>
+    <!-- Partager l'app -->
+    <div style="margin:16px 16px 0;">
+      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Partager</div>
+      <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div onclick="shareApp()" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;">
+          <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#5A9E82,#3A7E62);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128279;</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:#2C3E50;">Partager Petit Pousse</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Envoyer le lien à la famille</div>
+          </div>
+          <div style="font-size:16px;color:#5A9E82;font-weight:700;">›</div>
+        </div>
+        <div style="border-top:0.5px solid #EDE8DF;padding:12px 16px 14px;">
+          <div style="font-size:11px;font-weight:700;color:#7F8C8D;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Installer sur le téléphone</div>
+          <div style="font-size:12px;color:#2C3E50;line-height:1.65;">
+            <div style="margin-bottom:4px;">&#127822; <strong>iPhone :</strong> Safari → icône Partager → "Sur l'écran d'accueil"</div>
+            <div>&#129504; <strong>Android :</strong> Chrome → menu ⋮ → "Ajouter à l'écran d'accueil"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="height:24px;"></div>
   </div>
 
 
@@ -2362,7 +2384,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="display:flex;align-items:center;justify-content:space-between;">
         <span onclick="goBack()" style="font-size:26px;color:#5A9E82;cursor:pointer;line-height:1;">&#8249;</span>
         <span style="font-size:16px;font-weight:800;color:#2C3E50;" data-child-tpl="Profil de [name]">Profil de Camille</span>
-        <span style="font-size:13px;font-weight:700;color:#5A9E82;cursor:pointer;">Modifier</span>
+        <span onclick="showEditProfil()" style="font-size:13px;font-weight:700;color:#5A9E82;cursor:pointer;">Modifier</span>
       </div>
     </div>
 
@@ -2381,11 +2403,11 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div class="sec-hd"><span class="sec-t">&#128200; Croissance</span></div>
     <div style="padding:0 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;">
       <div style="background:#fff;border-radius:16px;padding:14px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:20px;font-weight:800;color:#5A9E82;">7,2<span style="font-size:13px;"> kg</span></div>
+        <div style="font-size:20px;font-weight:800;color:#5A9E82;" id="profil-poids">—</div>
         <div style="font-size:11px;color:#7F8C8D;margin-top:3px;">Poids</div>
       </div>
       <div style="background:#fff;border-radius:16px;padding:14px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:20px;font-weight:800;color:#5A9E82;">68<span style="font-size:13px;"> cm</span></div>
+        <div style="font-size:20px;font-weight:800;color:#5A9E82;" id="profil-taille">—</div>
         <div style="font-size:11px;color:#7F8C8D;margin-top:3px;">Taille</div>
       </div>
       <div style="background:#fff;border-radius:16px;padding:14px 8px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
@@ -2619,6 +2641,58 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         Ajouter 🌱
       </button>
       <div onclick="hideAddChild()" style="text-align:center;margin-top:14px;font-size:14px;color:#B0B8C1;cursor:pointer;">Annuler</div>
+    </div>
+  </div>
+
+  <!-- MODAL ÉDITION PROFIL ENFANT -->
+  <div id="modal-edit-profil" style="display:none;position:fixed;inset:0;z-index:500;align-items:flex-end;justify-content:center;background:rgba(44,62,80,0.5);">
+    <div style="background:#F7F5EF;border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <div style="font-size:17px;font-weight:800;color:#2C3E50;">Modifier le profil</div>
+        <div onclick="hideEditProfil()" style="width:32px;height:32px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#7F8C8D;">&#215;</div>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Prénom</div>
+        <input id="ep-prenom" type="text" class="lf-input" placeholder="Prénom de bébé…" autocomplete="off" />
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Surnom <span style="font-weight:400;color:#B0B8C1;">(optionnel)</span></div>
+        <input id="ep-surnom" type="text" class="lf-input" placeholder="Ex : Minou, Loulou…" autocomplete="off" />
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Date de naissance</div>
+        <input id="ep-dob" type="date" class="lf-input" />
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">C'est…</div>
+        <div style="display:flex;gap:10px;">
+          <div id="ep-sexe-fille" onclick="epSelectSexe('fille')" style="flex:1;border:2px solid #E8F5EE;border-radius:14px;padding:12px;text-align:center;cursor:pointer;transition:all 0.2s;">
+            <div style="font-size:22px;">&#128103;</div>
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-top:4px;">Fille</div>
+          </div>
+          <div id="ep-sexe-garcon" onclick="epSelectSexe('garcon')" style="flex:1;border:2px solid #E8F5EE;border-radius:14px;padding:12px;text-align:center;cursor:pointer;transition:all 0.2s;">
+            <div style="font-size:22px;">&#128102;</div>
+            <div style="font-size:13px;font-weight:700;color:#2C3E50;margin-top:4px;">Garçon</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Poids (kg) <span style="font-weight:400;color:#B0B8C1;">optionnel</span></div>
+        <input id="ep-poids" type="number" inputmode="decimal" step="0.1" min="0" max="30" class="lf-input" placeholder="ex : 7,2" />
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:700;color:#5A9E82;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Taille (cm) <span style="font-weight:400;color:#B0B8C1;">optionnel</span></div>
+        <input id="ep-taille" type="number" inputmode="decimal" step="0.5" min="0" max="120" class="lf-input" placeholder="ex : 68" />
+      </div>
+
+      <button onclick="saveEditProfil()" class="lf-btn">Enregistrer ✓</button>
+      <div onclick="hideEditProfil()" style="text-align:center;margin-top:14px;font-size:14px;color:#B0B8C1;cursor:pointer;">Annuler</div>
     </div>
   </div>
 
@@ -3403,6 +3477,12 @@ function applyChildProfile(profile) {
   var g = document.querySelector(".home-greeting-sub");
   if(g) g.textContent = "Bonjour " + (role==="maman"?"maman":role==="papa"?"papa":"toi") + " !";
 
+  // Poids / taille sur écran profil enfant
+  var pp = document.getElementById("profil-poids");
+  var pt = document.getElementById("profil-taille");
+  if (pp) pp.innerHTML = profile.poids ? profile.poids+'<span style="font-size:13px;"> kg</span>' : '—';
+  if (pt) pt.innerHTML = profile.taille ? profile.taille+'<span style="font-size:13px;"> cm</span>' : '—';
+
   // Mise à jour des données dynamiques (milestone + vaccin)
   updateDynamicHome(profile);
   renderRGOSection(profile);
@@ -3468,7 +3548,7 @@ function saveTetee() {
   localStorage.setItem("allait-logs", JSON.stringify(logs.slice(0,50)));
   allaitTimerSecs = 0; allaitTimerSein = null;
   var lbl = document.getElementById("allait-sein-label"); if (lbl) lbl.textContent = "—";
-  updateTimerDisplay(); updateAllaitDayStats(); renderAllaitLogs();
+  updateTimerDisplay(); updateAllaitDayStats(); renderAllaitLogs(); updateHomeAllaitCard();
 }
 function updateAllaitDayStats() {
   var logs = JSON.parse(localStorage.getItem("allait-logs") || "[]");
@@ -3527,7 +3607,7 @@ function saveTireLait() {
   logs.unshift({ type:"tirelait", sein:tlSein, ml:ml, dest:tlDest, heure:heure||now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0"), ts:now.getTime() });
   localStorage.setItem("allait-logs", JSON.stringify(logs.slice(0,100)));
   document.getElementById("tl-ml-input").value = "";
-  updateAllaitDayStats(); renderTLLogs(); updateStock();
+  updateAllaitDayStats(); renderTLLogs(); updateStock(); updateHomeAllaitCard();
 }
 function updateStock() {
   var logs = JSON.parse(localStorage.getItem("allait-logs")||"[]");
@@ -3624,10 +3704,103 @@ function renderRGOSection(profile) {
   }
 }
 
+// ── ALLAITEMENT ACCUEIL ──
+function updateHomeAllaitCard() {
+  var logs = JSON.parse(localStorage.getItem("allait-logs") || "[]");
+  var today = new Date().toDateString();
+  var tetees = logs.filter(function(l){ return l.type==="tetee" && new Date(l.ts).toDateString()===today; });
+  var tlMl = logs.filter(function(l){ return l.type==="tirelait" && new Date(l.ts).toDateString()===today; })
+    .reduce(function(a,b){ return a+(b.ml||0); }, 0);
+
+  var elT = document.getElementById("home-allait-tetees");
+  var elD = document.getElementById("home-allait-derniere");
+  var elM = document.getElementById("home-allait-tl");
+  if (elT) elT.textContent = tetees.length;
+  if (elM) elM.textContent = tlMl > 0 ? tlMl+"ml" : "0ml";
+  if (elD) {
+    if (tetees.length > 0) {
+      var diff = Math.round((Date.now() - tetees[0].ts) / 60000);
+      if (diff < 60) elD.textContent = diff+"min";
+      else elD.textContent = Math.floor(diff/60)+"h"+(diff%60>0?(diff%60)+"":"");
+    } else {
+      elD.textContent = "—";
+    }
+  }
+}
+
+// ── MODIFIER PROFIL ENFANT ──
+var epSexe = null;
+function showEditProfil() {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var profiles = JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  var p = profiles[idx] || profiles[0];
+  if (!p) return;
+  epSexe = p.sexe || "fille";
+  document.getElementById("ep-prenom").value = p.prenom || "";
+  document.getElementById("ep-surnom").value = p.surnom || "";
+  document.getElementById("ep-dob").value = p.dob || "";
+  document.getElementById("ep-poids").value = p.poids || "";
+  document.getElementById("ep-taille").value = p.taille || "";
+  epSelectSexe(epSexe);
+  document.getElementById("modal-edit-profil").style.display = "flex";
+}
+function hideEditProfil() {
+  document.getElementById("modal-edit-profil").style.display = "none";
+}
+function epSelectSexe(s) {
+  epSexe = s;
+  ["fille","garcon"].forEach(function(v) {
+    var el = document.getElementById("ep-sexe-"+v);
+    if (!el) return;
+    el.style.borderColor = v===s ? "#5A9E82" : "#E8F5EE";
+    el.style.background = v===s ? "#EEF9F5" : "#fff";
+  });
+}
+function saveEditProfil() {
+  var prenom = document.getElementById("ep-prenom").value.trim();
+  if (!prenom) { document.getElementById("ep-prenom").style.borderColor="#E74C3C"; document.getElementById("ep-prenom").focus(); return; }
+  var surnom = document.getElementById("ep-surnom").value.trim();
+  var dob = document.getElementById("ep-dob").value;
+  var poids = document.getElementById("ep-poids").value;
+  var taille = document.getElementById("ep-taille").value;
+
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var profiles = JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  if (!profiles[idx]) return;
+  profiles[idx].prenom = prenom;
+  profiles[idx].surnom = surnom || null;
+  profiles[idx].displayName = surnom || prenom;
+  profiles[idx].dob = dob || profiles[idx].dob;
+  profiles[idx].sexe = epSexe || profiles[idx].sexe;
+  if (poids) profiles[idx].poids = parseFloat(poids);
+  if (taille) profiles[idx].taille = parseFloat(taille);
+  localStorage.setItem("childProfiles", JSON.stringify(profiles));
+  hideEditProfil();
+  applyChildProfile(profiles[idx]);
+  updateChildSelectors();
+}
+
+// ── PARTAGER ──
+function shareApp() {
+  var url = "https://begonie-gregaire-9c7b7l.netlify.app";
+  if (navigator.share) {
+    navigator.share({ title:"Petit Pousse", text:"L'app pour suivre bébé au quotidien 🌱", url:url });
+  } else {
+    var el = document.createElement("textarea");
+    el.value = url;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    alert("Lien copié ! \n" + url);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   renderAlimGrid();
   updateAllaitDayStats();
   renderAllaitLogs();
+  updateHomeAllaitCard();
   obInitWink();
 
   // Rétro-compatibilité : migration ancien format → nouveau
