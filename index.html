@@ -557,9 +557,9 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           <img src="logo.svg" style="width:44px;height:44px;" />
           <span class="brand-name">Petit Pousse</span>
         </div>
-        <div class="bell-btn">
+        <div class="bell-btn" onclick="openNotifPanel()" id="bell-btn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2C3E50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-          <div class="bell-dot"></div>
+          <div class="bell-dot" id="bell-dot" style="display:none;"></div>
         </div>
       </div>
       <div class="home-greeting-sub">Bonjour Jade !</div>
@@ -2588,6 +2588,17 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
   </div>
 
+  <!-- PANNEAU NOTIFICATIONS -->
+  <div id="modal-notif" style="display:none;position:fixed;inset:0;z-index:700;align-items:flex-end;justify-content:center;background:rgba(44,62,80,0.5);">
+    <div style="background:#F7F5EF;border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:440px;max-height:85vh;overflow-y:auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <div style="font-size:17px;font-weight:800;color:#2C3E50;">&#128276; Notifications</div>
+        <div onclick="closeNotifPanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#7F8C8D;">&#215;</div>
+      </div>
+      <div id="notif-list"></div>
+    </div>
+  </div>
+
   <!-- TOAST BIENVENUE -->
   <div id="toast-bienvenue" style="display:none;position:fixed;bottom:80px;left:16px;right:16px;z-index:600;pointer-events:none;">
     <div style="background:linear-gradient(135deg,#5A9E82,#3A7E62);border-radius:20px;padding:18px 20px;box-shadow:0 8px 32px rgba(90,158,130,0.35);pointer-events:all;">
@@ -3585,6 +3596,8 @@ function applyChildProfile(profile) {
   updateSanteTempHeader();
   renderAntecedents();
   loadSanteNotes();
+  // Cloche
+  updateBellDot();
 }
 function obCalcMonths(dob) {
   var birth=new Date(dob), now=new Date();
@@ -4377,6 +4390,85 @@ function loadSanteNotes() {
   var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
   var el = document.getElementById("sante-notes-input"); if (!el) return;
   el.value = localStorage.getItem("sante-notes-"+idx)||"";
+}
+
+// ── NOTIFICATIONS ──
+function buildNotifs() {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var profiles = JSON.parse(localStorage.getItem("childProfiles")||"[]");
+  var profile = profiles[idx];
+  var notifs = [];
+
+  if (profile) {
+    // Prochain vaccin
+    if (profile.dob) {
+      var vacc = calcNextVaccine(profile.dob);
+      if (vacc && vacc.days <= 30) {
+        var urgency = vacc.days <= 7 ? "red" : vacc.days <= 14 ? "orange" : "blue";
+        var colorMap = {red:"#E74C3C", orange:"#E8A020", blue:"#5BA8D4"};
+        var bgMap = {red:"#FDEAEA", orange:"#FFF3CD", blue:"#EAF4FF"};
+        notifs.push({ icon:"&#128200;", color:colorMap[urgency], bg:bgMap[urgency], title:"Vaccin à venir — "+vacc.short, sub: vacc.days<=0?"C'est aujourd'hui !":vacc.days===1?"Demain !":"Dans "+vacc.days+" jours", action:null });
+      }
+    }
+
+    // Médicaments du jour non cochés
+    var meds = JSON.parse(localStorage.getItem("sante-meds-"+idx)||"[]");
+    if (meds.length) {
+      var today = new Date(), yyyy=today.getFullYear(), mm=String(today.getMonth()+1).padStart(2,"0"), dd=String(today.getDate()).padStart(2,"0");
+      var checks = JSON.parse(localStorage.getItem("sante-checks-"+idx+"-"+yyyy+mm+dd)||"{}");
+      var medsNonCoches = [];
+      meds.forEach(function(med) {
+        if (med.type === "traitement") {
+          var allDone = med.slots.every(function(s){ return checks[med.id+"-"+s]; });
+          if (!allDone) medsNonCoches.push(med.name);
+        }
+      });
+      if (medsNonCoches.length) {
+        notifs.push({ icon:"&#128138;", color:"#C86878", bg:"#FDEAEA", title:"Médicament"+(medsNonCoches.length>1?"s":"")+" à donner", sub:medsNonCoches.join(", ")+" — prises non cochées aujourd'hui", action:"goTo('sante')" });
+      }
+    }
+
+    // Température élevée aujourd'hui
+    var temps = JSON.parse(localStorage.getItem("sante-temps-"+idx)||"[]");
+    var todayStr = new Date().toISOString().slice(0,10);
+    var fievre = temps.filter(function(t){ return t.date===todayStr && parseFloat(t.val)>=38.5; });
+    if (fievre.length) {
+      var maxTemp = Math.max.apply(null, fievre.map(function(t){ return parseFloat(t.val); }));
+      notifs.push({ icon:"&#127777;", color:"#E74C3C", bg:"#FDEAEA", title:"Fièvre notée aujourd'hui", sub:"Température max : "+maxTemp.toFixed(1)+"°C — surveille régulièrement", action:"goTo('sante')" });
+    }
+
+    // RGO traitement bientôt terminé
+    if (profile.rgo && profile.rgo!=="non" && profile.rgoDateFin) {
+      var df = new Date(profile.rgoDateFin), now2 = new Date();
+      var daysLeft = Math.ceil((df-now2)/86400000);
+      if (daysLeft >= 0 && daysLeft <= 14) {
+        notifs.push({ icon:"&#127754;", color:"#5BA8D4", bg:"#EAF4FF", title:"Traitement RGO bientôt terminé", sub:"J-"+daysLeft+" — Arrêt progressif obligatoire, jamais du jour au lendemain", action:"goTo('sante')" });
+      }
+    }
+  }
+
+  return notifs;
+}
+
+function openNotifPanel() {
+  var notifs = buildNotifs();
+  var list = document.getElementById("notif-list");
+  if (!notifs.length) {
+    list.innerHTML = '<div style="text-align:center;padding:30px 0;"><div style="font-size:48px;margin-bottom:12px;">&#10003;</div><div style="font-size:15px;font-weight:700;color:#2C3E50;margin-bottom:6px;">Tout est à jour !</div><div style="font-size:13px;color:#7F8C8D;">Aucune alerte pour le moment</div></div>';
+  } else {
+    var h = "";
+    notifs.forEach(function(n) {
+      h += '<div '+(n.action?'onclick="'+n.action+';closeNotifPanel()"':'')+' style="background:'+n.bg+';border-radius:16px;padding:14px 15px;display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;border-left:3px solid '+n.color+';'+(n.action?'cursor:pointer;':'')+'"><div style="font-size:24px;flex-shrink:0;">'+n.icon+'</div><div style="flex:1;"><div style="font-size:13px;font-weight:800;color:#2C3E50;">'+n.title+'</div><div style="font-size:12px;color:#7F8C8D;margin-top:3px;line-height:1.45;">'+n.sub+'</div></div></div>';
+    });
+    list.innerHTML = h;
+  }
+  document.getElementById("modal-notif").style.display = "flex";
+}
+function closeNotifPanel() { document.getElementById("modal-notif").style.display = "none"; }
+function updateBellDot() {
+  var notifs = buildNotifs();
+  var dot = document.getElementById("bell-dot");
+  if (dot) dot.style.display = notifs.length ? "block" : "none";
 }
 
 // ── PARTAGER ──
