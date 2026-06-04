@@ -2941,7 +2941,7 @@ function obShowStep(n) {
     // auto-advance via selection, pas de bouton
   } else if(n===2) {
     mb.style.display="block"; mb.textContent="Suivant →";
-    gb.style.display="block"; gb.textContent="Passer pour l’instant";
+    gb.style.display="block"; gb.textContent="Passer pour l'instant";
   } else if(n===3) {
     // PIN pad — no button, auto-advance on 4 digits
     obData.pinPhase=1; obData.pinEntry=""; obData.pin=null; obData.pinConfirm=null;
@@ -2963,7 +2963,7 @@ function obShowStep(n) {
   } else if(n===7) {
     var si=document.getElementById("ob-surnom"); si.placeholder=obData.prenom+"..."; si.value="";
     mb.style.display="block"; mb.textContent="Suivant →";
-    gb.style.display="block"; gb.textContent="Non, "+obData.prenom+" c’est très bien ! 🌱";
+    gb.style.display="block"; gb.textContent="Non, "+obData.prenom+" c'est très bien ! 🌱";
   } else if(n===8) {
     var fn8=obData.surnom||obData.prenom;
     document.getElementById("ob-pt-title").textContent="Et physiquement, "+fn8+" ?";
@@ -3027,8 +3027,8 @@ function obShowStep(n) {
       obRow("Tu es",rl)+(obData.contact?obRow("Contact",obData.contact):"")+"</div>";
     mb.style.display="block"; mb.textContent="C'est parti ! 🌱";
   }
-}}
-function obRow(l,v){return’<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;"><span style="font-size:13px;color:#7F8C8D;">’+l+’</span><span style="font-size:13px;font-weight:700;color:#2C3E50;">’+v+’</span></div>’;}
+}
+function obRow(l,v){return'<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;"><span style="font-size:13px;color:#7F8C8D;">'+l+'</span><span style="font-size:13px;font-weight:700;color:#2C3E50;">'+v+'</span></div>';}
 
 // Contact type
 function obSelectContact(type) {
