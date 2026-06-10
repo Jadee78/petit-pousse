@@ -104,7 +104,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .lf-foot { font-size:12px; color:var(--sub); margin-top:20px; text-align:center; line-height:1.6; }
 
 /* ══ ONBOARDING ══ */
-#screen-onboarding { background:linear-gradient(160deg,#f0f8f4 0%,#e8f5ee 60%,#f5f0f8 100%); padding-bottom:0; overflow:hidden; }
+#screen-onboarding { background:linear-gradient(160deg,#f0f8f4 0%,#e8f5ee 60%,#f5f0f8 100%); padding-bottom:0; overflow-y:auto !important; -webkit-overflow-scrolling:touch; }
 .ob-wrap { display:flex; flex-direction:column; padding:90px 28px 190px; min-height:100vh; }
 .ob-dots { display:flex; gap:7px; justify-content:center; position:fixed; top:50px; left:0; right:0; z-index:150; }
 .ob-dot { width:8px; height:8px; border-radius:50%; background:rgba(90,158,130,0.2); transition:all 0.4s ease; flex-shrink:0; }
@@ -135,8 +135,9 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .ob-btn-ghost { width:100%; background:transparent; color:var(--green); border:2px solid var(--green-lt); border-radius:16px; padding:14px; font-size:13px; font-weight:700; font-family:"Montserrat",sans-serif; cursor:pointer; margin-top:10px; }
 
 /* Plant character */
-#ob-plant { position:fixed; bottom:160px; left:14px; z-index:160; pointer-events:none; }
-#ob-plant svg { transform-origin:center; animation:obSunIdle 3.5s ease-in-out infinite; }
+#ob-plant { position:fixed; bottom:130px; left:8px; z-index:160; pointer-events:none; transition:opacity 0.3s; }
+#ob-plant svg { width:54px; height:54px; transform-origin:center; animation:obSunIdle 3.5s ease-in-out infinite; }
+#ob-plant.hidden { opacity:0; }
 
 @keyframes obSunIdle {
   0%,100% { transform:scale(1) rotate(0deg); }
@@ -3284,6 +3285,15 @@ function obShowStep(n) {
   // Bouton retour : visible dès qu'on a un historique OU qu'on édite depuis le récap
   var bk = document.getElementById("ob-back");
   if (bk) bk.style.display = (n!==1 && (obHistory.length>0 || obEditFromRecap)) ? "flex" : "none";
+  // Soleil : masqué sur les étapes denses pour ne pas gêner
+  var plant = document.getElementById("ob-plant");
+  if (plant) {
+    var denseSteps = [8, 11, 13, 14];
+    if (denseSteps.indexOf(n) !== -1) plant.classList.add("hidden");
+    else plant.classList.remove("hidden");
+  }
+  // Reset scroll en haut à chaque étape
+  document.getElementById("screen-onboarding").scrollTop = 0;
   var mb=document.getElementById("ob-main-btn"), gb=document.getElementById("ob-ghost-btn");
   mb.style.display="none"; gb.style.display="none";
 
