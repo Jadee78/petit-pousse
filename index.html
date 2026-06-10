@@ -9,6 +9,7 @@
 <meta name="theme-color" content="#5A9E82">
 <title>Petit Pousse</title>
 <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent; }
 :root {
@@ -2400,39 +2401,56 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div class="login-form" id="lform-connect">
         <div>
           <div class="lf-label">Email</div>
-          <input class="lf-input" type="email" placeholder="votre@email.com" />
+          <input id="login-email" class="lf-input" type="email" placeholder="votre@email.com" autocomplete="email" />
         </div>
         <div>
           <div class="lf-label">Mot de passe</div>
-          <input class="lf-input" type="password" placeholder="••••••••" />
+          <input id="login-password" class="lf-input" type="password" placeholder="••••••••" autocomplete="current-password" />
         </div>
-        <button class="lf-btn" onclick="goToApp()">Se connecter</button>
-        <div class="lf-sep"><div class="lf-sep-line"></div><div class="lf-sep-txt">ou</div><div class="lf-sep-line"></div></div>
-        <button class="lf-social">🍎&nbsp; Continuer avec Apple</button>
-        <button class="lf-social">🔵&nbsp; Continuer avec Google</button>
-        <div class="lf-foot">Mot de passe oublié ?</div>
+        <div id="login-err" style="font-size:13px;color:#E74C3C;text-align:center;min-height:18px;margin-top:-6px;"></div>
+        <button class="lf-btn" id="login-btn" onclick="doLogin()">Se connecter</button>
+        <div class="lf-foot" onclick="doForgotPassword()" style="cursor:pointer;">Mot de passe oublié ?</div>
       </div>
       <!-- Inscription -->
       <div class="login-form" id="lform-signup" style="display:none;">
         <div>
-          <div class="lf-label">Prénom</div>
-          <input class="lf-input" type="text" placeholder="Votre prénom" />
+          <div class="lf-label">Tu es…</div>
+          <div style="display:flex;gap:8px;margin-top:4px;">
+            <div id="signup-role-parent" onclick="selectSignupRole('parent')" style="flex:1;border:2px solid #5A9E82;border-radius:14px;padding:12px 8px;text-align:center;cursor:pointer;background:#EEF9F5;">
+              <div style="font-size:22px;">👨‍👩‍👦</div>
+              <div style="font-size:11px;font-weight:700;color:#2C3E50;margin-top:4px;">Parent</div>
+            </div>
+            <div id="signup-role-assmat" onclick="selectSignupRole('assmat')" style="flex:1;border:2px solid #E8F5EE;border-radius:14px;padding:12px 8px;text-align:center;cursor:pointer;background:#fff;">
+              <div style="font-size:22px;">👩‍🍼</div>
+              <div style="font-size:11px;font-weight:700;color:#7F8C8D;margin-top:4px;">Assistante Mat.</div>
+            </div>
+          </div>
         </div>
         <div>
           <div class="lf-label">Email</div>
-          <input class="lf-input" type="email" placeholder="votre@email.com" />
+          <input id="signup-email" class="lf-input" type="email" placeholder="votre@email.com" autocomplete="email" />
         </div>
         <div>
           <div class="lf-label">Mot de passe</div>
-          <input class="lf-input" type="password" placeholder="Minimum 8 caractères" />
+          <input id="signup-password" class="lf-input" type="password" placeholder="Minimum 6 caractères" autocomplete="new-password" />
         </div>
-        <button class="lf-btn" onclick="goToApp()">Créer mon compte</button>
-        <div class="lf-sep"><div class="lf-sep-line"></div><div class="lf-sep-txt">ou</div><div class="lf-sep-line"></div></div>
-        <button class="lf-social">🍎&nbsp; Continuer avec Apple</button>
-        <button class="lf-social">🔵&nbsp; Continuer avec Google</button>
-        <div class="lf-foot">En créant un compte, vous acceptez<br>nos conditions d'utilisation</div>
+        <div id="signup-err" style="font-size:13px;color:#E74C3C;text-align:center;min-height:18px;margin-top:-6px;"></div>
+        <button class="lf-btn" id="signup-btn" onclick="doSignup()">Créer mon compte</button>
+        <div class="lf-foot">En créant un compte, vous acceptez nos conditions d'utilisation</div>
       </div>
     </div>
+  </div>
+
+  <!-- ÉCRAN ASSMAT -->
+  <div id="screen-assmat" class="screen" style="background:linear-gradient(160deg,#f0f8f4,#e8f4ee);display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;">
+    <div style="font-size:64px;margin-bottom:16px;">👩‍🍼</div>
+    <div style="font-size:22px;font-weight:800;color:#2C3E50;margin-bottom:8px;text-align:center;">Espace Assistante Maternelle</div>
+    <div style="font-size:14px;color:#7F8C8D;text-align:center;line-height:1.7;margin-bottom:32px;">Cet espace est en cours de construction.<br>Il sera disponible très bientôt !</div>
+    <div style="background:#fff;border-radius:20px;padding:18px 20px;width:100%;max-width:360px;box-shadow:0 2px 16px rgba(0,0,0,0.06);margin-bottom:16px;">
+      <div style="font-size:13px;font-weight:700;color:#5A9E82;margin-bottom:4px;">Connecté en tant qu'</div>
+      <div style="font-size:13px;color:#2C3E50;" id="assmat-email-display">—</div>
+    </div>
+    <button onclick="doLogout()" style="background:rgba(44,62,80,0.08);border:none;border-radius:14px;padding:13px 28px;font-size:14px;font-weight:700;color:#7F8C8D;font-family:Montserrat,sans-serif;cursor:pointer;">Se déconnecter</button>
   </div>
 
   <!-- MODAL RECETTE -->
@@ -2798,6 +2816,12 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
 </div>
 <script>
+// ── SUPABASE ──
+const SUPA_URL = "https://vyehwoenfpujdplawfk.supabase.co";
+const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5ZWh3b2VuZnB1amlkcGxhd2ZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1ODM1OTMsImV4cCI6MjA5NjE1OTU5M30.Zvx81nRZ8xpGM2Ywf9IsvKNQ7YgUg6t9QL8u6aY05_Q";
+const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+var currentUser = null;
+
 let hist = ["home"];
 function showScreen(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
@@ -2999,6 +3023,122 @@ function loginTab(tab) {
   document.getElementById("lform-connect").style.display = tab === "connect" ? "flex" : "none";
   document.getElementById("lform-signup").style.display = tab === "signup" ? "flex" : "none";
 }
+
+var signupRole = "parent";
+function selectSignupRole(role) {
+  signupRole = role;
+  var isParent = role === "parent";
+  var pEl = document.getElementById("signup-role-parent");
+  var aEl = document.getElementById("signup-role-assmat");
+  pEl.style.borderColor = isParent ? "#5A9E82" : "#E8F5EE";
+  pEl.style.background = isParent ? "#EEF9F5" : "#fff";
+  pEl.querySelector("div:last-child").style.color = isParent ? "#2C3E50" : "#7F8C8D";
+  aEl.style.borderColor = !isParent ? "#5A9E82" : "#E8F5EE";
+  aEl.style.background = !isParent ? "#EEF9F5" : "#fff";
+  aEl.querySelector("div:last-child").style.color = !isParent ? "#2C3E50" : "#7F8C8D";
+}
+
+async function doLogin() {
+  var email = document.getElementById("login-email").value.trim();
+  var pwd = document.getElementById("login-password").value;
+  var errEl = document.getElementById("login-err");
+  var btn = document.getElementById("login-btn");
+  errEl.textContent = "";
+  if (!email || !pwd) { errEl.textContent = "Remplis tous les champs"; return; }
+  btn.textContent = "Connexion…"; btn.style.opacity = "0.7";
+  var result = await sb.auth.signInWithPassword({ email: email, password: pwd });
+  btn.textContent = "Se connecter"; btn.style.opacity = "1";
+  if (result.error) { errEl.textContent = result.error.message === "Invalid login credentials" ? "Email ou mot de passe incorrect" : result.error.message; return; }
+  currentUser = result.data.user;
+  await afterLogin();
+}
+
+async function doSignup() {
+  var email = document.getElementById("signup-email").value.trim();
+  var pwd = document.getElementById("signup-password").value;
+  var errEl = document.getElementById("signup-err");
+  var btn = document.getElementById("signup-btn");
+  errEl.textContent = "";
+  if (!email || !pwd) { errEl.textContent = "Remplis tous les champs"; return; }
+  if (pwd.length < 6) { errEl.textContent = "Mot de passe trop court (min. 6 caractères)"; return; }
+  btn.textContent = "Création…"; btn.style.opacity = "0.7";
+  var result = await sb.auth.signUp({ email: email, password: pwd });
+  btn.textContent = "Créer mon compte"; btn.style.opacity = "1";
+  if (result.error) { errEl.textContent = result.error.message; return; }
+  currentUser = result.data.user;
+  // Sauvegarder le rôle dans user_profiles
+  if (currentUser) {
+    await sb.from("user_profiles").upsert({ id: currentUser.id, role: signupRole });
+  }
+  if (signupRole === "assmat") {
+    showAssmatInterface();
+  } else {
+    // Parent → onboarding
+    document.getElementById("screen-login").classList.remove("active");
+    document.getElementById("screen-onboarding").classList.add("active");
+    obShowStep(1);
+  }
+}
+
+async function doForgotPassword() {
+  var email = document.getElementById("login-email").value.trim();
+  if (!email) { document.getElementById("login-err").textContent = "Entre ton email d'abord"; return; }
+  await sb.auth.resetPasswordForEmail(email);
+  document.getElementById("login-err").style.color = "#5A9E82";
+  document.getElementById("login-err").textContent = "Email envoyé !";
+  setTimeout(function(){ document.getElementById("login-err").style.color = "#E74C3C"; document.getElementById("login-err").textContent = ""; }, 3000);
+}
+
+async function afterLogin() {
+  // Récupérer le rôle
+  var profileRes = await sb.from("user_profiles").select("role").eq("id", currentUser.id).single();
+  var role = profileRes.data ? profileRes.data.role : "parent";
+  if (role === "assmat") { showAssmatInterface(); return; }
+  // Récupérer les enfants depuis Supabase
+  var childRes = await sb.from("children").select("*").eq("parent_id", currentUser.id).order("sort_order");
+  if (childRes.data && childRes.data.length > 0) {
+    var profiles = childRes.data.map(function(c) {
+      return { id: c.id, prenom: c.prenom, displayName: c.display_name||c.prenom, sexe: c.sexe, dob: c.dob, poids: c.poids, taille: c.taille, role: c.role_parent, rgo: c.rgo, rgoTraitement: c.rgo_traitement, rgoMed: c.rgo_med, rgoDateFin: c.rgo_date_fin };
+    });
+    localStorage.setItem("childProfiles", JSON.stringify(profiles));
+    localStorage.setItem("activeChildIdx", "0");
+    document.getElementById("screen-login").classList.remove("active");
+    document.getElementById("screen-home").classList.add("active");
+    document.getElementById("tabbar").style.display = "flex";
+    applyChildProfile(profiles[0]);
+    updateChildSelectors();
+  } else {
+    // Pas encore d'enfant → onboarding
+    document.getElementById("screen-login").classList.remove("active");
+    document.getElementById("screen-onboarding").classList.add("active");
+    obShowStep(1);
+  }
+}
+
+function showAssmatInterface() {
+  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  var el = document.getElementById("screen-assmat");
+  if (el) { el.style.display = "flex"; el.classList.add("active"); }
+  document.getElementById("tabbar").style.display = "none";
+  if (currentUser) {
+    var emailEl = document.getElementById("assmat-email-display");
+    if (emailEl) emailEl.textContent = currentUser.email;
+  }
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  currentUser = null;
+  localStorage.removeItem("childProfiles");
+  localStorage.removeItem("activeChildIdx");
+  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  document.getElementById("screen-login").classList.add("active");
+  document.getElementById("tabbar").style.display = "none";
+  document.getElementById("login-email").value = "";
+  document.getElementById("login-password").value = "";
+  loginTab("connect");
+}
+
 function goToApp() {
   document.getElementById("screen-login").classList.remove("active");
   document.getElementById("screen-home").classList.add("active");
@@ -3293,7 +3433,7 @@ function obSkipSurnom() { obGhost(); }
 function obGoTo(next) {
   obShowStep(next);
 }
-function obFinish() {
+async function obFinish() {
   var profile={role:obData.role,prenom:obData.prenom,sexe:obData.sexe,dob:obData.dob,surnom:obData.surnom,displayName:obData.surnom||obData.prenom,poids:obData.poids,taille:obData.taille,allaitement:obData.allaitement,rgo:obData.rgo,rgoTraitement:obData.rgoTraitement,rgoMed:obData.rgoMed,rgoDateFin:obData.rgoDateFin};
   var profiles=JSON.parse(localStorage.getItem("childProfiles")||"[]");
   profiles[0]=profile;
@@ -3308,9 +3448,16 @@ function obFinish() {
   }
   localStorage.setItem("childProfiles",JSON.stringify(profiles));
   localStorage.setItem("activeChildIdx","0");
-  if(obData.contact||obData.pin) {
-    var acc={contact:obData.contact,contactType:obData.contactType,pin:obData.pin};
-    localStorage.setItem("accountData",JSON.stringify(acc));
+  // Sauvegarder dans Supabase si connecté
+  if (currentUser) {
+    var rows = profiles.map(function(p, i) {
+      return { parent_id: currentUser.id, prenom: p.prenom, display_name: p.displayName, sexe: p.sexe, dob: p.dob||null, poids: p.poids||null, taille: p.taille||null, role_parent: p.role||"maman", rgo: p.rgo||"non", rgo_traitement: !!p.rgoTraitement, rgo_med: p.rgoMed||null, rgo_date_fin: p.rgoDateFin||null, sort_order: i };
+    });
+    for (var ri = 0; ri < rows.length; ri++) {
+      var res = await sb.from("children").insert(rows[ri]).select("id").single();
+      if (res.data) profiles[ri].id = res.data.id;
+    }
+    localStorage.setItem("childProfiles", JSON.stringify(profiles));
   }
   applyChildProfile(profile);
   applyAllait();
@@ -4487,7 +4634,7 @@ function shareApp() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
   renderAlimGrid();
   updateAllaitDayStats();
   renderAllaitLogs();
@@ -4506,32 +4653,43 @@ document.addEventListener("DOMContentLoaded", function() {
     localStorage.setItem("activeChildIdx", "0");
   }
 
-  var profiles = JSON.parse(localStorage.getItem("childProfiles") || "null");
-  if (!profiles || profiles.length === 0 || !profiles[0]) {
+  // Vérifier session Supabase
+  var sessionRes = await sb.auth.getSession();
+  var session = sessionRes.data && sessionRes.data.session;
+
+  if (session) {
+    // Session active → charger l'app
+    currentUser = session.user;
+    var profileRes = await sb.from("user_profiles").select("role").eq("id", currentUser.id).single();
+    var role = profileRes.data ? profileRes.data.role : "parent";
+    if (role === "assmat") {
+      showAssmatInterface();
+      return;
+    }
+    // Essayer de charger les enfants depuis Supabase
+    var childRes = await sb.from("children").select("*").eq("parent_id", currentUser.id).order("sort_order");
+    if (childRes.data && childRes.data.length > 0) {
+      var profiles = childRes.data.map(function(c) {
+        return { id: c.id, prenom: c.prenom, displayName: c.display_name||c.prenom, sexe: c.sexe, dob: c.dob, poids: c.poids, taille: c.taille, role: c.role_parent, rgo: c.rgo, rgoTraitement: c.rgo_traitement, rgoMed: c.rgo_med, rgoDateFin: c.rgo_date_fin };
+      });
+      localStorage.setItem("childProfiles", JSON.stringify(profiles));
+      localStorage.setItem("activeChildIdx", "0");
+      document.getElementById("tabbar").style.display = "flex";
+      document.getElementById("screen-home").classList.add("active");
+      applyChildProfile(profiles[0]);
+      updateChildSelectors();
+      return;
+    }
+    // Pas d'enfant dans Supabase → onboarding
     document.getElementById("tabbar").style.display = "none";
     document.getElementById("screen-onboarding").classList.add("active");
     obShowStep(1);
-  } else {
-    var acc = JSON.parse(localStorage.getItem("accountData") || "null");
-    if (acc && acc.pin) {
-      // Compte avec PIN → écran de verrouillage
-      document.getElementById("tabbar").style.display = "none";
-      document.getElementById("screen-lock").classList.add("active");
-      lockEntry = "";
-      lockUpdateDots(0);
-      document.getElementById("lock-err").textContent = "";
-      var idx2 = parseInt(localStorage.getItem("activeChildIdx") || "0");
-      var p = (profiles[idx2] || profiles[0]);
-      var name = p ? (p.displayName || p.prenom || "") : "";
-      if (name) document.getElementById("lock-greeting").textContent = "Bonjour " + name + " 👋";
-    } else {
-      var idx = parseInt(localStorage.getItem("activeChildIdx") || "0");
-      document.getElementById("tabbar").style.display = "flex";
-      document.getElementById("screen-home").classList.add("active");
-      applyChildProfile(profiles[idx] || profiles[0]);
-      updateChildSelectors();
-    }
+    return;
   }
+
+  // Pas de session → écran login
+  document.getElementById("tabbar").style.display = "none";
+  document.getElementById("screen-login").classList.add("active");
 });
 
 </script>
