@@ -3074,7 +3074,7 @@ async function doSignup() {
     showAssmatInterface();
   } else {
     // Parent → onboarding
-    document.getElementById("screen-login").classList.remove("active");
+    hideAllScreens();
     document.getElementById("screen-onboarding").classList.add("active");
     obShowStep(1);
   }
@@ -3115,8 +3115,15 @@ async function afterLogin() {
   }
 }
 
+function hideAllScreens() {
+  document.querySelectorAll(".screen").forEach(function(s){
+    s.classList.remove("active");
+    if (s.id === "screen-assmat") s.style.display = "none";
+  });
+}
+
 function showAssmatInterface() {
-  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  hideAllScreens();
   var el = document.getElementById("screen-assmat");
   if (el) { el.style.display = "flex"; el.classList.add("active"); }
   document.getElementById("tabbar").style.display = "none";
@@ -3131,11 +3138,13 @@ async function doLogout() {
   currentUser = null;
   localStorage.removeItem("childProfiles");
   localStorage.removeItem("activeChildIdx");
-  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  hideAllScreens();
   document.getElementById("screen-login").classList.add("active");
   document.getElementById("tabbar").style.display = "none";
   document.getElementById("login-email").value = "";
   document.getElementById("login-password").value = "";
+  document.getElementById("signup-email").value = "";
+  document.getElementById("signup-password").value = "";
   loginTab("connect");
 }
 
