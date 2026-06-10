@@ -2264,6 +2264,28 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
       </div>
     </div>
+    <!-- Mode pro -->
+    <div style="margin:16px 16px 0;">
+      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Mode professionnel</div>
+      <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div onclick="addRole('assmat')" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;">
+          <div style="font-size:24px;">&#128105;&#8205;&#127868;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Je suis aussi assistante maternelle</div><div style="font-size:12px;color:#7F8C8D;">Acc&#233;der &#224; l'espace pro</div></div>
+          <div style="font-size:16px;color:#5A9E82;font-weight:700;">&#8250;</div>
+        </div>
+      </div>
+    </div>
+    <!-- Compte -->
+    <div style="margin:16px 16px 0;">
+      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Compte</div>
+      <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div onclick="doLogout()" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;">
+          <div style="font-size:24px;">&#128274;</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#E74C3C;">Se d&#233;connecter</div><div style="font-size:12px;color:#7F8C8D;">Revenir &#224; l'&#233;cran de connexion</div></div>
+          <div style="font-size:16px;color:#E74C3C;font-weight:700;">&#8250;</div>
+        </div>
+      </div>
+    </div>
     <div style="height:24px;"></div>
   </div>
 
@@ -2441,6 +2463,30 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
   </div>
 
+  <!-- ÉCRAN CHOIX DE MODE -->
+  <div id="screen-rolechoice" class="screen" style="background:linear-gradient(160deg,#f0f8f4,#e8f4ee);display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;">
+    <div style="font-size:54px;margin-bottom:14px;">🌱</div>
+    <div style="font-size:24px;font-weight:800;color:#2C3E50;margin-bottom:8px;text-align:center;">Bonjour !</div>
+    <div style="font-size:14px;color:#7F8C8D;text-align:center;margin-bottom:32px;">Tu veux entrer comment aujourd'hui ?</div>
+    <div onclick="enterParentMode()" style="background:#fff;border-radius:20px;padding:22px 20px;width:100%;max-width:360px;box-shadow:0 2px 16px rgba(0,0,0,0.06);margin-bottom:14px;cursor:pointer;display:flex;align-items:center;gap:16px;">
+      <div style="font-size:38px;">👨‍👩‍👦</div>
+      <div style="flex:1;">
+        <div style="font-size:16px;font-weight:800;color:#2C3E50;">Mode Parent</div>
+        <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Mes enfants à moi</div>
+      </div>
+      <div style="font-size:18px;color:#B0B8C1;">›</div>
+    </div>
+    <div onclick="enterAssmatMode()" style="background:#fff;border-radius:20px;padding:22px 20px;width:100%;max-width:360px;box-shadow:0 2px 16px rgba(0,0,0,0.06);margin-bottom:24px;cursor:pointer;display:flex;align-items:center;gap:16px;">
+      <div style="font-size:38px;">👩‍🍼</div>
+      <div style="flex:1;">
+        <div style="font-size:16px;font-weight:800;color:#2C3E50;">Mode Assistante Maternelle</div>
+        <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Les enfants que je garde</div>
+      </div>
+      <div style="font-size:18px;color:#B0B8C1;">›</div>
+    </div>
+    <button onclick="doLogout()" style="background:rgba(44,62,80,0.08);border:none;border-radius:14px;padding:10px 22px;font-size:13px;font-weight:700;color:#7F8C8D;font-family:Montserrat,sans-serif;cursor:pointer;">Se déconnecter</button>
+  </div>
+
   <!-- ÉCRAN ASSMAT -->
   <div id="screen-assmat" class="screen" style="background:linear-gradient(160deg,#f0f8f4,#e8f4ee);display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;">
     <div style="font-size:64px;margin-bottom:16px;">👩‍🍼</div>
@@ -2449,6 +2495,11 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div style="background:#fff;border-radius:20px;padding:18px 20px;width:100%;max-width:360px;box-shadow:0 2px 16px rgba(0,0,0,0.06);margin-bottom:16px;">
       <div style="font-size:13px;font-weight:700;color:#5A9E82;margin-bottom:4px;">Connecté en tant qu'</div>
       <div style="font-size:13px;color:#2C3E50;" id="assmat-email-display">—</div>
+    </div>
+    <div onclick="addRole('parent')" style="background:#fff;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px 18px;width:100%;max-width:360px;cursor:pointer;text-align:center;margin-bottom:16px;">
+      <div style="font-size:22px;margin-bottom:4px;">👨‍👩‍👦</div>
+      <div style="font-size:13px;font-weight:700;color:#5A9E82;">Je suis aussi maman / papa</div>
+      <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Ajouter mes propres enfants à ce compte</div>
     </div>
     <button onclick="doLogout()" style="background:rgba(44,62,80,0.08);border:none;border-radius:14px;padding:13px 28px;font-size:14px;font-weight:700;color:#7F8C8D;font-family:Montserrat,sans-serif;cursor:pointer;">Se déconnecter</button>
   </div>
@@ -3066,9 +3117,14 @@ async function doSignup() {
   btn.textContent = "Créer mon compte"; btn.style.opacity = "1";
   if (result.error) { errEl.textContent = result.error.message; return; }
   currentUser = result.data.user;
-  // Sauvegarder le rôle dans user_profiles
+  // Sauvegarder le rôle dans user_profiles (booléens multi-rôles)
   if (currentUser) {
-    await sb.from("user_profiles").upsert({ id: currentUser.id, role: signupRole });
+    await sb.from("user_profiles").upsert({
+      id: currentUser.id,
+      role: signupRole,
+      is_parent: signupRole === "parent",
+      is_assmat: signupRole === "assmat"
+    });
   }
   if (signupRole === "assmat") {
     showAssmatInterface();
@@ -3090,11 +3146,27 @@ async function doForgotPassword() {
 }
 
 async function afterLogin() {
-  // Récupérer le rôle
-  var profileRes = await sb.from("user_profiles").select("role").eq("id", currentUser.id).single();
-  var role = profileRes.data ? profileRes.data.role : "parent";
-  if (role === "assmat") { showAssmatInterface(); return; }
-  // Récupérer les enfants depuis Supabase
+  // Récupérer les rôles (multi-rôles)
+  var profileRes = await sb.from("user_profiles").select("role,is_parent,is_assmat").eq("id", currentUser.id).single();
+  var isParent = profileRes.data ? profileRes.data.is_parent : false;
+  var isAssmat = profileRes.data ? profileRes.data.is_assmat : false;
+  // Rétrocompatibilité : si rôles non remplis, déduire depuis "role"
+  if (!isParent && !isAssmat && profileRes.data) {
+    if (profileRes.data.role === "parent") isParent = true;
+    if (profileRes.data.role === "assmat") isAssmat = true;
+    if (currentUser) await sb.from("user_profiles").update({ is_parent: isParent, is_assmat: isAssmat }).eq("id", currentUser.id);
+  }
+  // Si les deux → écran choix
+  if (isParent && isAssmat) {
+    showRoleChoice();
+    return;
+  }
+  // Un seul rôle → direct
+  if (isAssmat) { enterAssmatMode(); return; }
+  enterParentMode();
+}
+
+async function enterParentMode() {
   var childRes = await sb.from("children").select("*").eq("parent_id", currentUser.id).order("sort_order");
   if (childRes.data && childRes.data.length > 0) {
     var profiles = childRes.data.map(function(c) {
@@ -3102,23 +3174,38 @@ async function afterLogin() {
     });
     localStorage.setItem("childProfiles", JSON.stringify(profiles));
     localStorage.setItem("activeChildIdx", "0");
-    document.getElementById("screen-login").classList.remove("active");
+    hideAllScreens();
     document.getElementById("screen-home").classList.add("active");
     document.getElementById("tabbar").style.display = "flex";
     applyChildProfile(profiles[0]);
     updateChildSelectors();
   } else {
-    // Pas encore d'enfant → onboarding
-    document.getElementById("screen-login").classList.remove("active");
+    hideAllScreens();
     document.getElementById("screen-onboarding").classList.add("active");
     obShowStep(1);
   }
 }
 
+function enterAssmatMode() { showAssmatInterface(); }
+
+function showRoleChoice() {
+  hideAllScreens();
+  document.getElementById("tabbar").style.display = "none";
+  var rc = document.getElementById("screen-rolechoice");
+  if (rc) { rc.style.display = "flex"; rc.classList.add("active"); }
+}
+
+async function addRole(role) {
+  if (!currentUser) return;
+  var patch = role === "parent" ? { is_parent: true } : { is_assmat: true };
+  await sb.from("user_profiles").update(patch).eq("id", currentUser.id);
+  showRoleChoice();
+}
+
 function hideAllScreens() {
   document.querySelectorAll(".screen").forEach(function(s){
     s.classList.remove("active");
-    if (s.id === "screen-assmat") s.style.display = "none";
+    if (s.id === "screen-assmat" || s.id === "screen-rolechoice") s.style.display = "none";
   });
 }
 
