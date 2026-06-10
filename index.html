@@ -136,12 +136,13 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
 /* Plant character */
 #ob-plant { position:fixed; bottom:160px; left:14px; z-index:160; pointer-events:none; }
-#ob-plant svg { transform-origin:bottom center; animation:obPlantIdle 4s ease-in-out infinite; }
+#ob-plant svg { transform-origin:center; animation:obSunIdle 3.5s ease-in-out infinite; }
 
-@keyframes obPlantIdle {
-  0%,100% { transform:rotate(8deg); }
-  35% { transform:rotate(4deg); }
-  70% { transform:rotate(12deg); }
+@keyframes obSunIdle {
+  0%,100% { transform:scale(1) rotate(0deg); }
+  25% { transform:scale(1.04) rotate(3deg); }
+  50% { transform:scale(1) rotate(0deg); }
+  75% { transform:scale(1.04) rotate(-3deg); }
 }
 @keyframes obStepIn {
   from { opacity:0; transform:translateY(16px); }
@@ -209,6 +210,10 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
   <!-- ONBOARDING -->
   <div id="screen-onboarding" class="screen">
+    <!-- Bouton retour -->
+    <div id="ob-back" onclick="obBack()" style="position:fixed;top:46px;left:18px;z-index:160;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.9);box-shadow:0 1px 6px rgba(0,0,0,0.08);display:none;align-items:center;justify-content:center;cursor:pointer;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5A9E82" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
     <!-- Progress dots -->
     <div class="ob-dots">
       <div class="ob-dot" id="ob-dot-1"></div>
@@ -518,30 +523,42 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <button id="ob-ghost-btn" class="ob-btn-ghost" onclick="obGhost()" style="display:none;"></button>
     </div>
 
-    <!-- Petite plante — bas gauche, regarde vers la droite (le contenu), cligne de l'œil -->
+    <!-- Petit soleil — bas gauche, cligne de l'œil -->
     <div id="ob-plant">
-      <svg width="64" height="84" viewBox="0 0 64 84">
-        <!-- pot -->
-        <path d="M22 69 L42 69 L39 81 L25 81Z" fill="#A0784A"/>
-        <rect x="18" y="63" width="28" height="7" rx="3.5" fill="#B08050"/>
-        <!-- tige ondulée -->
-        <path d="M30 63 Q28 51 30 39 Q32 27 30 17" stroke="#5A9E82" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-        <!-- feuille gauche -->
-        <path d="M30 49 Q15 45 13 33 Q25 28 30 41" fill="#7EC8A0"/>
-        <!-- feuille droite -->
-        <path d="M30 38 Q45 33 47 22 Q35 19 30 31" fill="#5A9E82"/>
-        <!-- tête — légèrement décalée vers la droite pour regarder le contenu -->
-        <circle cx="33" cy="13" r="10.5" fill="#A8E0C0"/>
-        <!-- œil gauche (fixe) -->
-        <circle cx="29" cy="12" r="2.2" fill="#2C3E50"/>
-        <circle cx="29.9" cy="11.2" r="0.85" fill="#fff"/>
-        <!-- œil droit (cligne !) — état ouvert -->
-        <circle id="ob-eye-open" cx="37" cy="11" r="2.2" fill="#2C3E50"/>
-        <circle id="ob-eye-shine" cx="37.9" cy="10.2" r="0.85" fill="#fff"/>
-        <!-- œil droit — état fermé (clin d'œil, caché par défaut) -->
-        <path id="ob-eye-closed" d="M34.8 11 Q37 9 39.2 11" stroke="#2C3E50" stroke-width="2" fill="none" stroke-linecap="round" display="none"/>
-        <!-- sourire -->
-        <path d="M28 16.5 Q33 20 38 16.5" stroke="#2C3E50" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <svg width="72" height="72" viewBox="0 0 72 72">
+        <!-- Rayons -->
+        <g fill="#FFB84D">
+          <polygon points="36,2 33,11 39,11"/>
+          <polygon points="36,70 33,61 39,61"/>
+          <polygon points="2,36 11,33 11,39"/>
+          <polygon points="70,36 61,33 61,39"/>
+          <polygon points="12,12 19,17 17,19"/>
+          <polygon points="60,12 53,17 55,19"/>
+          <polygon points="12,60 19,55 17,53"/>
+          <polygon points="60,60 53,55 55,53"/>
+        </g>
+        <!-- Corps du soleil -->
+        <circle cx="36" cy="36" r="20" fill="#FFD93D"/>
+        <circle cx="36" cy="36" r="20" fill="url(#sunGrad)" opacity="0.5"/>
+        <defs>
+          <radialGradient id="sunGrad" cx="35%" cy="35%">
+            <stop offset="0%" stop-color="#FFF4B0"/>
+            <stop offset="100%" stop-color="#FFD93D"/>
+          </radialGradient>
+        </defs>
+        <!-- Joues roses -->
+        <ellipse cx="26" cy="40" rx="3" ry="2" fill="#FFB3B3" opacity="0.7"/>
+        <ellipse cx="46" cy="40" rx="3" ry="2" fill="#FFB3B3" opacity="0.7"/>
+        <!-- Œil gauche (fixe) -->
+        <circle cx="30" cy="33" r="2.4" fill="#2C3E50"/>
+        <circle cx="30.9" cy="32.2" r="0.95" fill="#fff"/>
+        <!-- Œil droit (cligne !) — état ouvert -->
+        <circle id="ob-eye-open" cx="42" cy="33" r="2.4" fill="#2C3E50"/>
+        <circle id="ob-eye-shine" cx="42.9" cy="32.2" r="0.95" fill="#fff"/>
+        <!-- Œil droit — état fermé (clin d'œil) -->
+        <path id="ob-eye-closed" d="M39.5 33 Q42 31 44.5 33" stroke="#2C3E50" stroke-width="2.2" fill="none" stroke-linecap="round" display="none"/>
+        <!-- Sourire -->
+        <path d="M30 41 Q36 46 42 41" stroke="#2C3E50" stroke-width="2" fill="none" stroke-linecap="round"/>
       </svg>
     </div>
   </div>
@@ -3131,6 +3148,7 @@ async function doSignup() {
   } else {
     // Parent → onboarding
     hideAllScreens();
+    obHistory = []; obEditFromRecap = false;
     document.getElementById("screen-onboarding").classList.add("active");
     obShowStep(1);
   }
@@ -3263,6 +3281,9 @@ function obShowStep(n) {
     s.style.display = i===n ? "flex" : "none";
     if(i===n){s.style.flexDirection="column";s.style.alignItems="center";}
   }
+  // Bouton retour : visible dès qu'on a un historique OU qu'on édite depuis le récap
+  var bk = document.getElementById("ob-back");
+  if (bk) bk.style.display = (n!==1 && (obHistory.length>0 || obEditFromRecap)) ? "flex" : "none";
   var mb=document.getElementById("ob-main-btn"), gb=document.getElementById("ob-ghost-btn");
   mb.style.display="none"; gb.style.display="none";
 
@@ -3345,19 +3366,21 @@ function obShowStep(n) {
     var poidsStr=(obData.poids||obData.taille)?((obData.poids?obData.poids+" kg":"—")+" · "+(obData.taille?obData.taille+" cm":"—")):"Non renseigné";
     var rgoLbl=obData.rgo==="oui"?"🌊 RGO diagnostiqué":obData.rgo==="suspecte"?"🤔 RGO suspecté":"Non";
     document.getElementById("ob-summary").innerHTML=
-      '<div style="display:flex;flex-direction:column;gap:10px;">'+
-      obRow("Prénom",dn)+(obData.surnom?obRow("Prénom complet",obData.prenom):"")+
-      obRow("Sexe",sl)+obRow("Âge",age)+
-      obRow("Poids / Taille",poidsStr)+
-      obRow("Alimentation",allaitLbl)+
-      obRow("RGO",rgoLbl)+
-      (obData.rgoMed?obRow("Traitement",obData.rgoMed):"")+
-      (obData.prenom2?obRow("Fratrie","+ "+obData.prenom2):"")+
-      obRow("Tu es",rl)+(obData.contact?obRow("Contact",obData.contact):"")+"</div>";
+      '<div style="display:flex;flex-direction:column;gap:8px;">'+
+      obRowEdit("Prénom",dn,4)+(obData.surnom?obRowEdit("Surnom",obData.surnom,7):"")+
+      obRowEdit("Sexe",sl,5)+obRowEdit("Âge",age,6)+
+      obRowEdit("Poids / Taille",poidsStr,8)+
+      obRowEdit("Alimentation",allaitLbl,9)+
+      obRowEdit("RGO",rgoLbl,10)+
+      (obData.rgoMed?obRowEdit("Traitement",obData.rgoMed,11):"")+
+      (obData.prenom2?obRowEdit("Fratrie","+ "+obData.prenom2,13):obRowEdit("Fratrie","Aucune",12))+
+      obRowEdit("Tu es",rl,1)+(obData.contact?obRowEdit("Contact",obData.contact,2):"")+
+      '<div style="font-size:11px;color:#B0B8C1;text-align:center;margin-top:8px;">Appuie sur une ligne pour modifier</div></div>';
     mb.style.display="block"; mb.textContent="C'est parti ! 🌱";
   }
 }
 function obRow(l,v){return'<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;"><span style="font-size:13px;color:#7F8C8D;">'+l+'</span><span style="font-size:13px;font-weight:700;color:#2C3E50;">'+v+'</span></div>';}
+function obRowEdit(l,v,step){return '<div onclick="obEdit('+step+')" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;background:#fff;padding:10px 14px;border-radius:12px;cursor:pointer;border:1px solid transparent;transition:border-color 0.15s;" onmouseover="this.style.borderColor=\'#A8DFCA\'" onmouseout="this.style.borderColor=\'transparent\'"><span style="font-size:13px;color:#7F8C8D;">'+l+'</span><span style="display:flex;align-items:center;gap:6px;"><span style="font-size:13px;font-weight:700;color:#2C3E50;">'+v+'</span><span style="font-size:11px;color:#5A9E82;">✎</span></span></div>';}
 
 // Contact type
 function obSelectContact(type) {
@@ -3526,8 +3549,31 @@ function obGhost() {
 }
 function obSkipSurnom() { obGhost(); }
 
+var obHistory = [];
+var obEditFromRecap = false;
 function obGoTo(next) {
+  if (obEditFromRecap) {
+    // Sortie d'une édition depuis le récap → retour au récap
+    obEditFromRecap = false;
+    obShowStep(14);
+    return;
+  }
+  if (obStep && obStep !== next) obHistory.push(obStep);
   obShowStep(next);
+}
+function obBack() {
+  if (obEditFromRecap) {
+    obEditFromRecap = false;
+    obShowStep(14);
+    return;
+  }
+  if (obHistory.length === 0) return;
+  var prev = obHistory.pop();
+  obShowStep(prev);
+}
+function obEdit(step) {
+  obEditFromRecap = true;
+  obShowStep(step);
 }
 async function obFinish() {
   var profile={role:obData.role,prenom:obData.prenom,sexe:obData.sexe,dob:obData.dob,surnom:obData.surnom,displayName:obData.surnom||obData.prenom,poids:obData.poids,taille:obData.taille,allaitement:obData.allaitement,rgo:obData.rgo,rgoTraitement:obData.rgoTraitement,rgoMed:obData.rgoMed,rgoDateFin:obData.rgoDateFin};
