@@ -1070,7 +1070,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           <img src="logo.svg" style="width:36px;height:36px;" />
           <span style="font-size:18px;font-weight:800;color:#fff;">Sommeil</span>
         </div>
-        <div style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;">+</div>
+        <div onclick="showAddSommeil()" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:#fff;">+</div>
       </div>
       <!-- Sélecteur enfant -->
       <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;">
@@ -1085,17 +1085,17 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
         <div class="child-add" onclick="showAddChild()" style="background:rgba(255,255,255,0.2);color:#fff;">+</div>
       </div>
-      <!-- Résumé nuit -->
-      <div style="background:rgba(255,255,255,0.16);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;">
+      <!-- Résumé nuit dynamique -->
+      <div onclick="showAddSommeil()" style="background:rgba(255,255,255,0.16);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;">
         <div style="width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">&#128564;</div>
         <div>
-          <div style="font-size:13px;color:rgba(255,255,255,0.65);">Cette nuit</div>
-          <div style="font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.5px;">11h 20min</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:2px;">22h15 &#8594; 9h35</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.65);" id="sommeil-night-label">Cette nuit</div>
+          <div style="font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.5px;" id="sommeil-night-duration">—</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:2px;" id="sommeil-night-range">Appuie pour noter une session</div>
         </div>
-        <div style="margin-left:auto;background:rgba(255,255,255,0.2);border-radius:12px;padding:8px 12px;text-align:center;">
-          <div style="font-size:20px;">&#128522;</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.65);margin-top:2px;">Bonne nuit</div>
+        <div style="margin-left:auto;background:rgba(255,255,255,0.2);border-radius:12px;padding:8px 12px;text-align:center;" id="sommeil-night-badge">
+          <div style="font-size:20px;" id="sommeil-night-emoji">&#127769;</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.65);margin-top:2px;" id="sommeil-night-status">Aucune nuit</div>
         </div>
       </div>
     </div>
@@ -1118,25 +1118,8 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
 
     <!-- Aujourd'hui -->
-    <div class="sec-hd"><span class="sec-t">Aujourd'hui</span><span class="sec-l">+ Ajouter</span></div>
-    <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;">
-      <div style="background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <span style="font-size:22px;">&#127769;</span>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Nuit</div>
-          <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">22h15 &#8594; 9h35 · 11h20</div>
-        </div>
-        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 10px;border-radius:20px;">Nuit</div>
-      </div>
-      <div style="background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <span style="font-size:22px;">&#128564;</span>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Sieste du matin</div>
-          <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">10h00 &#8594; 11h15 · 1h15</div>
-        </div>
-        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 10px;border-radius:20px;">Sieste</div>
-      </div>
-    </div>
+    <div class="sec-hd"><span class="sec-t">Aujourd'hui</span><span onclick="showAddSommeil()" style="font-size:13px;color:#5A9E82;font-weight:600;cursor:pointer;">+ Ajouter</span></div>
+    <div id="sommeil-today-list" style="padding:0 16px;display:flex;flex-direction:column;gap:8px;"></div>
 
     <!-- Conseil -->
     <div style="margin:12px 16px 0;background:#EEF9F5;border-radius:16px;padding:13px 14px;display:flex;gap:11px;align-items:flex-start;">
@@ -2510,6 +2493,45 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
   </div>
 
+  <!-- MODAL AJOUTER SOMMEIL -->
+  <div id="modal-add-sommeil" style="display:none;position:fixed;inset:0;z-index:500;align-items:flex-end;justify-content:center;background:rgba(44,62,80,0.5);">
+    <div style="background:#F7F5EF;border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div style="font-size:17px;font-weight:800;color:#2C3E50;">Ajouter une session</div>
+        <div onclick="hideAddSommeil()" style="width:32px;height:32px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#7F8C8D;">&#215;</div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Type</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div onclick="selectSomType('nuit')" id="som-type-nuit" style="background:#3A7A65;border:2px solid #3A7A65;border-radius:12px;padding:11px;text-align:center;font-size:12px;font-weight:700;color:#fff;cursor:pointer;">&#127769; Nuit</div>
+          <div onclick="selectSomType('sieste')" id="som-type-sieste" style="background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:11px;text-align:center;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">&#128564; Sieste</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:14px;">
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Début</div>
+          <input id="som-start" type="time" class="lf-input" />
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Fin</div>
+          <input id="som-end" type="time" class="lf-input" />
+        </div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Endormissement</div>
+        <div style="display:flex;gap:8px;">
+          <div onclick="selectSomEndo('facile')" id="som-endo-facile" style="flex:1;background:#EEF9F5;border:2px solid #5A9E82;border-radius:12px;padding:10px;text-align:center;font-size:12px;font-weight:700;color:#2C3E50;cursor:pointer;">😊 Facile</div>
+          <div onclick="selectSomEndo('difficile')" id="som-endo-difficile" style="flex:1;background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:10px;text-align:center;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">😣 Difficile</div>
+        </div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Note <span style="font-weight:400;color:#B0B8C1;">(optionnel)</span></div>
+        <input id="som-note" type="text" class="lf-input" placeholder="Ex: réveils, rituel utilisé..." autocomplete="off" />
+      </div>
+      <button onclick="saveSommeil()" style="width:100%;background:#3A7A65;color:#fff;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>
+    </div>
+  </div>
+
   <!-- ÉCRAN CHOIX DE MODE -->
   <div id="screen-rolechoice" class="screen" style="background:linear-gradient(160deg,#f0f8f4,#e8f4ee);display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;">
     <div style="font-size:54px;margin-bottom:14px;">🌱</div>
@@ -3114,6 +3136,127 @@ function loadSommeilNotes() {
 }
 function playSound(url) {
   window.open(url, "_blank");
+}
+
+// ── SOMMEIL ──
+var somType = "nuit";
+var somEndo = "facile";
+function showAddSommeil() {
+  somType = "nuit"; somEndo = "facile";
+  document.getElementById("som-start").value = "";
+  document.getElementById("som-end").value = "";
+  document.getElementById("som-note").value = "";
+  selectSomType("nuit"); selectSomEndo("facile");
+  document.getElementById("modal-add-sommeil").style.display = "flex";
+}
+function hideAddSommeil() { document.getElementById("modal-add-sommeil").style.display = "none"; }
+function selectSomType(t) {
+  somType = t;
+  var n = document.getElementById("som-type-nuit"), s = document.getElementById("som-type-sieste");
+  n.style.background = t==="nuit"?"#3A7A65":"#fff"; n.style.borderColor = t==="nuit"?"#3A7A65":"#E8F5EE"; n.style.color = t==="nuit"?"#fff":"#7F8C8D";
+  s.style.background = t==="sieste"?"#3A7A65":"#fff"; s.style.borderColor = t==="sieste"?"#3A7A65":"#E8F5EE"; s.style.color = t==="sieste"?"#fff":"#7F8C8D";
+}
+function selectSomEndo(e) {
+  somEndo = e;
+  var f = document.getElementById("som-endo-facile"), d = document.getElementById("som-endo-difficile");
+  f.style.background = e==="facile"?"#EEF9F5":"#fff"; f.style.borderColor = e==="facile"?"#5A9E82":"#E8F5EE"; f.style.color = e==="facile"?"#2C3E50":"#7F8C8D";
+  d.style.background = e==="difficile"?"#FDEAEA":"#fff"; d.style.borderColor = e==="difficile"?"#E74C3C":"#E8F5EE"; d.style.color = e==="difficile"?"#2C3E50":"#7F8C8D";
+}
+function calcDuration(start, end) {
+  if (!start || !end) return 0;
+  var s = start.split(":"), e = end.split(":");
+  var sm = parseInt(s[0])*60 + parseInt(s[1]);
+  var em = parseInt(e[0])*60 + parseInt(e[1]);
+  if (em < sm) em += 24*60; // passe minuit
+  return em - sm;
+}
+function fmtDuration(min) {
+  var h = Math.floor(min/60), m = min%60;
+  if (h === 0) return m + "min";
+  if (m === 0) return h + "h";
+  return h + "h " + (m<10?"0":"") + m + "min";
+}
+function saveSommeil() {
+  var start = document.getElementById("som-start").value;
+  var end = document.getElementById("som-end").value;
+  if (!start || !end) { alert("Renseigne les heures de début et fin"); return; }
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var key = "sommeil-logs-"+idx;
+  var logs = JSON.parse(localStorage.getItem(key)||"[]");
+  logs.unshift({
+    id: Date.now(),
+    type: somType,
+    start: start,
+    end: end,
+    endo: somEndo,
+    note: document.getElementById("som-note").value.trim(),
+    date: new Date().toISOString().slice(0,10),
+    duration: calcDuration(start, end)
+  });
+  if (logs.length > 60) logs = logs.slice(0,60);
+  localStorage.setItem(key, JSON.stringify(logs));
+  hideAddSommeil();
+  renderSommeilToday();
+  updateSommeilHeader();
+}
+function renderSommeilToday() {
+  var list = document.getElementById("sommeil-today-list"); if (!list) return;
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var logs = JSON.parse(localStorage.getItem("sommeil-logs-"+idx)||"[]");
+  var today = new Date().toISOString().slice(0,10);
+  var todayLogs = logs.filter(function(l){ return l.date === today; });
+  if (!todayLogs.length) {
+    list.innerHTML = '<div onclick="showAddSommeil()" style="background:#F7F5EF;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;border:1.5px dashed #D8D4CC;cursor:pointer;"><div style="width:38px;height:38px;border-radius:12px;background:#EDE8DF;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;color:#7F8C8D;">+</div><div style="font-size:13px;color:#7F8C8D;font-weight:600;">Aucune session not&#233;e aujourd\'hui</div></div>';
+    return;
+  }
+  var h = "";
+  todayLogs.forEach(function(l) {
+    var isNuit = l.type === "nuit";
+    var emoji = isNuit ? "&#127769;" : "&#128564;";
+    var label = isNuit ? "Nuit" : "Sieste";
+    var endoTxt = l.endo === "difficile" ? '<span style="color:#E74C3C;">&#183; Difficile</span>' : '';
+    h += '<div style="background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">';
+    h += '<span style="font-size:22px;">'+emoji+'</span>';
+    h += '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">'+label+' '+endoTxt+'</div>';
+    h += '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;">'+l.start+' &#8594; '+l.end+' &#183; '+fmtDuration(l.duration)+'</div>';
+    if (l.note) h += '<div style="font-size:11px;color:#9A8C7D;margin-top:2px;font-style:italic;">'+l.note+'</div>';
+    h += '</div>';
+    h += '<div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 10px;border-radius:20px;">'+label+'</div>';
+    h += '<div onclick="deleteSommeil('+l.id+')" style="font-size:18px;color:#C0C0C0;cursor:pointer;padding:4px;">&#215;</div>';
+    h += '</div>';
+  });
+  list.innerHTML = h;
+}
+function updateSommeilHeader() {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var logs = JSON.parse(localStorage.getItem("sommeil-logs-"+idx)||"[]");
+  var today = new Date().toISOString().slice(0,10);
+  var yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+  // Dernière nuit : prendre la plus récente nuit qui est aujourd'hui ou hier
+  var lastNuit = logs.find(function(l){ return l.type === "nuit" && (l.date === today || l.date === yesterday); });
+  var dur = document.getElementById("sommeil-night-duration");
+  var range = document.getElementById("sommeil-night-range");
+  var status = document.getElementById("sommeil-night-status");
+  var emoji = document.getElementById("sommeil-night-emoji");
+  if (lastNuit) {
+    if (dur) dur.textContent = fmtDuration(lastNuit.duration);
+    if (range) range.textContent = lastNuit.start + " → " + lastNuit.end;
+    if (status) status.textContent = lastNuit.endo === "difficile" ? "Difficile" : "Bonne nuit";
+    if (emoji) emoji.innerHTML = lastNuit.endo === "difficile" ? "&#128549;" : "&#128522;";
+  } else {
+    if (dur) dur.textContent = "—";
+    if (range) range.textContent = "Appuie pour noter une session";
+    if (status) status.textContent = "Aucune nuit";
+    if (emoji) emoji.innerHTML = "&#127769;";
+  }
+}
+function deleteSommeil(id) {
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
+  var key = "sommeil-logs-"+idx;
+  var logs = JSON.parse(localStorage.getItem(key)||"[]").filter(function(l){ return l.id !== id; });
+  localStorage.setItem(key, JSON.stringify(logs));
+  renderSommeilToday();
+  updateSommeilHeader();
 }
 function openRecipe(id) {
   currentFoodData = null;
@@ -4032,6 +4175,8 @@ function applyChildProfile(profile) {
   updateAlimStats();
   loadAlimNotes();
   loadSommeilNotes();
+  renderSommeilToday();
+  updateSommeilHeader();
   // Cloche
   updateBellDot();
 }
@@ -4873,6 +5018,20 @@ function buildNotifs() {
       notifs.push({ icon:"&#127777;", color:"#E74C3C", bg:"#FDEAEA", title:"Fièvre notée aujourd'hui", sub:"Température max : "+maxTemp.toFixed(1)+"°C — surveille régulièrement", action:"goTo('sante')" });
     }
 
+    // Alerte chaleur poussette (fin printemps + été : 15 mai → 15 septembre)
+    var nowMonth = new Date().getMonth(); // 0-11
+    var nowDay = new Date().getDate();
+    var isHotSeason = (nowMonth === 4 && nowDay >= 15) || nowMonth === 5 || nowMonth === 6 || nowMonth === 7 || (nowMonth === 8 && nowDay <= 15);
+    if (isHotSeason) {
+      notifs.push({
+        icon:"&#9728;&#65039;",
+        color:"#E74C3C",
+        bg:"#FDEAEA",
+        title:"⚠️ Attention chaleur poussette",
+        sub:"Ne JAMAIS couvrir la poussette avec un lange ou couverture, même fin pour faire de l'ombre. Sous le tissu, la température grimpe très vite (effet tente en plein soleil). Préfère une ombrelle qui laisse passer l'air.",
+        action:null
+      });
+    }
     // RGO traitement bientôt terminé
     if (profile.rgo && profile.rgo!=="non" && profile.rgoDateFin) {
       var df = new Date(profile.rgoDateFin), now2 = new Date();
@@ -4928,6 +5087,8 @@ document.addEventListener("DOMContentLoaded", async function() {
   updateAlimStats();
   loadAlimNotes();
   loadSommeilNotes();
+  renderSommeilToday();
+  updateSommeilHeader();
   updateAllaitDayStats();
   renderAllaitLogs();
   updateHomeAllaitCard();
