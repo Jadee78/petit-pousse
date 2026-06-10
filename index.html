@@ -3766,11 +3766,45 @@ function updateChildSelectors() {
   document.querySelectorAll(".sc-pill").forEach(function(el){
     el.style.opacity=idx===1?"1":"0.6";
   });
+
+  // ─── Enfants 3, 4, 5… : pills dynamiques ───
+  document.querySelectorAll(".sc-pill").forEach(function(scPill){
+    var parent = scPill.parentElement;
+    if (!parent) return;
+    // Supprimer les pills extra existantes
+    parent.querySelectorAll(".pill-extra").forEach(function(p){ p.remove(); });
+    // Générer une pill pour chaque enfant ≥ 3
+    for (var i = 2; i < profiles.length; i++) {
+      var p = profiles[i];
+      if (!p) continue;
+      var pill = scPill.cloneNode(true);
+      pill.classList.remove("sc-pill");
+      pill.classList.add("pill-extra");
+      pill.style.display = "flex";
+      pill.style.opacity = i===idx?"1":"0.6";
+      var avatarEl = pill.querySelector("[data-second-child-avatar]");
+      var nameEl = pill.querySelector("[data-second-child-name]");
+      if (avatarEl) {
+        avatarEl.removeAttribute("data-second-child-avatar");
+        avatarEl.textContent = p.sexe==="garcon"?"👦":"👧";
+      }
+      if (nameEl) {
+        nameEl.removeAttribute("data-second-child-name");
+        nameEl.textContent = p.displayName || p.prenom || "bébé";
+      }
+      pill.setAttribute("onclick", "switchChild("+i+")");
+      var addBtn = parent.querySelector(".child-add");
+      if (addBtn) parent.insertBefore(pill, addBtn);
+      else parent.appendChild(pill);
+    }
+  });
+
   // Params screen rows
   var scRow=document.getElementById("params-second-child-row");
   var addRow=document.getElementById("params-add-child-row");
   if(scRow) scRow.style.display=second?"flex":"none";
-  if(addRow) addRow.style.display=second?"none":"flex";
+  // Le bouton "Ajouter un enfant" reste toujours visible (on peut en ajouter +)
+  if(addRow) addRow.style.display="flex";
 }
 var acSexe=null;
 function showAddChild() {
@@ -3791,16 +3825,33 @@ function acSelectSexe(s) {
   document.querySelectorAll(".ac-sexe-btn").forEach(function(b){b.classList.remove("ac-active");});
   document.getElementById("ac-sexe-"+s).classList.add("ac-active");
 }
-function submitNewChild() {
+async function submitNewChild() {
   var prenom=document.getElementById("ac-prenom").value.trim();
   var dob=document.getElementById("ac-dob").value;
   var surnom=document.getElementById("ac-surnom").value.trim();
   if(!prenom){document.getElementById("ac-prenom").style.borderColor="#E74C3C";document.getElementById("ac-prenom").focus();return;}
   var profile={prenom:prenom,sexe:acSexe||"fille",dob:dob||null,surnom:surnom||null,displayName:surnom||prenom};
   var profiles=JSON.parse(localStorage.getItem("childProfiles")||"[]");
-  if(profiles.length===0) profiles=[null];
-  profiles[1]=profile;
+  profiles.push(profile);
   localStorage.setItem("childProfiles",JSON.stringify(profiles));
+  // Sauvegarde dans Supabase
+  if (currentUser) {
+    var res = await sb.from("children").insert({
+      parent_id: currentUser.id,
+      prenom: profile.prenom,
+      display_name: profile.displayName,
+      sexe: profile.sexe,
+      dob: profile.dob||null,
+      role_parent: "maman",
+      sort_order: profiles.length-1
+    }).select("id").single();
+    if (res.data) {
+      profile.id = res.data.id;
+      var p = JSON.parse(localStorage.getItem("childProfiles")||"[]");
+      p[p.length-1] = profile;
+      localStorage.setItem("childProfiles", JSON.stringify(p));
+    }
+  }
   hideAddChild();
   updateChildSelectors();
 }
