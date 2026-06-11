@@ -821,13 +821,9 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
         <div class="child-add" onclick="showAddChild()" style="background:rgba(255,255,255,0.2);color:#fff;">+</div>
       </div>
-      <!-- Bannière âge + méthode -->
-      <div style="background:rgba(255,255,255,0.18);border-radius:16px;padding:13px 15px;">
-        <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px;" id="alim-age-banner" data-child-tpl="🍽 [name] a <strong>[age]</strong> — voici ce qu'elle peut manger">&#127869; Camille a <strong>8 mois</strong> — voici ce qu'elle peut manger</div>
-        <div style="display:flex;gap:6px;">
-          <div style="background:rgba(255,255,255,0.9);border-radius:22px;padding:5px 14px;font-size:12px;font-weight:700;color:#B46828;">DME</div>
-          <div style="background:rgba(255,255,255,0.2);border-radius:22px;padding:5px 14px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.8);">Classique</div>
-        </div>
+      <!-- Bannière âge -->
+      <div style="background:rgba(255,255,255,0.18);border-radius:16px;padding:11px 15px;">
+        <div style="font-size:13px;font-weight:700;color:#fff;" id="alim-age-banner" data-child-tpl="🍽 [name] a <strong>[age]</strong> — voici ce qu'elle peut manger">&#127869; Camille a <strong>8 mois</strong> — voici ce qu'elle peut manger</div>
       </div>
     </div>
 
@@ -842,6 +838,17 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           </div>
         </div>
         <span style="font-size:18px;color:#E07898;">&#8250;</span>
+      </div>
+    </div>
+
+    <!-- Menu du jour dans Alimentation -->
+    <div style="margin:12px 16px 0;">
+      <div style="background:#fff;border-radius:18px;padding:15px 16px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="font-size:13px;font-weight:800;color:#2C3E50;">&#127859; Menu du jour</div>
+          <span onclick="goTo('menus')" style="font-size:12px;color:#D4884A;font-weight:700;cursor:pointer;background:#FFF3E8;padding:5px 10px;border-radius:10px;">Semaine ›</span>
+        </div>
+        <div id="alim-menu-today" style="display:flex;flex-direction:column;gap:8px;"></div>
       </div>
     </div>
 
@@ -5707,7 +5714,7 @@ function switchMenuDay(dateStr) {
 function getMenuData(dateStr) {
   var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
   var menus = JSON.parse(localStorage.getItem('menus-'+idx)||'{}');
-  return menus[dateStr] || { type:'maison', gardeType:'', midi:'', gouter:'', soir:'' };
+  return menus[dateStr] || { type:'maison', gardeType:'', matin:'', midi:'', soir:'' };
 }
 function saveMenuData(dateStr, data) {
   var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
@@ -5748,7 +5755,7 @@ function renderMenusDayContent() {
   h += '</div>';
   // Repas (seulement si à la maison)
   if (data.type === 'maison') {
-    var repas = [['midi','🍽️','Déjeuner'],['gouter','🍎','Goûter'],['soir','🌙','Dîner']];
+    var repas = [['matin','☀️','Matin'],['midi','🌤️','Midi'],['soir','🌙','Soir']];
     repas.forEach(function(r) {
       h += '<div style="background:#fff;border-radius:18px;padding:16px;margin-bottom:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">';
       h += '<div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:8px;">'+r[1]+' '+r[2]+'</div>';
@@ -5884,8 +5891,8 @@ function renderMenuToday() {
   var homeContent = document.getElementById('home-menu-content');
   // Alimentation
   var alimContent = document.getElementById('alim-menu-today');
-  var repas = [['midi','🍽️','Déjeuner'],['gouter','🍎','Goûter'],['soir','🌙','Dîner']];
-  var hasSomething = data.type === 'garde' || data.midi || data.gouter || data.soir;
+  var repas = [['matin','☀️','Matin'],['midi','🌤️','Midi'],['soir','🌙','Soir']];
+  var hasSomething = data.type === 'garde' || data.matin || data.midi || data.soir;
   if (homeCard) homeCard.style.display = hasSomething ? 'block' : 'none';
   var html = '';
   if (data.type === 'garde') {
@@ -5903,21 +5910,25 @@ function renderMenuToday() {
     });
   }
   if (homeContent) homeContent.innerHTML = html;
-  // Version alimentation (avec champs éditables)
+  // Version alimentation (champs éditables inline)
   if (alimContent) {
     var alimHtml = '';
     if (data.type === 'garde') {
       var gardeLabels2 = { creche:'Crèche',assmat:'Assmat',papy:'Papy-Mamie',autre:'Autre' };
-      alimHtml += '<div style="background:rgba(255,255,255,0.6);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;">';
-      alimHtml += '<span style="font-size:20px;">👶</span><span style="font-size:13px;font-weight:700;color:#2C3E50;">'+name+' est à la '+(gardeLabels2[data.gardeType]||'garde')+'</span>';
-      alimHtml += '<span onclick="goTo(\'menus\')" style="margin-left:auto;font-size:12px;color:#D4884A;font-weight:700;cursor:pointer;">Modifier ›</span></div>';
+      alimHtml += '<div style="background:#F8F9FA;border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;">';
+      alimHtml += '<span style="font-size:24px;">👶</span><div><div style="font-size:13px;font-weight:700;color:#2C3E50;">'+name+' est à la '+(gardeLabels2[data.gardeType]||'garde')+'</div>';
+      alimHtml += '<div onclick="goTo(\'menus\')" style="font-size:12px;color:#D4884A;font-weight:700;cursor:pointer;margin-top:4px;">Modifier ›</div></div></div>';
     } else {
+      var icons = { matin:'☀️', midi:'🌤️', soir:'🌙' };
+      var colors = { matin:'#D4884A', midi:'#D4884A', soir:'#5A7AC8' };
       repas.forEach(function(r) {
         var val = data[r[0]]||'';
-        alimHtml += '<div style="background:rgba(255,255,255,0.75);border-radius:14px;padding:11px 14px;">';
-        alimHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="font-size:14px;">'+r[1]+'</span><span style="font-size:11px;font-weight:700;color:#B46828;text-transform:uppercase;letter-spacing:0.5px;">'+r[2]+'</span></div>';
-        alimHtml += '<input type="text" value="'+val.replace(/"/g,'&quot;')+'" placeholder="Ex: Purée de courgette, compote..." onchange="saveMenuRepasInline(\''+r[0]+'\',this.value)" style="width:100%;box-sizing:border-box;background:transparent;border:none;border-bottom:1.5px solid rgba(212,136,74,0.3);padding:4px 0;font-size:13px;color:#2C3E50;font-family:Montserrat,sans-serif;outline:none;">';
-        alimHtml += '</div>';
+        alimHtml += '<div style="background:#F8F9FA;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;">';
+        alimHtml += '<div style="width:40px;height:40px;border-radius:12px;background:#FFF3E8;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">'+icons[r[0]]+'</div>';
+        alimHtml += '<div style="flex:1;">';
+        alimHtml += '<div style="font-size:10px;font-weight:800;color:'+colors[r[0]]+';text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">'+r[2]+'</div>';
+        alimHtml += '<input type="text" value="'+val.replace(/"/g,'&quot;')+'" placeholder="Renseigner le repas..." oninput="saveMenuRepasInline(\''+r[0]+'\',this.value)" style="width:100%;box-sizing:border-box;background:transparent;border:none;padding:0;font-size:13px;font-weight:'+(val?'600':'400')+';color:'+(val?'#2C3E50':'#B0B8C1')+';font-family:Montserrat,sans-serif;outline:none;">';
+        alimHtml += '</div></div>';
       });
     }
     alimContent.innerHTML = alimHtml;
