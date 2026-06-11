@@ -623,6 +623,20 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div class="al-s" id="home-vacc-sub">DTCaP-Hib-HepB &#183; 3e injection &#183; Pense &#224; prendre RDV</div>
       </div>
     </div>
+    <!-- Météo -->
+    <div id="home-meteo" style="margin:10px 16px 0;background:linear-gradient(135deg,#EAF4FF,#D0E8FF);border-radius:18px;padding:13px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="refreshMeteo()">
+      <div style="font-size:34px;flex-shrink:0;" id="meteo-icon">&#9201;</div>
+      <div style="flex:1;">
+        <div style="font-size:10px;font-weight:700;color:#3A7EC8;letter-spacing:1px;text-transform:uppercase;" id="meteo-ville">Chargement...</div>
+        <div style="font-size:20px;font-weight:800;color:#2C3E50;line-height:1.1;" id="meteo-temp">—</div>
+        <div style="font-size:11px;color:#5A7EA8;margin-top:1px;" id="meteo-desc">—</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div style="font-size:10px;color:#7F8C8D;">Ressenti</div>
+        <div style="font-size:14px;font-weight:700;color:#2C3E50;" id="meteo-ressenti">—</div>
+      </div>
+    </div>
+
     <!-- Carte allaitement accueil (visible si activé) -->
     <div id="home-allait-card" style="display:none;margin:10px 16px 0;" onclick="goTo('allait')" style="cursor:pointer;">
       <div style="background:linear-gradient(135deg,#EEF9F5,#D6F0E8);border-radius:18px;padding:16px;cursor:pointer;">
@@ -658,6 +672,8 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
       <div class="mod" onclick="switchTab('sante')"><div class="mod-icon">&#127777;</div><div class="mod-t">Santé</div><div class="mod-s">Température & notes</div><div class="mod-badge">37,2°</div></div>
       <div class="mod" onclick="goTo('eveil')"><div class="mod-icon">&#127919;</div><div class="mod-t">Éveil</div><div class="mod-s">Activités & jeux</div><div class="mod-badge">Nouveau</div></div>
+      <div class="mod" onclick="goTo('menus')"><div class="mod-icon">&#127859;</div><div class="mod-t">Menus</div><div class="mod-s">Repas de la semaine</div><div class="mod-badge" id="mod-badge-menus">7j</div></div>
+      <div class="mod" onclick="goTo('courses')"><div class="mod-icon">&#128722;</div><div class="mod-t">Courses</div><div class="mod-s">Liste & rappels</div><div class="mod-badge" id="mod-badge-courses">0 item</div></div>
     </div>
   </div>
 
@@ -2259,6 +2275,30 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
       </div>
     </div>
+    <!-- Contacts médicaux -->
+    <div style="margin:16px 16px 0;">
+      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Contacts</div>
+      <div id="contacts-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+      <button onclick="openAddContact()" style="width:100%;margin-top:8px;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:12px;font-size:13px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">+ Ajouter un contact</button>
+    </div>
+    <!-- Modal ajouter contact -->
+    <div id="modal-contact" style="display:none;position:fixed;inset:0;background:rgba(44,62,80,0.5);z-index:999;align-items:flex-end;" onclick="closeAddContact()">
+      <div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;padding:24px 20px 36px;width:100%;box-sizing:border-box;">
+        <div style="font-size:16px;font-weight:800;color:#2C3E50;margin-bottom:16px;">Nouveau contact</div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;" id="contact-type-btns">
+          <button onclick="setContactType(this,'Pédiatre','&#128104;&#8205;&#9877;&#65039;')" class="ctbtn" style="background:#EEF9F5;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">👨‍⚕️ Pédiatre</button>
+          <button onclick="setContactType(this,'Crèche','&#127968;')" class="ctbtn" style="background:#EEF9F5;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">🏠 Crèche</button>
+          <button onclick="setContactType(this,'Assmat','&#128105;&#8205;&#127868;')" class="ctbtn" style="background:#EEF9F5;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">👩‍🍼 Assmat</button>
+          <button onclick="setContactType(this,'Kiné','&#127939;')" class="ctbtn" style="background:#EEF9F5;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">🏃 Kiné</button>
+          <button onclick="setContactType(this,'Ostéo','&#129496;')" class="ctbtn" style="background:#EEF9F5;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">🤸 Ostéo</button>
+          <button onclick="setContactType(this,'Urgences','&#128657;')" class="ctbtn" style="background:#FDEAEA;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:#E74C3C;font-family:Montserrat,sans-serif;cursor:pointer;">🚑 Urgences</button>
+        </div>
+        <input id="contact-name-input" type="text" placeholder="Nom (ex: Dr. Martin)" style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:11px 14px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;margin-bottom:10px;">
+        <input id="contact-phone-input" type="tel" placeholder="Numéro de téléphone" style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:11px 14px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;margin-bottom:16px;">
+        <button onclick="saveNewContact()" style="width:100%;background:#5A9E82;color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>
+      </div>
+    </div>
+
     <!-- Compte -->
     <div style="margin:16px 16px 0;">
       <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Compte</div>
@@ -2389,6 +2429,90 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
 
+  </div>
+
+  <!-- MENUS SEMAINE -->
+  <div id="screen-menus" class="screen">
+    <div class="status-bar" style="background:linear-gradient(160deg,#FFF8F0,#FFE8D0);">
+      <span class="st-time">9:41</span><span class="st-icons">&#9679;&#9679;&#9679; &#128267;</span>
+    </div>
+    <div style="background:linear-gradient(160deg,#FFF8F0,#FFE8D0);padding:6px 20px 18px;">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
+        <span onclick="goBack()" style="font-size:26px;color:#D4884A;cursor:pointer;line-height:1;">&#8249;</span>
+        <img src="logo.svg" style="width:32px;height:32px;"/>
+        <span style="font-size:18px;font-weight:800;color:#2C3E50;">Menus de la semaine</span>
+      </div>
+      <!-- Sélecteur enfant -->
+      <div style="display:flex;gap:8px;align-items:center;">
+        <div class="fc-pill" onclick="switchChild(0)" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:rgba(212,136,74,0.2);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(212,136,74,0.25);display:flex;align-items:center;justify-content:center;font-size:13px;" data-child-avatar>&#128103;</div>
+          <span style="font-size:12px;font-weight:700;color:#2C3E50;" data-child-name>Camille</span>
+          <span style="font-size:9px;color:rgba(44,62,80,0.5);">&#9660;</span>
+        </div>
+        <div class="sc-pill" onclick="switchChild(1)" style="cursor:pointer;display:none;align-items:center;gap:7px;background:rgba(44,62,80,0.07);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;" data-second-child-avatar>&#128102;</div>
+          <span style="font-size:12px;font-weight:600;color:#7F8C8D;" data-second-child-name>—</span>
+        </div>
+        <div class="child-add" onclick="showAddChild()">+</div>
+      </div>
+    </div>
+    <!-- Onglets jours -->
+    <div id="menus-day-tabs" style="display:flex;gap:6px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none;"></div>
+    <!-- Contenu du jour -->
+    <div id="menus-day-content" style="padding:0 16px 20px;"></div>
+  </div>
+
+  <!-- LISTE DE COURSES -->
+  <div id="screen-courses" class="screen">
+    <div class="status-bar" style="background:linear-gradient(160deg,#F0F8FF,#D8EFFF);">
+      <span class="st-time">9:41</span><span class="st-icons">&#9679;&#9679;&#9679; &#128267;</span>
+    </div>
+    <div style="background:linear-gradient(160deg,#F0F8FF,#D8EFFF);padding:6px 20px 18px;">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
+        <span onclick="goBack()" style="font-size:26px;color:#4A8AC8;cursor:pointer;line-height:1;">&#8249;</span>
+        <img src="logo.svg" style="width:32px;height:32px;"/>
+        <span style="font-size:18px;font-weight:800;color:#2C3E50;">Liste de courses</span>
+      </div>
+    </div>
+    <!-- Rappel date -->
+    <div style="margin:0 16px 12px;background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 1px 6px rgba(0,0,0,0.05);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:13px;font-weight:700;color:#2C3E50;">&#128197; Prochain jour de courses</span>
+        <span id="courses-reminder-badge" style="font-size:10px;font-weight:700;background:#EAF4FF;color:#4A8AC8;padding:3px 10px;border-radius:20px;display:none;">Rappel actif</span>
+      </div>
+      <input type="date" id="courses-reminder-input" oninput="saveCoursesReminder()" style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:10px 14px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;background:#F8F9FA;">
+    </div>
+    <!-- Ajouter un item -->
+    <div style="margin:0 16px 12px;display:flex;gap:8px;">
+      <input id="courses-new-item" type="text" placeholder="Ajouter un article..." onkeydown="if(event.key==='Enter')addCoursesItem()" style="flex:1;border:1.5px solid #EDE8DF;border-radius:12px;padding:11px 14px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;background:#fff;">
+      <button onclick="addCoursesItem()" style="background:#4A8AC8;color:#fff;border:none;border-radius:12px;padding:11px 16px;font-size:16px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">+</button>
+    </div>
+    <!-- Stats + reset -->
+    <div style="margin:0 16px 10px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:12px;color:#7F8C8D;" id="courses-stats">0 article</span>
+      <button onclick="clearCheckedCourses()" style="background:transparent;border:none;font-size:12px;color:#E74C3C;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Effacer cochés</button>
+    </div>
+    <!-- Liste -->
+    <div id="courses-list" style="padding:0 16px 20px;display:flex;flex-direction:column;gap:7px;"></div>
+  </div>
+
+  <!-- MODAL MÉTÉO DÉTAIL -->
+  <div id="modal-meteo" style="display:none;position:fixed;inset:0;background:rgba(44,62,80,0.55);z-index:999;align-items:flex-end;" onclick="closeMeteoModal()">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;box-sizing:border-box;max-height:85vh;overflow-y:auto;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+        <div style="font-size:48px;" id="modal-meteo-icon">☀️</div>
+        <div>
+          <div style="font-size:22px;font-weight:800;color:#2C3E50;" id="modal-meteo-temp">—</div>
+          <div style="font-size:13px;color:#7F8C8D;" id="modal-meteo-desc">—</div>
+          <div style="font-size:12px;color:#7F8C8D;" id="modal-meteo-ville">—</div>
+        </div>
+        <div style="margin-left:auto;text-align:right;">
+          <div style="font-size:11px;color:#7F8C8D;">Indice UV</div>
+          <div style="font-size:18px;font-weight:800;" id="modal-meteo-uv">—</div>
+        </div>
+      </div>
+      <div id="modal-meteo-content"></div>
+    </div>
   </div>
 
   <!-- LOGIN / INSCRIPTION -->
@@ -2913,6 +3037,8 @@ function goTo(id) {
   showScreen(id); hist.push(id);
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   setTimeout(function(){ maybeShowRubriqueMsg(id); }, 300);
+  if (id === 'menus') { loadMenusScreen(); }
+  if (id === 'courses') { loadCoursesScreen(); }
 }
 function goBack() {
   hist.pop();
@@ -4136,6 +4262,8 @@ function applyChildProfile(profile) {
   renderVaccCalendar(profile);
   loadVaccRDV();
   loadVaccNotes();
+  // Contacts
+  renderContacts();
   // Cloche
   updateBellDot();
 }
@@ -5234,6 +5362,435 @@ document.addEventListener("DOMContentLoaded", async function() {
   document.getElementById("tabbar").style.display = "none";
   document.getElementById("screen-login").classList.add("active");
 });
+
+// ── MÉTÉO ──
+var WMO_ICONS = {
+  0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',
+  51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',
+  71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌦️',82:'⛈️',
+  95:'⛈️',96:'⛈️',99:'⛈️'
+};
+var WMO_DESC = {
+  0:'Ciel dégagé',1:'Peu nuageux',2:'Partiellement nuageux',3:'Couvert',
+  45:'Brouillard',48:'Brouillard givrant',51:'Bruine légère',53:'Bruine modérée',55:'Bruine forte',
+  61:'Pluie légère',63:'Pluie modérée',65:'Pluie forte',
+  71:'Neige légère',73:'Neige modérée',75:'Neige forte',
+  80:'Averses légères',81:'Averses modérées',82:'Averses violentes',
+  95:'Orage',96:'Orage avec grêle',99:'Orage violent'
+};
+// Icônes kawaii SVG inline (styles cohérents avec le design)
+var WMO_SVG = {
+  sunny:'<svg viewBox="0 0 80 80" width="64" height="64" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="18" fill="#F4C842"/><g stroke="#F4C842" stroke-width="3.5" stroke-linecap="round"><line x1="40" y1="8" x2="40" y2="16"/><line x1="40" y1="64" x2="40" y2="72"/><line x1="8" y1="40" x2="16" y2="40"/><line x1="64" y1="40" x2="72" y2="40"/><line x1="17" y1="17" x2="23" y2="23"/><line x1="57" y1="57" x2="63" y2="63"/><line x1="63" y1="17" x2="57" y2="23"/><line x1="17" y1="63" x2="23" y2="57"/></g><circle cx="34" cy="38" r="2.5" fill="#A07820"/><circle cx="46" cy="38" r="2.5" fill="#A07820"/><path d="M34 46 Q40 52 46 46" stroke="#A07820" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>',
+  cloudy:'<svg viewBox="0 0 80 60" width="72" height="54" xmlns="http://www.w3.org/2000/svg"><path d="M60 48H20C12 48 6 42 6 34c0-7 5-13 12-14 1-10 9-18 19-18 9 0 17 6 19 15 6 1 12 7 12 13 0 7-4 12-8 12z" fill="#E8E8E8" stroke="#D0D0D0" stroke-width="1"/><circle cx="28" cy="36" r="2" fill="#A0A0A0"/><circle cx="40" cy="36" r="2" fill="#A0A0A0"/><path d="M29 43 Q36 48 43 43" stroke="#A0A0A0" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
+  rain:'<svg viewBox="0 0 80 70" width="72" height="63" xmlns="http://www.w3.org/2000/svg"><path d="M60 44H20C12 44 6 38 6 30c0-7 5-13 12-14 1-10 9-18 19-18 9 0 17 6 19 15 6 1 12 7 12 13 0 7-4 12-8 12z" fill="#D0D8E8" stroke="#B0B8C8" stroke-width="1"/><circle cx="28" cy="32" r="2" fill="#707080"/><circle cx="40" cy="32" r="2" fill="#707080"/><path d="M29 39 Q36 44 43 39" stroke="#707080" stroke-width="2" fill="none" stroke-linecap="round"/><line x1="28" y1="52" x2="26" y2="62" stroke="#5A7ACA" stroke-width="2.5" stroke-linecap="round"/><line x1="38" y1="54" x2="36" y2="64" stroke="#5A7ACA" stroke-width="2.5" stroke-linecap="round"/><line x1="48" y1="52" x2="46" y2="62" stroke="#5A7ACA" stroke-width="2.5" stroke-linecap="round"/></svg>',
+  storm:'<svg viewBox="0 0 80 80" width="64" height="64" xmlns="http://www.w3.org/2000/svg"><path d="M60 40H20C12 40 6 34 6 26c0-7 5-13 12-14 1-10 9-18 19-18 9 0 17 6 19 15 6 1 12 7 12 13 0 7-4 12-8 12z" fill="#C0C8D8" stroke="#A0A8B8" stroke-width="1"/><polygon points="42,44 35,60 44,58 36,76 52,54 42,56" fill="#F4D020" stroke="#D4A800" stroke-width="1"/></svg>',
+  snow:'<svg viewBox="0 0 80 70" width="72" height="63" xmlns="http://www.w3.org/2000/svg"><path d="M60 44H20C12 44 6 38 6 30c0-7 5-13 12-14 1-10 9-18 19-18 9 0 17 6 19 15 6 1 12 7 12 13 0 7-4 12-8 12z" fill="#E8F0F8" stroke="#C8D8E8" stroke-width="1"/><circle cx="28" cy="32" r="2" fill="#707080"/><circle cx="40" cy="32" r="2" fill="#707080"/><path d="M29 39 Q36 44 43 39" stroke="#707080" stroke-width="2" fill="none" stroke-linecap="round"/><text x="22" y="66" font-size="14" fill="#A8C0D8">❄</text><text x="34" y="68" font-size="14" fill="#A8C0D8">❄</text><text x="46" y="66" font-size="14" fill="#A8C0D8">❄</text></svg>',
+  rainbow:'<svg viewBox="0 0 80 50" width="80" height="50" xmlns="http://www.w3.org/2000/svg"><path d="M5 45 Q40 0 75 45" fill="none" stroke="#E84040" stroke-width="5" stroke-linecap="round"/><path d="M11 45 Q40 8 69 45" fill="none" stroke="#F4A020" stroke-width="5" stroke-linecap="round"/><path d="M17 45 Q40 16 63 45" fill="none" stroke="#F4D820" stroke-width="5" stroke-linecap="round"/><path d="M23 45 Q40 24 57 45" fill="none" stroke="#40C840" stroke-width="5" stroke-linecap="round"/><path d="M29 45 Q40 32 51 45" fill="none" stroke="#4080F4" stroke-width="5" stroke-linecap="round"/></svg>',
+  fog:'<svg viewBox="0 0 80 50" width="80" height="50" xmlns="http://www.w3.org/2000/svg"><line x1="10" y1="15" x2="70" y2="15" stroke="#C0C0C0" stroke-width="4" stroke-linecap="round"/><line x1="16" y1="26" x2="64" y2="26" stroke="#C8C8C8" stroke-width="4" stroke-linecap="round"/><line x1="10" y1="37" x2="70" y2="37" stroke="#C0C0C0" stroke-width="4" stroke-linecap="round"/></svg>'
+};
+function getMeteoSVG(code) {
+  if (code === 0) return WMO_SVG.sunny;
+  if (code <= 2) return WMO_SVG.cloudy;
+  if (code === 3) return WMO_SVG.cloudy;
+  if (code <= 48) return WMO_SVG.fog;
+  if (code <= 67) return WMO_SVG.rain;
+  if (code <= 77) return WMO_SVG.snow;
+  if (code <= 82) return WMO_SVG.rain;
+  if (code >= 95) return WMO_SVG.storm;
+  return WMO_SVG.cloudy;
+}
+function getMeteoGradient(code) {
+  if (code === 0) return 'linear-gradient(135deg,#FFF8E0,#FFE8A0)';
+  if (code <= 2) return 'linear-gradient(135deg,#EAF4FF,#D0E8FF)';
+  if (code === 3) return 'linear-gradient(135deg,#E8E8F0,#D8D8E8)';
+  if (code <= 48) return 'linear-gradient(135deg,#E8E8E8,#D8D8D8)';
+  if (code <= 67 || (code>=80&&code<=82)) return 'linear-gradient(135deg,#EAF0FF,#D0D8F0)';
+  if (code <= 77) return 'linear-gradient(135deg,#EEF4FF,#DDE8FF)';
+  return 'linear-gradient(135deg,#EEE8F4,#DDD0E8)';
+}
+var meteoData = null;
+function refreshMeteo() {
+  if (!navigator.geolocation) { renderMeteoWidget(null); return; }
+  if (meteoData) { openMeteoModal(); return; }
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    var lat = pos.coords.latitude.toFixed(4);
+    var lon = pos.coords.longitude.toFixed(4);
+    fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,apparent_temperature,weather_code,uv_index&timezone=auto')
+      .then(function(r){ return r.json(); })
+      .then(function(data) {
+        var c = data.current;
+        fetch('https://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lon+'&format=json')
+          .then(function(r2){ return r2.json(); })
+          .then(function(geo) {
+            var ville = geo.address && (geo.address.city || geo.address.town || geo.address.village || geo.address.municipality || 'Ma position');
+            meteoData = { temp: Math.round(c.temperature_2m), ressenti: Math.round(c.apparent_temperature), code: c.weather_code, uv: c.uv_index||0, ville: ville };
+            renderMeteoWidget(meteoData);
+          }).catch(function(){ meteoData = { temp: Math.round(c.temperature_2m), ressenti: Math.round(c.apparent_temperature), code: c.weather_code, uv: c.uv_index||0, ville: 'Ma position' }; renderMeteoWidget(meteoData); });
+      }).catch(function(){ renderMeteoWidget(null); });
+  }, function(){ renderMeteoWidget(null); });
+}
+function renderMeteoWidget(data) {
+  var el = document.getElementById('home-meteo');
+  if (!el) return;
+  if (!data) {
+    document.getElementById('meteo-ville').textContent = 'Position non disponible';
+    document.getElementById('meteo-icon').textContent = '📍';
+    document.getElementById('meteo-temp').textContent = '—';
+    document.getElementById('meteo-desc').textContent = 'Autorise la localisation';
+    document.getElementById('meteo-ressenti').textContent = '—';
+    return;
+  }
+  el.style.background = getMeteoGradient(data.code);
+  document.getElementById('meteo-icon').innerHTML = getMeteoSVG(data.code);
+  document.getElementById('meteo-ville').textContent = data.ville.toUpperCase();
+  document.getElementById('meteo-temp').textContent = data.temp + '°C';
+  document.getElementById('meteo-desc').textContent = WMO_DESC[data.code] || 'Temps variable';
+  document.getElementById('meteo-ressenti').textContent = data.ressenti + '°C';
+}
+function openMeteoModal() {
+  if (!meteoData) { refreshMeteo(); return; }
+  var modal = document.getElementById('modal-meteo');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  document.getElementById('modal-meteo-icon').innerHTML = getMeteoSVG(meteoData.code);
+  document.getElementById('modal-meteo-temp').textContent = meteoData.temp + '°C — Ressenti ' + meteoData.ressenti + '°C';
+  document.getElementById('modal-meteo-desc').textContent = WMO_DESC[meteoData.code] || '—';
+  document.getElementById('modal-meteo-ville').textContent = meteoData.ville;
+  var uv = meteoData.uv;
+  var uvColor = uv <= 2 ? '#5A9E82' : uv <= 5 ? '#D4A820' : uv <= 7 ? '#E8820A' : '#E74C3C';
+  document.getElementById('modal-meteo-uv').innerHTML = '<span style="color:'+uvColor+'">'+uv+'</span>';
+  document.getElementById('modal-meteo-content').innerHTML = buildMeteoAdvice(meteoData);
+}
+function closeMeteoModal() {
+  var modal = document.getElementById('modal-meteo');
+  if (modal) modal.style.display = 'none';
+}
+function buildMeteoAdvice(d) {
+  var profiles = JSON.parse(localStorage.getItem('childProfiles')||'[]');
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var name = (profiles[idx] && (profiles[idx].displayName||profiles[idx].prenom)) || 'bébé';
+  var h = '';
+  // Habillage selon température
+  var t = d.temp;
+  var tienteColor = '#5A9E82';
+  var tienteLabel = '';
+  var habits = [];
+  if (t < 0) { tienteLabel='Très froid (< 0°C)'; habits=['Combinaison chaude','Body manches longues','Grenouillère en laine','Bonnet couvrant les oreilles','Moufles','Chaussons/chaussettes épaisses']; tienteColor='#4A7AC8'; }
+  else if (t < 5) { tienteLabel='Grand froid (< 5°C)'; habits=['Body manches longues','Gilet ou pull','Combinaison de sortie','Bonnet','Moufles','Chaussettes épaisses']; tienteColor='#5A8AC8'; }
+  else if (t < 10) { tienteLabel='Froid (5-10°C)'; habits=['Body manches longues','Pantalon','Pull léger','Veste ou manteau','Bonnet']; tienteColor='#6A9AC8'; }
+  else if (t < 15) { tienteLabel='Fraîcheur (10-15°C)'; habits=['Body manches courtes','Gilet','Pantalon léger','Petite veste']; tienteColor='#5AA8C8'; }
+  else if (t < 20) { tienteLabel='Doux (15-20°C)'; habits=['Body manches courtes','Pantalon léger','Petite veste si vent']; tienteColor='#5A9E82'; }
+  else if (t < 25) { tienteLabel='Agréable (20-25°C)'; habits=['Body manches courtes ou t-shirt','Short ou pantalon léger','Casquette si soleil']; tienteColor='#82B840'; }
+  else if (t < 30) { tienteLabel='Chaud (25-30°C)'; habits=['Body léger ou juste couche','Chapeau ou casquette OBLIGATOIRE','Crème solaire SPF50+']; tienteColor='#D4A820'; }
+  else { tienteLabel='Très chaud (>30°C)'; habits=['Le minimum — couche + débardeur','Chapeau OBLIGATOIRE','Crème solaire SPF50+','Éviter de sortir entre 12h et 16h','Hydratation très fréquente']; tienteColor='#E74C3C'; }
+  h += '<div style="background:#F8F9FA;border-radius:16px;padding:16px;margin-bottom:12px;">';
+  h += '<div style="font-size:12px;font-weight:800;color:'+tienteColor+';margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">&#128058; Comment habiller '+name+' ?</div>';
+  h += '<div style="font-size:12px;font-weight:700;color:#2C3E50;margin-bottom:8px;">'+tienteLabel+'</div>';
+  habits.forEach(function(it){ h += '<div style="font-size:12px;color:#2C3E50;padding:5px 0;border-bottom:0.5px solid #EDE8DF;display:flex;gap:8px;"><span>&#10003;</span><span>'+it+'</span></div>'; });
+  h += '</div>';
+  // UV
+  var uv = d.uv;
+  if (uv >= 3) {
+    var uvMsg = uv <= 5 ? 'UV modérés — chapeau et vêtements légers suffisent.' : uv <= 7 ? 'UV élevés — crème solaire SPF50+, chapeau, éviter l\'exposition directe.' : 'UV très élevés — sortie courte uniquement, crème SPF50+, dans l\'ombre.';
+    h += '<div style="background:#FFF3CD;border-radius:16px;padding:14px 16px;margin-bottom:12px;border-left:3px solid #D4A820;">';
+    h += '<div style="font-size:12px;font-weight:800;color:#9A8000;margin-bottom:4px;">&#9728;&#65039; Indice UV : '+uv+'</div>';
+    h += '<div style="font-size:12px;color:#7A6000;">'+uvMsg+'</div></div>';
+  }
+  // Météo spécifique
+  var code = d.code;
+  if (code >= 61 && code <= 82) {
+    h += '<div style="background:#EAF0FF;border-radius:16px;padding:14px 16px;border-left:3px solid #5A7ACA;">';
+    h += '<div style="font-size:12px;font-weight:800;color:#3A5AAA;margin-bottom:4px;">&#9748; Sortie sous la pluie</div>';
+    h += '<div style="font-size:12px;color:#2C3E50;">Imperméable ou combinaison pluie, couvre-poussette imperméable, éviter les longues sorties.</div></div>';
+  } else if (code >= 95) {
+    h += '<div style="background:#FDEAEA;border-radius:16px;padding:14px 16px;border-left:3px solid #E74C3C;">';
+    h += '<div style="font-size:12px;font-weight:800;color:#C03030;margin-bottom:4px;">&#9889; Orage — rester à la maison</div>';
+    h += '<div style="font-size:12px;color:#2C3E50;">Ne pas sortir avec bébé pendant un orage. Attendez que ça passe !</div></div>';
+  } else if (code >= 71 && code <= 77) {
+    h += '<div style="background:#EEF4FF;border-radius:16px;padding:14px 16px;border-left:3px solid #4A7AC8;">';
+    h += '<div style="font-size:12px;font-weight:800;color:#3A5AAA;margin-bottom:4px;">&#10052; Sortie dans la neige</div>';
+    h += '<div style="font-size:12px;color:#2C3E50;">Combinaison imperméable, chaussons étanches. Attention au froid sur le visage — écharpe tubulaire recommandée.</div></div>';
+  }
+  return h;
+}
+// Charger la météo au démarrage
+(function() {
+  setTimeout(function() { refreshMeteo(); }, 1500);
+})();
+
+// ── CONTACTS ──
+var contactTypes = { label:'', emoji:'' };
+var newContactType = { label:'Autre', emoji:'📋' };
+function setContactType(btn, label, emoji) {
+  newContactType = { label:label, emoji:emoji };
+  document.querySelectorAll('.ctbtn').forEach(function(b){ b.style.background='#EEF9F5'; b.style.color='#5A9E82'; });
+  btn.style.background = '#5A9E82'; btn.style.color = '#fff';
+}
+function openAddContact() {
+  newContactType = { label:'', emoji:'📋' };
+  document.querySelectorAll('.ctbtn').forEach(function(b){ b.style.background='#EEF9F5'; b.style.color='#5A9E82'; });
+  document.getElementById('contact-name-input').value = '';
+  document.getElementById('contact-phone-input').value = '';
+  var modal = document.getElementById('modal-contact');
+  if (modal) { modal.style.display='flex'; }
+}
+function closeAddContact() {
+  var modal = document.getElementById('modal-contact');
+  if (modal) modal.style.display = 'none';
+}
+function saveNewContact() {
+  var name = document.getElementById('contact-name-input').value.trim();
+  var phone = document.getElementById('contact-phone-input').value.trim();
+  if (!name && !phone) return;
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var contacts = JSON.parse(localStorage.getItem('contacts-'+idx)||'[]');
+  contacts.push({ id: Date.now(), type: newContactType.label||'Autre', emoji: newContactType.emoji||'📋', name: name, phone: phone });
+  localStorage.setItem('contacts-'+idx, JSON.stringify(contacts));
+  closeAddContact();
+  renderContacts();
+}
+function deleteContact(id) {
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var contacts = JSON.parse(localStorage.getItem('contacts-'+idx)||'[]');
+  contacts = contacts.filter(function(c){ return c.id !== id; });
+  localStorage.setItem('contacts-'+idx, JSON.stringify(contacts));
+  renderContacts();
+}
+function renderContacts() {
+  var wrap = document.getElementById('contacts-list');
+  if (!wrap) return;
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var contacts = JSON.parse(localStorage.getItem('contacts-'+idx)||'[]');
+  if (!contacts.length) {
+    wrap.innerHTML = '<div style="text-align:center;padding:12px;font-size:12px;color:#7F8C8D;">Aucun contact enregistré</div>';
+    return;
+  }
+  var h = '';
+  contacts.forEach(function(c) {
+    h += '<div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">';
+    h += '<div style="width:40px;height:40px;border-radius:12px;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">'+c.emoji+'</div>';
+    h += '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">'+c.type+(c.name?' — '+c.name:'')+'</div>';
+    if (c.phone) h += '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;">'+c.phone+'</div>';
+    h += '</div>';
+    if (c.phone) h += '<a href="tel:'+c.phone+'" style="background:#A8DFCA;border-radius:10px;padding:8px 12px;font-size:13px;text-decoration:none;color:#2C3E50;">📞</a>';
+    h += '<div onclick="deleteContact('+c.id+')" style="font-size:16px;color:#E74C3C;cursor:pointer;padding:4px 8px;">✕</div>';
+    h += '</div>';
+  });
+  wrap.innerHTML = h;
+}
+
+// ── MENUS SEMAINE ──
+var JOURS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+var JOURS_FULL = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+function getWeekDates() {
+  var now = new Date();
+  var day = now.getDay(); // 0=dim, 1=lun
+  var diff = (day === 0) ? -6 : 1 - day;
+  var monday = new Date(now); monday.setDate(now.getDate() + diff);
+  var dates = [];
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(monday); d.setDate(monday.getDate() + i);
+    dates.push(d);
+  }
+  return dates;
+}
+function isoDate(d) { return d.toISOString().slice(0,10); }
+var activeMenuDay = null;
+function renderMenusTabs() {
+  var wrap = document.getElementById('menus-day-tabs');
+  if (!wrap) return;
+  var dates = getWeekDates();
+  var todayStr = isoDate(new Date());
+  if (!activeMenuDay) activeMenuDay = todayStr;
+  var h = '';
+  dates.forEach(function(d, i) {
+    var ds = isoDate(d);
+    var isToday = ds === todayStr;
+    var isActive = ds === activeMenuDay;
+    var bg = isActive ? '#D4884A' : (isToday ? '#FFE8D0' : '#fff');
+    var color = isActive ? '#fff' : '#2C3E50';
+    var border = isActive ? 'none' : '1.5px solid #EDE8DF';
+    h += '<div onclick="switchMenuDay(\''+ds+'\')" style="flex-shrink:0;background:'+bg+';border:'+border+';border-radius:14px;padding:9px 14px;text-align:center;cursor:pointer;min-width:52px;">';
+    h += '<div style="font-size:11px;font-weight:700;color:'+(isActive?'rgba(255,255,255,0.8)':'#7F8C8D')+';">'+JOURS[i]+'</div>';
+    h += '<div style="font-size:16px;font-weight:800;color:'+color+';margin-top:2px;">'+d.getDate()+'</div>';
+    h += '</div>';
+  });
+  wrap.innerHTML = h;
+}
+function switchMenuDay(dateStr) {
+  activeMenuDay = dateStr;
+  renderMenusTabs();
+  renderMenusDayContent();
+}
+function getMenuData(dateStr) {
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var menus = JSON.parse(localStorage.getItem('menus-'+idx)||'{}');
+  return menus[dateStr] || { type:'maison', gardeType:'', midi:'', gouter:'', soir:'' };
+}
+function saveMenuData(dateStr, data) {
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var menus = JSON.parse(localStorage.getItem('menus-'+idx)||'{}');
+  menus[dateStr] = data;
+  localStorage.setItem('menus-'+idx, JSON.stringify(menus));
+}
+function renderMenusDayContent() {
+  var wrap = document.getElementById('menus-day-content');
+  if (!wrap) return;
+  var ds = activeMenuDay || isoDate(new Date());
+  var data = getMenuData(ds);
+  var dayIdx = getWeekDates().findIndex(function(d){ return isoDate(d) === ds; });
+  var dayName = dayIdx >= 0 ? JOURS_FULL[dayIdx] : ds;
+  var h = '';
+  // Type de journée
+  h += '<div style="background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">';
+  h += '<div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:12px;">'+dayName+' — Qui garde '+getActiveName()+'  ?</div>';
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">';
+  var maisonBg = data.type==='maison' ? '#5A9E82' : '#F2F2F7';
+  var maisonColor = data.type==='maison' ? '#fff' : '#7F8C8D';
+  var gardeBg = data.type==='garde' ? '#D4884A' : '#F2F2F7';
+  var gardeColor = data.type==='garde' ? '#fff' : '#7F8C8D';
+  h += '<div onclick="setMenuType(\'maison\')" style="background:'+maisonBg+';border-radius:14px;padding:14px;text-align:center;cursor:pointer;"><div style="font-size:22px;">🏠</div><div style="font-size:12px;font-weight:700;color:'+maisonColor+';margin-top:4px;">À la maison</div></div>';
+  h += '<div onclick="setMenuType(\'garde\')" style="background:'+gardeBg+';border-radius:14px;padding:14px;text-align:center;cursor:pointer;"><div style="font-size:22px;">👶</div><div style="font-size:12px;font-weight:700;color:'+gardeColor+';margin-top:4px;">Garde externe</div></div>';
+  h += '</div>';
+  if (data.type === 'garde') {
+    h += '<div style="margin-top:12px;"><div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:8px;">Avec qui ?</div>';
+    h += '<div style="display:flex;gap:8px;flex-wrap:wrap;">';
+    var gardeOpts = [['creche','🏫','Crèche'],['assmat','👩‍🍼','Assmat'],['papy','👴','Papy-Mamie'],['autre','💛','Autre']];
+    gardeOpts.forEach(function(opt){
+      var selBg = data.gardeType===opt[0] ? '#5A9E82' : '#F2F2F7';
+      var selColor = data.gardeType===opt[0] ? '#fff' : '#2C3E50';
+      h += '<div onclick="setGardeType(\''+opt[0]+'\')" style="background:'+selBg+';border-radius:12px;padding:9px 14px;cursor:pointer;font-size:12px;font-weight:700;color:'+selColor+';display:flex;align-items:center;gap:5px;">'+opt[1]+' '+opt[2]+'</div>';
+    });
+    h += '</div></div>';
+  }
+  h += '</div>';
+  // Repas (seulement si à la maison)
+  if (data.type === 'maison') {
+    var repas = [['midi','🍽️','Déjeuner'],['gouter','🍎','Goûter'],['soir','🌙','Dîner']];
+    repas.forEach(function(r) {
+      h += '<div style="background:#fff;border-radius:18px;padding:16px;margin-bottom:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">';
+      h += '<div style="font-size:13px;font-weight:700;color:#2C3E50;margin-bottom:8px;">'+r[1]+' '+r[2]+'</div>';
+      h += '<textarea id="menu-'+r[0]+'" oninput="saveMenuRepas(\''+r[0]+'\')" placeholder="Ex: Purée courgette, compote..." style="width:100%;box-sizing:border-box;background:#F8F9FA;border:1.5px solid #EDE8DF;border-radius:12px;padding:11px 14px;font-size:13px;color:#2C3E50;font-family:Montserrat,sans-serif;resize:none;height:70px;outline:none;-webkit-appearance:none;">'+data[r[0]]+'</textarea>';
+      h += '</div>';
+    });
+  }
+  wrap.innerHTML = h;
+}
+function getActiveName() {
+  var profiles = JSON.parse(localStorage.getItem('childProfiles')||'[]');
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  return (profiles[idx] && (profiles[idx].displayName||profiles[idx].prenom)) || 'bébé';
+}
+function setMenuType(type) {
+  var ds = activeMenuDay || isoDate(new Date());
+  var data = getMenuData(ds);
+  data.type = type;
+  saveMenuData(ds, data);
+  renderMenusDayContent();
+}
+function setGardeType(gt) {
+  var ds = activeMenuDay || isoDate(new Date());
+  var data = getMenuData(ds);
+  data.gardeType = gt;
+  saveMenuData(ds, data);
+  renderMenusDayContent();
+}
+function saveMenuRepas(repas) {
+  var ds = activeMenuDay || isoDate(new Date());
+  var data = getMenuData(ds);
+  var el = document.getElementById('menu-'+repas);
+  if (el) data[repas] = el.value;
+  saveMenuData(ds, data);
+}
+
+// ── LISTE DE COURSES ──
+function getCoursesIdx() { return parseInt(localStorage.getItem('activeChildIdx')||'0'); }
+function getCoursesData() {
+  return JSON.parse(localStorage.getItem('courses-'+getCoursesIdx())||'{"items":[],"reminderDate":""}');
+}
+function saveCoursesData(data) {
+  localStorage.setItem('courses-'+getCoursesIdx(), JSON.stringify(data));
+}
+function addCoursesItem() {
+  var el = document.getElementById('courses-new-item');
+  if (!el || !el.value.trim()) return;
+  var data = getCoursesData();
+  data.items.push({ id: Date.now(), text: el.value.trim(), done: false });
+  saveCoursesData(data);
+  el.value = '';
+  renderCoursesList();
+}
+function toggleCoursesItem(id) {
+  var data = getCoursesData();
+  data.items = data.items.map(function(it){ return it.id===id ? Object.assign({},it,{done:!it.done}) : it; });
+  saveCoursesData(data);
+  renderCoursesList();
+}
+function clearCheckedCourses() {
+  var data = getCoursesData();
+  data.items = data.items.filter(function(it){ return !it.done; });
+  saveCoursesData(data);
+  renderCoursesList();
+}
+function saveCoursesReminder() {
+  var el = document.getElementById('courses-reminder-input');
+  if (!el) return;
+  var data = getCoursesData();
+  data.reminderDate = el.value;
+  saveCoursesData(data);
+  document.getElementById('courses-reminder-badge').style.display = el.value ? 'inline-block' : 'none';
+}
+function renderCoursesList() {
+  var wrap = document.getElementById('courses-list');
+  if (!wrap) return;
+  var data = getCoursesData();
+  var items = data.items || [];
+  var total = items.length;
+  var done = items.filter(function(it){ return it.done; }).length;
+  var stats = document.getElementById('courses-stats');
+  if (stats) stats.textContent = total + ' article' + (total>1?'s':'') + (done?' — '+done+' coché'+(done>1?'s':''):'');
+  var badge = document.getElementById('mod-badge-courses');
+  if (badge) badge.textContent = (total-done) + ' restant' + (total-done!==1?'s':'');
+  if (!items.length) {
+    wrap.innerHTML = '<div style="text-align:center;padding:20px;font-size:13px;color:#7F8C8D;">Ta liste est vide 🛒</div>';
+    return;
+  }
+  var undone = items.filter(function(it){ return !it.done; });
+  var doneItems = items.filter(function(it){ return it.done; });
+  var h = '';
+  function renderItem(it) {
+    h += '<div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">';
+    h += '<div onclick="toggleCoursesItem('+it.id+')" style="width:22px;height:22px;border-radius:6px;border:2px solid '+(it.done?'#5A9E82':'#D0D0D0')+';background:'+(it.done?'#5A9E82':'#fff')+';display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex-shrink:0;cursor:pointer;">'+(it.done?'✓':'')+'</div>';
+    h += '<span style="flex:1;font-size:14px;color:'+(it.done?'#B0B0B0':'#2C3E50')+';text-decoration:'+(it.done?'line-through':'none')+';">'+it.text+'</span>';
+    h += '<div onclick="removeCoursesItem('+it.id+')" style="font-size:14px;color:#D0D0D0;cursor:pointer;padding:2px 6px;">✕</div>';
+    h += '</div>';
+  }
+  undone.forEach(renderItem);
+  if (doneItems.length) {
+    h += '<div style="font-size:11px;font-weight:700;color:#B0B0B0;text-transform:uppercase;letter-spacing:1px;padding:8px 0 4px;">Cochés</div>';
+    doneItems.forEach(renderItem);
+  }
+  wrap.innerHTML = h;
+}
+function removeCoursesItem(id) {
+  var data = getCoursesData();
+  data.items = data.items.filter(function(it){ return it.id !== id; });
+  saveCoursesData(data);
+  renderCoursesList();
+}
+function loadCoursesScreen() {
+  var data = getCoursesData();
+  var el = document.getElementById('courses-reminder-input');
+  if (el) { el.value = data.reminderDate||''; }
+  var badge = document.getElementById('courses-reminder-badge');
+  if (badge) badge.style.display = data.reminderDate ? 'inline-block' : 'none';
+  renderCoursesList();
+}
+function loadMenusScreen() {
+  activeMenuDay = isoDate(new Date());
+  renderMenusTabs();
+  renderMenusDayContent();
+}
 
 </script>
 </body>
