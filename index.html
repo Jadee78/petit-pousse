@@ -665,7 +665,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
     <!-- Menu du jour accueil -->
-    <div id="home-menu-card" style="margin:10px 16px 0;display:none;">
+    <div id="home-menu-card" style="margin:10px 16px 0;display:block;">
       <div style="background:#fff;border-radius:18px;padding:15px 16px;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
           <div style="font-size:13px;font-weight:800;color:#2C3E50;">&#127859; Menu du jour</div>
@@ -5859,8 +5859,7 @@ function renderMenuToday() {
   var homeCard = document.getElementById('home-menu-card');
   var homeContent = document.getElementById('home-menu-content');
   var repas = [['matin','☀️','Matin'],['midi','🌤️','Midi'],['soir','🌙','Soir']];
-  var hasSomething = data.type === 'garde' || data.matin || data.midi || data.soir;
-  if (homeCard) homeCard.style.display = hasSomething ? 'block' : 'none';
+  if (homeCard) homeCard.style.display = 'block';
   var html = '';
   if (data.type === 'garde') {
     var gardeLabels = { creche:'Crèche','assmat':'Assmat','papy':'Papy-Mamie','autre':'Garde externe' };
