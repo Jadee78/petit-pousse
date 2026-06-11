@@ -881,6 +881,11 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div id="atab-viandes" onclick="showAlimTab('viandes')" style="flex:1;text-align:center;padding:9px 4px;border-radius:22px;font-size:11px;font-weight:700;cursor:pointer;background:#F2F2F7;color:#7F8C8D;">&#128170; Protéines</div>
     </div>
 
+    <!-- Illustration kawaii par onglet -->
+    <div id="alim-food-banner" style="margin:0 16px 12px;border-radius:18px;overflow:hidden;height:110px;background:#FFF8F0;">
+      <img id="alim-food-banner-img" src="food-kawaii-legumes.png" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;" />
+    </div>
+
     <!-- Grille aliments (rendue par JS) -->
     <div id="alim-grid" style="padding:0 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"></div>
 
@@ -3203,6 +3208,13 @@ function showAlimTab(tab) {
     var el = document.getElementById("atab-" + t);
     if (el) { el.style.background = t === tab ? "#D4884A" : "#F2F2F7"; el.style.color = t === tab ? "#fff" : "#7F8C8D"; }
   });
+  var bannerImg = document.getElementById("alim-food-banner-img");
+  var banner = document.getElementById("alim-food-banner");
+  if (bannerImg && banner) {
+    if (tab === "legumes") { bannerImg.src = "food-kawaii-legumes.png"; banner.style.display = "block"; }
+    else if (tab === "fruits") { bannerImg.src = "food-kawaii-fruits.png"; banner.style.display = "block"; }
+    else { banner.style.display = "none"; }
+  }
   renderAlimGrid();
 }
 function getAlimIntroduced() {
@@ -3233,11 +3245,11 @@ function renderAlimGrid() {
     var done = introduced.indexOf(f.id) !== -1;
     var border = done ? "border:2px solid #5A9E82;" : "border:2px solid transparent;";
     var bg = done ? "background:#F7FCF9;" : "background:#fff;";
-    h += '<div style="'+bg+border+'border-radius:16px;padding:12px 8px 10px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.05);cursor:pointer;position:relative;" onclick="openRecipe(\'' + f.id + '\')">';
-    // Bouton coche en haut à droite
-    h += '<div onclick="toggleAlimIntroduced(\''+f.id+'\',event)" style="position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:'+(done?"#5A9E82":"rgba(44,62,80,0.08)")+';display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;cursor:pointer;z-index:5;">'+(done?"&#10003;":'<span style="color:#B0B8C1;font-size:14px;">+</span>')+'</div>';
-    h += '<div style="font-size:28px;line-height:1.3;'+(done?"":'opacity:0.85;')+'">' + f.e + '</div>';
-    h += '<div style="font-size:11px;font-weight:700;color:#2C3E50;margin-top:5px;line-height:1.3;">' + f.n + '</div>';
+    var emojiBg = {ok:"#FFF0E8",warn:"#FFFBE8",no:"#FFF0F0"};
+    h += '<div style="'+bg+border+'border-radius:20px;padding:14px 8px 12px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.07);cursor:pointer;position:relative;" onclick="openRecipe(\'' + f.id + '\')">';
+    h += '<div onclick="toggleAlimIntroduced(\''+f.id+'\',event)" style="position:absolute;top:7px;right:7px;width:22px;height:22px;border-radius:50%;background:'+(done?"#5A9E82":"rgba(44,62,80,0.08)")+';display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;cursor:pointer;z-index:5;">'+(done?"&#10003;":'<span style="color:#B0B8C1;font-size:14px;">+</span>')+'</div>';
+    h += '<div style="width:52px;height:52px;border-radius:16px;background:'+emojiBg[f.s]+';display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:32px;'+(done?"":'opacity:0.85;')+'">' + f.e + '</div>';
+    h += '<div style="font-size:11px;font-weight:700;color:#2C3E50;line-height:1.3;">' + f.n + '</div>';
     h += '<div style="font-size:10px;font-weight:700;color:' + sc[f.s] + ';background:' + sb[f.s] + ';border-radius:20px;padding:2px 6px;margin:5px auto 0;display:inline-block;">' + sl[f.s] + '</div></div>';
   });
   grid.innerHTML = h;
