@@ -2655,11 +2655,36 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           <input id="som-end" type="time" class="lf-input" />
         </div>
       </div>
+      <!-- Endormissement kawaii -->
       <div style="margin-bottom:14px;">
-        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Endormissement</div>
-        <div style="display:flex;gap:8px;">
-          <div onclick="selectSomEndo('facile')" id="som-endo-facile" style="flex:1;background:#EEF9F5;border:2px solid #5A9E82;border-radius:12px;padding:10px;text-align:center;font-size:12px;font-weight:700;color:#2C3E50;cursor:pointer;">😊 Facile</div>
-          <div onclick="selectSomEndo('difficile')" id="som-endo-difficile" style="flex:1;background:#fff;border:2px solid #E8F5EE;border-radius:12px;padding:10px;text-align:center;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">😣 Difficile</div>
+        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">Endormissement</div>
+        <div style="display:flex;justify-content:center;gap:28px;">
+          <div onclick="selectSomEndo('facile')" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;">
+            <div id="som-endo-facile" style="width:68px;height:68px;border-radius:50%;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:36px;border:3px solid #D4A820;box-shadow:0 4px 14px rgba(212,168,32,0.3);transition:all 0.2s;">😊</div>
+            <span id="som-endo-facile-lbl" style="font-size:12px;font-weight:800;color:#D4A820;">Facile</span>
+          </div>
+          <div onclick="selectSomEndo('difficile')" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;">
+            <div id="som-endo-difficile" style="width:68px;height:68px;border-radius:50%;background:#E8F0FF;display:flex;align-items:center;justify-content:center;font-size:36px;border:3px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all 0.2s;">😴</div>
+            <span id="som-endo-difficile-lbl" style="font-size:12px;font-weight:800;color:#B0B8C1;">Difficile</span>
+          </div>
+        </div>
+      </div>
+      <!-- Qualité de nuit kawaii -->
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">Qualité</div>
+        <div style="display:flex;justify-content:center;gap:16px;">
+          <div onclick="selectSomQualite('bonne')" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;">
+            <div id="som-qual-bonne" style="width:62px;height:62px;border-radius:50%;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:32px;border:3px solid #D4A820;box-shadow:0 4px 14px rgba(212,168,32,0.3);transition:all 0.2s;">😄</div>
+            <span id="som-qual-bonne-lbl" style="font-size:11px;font-weight:800;color:#D4A820;">Bonne</span>
+          </div>
+          <div onclick="selectSomQualite('normale')" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;">
+            <div id="som-qual-normale" style="width:62px;height:62px;border-radius:50%;background:#E8F8F2;display:flex;align-items:center;justify-content:center;font-size:32px;border:3px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all 0.2s;">🙂</div>
+            <span id="som-qual-normale-lbl" style="font-size:11px;font-weight:800;color:#B0B8C1;">Normale</span>
+          </div>
+          <div onclick="selectSomQualite('difficile')" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;">
+            <div id="som-qual-difficile" style="width:62px;height:62px;border-radius:50%;background:#EAF0FF;display:flex;align-items:center;justify-content:center;font-size:32px;border:3px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all 0.2s;">😢</div>
+            <span id="som-qual-difficile-lbl" style="font-size:11px;font-weight:800;color:#B0B8C1;">Difficile</span>
+          </div>
         </div>
       </div>
       <div style="margin-bottom:20px;">
@@ -3289,12 +3314,13 @@ function playSound(url) {
 // ── SOMMEIL ──
 var somType = "nuit";
 var somEndo = "facile";
+var somQualite = "bonne";
 function showAddSommeil() {
-  somType = "nuit"; somEndo = "facile";
+  somType = "nuit"; somEndo = "facile"; somQualite = "bonne";
   document.getElementById("som-start").value = "";
   document.getElementById("som-end").value = "";
   document.getElementById("som-note").value = "";
-  selectSomType("nuit"); selectSomEndo("facile");
+  selectSomType("nuit"); selectSomEndo("facile"); selectSomQualite("bonne");
   document.getElementById("modal-add-sommeil").style.display = "flex";
 }
 function hideAddSommeil() { document.getElementById("modal-add-sommeil").style.display = "none"; }
@@ -3307,8 +3333,23 @@ function selectSomType(t) {
 function selectSomEndo(e) {
   somEndo = e;
   var f = document.getElementById("som-endo-facile"), d = document.getElementById("som-endo-difficile");
-  f.style.background = e==="facile"?"#EEF9F5":"#fff"; f.style.borderColor = e==="facile"?"#5A9E82":"#E8F5EE"; f.style.color = e==="facile"?"#2C3E50":"#7F8C8D";
-  d.style.background = e==="difficile"?"#FDEAEA":"#fff"; d.style.borderColor = e==="difficile"?"#E74C3C":"#E8F5EE"; d.style.color = e==="difficile"?"#2C3E50":"#7F8C8D";
+  var fl = document.getElementById("som-endo-facile-lbl"), dl = document.getElementById("som-endo-difficile-lbl");
+  if (f) { f.style.borderColor = e==="facile"?"#D4A820":"transparent"; f.style.boxShadow = e==="facile"?"0 4px 14px rgba(212,168,32,0.3)":"0 2px 8px rgba(0,0,0,0.06)"; }
+  if (d) { d.style.borderColor = e==="difficile"?"#7A9EC8":"transparent"; d.style.boxShadow = e==="difficile"?"0 4px 14px rgba(122,158,200,0.3)":"0 2px 8px rgba(0,0,0,0.06)"; }
+  if (fl) fl.style.color = e==="facile"?"#D4A820":"#B0B8C1";
+  if (dl) dl.style.color = e==="difficile"?"#7A9EC8":"#B0B8C1";
+}
+function selectSomQualite(q) {
+  somQualite = q;
+  var opts = ["bonne","normale","difficile"];
+  var colors = {bonne:"#D4A820", normale:"#5A9E82", difficile:"#7A9EC8"};
+  var borders = {bonne:"rgba(212,168,32,0.3)", normale:"rgba(90,158,130,0.3)", difficile:"rgba(122,158,200,0.3)"};
+  opts.forEach(function(o) {
+    var el = document.getElementById("som-qual-"+o), lbl = document.getElementById("som-qual-"+o+"-lbl");
+    var active = (o === q);
+    if (el) { el.style.borderColor = active ? colors[o] : "transparent"; el.style.boxShadow = active ? "0 4px 14px "+borders[o] : "0 2px 8px rgba(0,0,0,0.06)"; }
+    if (lbl) lbl.style.color = active ? colors[o] : "#B0B8C1";
+  });
 }
 function calcDuration(start, end) {
   if (!start || !end) return 0;
@@ -3337,6 +3378,7 @@ function saveSommeil() {
     start: start,
     end: end,
     endo: somEndo,
+    qualite: somQualite,
     note: document.getElementById("som-note").value.trim(),
     date: new Date().toISOString().slice(0,10),
     duration: calcDuration(start, end)
@@ -3362,15 +3404,16 @@ function renderSommeilToday() {
     var isNuit = l.type === "nuit";
     var emoji = isNuit ? "&#127769;" : "&#128564;";
     var label = isNuit ? "Nuit" : "Sieste";
-    var endoTxt = l.endo === "difficile" ? '<span style="color:#E74C3C;">&#183; Difficile</span>' : '';
+    var endoEmoji = l.endo === "difficile" ? "😴" : "😊";
+    var qualEmoji = {bonne:"😄",normale:"🙂",difficile:"😢"}[l.qualite||"bonne"];
     h += '<div style="background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">';
-    h += '<span style="font-size:22px;">'+emoji+'</span>';
-    h += '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">'+label+' '+endoTxt+'</div>';
-    h += '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;">'+l.start+' &#8594; '+l.end+' &#183; '+fmtDuration(l.duration)+'</div>';
-    if (l.note) h += '<div style="font-size:11px;color:#9A8C7D;margin-top:2px;font-style:italic;">'+l.note+'</div>';
+    h += '<div style="display:flex;flex-direction:column;align-items:center;gap:3px;"><div style="width:40px;height:40px;border-radius:50%;background:'+(isNuit?"#E8EAF6":"#FFF3CD")+';display:flex;align-items:center;justify-content:center;font-size:22px;">'+emoji+'</div></div>';
+    h += '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">'+label+'</div>';
+    h += '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;">'+l.start+' → '+l.end+' · '+fmtDuration(l.duration)+'</div>';
+    h += '<div style="display:flex;gap:6px;margin-top:5px;"><span style="font-size:14px;" title="Endormissement">'+endoEmoji+'</span><span style="font-size:14px;" title="Qualité">'+qualEmoji+'</span></div>';
+    if (l.note) h += '<div style="font-size:11px;color:#9A8C7D;margin-top:3px;font-style:italic;">'+l.note+'</div>';
     h += '</div>';
-    h += '<div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 10px;border-radius:20px;">'+label+'</div>';
-    h += '<div onclick="deleteSommeil('+l.id+')" style="font-size:18px;color:#C0C0C0;cursor:pointer;padding:4px;">&#215;</div>';
+    h += '<div onclick="deleteSommeil('+l.id+')" style="font-size:18px;color:#C0C0C0;cursor:pointer;padding:4px;">✕</div>';
     h += '</div>';
   });
   list.innerHTML = h;
