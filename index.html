@@ -714,40 +714,20 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
 
-    <!-- Checklist -->
-    <div class="sec-hd"><span class="sec-t">Checklist RDV</span></div>
-    <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;">
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:22px;height:22px;border-radius:50%;background:#EEF9F5;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;color:#5A9E82;">&#10003;</div>
-        <span style="font-size:14px;color:#7F8C8D;text-decoration:line-through;">Prendre RDV chez le pédiatre</span>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:22px;height:22px;border-radius:6px;background:#F2F2F7;flex-shrink:0;"></div>
-        <span style="font-size:14px;color:#2C3E50;">Sortir le carnet de santé</span>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:flex-start;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:22px;height:22px;border-radius:6px;background:#F2F2F7;flex-shrink:0;margin-top:2px;"></div>
-        <div>
-          <span style="font-size:14px;color:#2C3E50;">Sortir le vaccin du frigo 1h avant</span>
-          <div style="font-size:11px;font-style:italic;color:#7F8C8D;margin-top:3px;line-height:1.5;">Un vaccin trop froid pique plus fort et peut provoquer plus de réaction locale. À température ambiante, l'injection est plus douce pour bébé.</div>
+    <!-- Mon RDV pédiatre -->
+    <div style="margin:10px 16px 0;">
+      <div style="background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 1px 6px rgba(0,0,0,0.05);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:13px;font-weight:700;color:#2C3E50;">&#128197; Mon RDV pédiatre</span>
+          <span id="vacc-rdv-badge" style="font-size:10px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:3px 10px;border-radius:20px;display:none;">Confirmé ✓</span>
         </div>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:flex-start;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:22px;height:22px;border-radius:6px;background:#F2F2F7;flex-shrink:0;margin-top:2px;"></div>
-        <div>
-          <span style="font-size:14px;color:#2C3E50;">Poser le patch EMLA 1h avant (anesthésiant)</span>
-          <div style="font-size:11px;font-style:italic;color:#7F8C8D;margin-top:3px;line-height:1.5;">À demander en pharmacie. Si bébé pleure malgré le patch, c'est normal — ce n'est pas forcément la piqûre qui fait mal, mais le produit injecté qui peut être désagréable, ou simplement la surprise. Soyons honnêtes, même adulte, se faire piquer c'est pas drôle &#128521;</div>
-        </div>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:22px;height:22px;border-radius:6px;background:#F2F2F7;flex-shrink:0;"></div>
-        <span style="font-size:14px;color:#2C3E50;">Préparer mes questions pour le pédiatre</span>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:22px;height:22px;border-radius:6px;background:#F2F2F7;flex-shrink:0;"></div>
-        <span style="font-size:14px;color:#2C3E50;">Prévoir paracétamol après le vaccin</span>
+        <input type="date" id="vacc-rdv-input" oninput="saveVaccRDV()" style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:10px 14px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;-webkit-appearance:none;background:#F8F9FA;">
       </div>
     </div>
+
+    <!-- Checklist -->
+    <div class="sec-hd"><span class="sec-t">Checklist RDV</span></div>
+    <div id="vacc-checklist-wrap" style="padding:0 16px;display:flex;flex-direction:column;gap:8px;"></div>
 
     <!-- Tips pendant le vaccin -->
     <div style="margin:4px 16px 14px;background:linear-gradient(135deg,#EEF9F5,#D6F0E8);border-radius:16px;padding:16px;">
@@ -778,39 +758,13 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
     <!-- Calendrier vaccinal -->
     <div class="sec-hd"><span class="sec-t">Calendrier vaccinal</span></div>
-    <div style="padding:0 16px;display:flex;flex-direction:column;gap:7px;">
-      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:10px;height:10px;border-radius:50%;background:#5A9E82;flex-shrink:0;"></div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#2C3E50;">DTCaP-Hib-HepB</div><div style="font-size:11px;color:#7F8C8D;margin-top:1px;">2 mois</div><div style="font-size:11px;font-style:italic;color:#7F8C8D;margin-top:2px;line-height:1.4;">Protège contre la diphtérie, tétanos, coqueluche, polio, méningite à Haemophilus et hépatite B.</div></div>
-        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Fait &#10003;</div>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:10px;height:10px;border-radius:50%;background:#5A9E82;flex-shrink:0;"></div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#2C3E50;">Méningocoque B</div><div style="font-size:11px;color:#7F8C8D;margin-top:1px;">3 mois</div><div style="font-size:11px;font-style:italic;color:#7F8C8D;margin-top:2px;line-height:1.4;">Protège contre les méningites à méningocoque B, une bactérie pouvant causer des infections graves.</div></div>
-        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Fait &#10003;</div>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:10px;height:10px;border-radius:50%;background:#5A9E82;flex-shrink:0;"></div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#2C3E50;">DTCaP-Hib-HepB (2e dose)</div><div style="font-size:11px;color:#7F8C8D;margin-top:1px;">4 mois</div><div style="font-size:11px;font-style:italic;color:#7F8C8D;margin-top:2px;line-height:1.4;">Rappel pour renforcer la protection contre les mêmes maladies qu'à 2 mois.</div></div>
-        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Fait &#10003;</div>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:10px;height:10px;border-radius:50%;background:#5A9E82;flex-shrink:0;"></div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#2C3E50;">Méningocoque B (2e dose)</div><div style="font-size:11px;color:#7F8C8D;margin-top:1px;">5 mois</div><div style="font-size:11px;font-style:italic;color:#7F8C8D;margin-top:2px;line-height:1.4;">Rappel pour consolider l'immunité contre les méningites à méningocoque B.</div></div>
-        <div style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;">Fait &#10003;</div>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;border:1.5px solid #A8DFCA;background:#EEF9F5;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:10px;height:10px;border-radius:50%;background:#D4A820;flex-shrink:0;"></div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">ROR + Méningocoque C</div><div style="font-size:11px;color:#7F8C8D;margin-top:2px;">9 mois · en cours</div></div>
-        <div style="font-size:11px;font-weight:700;background:#FFF3CD;color:#D4A820;padding:4px 11px;border-radius:20px;">Bient&#244;t</div>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:10px;height:10px;border-radius:50%;background:#EDE8DF;flex-shrink:0;"></div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#2C3E50;">DTCaP rappel</div><div style="font-size:11px;color:#7F8C8D;margin-top:1px;">11 mois</div><div style="font-size:11px;font-style:italic;color:#7F8C8D;margin-top:2px;line-height:1.4;">Rappel de consolidation contre diphtérie, tétanos, coqueluche et polio.</div></div>
-        <div style="font-size:11px;font-weight:700;background:#F2F2F7;color:#7F8C8D;padding:4px 11px;border-radius:20px;">&#192; venir</div>
-      </div>
+    <div id="vacc-cal-wrap" style="padding:0 16px;display:flex;flex-direction:column;gap:7px;"></div>
+
+    <!-- Notes vaccins -->
+    <div class="sec-hd"><span class="sec-t">Notes</span></div>
+    <div style="padding:0 16px 20px;">
+      <textarea id="vacc-notes-input" oninput="saveVaccNotes()" placeholder="Questions pour le pédiatre, réactions post-vaccin, observations..." style="width:100%;box-sizing:border-box;background:#fff;border:1.5px solid #EDE8DF;border-radius:16px;padding:14px 16px;font-size:13px;color:#2C3E50;font-family:Montserrat,sans-serif;resize:none;height:100px;outline:none;-webkit-appearance:none;"></textarea>
     </div>
-    <div style="height:16px;"></div>
   </div>
 
   <!-- ALIMENTATION -->
@@ -4177,6 +4131,11 @@ function applyChildProfile(profile) {
   loadSommeilNotes();
   renderSommeilToday();
   updateSommeilHeader();
+  // Vaccins
+  renderVaccChecklist();
+  renderVaccCalendar(profile);
+  loadVaccRDV();
+  loadVaccNotes();
   // Cloche
   updateBellDot();
 }
@@ -4971,6 +4930,137 @@ function loadSanteNotes() {
   var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
   var el = document.getElementById("sante-notes-input"); if (!el) return;
   el.value = localStorage.getItem("sante-notes-"+idx)||"";
+}
+
+// ── VACCINS ──
+var VACC_CHECKLIST_ITEMS = [
+  { key:'rdv',          label:'Prendre RDV chez le pédiatre',          sub:null },
+  { key:'carnet',       label:'Sortir le carnet de santé',              sub:null },
+  { key:'frigo',        label:'Sortir le vaccin du frigo 1h avant',          sub:'Un vaccin trop froid pique plus fort et peut provoquer plus de réaction locale. À température ambiante, l\'injection est plus douce pour bébé.' },
+  { key:'emla',         label:'Poser le patch EMLA 1h avant (anesthésiant)', sub:'À demander en pharmacie. Si bébé pleure malgré le patch, c\'est normal — ce n\'est pas forcément la piqûre qui fait mal, mais le produit injecté qui peut être désagréable, ou simplement la surprise. Soyons honnêtes, même adulte, se faire piquer c\'est pas drôle 😉' },
+  { key:'questions',    label:'Préparer mes questions pour le pédiatre', sub:null },
+  { key:'paracetamol',  label:'Prévoir paracétamol après le vaccin',  sub:null }
+];
+var VACC_CAL = [
+  { m:2,  name:'DTCaP-Hib-HepB',                        desc:'Diphtérie, tétanos, coqueluche, polio, Hib et hépatite B.' },
+  { m:3,  name:'Méningocoque B',                    desc:'Protection contre les méningites à méningocoque B.' },
+  { m:4,  name:'DTCaP-Hib-HepB (2e dose)',               desc:'Rappel pour renforcer la protection contre les mêmes maladies qu\'à 2 mois.' },
+  { m:5,  name:'Méningocoque B (2e dose)',           desc:'Rappel pour consolider l\'immunité contre les méningites à méningocoque B.' },
+  { m:11, name:'DTCaP-Hib-HepB (3e) + Pneumocoque',     desc:'3e dose DTCaP + vaccin pneumocoque (infections pulmonaires, méningites).' },
+  { m:12, name:'ROR + Méningocoque C',              desc:'Rougeole, oreillons, rubéole + méningocoque C.' },
+  { m:16, name:'DTCaP rappel + Méningocoque C rappel', desc:'Rappels de consolidation.' },
+  { m:18, name:'ROR (2e injection)',                     desc:'2e dose ROR — obligatoire.' },
+  { m:24, name:'Hépatite A',                       desc:'Recommandé pour les voyages et si risque d\'exposition.' }
+];
+function getVaccIdx() { return parseInt(localStorage.getItem('activeChildIdx')||'0'); }
+function getVaccCheckState() {
+  return JSON.parse(localStorage.getItem('vacc-checklist-'+getVaccIdx())||'{}');
+}
+function saveVaccCheckState(state) {
+  localStorage.setItem('vacc-checklist-'+getVaccIdx(), JSON.stringify(state));
+}
+function toggleVaccCheck(key) {
+  var state = getVaccCheckState();
+  state[key] = !state[key];
+  saveVaccCheckState(state);
+  renderVaccChecklist();
+}
+function renderVaccChecklist() {
+  var wrap = document.getElementById('vacc-checklist-wrap');
+  if (!wrap) return;
+  var state = getVaccCheckState();
+  var h = '';
+  VACC_CHECKLIST_ITEMS.forEach(function(item) {
+    var done = !!state[item.key];
+    var hasSub = !!item.sub;
+    var boxStyle = done
+      ? 'width:22px;height:22px;border-radius:50%;background:#5A9E82;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;color:#fff;'
+      : 'width:22px;height:22px;border-radius:6px;background:#F2F2F7;flex-shrink:0;' + (hasSub ? 'margin-top:2px;' : '');
+    var textStyle = done ? 'font-size:14px;color:#7F8C8D;text-decoration:line-through;' : 'font-size:14px;color:#2C3E50;';
+    h += '<div onclick="toggleVaccCheck(\''+item.key+'\')" style="background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:'+(hasSub?'flex-start':'center')+';gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);cursor:pointer;">';
+    h += '<div style="'+boxStyle+'">'+(done?'&#10003;':'')+'</div>';
+    if (hasSub) {
+      h += '<div><span style="'+textStyle+'">'+item.label+'</span>';
+      if (!done) h += '<div style="font-size:11px;font-style:italic;color:#7F8C8D;margin-top:3px;line-height:1.5;">'+item.sub+'</div>';
+      h += '</div>';
+    } else {
+      h += '<span style="'+textStyle+'">'+item.label+'</span>';
+    }
+    h += '</div>';
+  });
+  wrap.innerHTML = h;
+}
+function renderVaccCalendar(profile) {
+  var wrap = document.getElementById('vacc-cal-wrap');
+  if (!wrap || !profile || !profile.dob) return;
+  var birth = new Date(profile.dob), now = new Date();
+  var months = (now.getFullYear()-birth.getFullYear())*12+(now.getMonth()-birth.getMonth());
+  if (now.getDate()<birth.getDate()) months--;
+  var idx = getVaccIdx();
+  var manual = JSON.parse(localStorage.getItem('vacc-manual-'+idx)||'{}');
+  var nextVacc = calcNextVaccine(profile.dob);
+  var firstUpcoming = true;
+  var h = '';
+  VACC_CAL.forEach(function(v) {
+    var autoDone = v.m <= months;
+    var done = (manual[v.m] !== undefined) ? manual[v.m] : autoDone;
+    var isNext = !done && firstUpcoming;
+    if (isNext) firstUpcoming = false;
+    var dotColor = done ? '#5A9E82' : (isNext ? '#D4A820' : '#EDE8DF');
+    var cardStyle = isNext ? 'background:#EEF9F5;border:1.5px solid #A8DFCA;' : 'background:#fff;';
+    var badge;
+    if (done) {
+      badge = '<div onclick="toggleVaccDone('+v.m+')" title="Cliquer pour marquer non fait" style="font-size:11px;font-weight:700;background:#EEF9F5;color:#5A9E82;padding:4px 11px;border-radius:20px;cursor:pointer;flex-shrink:0;white-space:nowrap;">Fait &#10003;</div>';
+    } else if (isNext) {
+      badge = '<div onclick="toggleVaccDone('+v.m+')" title="Cliquer pour marquer fait" style="font-size:11px;font-weight:700;background:#FFF3CD;color:#D4A820;padding:4px 11px;border-radius:20px;cursor:pointer;flex-shrink:0;white-space:nowrap;">Bientôt</div>';
+    } else {
+      badge = '<div onclick="toggleVaccDone('+v.m+')" title="Cliquer pour marquer fait" style="font-size:11px;font-weight:700;background:#F2F2F7;color:#7F8C8D;padding:4px 11px;border-radius:20px;cursor:pointer;flex-shrink:0;white-space:nowrap;">À venir</div>';
+    }
+    h += '<div style="'+cardStyle+'border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">';
+    h += '<div style="width:10px;height:10px;border-radius:50%;background:'+dotColor+';flex-shrink:0;"></div>';
+    h += '<div style="flex:1;">';
+    h += '<div style="font-size:13px;font-weight:'+(done?'600':'700')+';color:'+(done?'#7F8C8D':'#2C3E50')+';">'+v.name+'</div>';
+    h += '<div style="font-size:11px;color:#7F8C8D;margin-top:1px;">'+v.m+' mois'+(isNext?' · à venir':'')+'</div>';
+    if (v.desc && !done) h += '<div style="font-size:11px;font-style:italic;color:#7F8C8D;margin-top:2px;line-height:1.4;">'+v.desc+'</div>';
+    h += '</div>'+badge+'</div>';
+  });
+  wrap.innerHTML = h;
+}
+function toggleVaccDone(m) {
+  var idx = getVaccIdx();
+  var manual = JSON.parse(localStorage.getItem('vacc-manual-'+idx)||'{}');
+  var profiles = JSON.parse(localStorage.getItem('childProfiles')||'[]');
+  var profile = profiles[idx]; if (!profile||!profile.dob) return;
+  var birth = new Date(profile.dob), now = new Date();
+  var months = (now.getFullYear()-birth.getFullYear())*12+(now.getMonth()-birth.getMonth());
+  if (now.getDate()<birth.getDate()) months--;
+  var autoDone = m <= months;
+  if (manual[m] !== undefined) { delete manual[m]; } else { manual[m] = !autoDone; }
+  localStorage.setItem('vacc-manual-'+idx, JSON.stringify(manual));
+  renderVaccCalendar(profile);
+}
+function saveVaccRDV() {
+  var el = document.getElementById('vacc-rdv-input'); if (!el) return;
+  localStorage.setItem('vacc-rdv-'+getVaccIdx(), el.value);
+  updateVaccRDVBadge(el.value);
+}
+function loadVaccRDV() {
+  var el = document.getElementById('vacc-rdv-input'); if (!el) return;
+  var val = localStorage.getItem('vacc-rdv-'+getVaccIdx())||'';
+  el.value = val;
+  updateVaccRDVBadge(val);
+}
+function updateVaccRDVBadge(val) {
+  var badge = document.getElementById('vacc-rdv-badge'); if (!badge) return;
+  badge.style.display = val ? 'inline-block' : 'none';
+}
+function saveVaccNotes() {
+  var el = document.getElementById('vacc-notes-input'); if (!el) return;
+  localStorage.setItem('vacc-notes-'+getVaccIdx(), el.value);
+}
+function loadVaccNotes() {
+  var el = document.getElementById('vacc-notes-input'); if (!el) return;
+  el.value = localStorage.getItem('vacc-notes-'+getVaccIdx())||'';
 }
 
 // ── NOTIFICATIONS ──
