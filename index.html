@@ -881,11 +881,6 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div id="atab-viandes" onclick="showAlimTab('viandes')" style="flex:1;text-align:center;padding:9px 4px;border-radius:22px;font-size:11px;font-weight:700;cursor:pointer;background:#F2F2F7;color:#7F8C8D;">&#128170; Protéines</div>
     </div>
 
-    <!-- Illustration kawaii par onglet -->
-    <div id="alim-food-banner" style="margin:0 16px 12px;border-radius:18px;overflow:hidden;height:110px;background:#FFF8F0;">
-      <img id="alim-food-banner-img" src="food-kawaii-legumes.png" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;" />
-    </div>
-
     <!-- Grille aliments (rendue par JS) -->
     <div id="alim-grid" style="padding:0 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"></div>
 
@@ -2655,34 +2650,76 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           <input id="som-end" type="time" class="lf-input" />
         </div>
       </div>
-      <!-- Endormissement kawaii -->
-      <div style="margin-bottom:14px;">
-        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">Endormissement</div>
-        <div style="display:flex;justify-content:center;gap:28px;">
-          <div onclick="selectSomEndo('facile')" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;">
-            <div id="som-endo-facile" style="width:68px;height:68px;border-radius:50%;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:36px;border:3px solid #D4A820;box-shadow:0 4px 14px rgba(212,168,32,0.3);transition:all 0.2s;">😊</div>
+      <!-- Endormissement SVG kawaii -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.5px;">Endormissement</div>
+        <div style="display:flex;justify-content:center;gap:32px;">
+          <div onclick="selectSomEndo('facile')" style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;">
+            <div id="som-endo-facile" style="width:72px;height:72px;border-radius:50%;border:3px solid #D4A820;box-shadow:0 4px 16px rgba(212,168,32,0.25);transition:all 0.2s;overflow:hidden;">
+              <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" width="72" height="72">
+                <circle cx="36" cy="36" r="36" fill="#FFE9A0"/>
+                <circle cx="26" cy="30" r="3.5" fill="#5C3D2E"/>
+                <circle cx="46" cy="30" r="3.5" fill="#5C3D2E"/>
+                <circle cx="22" cy="38" r="5" fill="#FFB3B3" opacity="0.45"/>
+                <circle cx="50" cy="38" r="5" fill="#FFB3B3" opacity="0.45"/>
+                <path d="M24 42 Q36 52 48 42" stroke="#5C3D2E" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
             <span id="som-endo-facile-lbl" style="font-size:12px;font-weight:800;color:#D4A820;">Facile</span>
           </div>
-          <div onclick="selectSomEndo('difficile')" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;">
-            <div id="som-endo-difficile" style="width:68px;height:68px;border-radius:50%;background:#E8F0FF;display:flex;align-items:center;justify-content:center;font-size:36px;border:3px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all 0.2s;">😴</div>
+          <div onclick="selectSomEndo('difficile')" style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;">
+            <div id="som-endo-difficile" style="width:72px;height:72px;border-radius:50%;border:3px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.07);transition:all 0.2s;overflow:hidden;">
+              <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" width="72" height="72">
+                <circle cx="36" cy="36" r="36" fill="#C8DEFF"/>
+                <path d="M22 29 Q26 24 30 29" stroke="#5C3D2E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M42 29 Q46 24 50 29" stroke="#5C3D2E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M28 42 Q36 46 44 42" stroke="#5C3D2E" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                <text x="48" y="24" font-size="9" fill="#8AAED0" font-weight="700" font-family="sans-serif">z</text>
+                <text x="54" y="17" font-size="7" fill="#8AAED0" font-weight="700" font-family="sans-serif">z</text>
+              </svg>
+            </div>
             <span id="som-endo-difficile-lbl" style="font-size:12px;font-weight:800;color:#B0B8C1;">Difficile</span>
           </div>
         </div>
       </div>
-      <!-- Qualité de nuit kawaii -->
-      <div style="margin-bottom:14px;">
-        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">Qualité</div>
-        <div style="display:flex;justify-content:center;gap:16px;">
-          <div onclick="selectSomQualite('bonne')" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;">
-            <div id="som-qual-bonne" style="width:62px;height:62px;border-radius:50%;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:32px;border:3px solid #D4A820;box-shadow:0 4px 14px rgba(212,168,32,0.3);transition:all 0.2s;">😄</div>
+      <!-- Qualité de nuit SVG kawaii -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.5px;">Qualité de nuit</div>
+        <div style="display:flex;justify-content:center;gap:18px;">
+          <div onclick="selectSomQualite('bonne')" style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;">
+            <div id="som-qual-bonne" style="width:64px;height:64px;border-radius:50%;border:3px solid #D4A820;box-shadow:0 4px 16px rgba(212,168,32,0.25);transition:all 0.2s;overflow:hidden;">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+                <circle cx="32" cy="32" r="32" fill="#FFD97D"/>
+                <path d="M20 26 Q24 21 28 26" stroke="#5C3D2E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M36 26 Q40 21 44 26" stroke="#5C3D2E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <circle cx="17" cy="36" r="5" fill="#FF9999" opacity="0.4"/>
+                <circle cx="47" cy="36" r="5" fill="#FF9999" opacity="0.4"/>
+                <path d="M20 40 Q32 50 44 40" stroke="#5C3D2E" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
             <span id="som-qual-bonne-lbl" style="font-size:11px;font-weight:800;color:#D4A820;">Bonne</span>
           </div>
-          <div onclick="selectSomQualite('normale')" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;">
-            <div id="som-qual-normale" style="width:62px;height:62px;border-radius:50%;background:#E8F8F2;display:flex;align-items:center;justify-content:center;font-size:32px;border:3px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all 0.2s;">🙂</div>
+          <div onclick="selectSomQualite('normale')" style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;">
+            <div id="som-qual-normale" style="width:64px;height:64px;border-radius:50%;border:3px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.07);transition:all 0.2s;overflow:hidden;">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+                <circle cx="32" cy="32" r="32" fill="#AEECD6"/>
+                <circle cx="23" cy="27" r="3" fill="#5C3D2E"/>
+                <circle cx="41" cy="27" r="3" fill="#5C3D2E"/>
+                <path d="M24 40 Q32 43 40 40" stroke="#5C3D2E" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
             <span id="som-qual-normale-lbl" style="font-size:11px;font-weight:800;color:#B0B8C1;">Normale</span>
           </div>
-          <div onclick="selectSomQualite('difficile')" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;">
-            <div id="som-qual-difficile" style="width:62px;height:62px;border-radius:50%;background:#EAF0FF;display:flex;align-items:center;justify-content:center;font-size:32px;border:3px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all 0.2s;">😢</div>
+          <div onclick="selectSomQualite('difficile')" style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;">
+            <div id="som-qual-difficile" style="width:64px;height:64px;border-radius:50%;border:3px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.07);transition:all 0.2s;overflow:hidden;">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+                <circle cx="32" cy="32" r="32" fill="#B8CEFF"/>
+                <circle cx="23" cy="27" r="3" fill="#5C3D2E"/>
+                <circle cx="41" cy="27" r="3" fill="#5C3D2E"/>
+                <ellipse cx="41" cy="35" rx="2" ry="3" fill="#8AAED0" opacity="0.65"/>
+                <path d="M22 44 Q32 37 42 44" stroke="#5C3D2E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
             <span id="som-qual-difficile-lbl" style="font-size:11px;font-weight:800;color:#B0B8C1;">Difficile</span>
           </div>
         </div>
@@ -3233,13 +3270,6 @@ function showAlimTab(tab) {
     var el = document.getElementById("atab-" + t);
     if (el) { el.style.background = t === tab ? "#D4884A" : "#F2F2F7"; el.style.color = t === tab ? "#fff" : "#7F8C8D"; }
   });
-  var bannerImg = document.getElementById("alim-food-banner-img");
-  var banner = document.getElementById("alim-food-banner");
-  if (bannerImg && banner) {
-    if (tab === "legumes") { bannerImg.src = "food-kawaii-legumes.png"; banner.style.display = "block"; }
-    else if (tab === "fruits") { bannerImg.src = "food-kawaii-fruits.png"; banner.style.display = "block"; }
-    else { banner.style.display = "none"; }
-  }
   renderAlimGrid();
 }
 function getAlimIntroduced() {
@@ -3262,20 +3292,30 @@ function renderAlimGrid() {
   if (!grid) return;
   var foods = foodDB[currentAlimTab];
   var introduced = getAlimIntroduced();
-  var sc = {ok:"#5A9E82",warn:"#D4A820",no:"#E74C3C"};
-  var sb = {ok:"#EEF9F5",warn:"#FFF3CD",no:"#FDEAEA"};
-  var sl = {ok:"&#10003; OK",warn:"&#9888; Attention",no:"&#10007; &#192; &#233;viter"};
+  // Palettes pastel par catégorie (cycle)
+  var palettes = {
+    legumes: ["#C8EDCC","#B8E8C4","#D4F2B0","#C8EDD8","#B4EBD0","#D0EEB8","#A8E6C4","#C0F0C8","#B8EAC0","#D8F0B0","#C4ECC8","#BCEAB4"],
+    fruits:  ["#FFD5D5","#FFE0C8","#FFD8E0","#FFDDC0","#FFD0D8","#FFE8C0","#FFD8C8","#FFCCD8","#FFE4C0","#FFD0CC","#FFE0D0","#FFD4E0"],
+    viandes: ["#E0D8F0","#D8EEF4","#F0E4D4","#E8F0D8","#F4E0E0","#D8F0EC","#E8E0F4","#F0ECD8","#DCE8F0","#F0D8EC","#E4F0D8","#F0DCD8"]
+  };
+  var statusColor = {ok:"#5A9E82",warn:"#C8900A",no:"#C0392B"};
+  var statusDot = {ok:"#5A9E82",warn:"#D4A820",no:"#E74C3C"};
   var h = "";
-  foods.forEach(function(f) {
+  foods.forEach(function(f, idx) {
     var done = introduced.indexOf(f.id) !== -1;
-    var border = done ? "border:2px solid #5A9E82;" : "border:2px solid transparent;";
-    var bg = done ? "background:#F7FCF9;" : "background:#fff;";
-    var emojiBg = {ok:"#FFF0E8",warn:"#FFFBE8",no:"#FFF0F0"};
-    h += '<div style="'+bg+border+'border-radius:20px;padding:14px 8px 12px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.07);cursor:pointer;position:relative;" onclick="openRecipe(\'' + f.id + '\')">';
-    h += '<div onclick="toggleAlimIntroduced(\''+f.id+'\',event)" style="position:absolute;top:7px;right:7px;width:22px;height:22px;border-radius:50%;background:'+(done?"#5A9E82":"rgba(44,62,80,0.08)")+';display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;cursor:pointer;z-index:5;">'+(done?"&#10003;":'<span style="color:#B0B8C1;font-size:14px;">+</span>')+'</div>';
-    h += '<div style="width:52px;height:52px;border-radius:16px;background:'+emojiBg[f.s]+';display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:32px;'+(done?"":'opacity:0.85;')+'">' + f.e + '</div>';
-    h += '<div style="font-size:11px;font-weight:700;color:#2C3E50;line-height:1.3;">' + f.n + '</div>';
-    h += '<div style="font-size:10px;font-weight:700;color:' + sc[f.s] + ';background:' + sb[f.s] + ';border-radius:20px;padding:2px 6px;margin:5px auto 0;display:inline-block;">' + sl[f.s] + '</div></div>';
+    var pal = palettes[currentAlimTab] || palettes.legumes;
+    var cardBg = done ? "#E8F8F0" : pal[idx % pal.length];
+    var borderStyle = done ? "border:2.5px solid #5A9E82;" : "border:2.5px solid transparent;";
+    h += '<div style="'+borderStyle+'border-radius:22px;padding:0;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,0.08);cursor:pointer;position:relative;overflow:hidden;background:'+cardBg+';" onclick="openRecipe(\''+f.id+'\')">';
+    // Badge coché
+    h += '<div onclick="toggleAlimIntroduced(\''+f.id+'\',event)" style="position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:'+(done?"#5A9E82":"rgba(255,255,255,0.6)")+';display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;cursor:pointer;z-index:5;border:1.5px solid '+(done?"#5A9E82":"rgba(44,62,80,0.15)")+';font-weight:700;">'+(done?"✓":'<span style="color:rgba(44,62,80,0.3);font-size:13px;line-height:1;">+</span>')+'</div>';
+    // Emoji dans zone colorée
+    h += '<div style="padding:18px 8px 8px;font-size:38px;line-height:1;">' + f.e + '</div>';
+    // Nom
+    h += '<div style="font-size:10.5px;font-weight:800;color:#2C3E50;padding:0 6px 4px;line-height:1.3;">' + f.n + '</div>';
+    // Pastille statut
+    h += '<div style="margin:0 auto 12px;display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;background:rgba(255,255,255,0.55);"><div style="width:6px;height:6px;border-radius:50%;background:'+statusDot[f.s]+';"></div><span style="font-size:9.5px;font-weight:700;color:'+statusColor[f.s]+';">'+({ok:"OK",warn:"Attention",no:"Éviter"}[f.s])+'</span></div>';
+    h += '</div>';
   });
   grid.innerHTML = h;
 }
