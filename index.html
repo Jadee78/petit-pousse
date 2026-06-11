@@ -674,6 +674,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div class="mod" onclick="goTo('eveil')"><div class="mod-icon">&#127919;</div><div class="mod-t">Éveil</div><div class="mod-s">Activités & jeux</div><div class="mod-badge">Nouveau</div></div>
       <div class="mod" onclick="goTo('menus')"><div class="mod-icon">&#127859;</div><div class="mod-t">Menus</div><div class="mod-s">Repas de la semaine</div><div class="mod-badge" id="mod-badge-menus">7j</div></div>
       <div class="mod" onclick="goTo('courses')"><div class="mod-icon">&#128722;</div><div class="mod-t">Courses</div><div class="mod-s">Liste & rappels</div><div class="mod-badge" id="mod-badge-courses">0 item</div></div>
+      <div class="mod" onclick="goTo('agenda')" style="grid-column:1/-1;"><div class="mod-icon">&#128197;</div><div class="mod-t">Agenda médical</div><div class="mod-s">RDV pédiatre, kiné, ostéo...</div><div class="mod-badge" id="mod-badge-agenda">0 RDV</div></div>
     </div>
   </div>
 
@@ -2496,6 +2497,74 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div id="courses-list" style="padding:0 16px 20px;display:flex;flex-direction:column;gap:7px;"></div>
   </div>
 
+  <!-- AGENDA MÉDICAL -->
+  <div id="screen-agenda" class="screen">
+    <div class="status-bar" style="background:linear-gradient(160deg,#F0EEF8,#E0DCF0);">
+      <span class="st-time">9:41</span><span class="st-icons">&#9679;&#9679;&#9679; &#128267;</span>
+    </div>
+    <div style="background:linear-gradient(160deg,#F0EEF8,#E0DCF0);padding:6px 20px 18px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <span onclick="goBack()" style="font-size:26px;color:#7A6AC8;cursor:pointer;line-height:1;">&#8249;</span>
+          <img src="logo.svg" style="width:32px;height:32px;"/>
+          <span style="font-size:18px;font-weight:800;color:#2C3E50;">Agenda médical</span>
+        </div>
+        <button onclick="openAddRDV()" style="background:#7A6AC8;color:#fff;border:none;border-radius:12px;padding:8px 14px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">+ RDV</button>
+      </div>
+      <!-- Sélecteur enfant -->
+      <div style="display:flex;gap:8px;align-items:center;">
+        <div class="fc-pill" onclick="switchChild(0)" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:rgba(122,106,200,0.2);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(122,106,200,0.25);display:flex;align-items:center;justify-content:center;font-size:13px;" data-child-avatar>&#128103;</div>
+          <span style="font-size:12px;font-weight:700;color:#2C3E50;" data-child-name>Camille</span>
+          <span style="font-size:9px;color:rgba(44,62,80,0.5);">&#9660;</span>
+        </div>
+        <div class="sc-pill" onclick="switchChild(1)" style="cursor:pointer;display:none;align-items:center;gap:7px;background:rgba(44,62,80,0.07);border-radius:22px;padding:6px 13px 6px 7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;" data-second-child-avatar>&#128102;</div>
+          <span style="font-size:12px;font-weight:600;color:#7F8C8D;" data-second-child-name>—</span>
+        </div>
+        <div class="child-add" onclick="showAddChild()">+</div>
+      </div>
+    </div>
+    <!-- Liste des RDV -->
+    <div id="agenda-list" style="padding:12px 16px 20px;display:flex;flex-direction:column;gap:10px;"></div>
+  </div>
+
+  <!-- MODAL AJOUTER RDV -->
+  <div id="modal-rdv" style="display:none;position:fixed;inset:0;background:rgba(44,62,80,0.5);z-index:999;align-items:flex-end;" onclick="closeAddRDV()">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;box-sizing:border-box;max-height:90vh;overflow-y:auto;">
+      <div style="font-size:16px;font-weight:800;color:#2C3E50;margin-bottom:16px;" id="rdv-modal-title">Nouveau rendez-vous</div>
+      <!-- Type de RDV -->
+      <div style="font-size:12px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Type de rendez-vous</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;" id="rdv-type-btns">
+        <button onclick="setRDVType(this,'Pédiatre','&#128104;&#8205;&#9877;&#65039;')" class="rdvbtn" style="background:#EEF9F5;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">👨‍⚕️ Pédiatre</button>
+        <button onclick="setRDVType(this,'Kiné','&#127939;')" class="rdvbtn" style="background:#EEF9F5;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">🏃 Kiné</button>
+        <button onclick="setRDVType(this,'Ostéo','&#129496;')" class="rdvbtn" style="background:#EEF9F5;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">🤸 Ostéo</button>
+        <button onclick="setRDVType(this,'Dentiste','&#129463;')" class="rdvbtn" style="background:#EEF9F5;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">🦷 Dentiste</button>
+        <button onclick="setRDVType(this,'Ophtalmologiste','&#128065;')" class="rdvbtn" style="background:#EEF9F5;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">👁 Ophtalmo</button>
+        <button onclick="setRDVType(this,'Autre','&#128203;')" class="rdvbtn" style="background:#EEF9F5;border:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">📋 Autre</button>
+      </div>
+      <!-- Date + Heure -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:6px;">Date</div>
+          <input type="date" id="rdv-date-input" style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:10px 12px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;background:#F8F9FA;">
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:6px;">Heure</div>
+          <input type="time" id="rdv-time-input" style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:10px 12px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;background:#F8F9FA;">
+        </div>
+      </div>
+      <!-- Praticien -->
+      <div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:6px;">Praticien (optionnel)</div>
+      <input id="rdv-praticien-input" type="text" placeholder="Ex: Dr. Martin" style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:11px 14px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;margin-bottom:12px;">
+      <!-- Notes -->
+      <div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:6px;">Notes (optionnel)</div>
+      <textarea id="rdv-notes-input" placeholder="Questions à poser, documents à apporter..." style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:11px 14px;font-size:13px;color:#2C3E50;font-family:Montserrat,sans-serif;resize:none;height:80px;outline:none;margin-bottom:16px;"></textarea>
+      <input type="hidden" id="rdv-edit-id" value="">
+      <button onclick="saveRDV()" style="width:100%;background:#7A6AC8;color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>
+    </div>
+  </div>
+
   <!-- MODAL MÉTÉO DÉTAIL -->
   <div id="modal-meteo" style="display:none;position:fixed;inset:0;background:rgba(44,62,80,0.55);z-index:999;align-items:flex-end;" onclick="closeMeteoModal()">
     <div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;box-sizing:border-box;max-height:85vh;overflow-y:auto;">
@@ -3039,6 +3108,7 @@ function goTo(id) {
   setTimeout(function(){ maybeShowRubriqueMsg(id); }, 300);
   if (id === 'menus') { loadMenusScreen(); }
   if (id === 'courses') { loadCoursesScreen(); }
+  if (id === 'agenda') { loadAgendaScreen(); }
 }
 function goBack() {
   hist.pop();
@@ -5791,6 +5861,163 @@ function loadMenusScreen() {
   renderMenusTabs();
   renderMenusDayContent();
 }
+
+// ── AGENDA MÉDICAL ──
+var RDV_TYPES = {
+  'Pédiatre':{'emoji':'👨‍⚕️','color':'#5A9E82','bg':'#EEF9F5'},
+  'Kiné':{'emoji':'🏃','color':'#5A9E82','bg':'#EEF9F5'},
+  'Ostéo':{'emoji':'🤸','color':'#7A6AC8','bg':'#F0EEF8'},
+  'Dentiste':{'emoji':'🦷','color':'#5BA8D4','bg':'#EAF4FF'},
+  'Ophtalmologiste':{'emoji':'👁','color':'#5BA8D4','bg':'#EAF4FF'},
+  'Autre':{'emoji':'📋','color':'#7F8C8D','bg':'#F2F2F7'}
+};
+var newRDVType = { label:'Pédiatre', emoji:'👨‍⚕️' };
+function getAgendaIdx() { return parseInt(localStorage.getItem('activeChildIdx')||'0'); }
+function getAgendaData() {
+  return JSON.parse(localStorage.getItem('agenda-'+getAgendaIdx())||'[]');
+}
+function saveAgendaData(data) {
+  localStorage.setItem('agenda-'+getAgendaIdx(), JSON.stringify(data));
+}
+function setRDVType(btn, label, emoji) {
+  newRDVType = { label:label, emoji:emoji };
+  document.querySelectorAll('.rdvbtn').forEach(function(b){ b.style.background='#EEF9F5'; b.style.color='#5A9E82'; });
+  btn.style.background = '#7A6AC8'; btn.style.color = '#fff';
+}
+function openAddRDV() {
+  newRDVType = { label:'Pédiatre', emoji:'👨‍⚕️' };
+  document.querySelectorAll('.rdvbtn').forEach(function(b){ b.style.background='#EEF9F5'; b.style.color='#5A9E82'; });
+  var first = document.querySelector('.rdvbtn');
+  if (first) { first.style.background='#7A6AC8'; first.style.color='#fff'; }
+  document.getElementById('rdv-date-input').value = '';
+  document.getElementById('rdv-time-input').value = '';
+  document.getElementById('rdv-praticien-input').value = '';
+  document.getElementById('rdv-notes-input').value = '';
+  document.getElementById('rdv-edit-id').value = '';
+  document.getElementById('rdv-modal-title').textContent = 'Nouveau rendez-vous';
+  document.getElementById('modal-rdv').style.display = 'flex';
+}
+function closeAddRDV() {
+  document.getElementById('modal-rdv').style.display = 'none';
+}
+function saveRDV() {
+  var date = document.getElementById('rdv-date-input').value;
+  if (!date) { alert('Choisis une date'); return; }
+  var editId = document.getElementById('rdv-edit-id').value;
+  var rdv = {
+    id: editId ? parseInt(editId) : Date.now(),
+    type: newRDVType.label,
+    emoji: newRDVType.emoji,
+    date: date,
+    time: document.getElementById('rdv-time-input').value,
+    praticien: document.getElementById('rdv-praticien-input').value.trim(),
+    notes: document.getElementById('rdv-notes-input').value.trim(),
+    done: false
+  };
+  var data = getAgendaData();
+  if (editId) {
+    data = data.map(function(r){ return r.id===parseInt(editId) ? rdv : r; });
+  } else {
+    data.push(rdv);
+  }
+  data.sort(function(a,b){ return a.date.localeCompare(b.date) || (a.time||'').localeCompare(b.time||''); });
+  saveAgendaData(data);
+  closeAddRDV();
+  renderAgenda();
+}
+function deleteRDV(id) {
+  var data = getAgendaData().filter(function(r){ return r.id !== id; });
+  saveAgendaData(data);
+  renderAgenda();
+}
+function editRDV(id) {
+  var data = getAgendaData();
+  var rdv = data.find(function(r){ return r.id === id; });
+  if (!rdv) return;
+  newRDVType = { label:rdv.type, emoji:rdv.emoji };
+  document.querySelectorAll('.rdvbtn').forEach(function(b){
+    b.style.background = b.textContent.includes(rdv.type) ? '#7A6AC8' : '#EEF9F5';
+    b.style.color = b.textContent.includes(rdv.type) ? '#fff' : '#5A9E82';
+  });
+  document.getElementById('rdv-date-input').value = rdv.date;
+  document.getElementById('rdv-time-input').value = rdv.time||'';
+  document.getElementById('rdv-praticien-input').value = rdv.praticien||'';
+  document.getElementById('rdv-notes-input').value = rdv.notes||'';
+  document.getElementById('rdv-edit-id').value = String(id);
+  document.getElementById('rdv-modal-title').textContent = 'Modifier le rendez-vous';
+  document.getElementById('modal-rdv').style.display = 'flex';
+}
+function toggleRDVDone(id) {
+  var data = getAgendaData();
+  data = data.map(function(r){ return r.id===id ? Object.assign({},r,{done:!r.done}) : r; });
+  saveAgendaData(data);
+  renderAgenda();
+}
+function formatRDVDate(dateStr, timeStr) {
+  if (!dateStr) return '—';
+  var mo=['jan','fév','mars','avr','mai','juin','juil','août','sept','oct','nov','déc'];
+  var d = new Date(dateStr+'T12:00:00');
+  var today = new Date(); today.setHours(0,0,0,0);
+  var rdvDay = new Date(dateStr+'T00:00:00');
+  var diff = Math.ceil((rdvDay-today)/86400000);
+  var label = d.getDate()+' '+mo[d.getMonth()]+' '+d.getFullYear();
+  if (timeStr) label += ' à '+timeStr;
+  var badge = '';
+  if (diff === 0) badge = ' <span style="background:#FDEAEA;color:#E74C3C;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">Aujourd\'hui</span>';
+  else if (diff === 1) badge = ' <span style="background:#FFF3CD;color:#D4A820;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">Demain</span>';
+  else if (diff > 0 && diff <= 7) badge = ' <span style="background:#EEF9F5;color:#5A9E82;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">Dans '+diff+' j</span>';
+  else if (diff < 0) badge = ' <span style="background:#F2F2F7;color:#B0B0B0;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">Passé</span>';
+  return label + badge;
+}
+function renderAgenda() {
+  var wrap = document.getElementById('agenda-list');
+  if (!wrap) return;
+  var data = getAgendaData();
+  var badge = document.getElementById('mod-badge-agenda');
+  var today = new Date(); today.setHours(0,0,0,0);
+  var upcoming = data.filter(function(r){ return new Date(r.date+'T00:00:00') >= today && !r.done; });
+  if (badge) badge.textContent = upcoming.length + ' RDV';
+  if (!data.length) {
+    wrap.innerHTML = '<div style="text-align:center;padding:30px 0;"><div style="font-size:48px;margin-bottom:12px;">📅</div><div style="font-size:14px;font-weight:700;color:#2C3E50;margin-bottom:6px;">Aucun rendez-vous</div><div style="font-size:12px;color:#7F8C8D;">Appuie sur "+ RDV" pour en ajouter un</div></div>';
+    return;
+  }
+  var now = new Date(); now.setHours(0,0,0,0);
+  var future = data.filter(function(r){ return new Date(r.date+'T00:00:00') >= now; });
+  var past = data.filter(function(r){ return new Date(r.date+'T00:00:00') < now; });
+  var h = '';
+  if (future.length) {
+    h += '<div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">À venir</div>';
+    future.forEach(function(rdv) {
+      var info = RDV_TYPES[rdv.type] || RDV_TYPES['Autre'];
+      h += '<div style="background:#fff;border-radius:18px;padding:15px 16px;box-shadow:0 1px 6px rgba(0,0,0,0.05);">';
+      h += '<div style="display:flex;align-items:flex-start;gap:12px;">';
+      h += '<div style="width:42px;height:42px;border-radius:14px;background:'+info.bg+';display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">'+rdv.emoji+'</div>';
+      h += '<div style="flex:1;">';
+      h += '<div style="font-size:14px;font-weight:800;color:#2C3E50;">'+rdv.type+(rdv.praticien?' — '+rdv.praticien:'')+'</div>';
+      h += '<div style="font-size:12px;color:#7F8C8D;margin-top:3px;">'+formatRDVDate(rdv.date, rdv.time)+'</div>';
+      if (rdv.notes) h += '<div style="font-size:12px;color:#7F8C8D;margin-top:4px;font-style:italic;">'+rdv.notes+'</div>';
+      h += '</div>';
+      h += '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">';
+      h += '<div onclick="editRDV('+rdv.id+')" style="font-size:12px;color:#5A9E82;font-weight:700;cursor:pointer;background:#EEF9F5;padding:5px 10px;border-radius:8px;">Modifier</div>';
+      h += '<div onclick="deleteRDV('+rdv.id+')" style="font-size:12px;color:#E74C3C;font-weight:700;cursor:pointer;">Supprimer</div>';
+      h += '</div></div></div>';
+    });
+  }
+  if (past.length) {
+    h += '<div style="font-size:11px;font-weight:700;color:#B0B0B0;text-transform:uppercase;letter-spacing:1px;margin:12px 0 4px;">Passés</div>';
+    past.slice().reverse().forEach(function(rdv) {
+      h += '<div style="background:#F8F8F8;border-radius:18px;padding:13px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.03);">';
+      h += '<div style="display:flex;align-items:center;gap:12px;">';
+      h += '<div style="font-size:22px;opacity:0.5;">'+rdv.emoji+'</div>';
+      h += '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#A0A0A0;">'+rdv.type+(rdv.praticien?' — '+rdv.praticien:'')+'</div>';
+      h += '<div style="font-size:11px;color:#B0B0B0;margin-top:2px;">'+formatRDVDate(rdv.date, rdv.time)+'</div></div>';
+      h += '<div onclick="deleteRDV('+rdv.id+')" style="font-size:13px;color:#D0D0D0;cursor:pointer;">✕</div>';
+      h += '</div></div>';
+    });
+  }
+  wrap.innerHTML = h;
+}
+function loadAgendaScreen() { renderAgenda(); }
 
 </script>
 </body>
