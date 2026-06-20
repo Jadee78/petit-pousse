@@ -24,11 +24,12 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .status-bar { display:flex; justify-content:space-between; align-items:center; padding:44px 20px 0; height:68px; position:sticky; top:0; z-index:10; background:inherit; }
 .st-time { font-size:15px; font-weight:700; }
 .st-icons { font-size:13px; }
-#tabbar { position:fixed; bottom:0; left:0; right:0; height:calc(60px + env(safe-area-inset-bottom,0px)); background:rgba(255,255,255,0.97); border-top:0.5px solid var(--line); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); display:flex; justify-content:space-around; align-items:flex-start; padding-top:8px; padding-bottom:env(safe-area-inset-bottom,0px); z-index:100; }
-.tab { display:flex; flex-direction:column; align-items:center; gap:3px; flex:1; cursor:pointer; padding:0 4px; }
-.tab-icon { width:28px; height:28px; display:flex; align-items:center; justify-content:center; color:var(--sub); }
-.tab.active .tab-icon { color:var(--green); }
-.tab-icon svg { display:block; }
+#tabbar { position:fixed; bottom:0; left:0; right:0; height:calc(64px + env(safe-area-inset-bottom,0px)); background:rgba(255,255,255,0.97); border-top:0.5px solid var(--line); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); display:flex; justify-content:space-around; align-items:flex-start; padding-top:10px; padding-bottom:env(safe-area-inset-bottom,0px); z-index:100; }
+.tab { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; cursor:pointer; padding:0 4px; }
+.tab-icon { width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; background:transparent; transition:background 0.2s; }
+.tab.active .tab-icon { background:var(--green-bg); }
+.tab-icon svg { display:block; color:var(--sub); }
+.tab.active .tab-icon svg { color:var(--green); }
 .tab-lbl { font-size:10px; font-weight:600; color:var(--sub); }
 .tab.active .tab-lbl { color:var(--green); font-weight:700; }
 .home-header { background:linear-gradient(160deg,#f0f8f4 0%,#e8f5ee 100%); padding:10px 20px 22px; }
@@ -3124,11 +3125,11 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
   <!-- TABBAR -->
   <div id="tabbar">
-    <div class="tab active" id="tab-home" onclick="switchTab('home')"><div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M3 11L12 4l9 7v8a1 1 0 01-1 1H5a1 1 0 01-1-1z"/><path d="M9 21v-6h6v6"/></svg></div><div class="tab-lbl">Accueil</div></div>
-    <div class="tab" id="tab-alim" onclick="switchTab('alim')"><div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M6 13c0 3.5 2.7 6 6 6s6-2.5 6-6H6z"/><line x1="4" y1="13" x2="20" y2="13"/><path d="M10 9.5c0-1.5.5-2.5 1-3.5"/><path d="M14 9.5c0-1.5.5-2.5 1-3.5"/></svg></div><div class="tab-lbl">Alimentation</div></div>
-    <div class="tab" id="tab-sommeil" onclick="switchTab('sommeil')"><div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></div><div class="tab-lbl">Sommeil</div></div>
-    <div class="tab" id="tab-sante" onclick="switchTab('sante')"><div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1A5.5 5.5 0 103.2 12.5l1 1L12 21l7.8-7.5 1-1a5.5 5.5 0 000-7.9z"/></svg></div><div class="tab-lbl">Santé</div></div>
-    <div class="tab" id="tab-profil" onclick="switchTab('profil')"><div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><div class="tab-lbl">Profil</div></div>
+    <div class="tab active" id="tab-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-lbl">Accueil</div></div>
+    <div class="tab" id="tab-alim" onclick="switchTab('alim')"><div class="tab-icon">🥣</div><div class="tab-lbl">Alimentation</div></div>
+    <div class="tab" id="tab-sommeil" onclick="switchTab('sommeil')"><div class="tab-icon">🌙</div><div class="tab-lbl">Sommeil</div></div>
+    <div class="tab" id="tab-sante" onclick="switchTab('sante')"><div class="tab-icon">🩺</div><div class="tab-lbl">Santé</div></div>
+    <div class="tab" id="tab-profil" onclick="switchTab('profil')"><div class="tab-icon">👤</div><div class="tab-lbl">Profil</div></div>
   </div>
 
 </div>
@@ -5528,35 +5529,23 @@ var WMO_DESC = {
   80:'Averses légères',81:'Averses modérées',82:'Averses violentes',
   95:'Orage',96:'Orage avec grêle',99:'Orage violent'
 };
-// Icônes kawaii SVG style aquarelle chaud
-var WMO_SVG = {
-  sunny:'<svg viewBox="0 0 90 90" width="70" height="70" xmlns="http://www.w3.org/2000/svg"><g stroke="#E8A020" stroke-width="4" stroke-linecap="round"><line x1="45" y1="6" x2="45" y2="18"/><line x1="45" y1="72" x2="45" y2="84"/><line x1="6" y1="45" x2="18" y2="45"/><line x1="72" y1="45" x2="84" y2="45"/><line x1="18" y1="18" x2="26" y2="26"/><line x1="64" y1="64" x2="72" y2="72"/><line x1="72" y1="18" x2="64" y2="26"/><line x1="18" y1="72" x2="26" y2="64"/></g><circle cx="45" cy="45" r="22" fill="#F5C842" stroke="#E8A020" stroke-width="2"/><circle cx="45" cy="45" r="20" fill="#FBDA60" opacity="0.5"/><circle cx="37" cy="42" r="3" fill="#7A4A10"/><circle cx="53" cy="42" r="3" fill="#7A4A10"/><circle cx="36" cy="40" r="1" fill="#fff" opacity="0.6"/><circle cx="52" cy="40" r="1" fill="#fff" opacity="0.6"/><path d="M37 52 Q45 59 53 52" stroke="#7A4A10" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="31" cy="50" rx="5" ry="3" fill="#F4A0A0" opacity="0.5"/><ellipse cx="59" cy="50" rx="5" ry="3" fill="#F4A0A0" opacity="0.5"/></svg>',
-  cloudy:'<svg viewBox="0 0 90 70" width="72" height="56" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="34" r="18" fill="#F0EDE8"/><circle cx="52" cy="28" r="20" fill="#F0EDE8"/><ellipse cx="44" cy="48" rx="30" ry="17" fill="#EDE8E0" stroke="#D8D0C4" stroke-width="1.5"/><path d="M14 48 Q44 65 74 48" fill="#EDE8E0"/><circle cx="36" cy="45" r="3" fill="#A09080"/><circle cx="52" cy="45" r="3" fill="#A09080"/><circle cx="35" cy="43" r="1.2" fill="#fff" opacity="0.6"/><circle cx="51" cy="43" r="1.2" fill="#fff" opacity="0.6"/><path d="M34 53 Q44 57 54 53" stroke="#A09080" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>',
-  rain:'<svg viewBox="0 0 90 80" width="72" height="64" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="17" fill="#D8D4CC"/><circle cx="52" cy="24" r="19" fill="#D8D4CC"/><ellipse cx="44" cy="44" rx="29" ry="16" fill="#D0CBC0" stroke="#C0B8A8" stroke-width="1.5"/><path d="M15 44 Q44 60 73 44" fill="#D0CBC0"/><circle cx="36" cy="41" r="2.8" fill="#888070"/><circle cx="52" cy="41" r="2.8" fill="#888070"/><path d="M36 48 Q44 44 52 48" stroke="#888070" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="38" rx="5" ry="3" fill="#E8A0A0" opacity="0.35"/><ellipse cx="58" cy="38" rx="5" ry="3" fill="#E8A0A0" opacity="0.35"/><ellipse cx="28" cy="64" rx="3" ry="5" fill="#A09080" opacity="0.7"/><ellipse cx="44" cy="68" rx="3" ry="5" fill="#A09080" opacity="0.7"/><ellipse cx="60" cy="64" rx="3" ry="5" fill="#A09080" opacity="0.7"/></svg>',
-  storm:'<svg viewBox="0 0 90 90" width="70" height="70" xmlns="http://www.w3.org/2000/svg"><circle cx="28" cy="28" r="16" fill="#C4BEB4"/><circle cx="50" cy="22" r="18" fill="#C4BEB4"/><ellipse cx="42" cy="40" rx="28" ry="15" fill="#BCB6AA" stroke="#A8A098" stroke-width="1.5"/><path d="M14 40 Q42 55 70 40" fill="#BCB6AA"/><circle cx="34" cy="37" r="2.5" fill="#706860"/><circle cx="50" cy="37" r="2.5" fill="#706860"/><path d="M34 43 Q42 39 50 43" stroke="#706860" stroke-width="1.8" fill="none" stroke-linecap="round"/><polygon points="48,48 38,68 50,63 41,84 62,58 49,63" fill="#F5CC30" stroke="#D4A010" stroke-width="1.5" stroke-linejoin="round"/></svg>',
-  snow:'<svg viewBox="0 0 90 80" width="72" height="64" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="17" fill="#EAE8E4"/><circle cx="52" cy="24" r="19" fill="#EAE8E4"/><ellipse cx="44" cy="44" rx="29" ry="16" fill="#E4E0D8" stroke="#CCC8C0" stroke-width="1.5"/><path d="M15 44 Q44 60 73 44" fill="#E4E0D8"/><circle cx="36" cy="41" r="2.8" fill="#908880"/><circle cx="52" cy="41" r="2.8" fill="#908880"/><path d="M36 49 Q44 54 52 49" stroke="#908880" stroke-width="2" fill="none" stroke-linecap="round"/><g stroke="#B8B0A0" stroke-width="2.2" stroke-linecap="round"><line x1="26" y1="58" x2="26" y2="70"/><line x1="20" y1="64" x2="32" y2="64"/><line x1="44" y1="62" x2="44" y2="74"/><line x1="38" y1="68" x2="50" y2="68"/><line x1="62" y1="58" x2="62" y2="70"/><line x1="56" y1="64" x2="68" y2="64"/></g></svg>',
-  rainbow:'<svg viewBox="0 0 90 60" width="76" height="51" xmlns="http://www.w3.org/2000/svg"><path d="M6 56 Q45 4 84 56" fill="none" stroke="#C8705A" stroke-width="6" stroke-linecap="round"/><path d="M13 56 Q45 13 77 56" fill="none" stroke="#D4945A" stroke-width="6" stroke-linecap="round"/><path d="M20 56 Q45 22 70 56" fill="none" stroke="#C4B870" stroke-width="6" stroke-linecap="round"/><path d="M27 56 Q45 31 63 56" fill="none" stroke="#8AAE80" stroke-width="6" stroke-linecap="round"/><path d="M34 56 Q45 40 56 56" fill="none" stroke="#7AAAC4" stroke-width="6" stroke-linecap="round"/><ellipse cx="10" cy="55" rx="9" ry="6" fill="#F0EDE8" stroke="#D8D0C4" stroke-width="1.2"/><ellipse cx="80" cy="55" rx="9" ry="6" fill="#F0EDE8" stroke="#D8D0C4" stroke-width="1.2"/></svg>',
-  fog:'<svg viewBox="0 0 90 60" width="76" height="51" xmlns="http://www.w3.org/2000/svg"><line x1="10" y1="12" x2="80" y2="12" stroke="#C8C0B4" stroke-width="5" stroke-linecap="round"/><line x1="18" y1="26" x2="72" y2="26" stroke="#D0C8BC" stroke-width="5" stroke-linecap="round"/><line x1="10" y1="40" x2="80" y2="40" stroke="#C8C0B4" stroke-width="5" stroke-linecap="round"/><line x1="20" y1="54" x2="70" y2="54" stroke="#D0C8BC" stroke-width="5" stroke-linecap="round"/></svg>'
-};
-function getMeteoSVG(code) {
-  if (code === 0) return WMO_SVG.sunny;
-  if (code <= 2) return WMO_SVG.cloudy;
-  if (code === 3) return WMO_SVG.cloudy;
-  if (code <= 48) return WMO_SVG.fog;
-  if (code <= 67) return WMO_SVG.rain;
-  if (code <= 77) return WMO_SVG.snow;
-  if (code <= 82) return WMO_SVG.rain;
-  if (code >= 95) return WMO_SVG.storm;
-  return WMO_SVG.cloudy;
+// Icônes météo : emoji dans carrés arrondis colorés
+function makeMeteoIcon(emoji, bg, size) {
+  var s = size || 44;
+  return '<div style="width:'+s+'px;height:'+s+'px;background:'+bg+';border-radius:'+(s*0.28)+'px;display:flex;align-items:center;justify-content:center;font-size:'+(s*0.52)+'px;flex-shrink:0;">'+emoji+'</div>';
 }
-function getMeteoGradient(code) {
-  if (code === 0) return 'linear-gradient(135deg,#FFF8E0,#FFE8A0)';
-  if (code <= 2) return 'linear-gradient(135deg,#EAF4FF,#D0E8FF)';
-  if (code === 3) return 'linear-gradient(135deg,#E8E8F0,#D8D8E8)';
-  if (code <= 48) return 'linear-gradient(135deg,#E8E8E8,#D8D8D8)';
-  if (code <= 67 || (code>=80&&code<=82)) return 'linear-gradient(135deg,#EAF0FF,#D0D8F0)';
-  if (code <= 77) return 'linear-gradient(135deg,#EEF4FF,#DDE8FF)';
-  return 'linear-gradient(135deg,#EEE8F4,#DDD0E8)';
+var WMO_SVG = {
+  sunny:   function(s){ return makeMeteoIcon('☀️','#FFF3CC',s); },
+  cloudy:  function(s){ return makeMeteoIcon('⛅','#EEF2F8',s); },
+  rain:    function(s){ return makeMeteoIcon('🌧️','#E4ECF8',s); },
+  storm:   function(s){ return makeMeteoIcon('⛈️','#DDE4F0',s); },
+  snow:    function(s){ return makeMeteoIcon('🌨️','#EAF2FA',s); },
+  rainbow: function(s){ return makeMeteoIcon('🌈','#FFF0EA',s); },
+  fog:     function(s){ return makeMeteoIcon('🌫️','#ECEAE6',s); }
+};
+function getMeteoSVG(code, size) {
+  var k = code===0?'sunny':code<=2?'sunny':code===3?'cloudy':code<=48?'fog':code<=67?'rain':code<=77?'snow':code<=82?'rain':code>=95?'storm':'cloudy';
+  return WMO_SVG[k](size);
 }
 var meteoData = null;
 function refreshMeteo() {
@@ -5590,8 +5579,7 @@ function renderMeteoWidget(data) {
     document.getElementById('meteo-ressenti').textContent = '—';
     return;
   }
-  el.style.background = getMeteoGradient(data.code);
-  document.getElementById('meteo-icon').innerHTML = getMeteoSVG(data.code);
+  document.getElementById('meteo-icon').innerHTML = getMeteoSVG(data.code, 44);
   document.getElementById('meteo-ville').textContent = data.ville.toUpperCase();
   document.getElementById('meteo-temp').textContent = data.temp + '°C';
   document.getElementById('meteo-desc').textContent = WMO_DESC[data.code] || 'Temps variable';
@@ -5602,7 +5590,7 @@ function openMeteoModal() {
   var modal = document.getElementById('modal-meteo');
   if (!modal) return;
   modal.style.display = 'flex';
-  document.getElementById('modal-meteo-icon').innerHTML = getMeteoSVG(meteoData.code);
+  document.getElementById('modal-meteo-icon').innerHTML = getMeteoSVG(meteoData.code, 58);
   document.getElementById('modal-meteo-temp').textContent = meteoData.temp + '°C — Ressenti ' + meteoData.ressenti + '°C';
   document.getElementById('modal-meteo-desc').textContent = WMO_DESC[meteoData.code] || '—';
   document.getElementById('modal-meteo-ville').textContent = meteoData.ville;
