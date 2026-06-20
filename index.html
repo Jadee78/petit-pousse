@@ -1899,7 +1899,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">&#129504;</div>
         <div>
           <div style="font-size:14px;font-weight:800;color:#fff;" data-child-tpl="À [age], [name] explore !">À 8 mois, Camille explore !</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:3px;line-height:1.45;">Elle comprend la permanence des objets, imite les sons et adore attraper ce qu'elle voit.</div>
+          <div id="eveil-header-desc" style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:3px;line-height:1.45;">Elle comprend la permanence des objets, imite les sons et adore attraper ce qu'elle voit.</div>
         </div>
       </div>
     </div>
@@ -1999,29 +1999,8 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
 
     <!-- Stades de développement -->
-    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t" data-child-tpl="✨ Ce que [name] sait faire">&#127775; Ce que Camille sait faire</span></div>
-    <div style="padding:0 16px;display:flex;flex-direction:column;gap:7px;">
-      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:28px;height:28px;border-radius:50%;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5A9E82;flex-shrink:0;">&#10003;</div>
-        <span style="font-size:13px;color:#2C3E50;font-weight:600;">Se tient assise sans appui</span>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:28px;height:28px;border-radius:50%;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5A9E82;flex-shrink:0;">&#10003;</div>
-        <span style="font-size:13px;color:#2C3E50;font-weight:600;">Tend les bras pour attraper</span>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:28px;height:28px;border-radius:50%;background:#EEF9F5;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5A9E82;flex-shrink:0;">&#10003;</div>
-        <span style="font-size:13px;color:#2C3E50;font-weight:600;">Fait "ba-ba", "da-da"</span>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:28px;height:28px;border-radius:50%;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">&#8987;</div>
-        <div style="flex:1;"><span style="font-size:13px;color:#2C3E50;font-weight:600;">Se met à 4 pattes</span><div style="font-size:11px;color:#A07820;margin-top:1px;">En cours — bientôt !</div></div>
-      </div>
-      <div style="background:#fff;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="width:28px;height:28px;border-radius:50%;background:#F2F2F7;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;color:#C0C0C0;">&#9711;</div>
-        <div style="flex:1;"><span style="font-size:13px;color:#7F8C8D;font-weight:600;">Se lève en s'aidant des meubles</span><div style="font-size:11px;color:#B0B0B0;margin-top:1px;">Étape suivante ~10 mois</div></div>
-      </div>
-    </div>
+    <div class="sec-hd" style="margin-top:8px;"><span class="sec-t" data-child-tpl="&#10024; Ce que [name] sait faire">&#10024; Ce que Camille sait faire</span></div>
+    <div style="padding:0 16px;display:flex;flex-direction:column;gap:7px;" id="eveil-acquis-section"></div>
 
     <!-- Comptines -->
     <div class="sec-hd" style="margin-top:8px;"><span class="sec-t">&#127925; Comptines du moment</span></div>
@@ -4366,6 +4345,112 @@ function obCalcAge(dob) {
 function triggerPhotoUpload() {
   document.getElementById('photo-upload-input').click();
 }
+
+// ── Éveil — acquis cochables ──────────────────────────────────────────────
+var EVEIL_ACQUIS = [
+  {id:'a01',label:'Suit des yeux un objet qui bouge',age:2,cat:'Vision',bg:'#E0F0FF',col:'#4078B8'},
+  {id:'a02',label:'Premier sourire social',age:2,cat:'Social',bg:'#FFF0F5',col:'#C05878'},
+  {id:'a03',label:'Soulève la tête en tummy time',age:2,cat:'Motricité',bg:'#E8F5EE',col:'#5A9E82'},
+  {id:'a04',label:'Rit aux éclats',age:4,cat:'Social',bg:'#FFF0F5',col:'#C05878'},
+  {id:'a05',label:'Tient sa tête droite',age:4,cat:'Motricité',bg:'#E8F5EE',col:'#5A9E82'},
+  {id:'a06',label:'Gazouille, roucoule',age:4,cat:'Langage',bg:'#F2EFF9',col:'#8A68C8'},
+  {id:'a07',label:'Se retourne (ventre → dos)',age:6,cat:'Motricité',bg:'#E8F5EE',col:'#5A9E82'},
+  {id:'a08',label:'Attrape les objets',age:6,cat:'Motricité fine',bg:'#FEF0E4',col:'#D4884A'},
+  {id:'a09',label:'Reconnaît son prénom',age:6,cat:'Langage',bg:'#F2EFF9',col:'#8A68C8'},
+  {id:'a10',label:'Se tient assis(e) sans appui',age:9,cat:'Motricité',bg:'#E8F5EE',col:'#5A9E82'},
+  {id:'a11',label:'Fait "ba-ba", "da-da"',age:9,cat:'Langage',bg:'#F2EFF9',col:'#8A68C8'},
+  {id:'a12',label:'Comprend la permanence des objets',age:9,cat:'Éveil',bg:'#FFF3CD',col:'#A07820'},
+  {id:'a13',label:'Se met à 4 pattes',age:10,cat:'Motricité',bg:'#E8F5EE',col:'#5A9E82'},
+  {id:'a14',label:'Se lève en s\'aidant des meubles',age:11,cat:'Motricité',bg:'#E8F5EE',col:'#5A9E82'},
+  {id:'a15',label:'Fait "au revoir" de la main',age:12,cat:'Social',bg:'#FFF0F5',col:'#C05878'},
+  {id:'a16',label:'Comprend "non"',age:12,cat:'Langage',bg:'#F2EFF9',col:'#8A68C8'},
+  {id:'a17',label:'Premiers pas',age:13,cat:'Motricité',bg:'#E8F5EE',col:'#5A9E82'},
+  {id:'a18',label:'Dit "maman" ou "papa" avec sens',age:15,cat:'Langage',bg:'#F2EFF9',col:'#8A68C8'},
+  {id:'a19',label:'Marche seul(e)',age:15,cat:'Motricité',bg:'#E8F5EE',col:'#5A9E82'},
+  {id:'a20',label:'Montre du doigt ce qu\'il/elle veut',age:15,cat:'Social',bg:'#FFF0F5',col:'#C05878'},
+  {id:'a21',label:'Empile 2 à 3 cubes',age:18,cat:'Motricité fine',bg:'#FEF0E4',col:'#D4884A'},
+  {id:'a22',label:'Court',age:21,cat:'Motricité',bg:'#E8F5EE',col:'#5A9E82'},
+  {id:'a23',label:'Dit 10 à 20 mots',age:21,cat:'Langage',bg:'#F2EFF9',col:'#8A68C8'},
+  {id:'a24',label:'Fait semblant (jeu symbolique)',age:24,cat:'Éveil',bg:'#FFF3CD',col:'#A07820'},
+  {id:'a25',label:'Combine 2 mots',age:24,cat:'Langage',bg:'#F2EFF9',col:'#8A68C8'}
+];
+var EVEIL_DESC = [
+  {max:1, txt:'Bébé découvre les sons, les lumières et ton visage. Tu es son monde entier !'},
+  {max:3, txt:'Il/elle commence à te sourire et à suivre les objets des yeux. Chaque regard est une connexion.'},
+  {max:5, txt:'Les premiers rires arrivent ! Il/elle attrape les objets et adore entendre ta voix.'},
+  {max:7, txt:'Il/elle se retourne, attrape tout ce qui passe et commence à te "parler" avec des sons.'},
+  {max:9, txt:'Il/elle comprend la permanence des objets, imite les sons et adore attraper ce qu\'elle voit.'},
+  {max:11, txt:'Il/elle se lève, explore tout et commence à comprendre des mots simples.'},
+  {max:13, txt:'Les premiers pas se préparent ! Il/elle comprend beaucoup plus qu\'il/elle ne le montre.'},
+  {max:17, txt:'Il/elle marche, pointe du doigt, dit ses premiers mots. La communication explose !'},
+  {max:21, txt:'Il/elle court, empile, imite. Son vocabulaire grandit à toute vitesse !'},
+  {max:99, txt:'Il/elle combine des mots, joue à faire semblant et comprend de longues phrases.'}
+];
+function getEveilChecked(idx) {
+  return JSON.parse(localStorage.getItem('eveilChecked_'+idx)||'[]');
+}
+function toggleEveilAcquis(id) {
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var checked = getEveilChecked(idx);
+  var pos = checked.indexOf(id);
+  if(pos>=0) checked.splice(pos,1); else checked.push(id);
+  localStorage.setItem('eveilChecked_'+idx, JSON.stringify(checked));
+  renderEveilAcquis();
+}
+function renderEveilAcquis(profile) {
+  var el = document.getElementById('eveil-acquis-section');
+  if(!el) return;
+  if(!profile) {
+    var profiles = JSON.parse(localStorage.getItem('childProfiles')||'[]');
+    var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+    profile = profiles[idx];
+  }
+  if(!profile) { el.innerHTML=''; return; }
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var months = profile.dob ? obCalcMonths(profile.dob) : 0;
+  var checked = getEveilChecked(idx);
+  // Header desc
+  var descEl = document.getElementById('eveil-header-desc');
+  if(descEl) {
+    var sex = profile.sexe==='garcon'?'Il':'Elle';
+    for(var d=0;d<EVEIL_DESC.length;d++){
+      if(months<=EVEIL_DESC[d].max){ descEl.textContent=EVEIL_DESC[d].txt.replace(/Il\/elle/g,sex); break; }
+    }
+  }
+  // Milestones visibles : jusqu'à âge actuel + 3 mois
+  var visible = EVEIL_ACQUIS.filter(function(m){ return m.age <= months + 3; });
+  if(visible.length===0){
+    el.innerHTML='<div style="padding:16px 0;text-align:center;color:#7F8C8D;font-size:13px;">Les premiers acquis arrivent bientôt !</div>';
+    return;
+  }
+  var totalChecked = visible.filter(function(m){ return checked.indexOf(m.id)>=0; }).length;
+  var pct = Math.round(totalChecked/visible.length*100);
+  var html = '<div style="background:#fff;border-radius:16px;padding:13px 15px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">';
+  html += '<span style="font-size:13px;font-weight:700;color:#2C3E50;">Acquis validés</span>';
+  html += '<span style="font-size:13px;font-weight:700;color:#5A9E82;">'+totalChecked+' / '+visible.length+'</span>';
+  html += '</div>';
+  html += '<div style="height:7px;background:#F0F0F0;border-radius:4px;overflow:hidden;">';
+  html += '<div style="height:100%;background:linear-gradient(90deg,#A8DFCA,#5A9E82);border-radius:4px;width:'+pct+'%;transition:width .4s;"></div>';
+  html += '</div></div>';
+  visible.forEach(function(m){
+    var done = checked.indexOf(m.id)>=0;
+    var upcoming = !done && m.age > months;
+    var bg = done ? '#EEF9F5' : '#fff';
+    var border = done ? '1.5px solid #A8DFCA' : upcoming ? '1.5px solid #F0F0F0' : '1.5px dashed #D0D0D0';
+    var iconBg = done ? '#5A9E82' : upcoming ? '#F0F0F0' : m.bg;
+    var iconCol = done ? '#fff' : upcoming ? '#C0C0C0' : m.col;
+    var textCol = done ? '#2C3E50' : upcoming ? '#AAAAAA' : '#2C3E50';
+    var sub = done ? m.cat+' · ✓ Validé' : upcoming ? 'vers '+m.age+' mois' : m.cat+' · à cocher quand acquis';
+    var subCol = done ? '#5A9E82' : upcoming ? '#BBBBBB' : m.col;
+    html += '<div onclick="toggleEveilAcquis(\''+m.id+'\')" style="background:'+bg+';border:'+border+';border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;cursor:pointer;">';
+    html += '<div style="width:28px;height:28px;border-radius:50%;background:'+iconBg+';display:flex;align-items:center;justify-content:center;font-size:14px;color:'+iconCol+';font-weight:800;flex-shrink:0;">'+(done?'✓':'○')+'</div>';
+    html += '<div style="flex:1;"><div style="font-size:13px;color:'+textCol+';font-weight:600;'+(done?'text-decoration:line-through;opacity:.65;':'')+'">'+m.label+'</div>';
+    html += '<div style="font-size:11px;color:'+subCol+';margin-top:1px;font-weight:600;">'+sub+'</div></div>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
 function obTriggerPhoto() {
   var inp = document.getElementById('photo-upload-input');
   inp.onchange = function(e) { handleObPhoto(e.target); inp.onchange = function(e2){ handlePhotoUpload(e2.target); }; };
@@ -4531,6 +4616,8 @@ function applyChildProfile(profile) {
   renderContacts();
   // Menu du jour
   renderMenuToday();
+  // Éveil
+  renderEveilAcquis(profile);
   // Cloche
   updateBellDot();
 }
