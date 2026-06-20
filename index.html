@@ -3111,6 +3111,19 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
   </div>
 
+  <!-- MODAL acquis personnalisé -->
+  <div id="modal-eveil-custom" style="display:none;position:fixed;inset:0;z-index:500;align-items:flex-end;justify-content:center;background:rgba(44,62,80,0.5);" onclick="hideAddEveilCustom()">
+    <div onclick="event.stopPropagation()" style="background:#F7F5EF;border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:440px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div style="font-size:17px;font-weight:800;color:#2C3E50;">Ajouter un acquis</div>
+        <div onclick="hideAddEveilCustom()" style="width:32px;height:32px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#7F8C8D;">&#215;</div>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:#8A68C8;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Qu'a-t-il/elle appris ?</div>
+      <input id="eveil-custom-input" type="text" placeholder="Ex : dit son prénom, mange à la cuillère..." style="width:100%;border:1.5px solid #E0D8F0;border-radius:14px;padding:13px 15px;font-size:14px;color:#2C3E50;font-family:Montserrat,sans-serif;background:#fff;outline:none;box-sizing:border-box;" />
+      <button onclick="submitEveilCustom()" style="width:100%;margin-top:14px;background:#9878D8;color:#fff;border:none;border-radius:16px;padding:15px;font-size:15px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Ajouter ✓</button>
+    </div>
+  </div>
+
   <!-- TABBAR -->
   <div id="tabbar">
     <div class="tab active" id="tab-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-lbl">Accueil</div></div>
@@ -4397,6 +4410,42 @@ function toggleEveilAcquis(id) {
   localStorage.setItem('eveilChecked_'+idx, JSON.stringify(checked));
   renderEveilAcquis();
 }
+function getEveilCustom(idx) {
+  return JSON.parse(localStorage.getItem('eveilCustom_'+idx)||'[]');
+}
+function showAddEveilCustom() {
+  var m = document.getElementById('modal-eveil-custom');
+  m.style.display='flex';
+  setTimeout(function(){ document.getElementById('eveil-custom-input').focus(); },200);
+}
+function hideAddEveilCustom() {
+  document.getElementById('modal-eveil-custom').style.display='none';
+  document.getElementById('eveil-custom-input').value='';
+}
+function submitEveilCustom() {
+  var label = document.getElementById('eveil-custom-input').value.trim();
+  if(!label) return;
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var customs = getEveilCustom(idx);
+  var id = 'c'+Date.now();
+  customs.push({id:id, label:label, checked:true});
+  localStorage.setItem('eveilCustom_'+idx, JSON.stringify(customs));
+  hideAddEveilCustom();
+  renderEveilAcquis();
+}
+function toggleEveilCustom(id) {
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var customs = getEveilCustom(idx);
+  customs.forEach(function(c){ if(c.id===id) c.checked=!c.checked; });
+  localStorage.setItem('eveilCustom_'+idx, JSON.stringify(customs));
+  renderEveilAcquis();
+}
+function deleteEveilCustom(id) {
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var customs = getEveilCustom(idx).filter(function(c){ return c.id!==id; });
+  localStorage.setItem('eveilCustom_'+idx, JSON.stringify(customs));
+  renderEveilAcquis();
+}
 function renderEveilAcquis(profile) {
   var el = document.getElementById('eveil-acquis-section');
   if(!el) return;
@@ -4423,16 +4472,19 @@ function renderEveilAcquis(profile) {
     el.innerHTML='<div style="padding:16px 0;text-align:center;color:#7F8C8D;font-size:13px;">Les premiers acquis arrivent bientôt !</div>';
     return;
   }
-  var totalChecked = visible.filter(function(m){ return checked.indexOf(m.id)>=0; }).length;
-  var pct = Math.round(totalChecked/visible.length*100);
+  var customs = getEveilCustom(idx);
+  var totalChecked = visible.filter(function(m){ return checked.indexOf(m.id)>=0; }).length + customs.filter(function(c){ return c.checked; }).length;
+  var totalAll = visible.length + customs.length;
+  var pct = totalAll>0 ? Math.round(totalChecked/totalAll*100) : 0;
   var html = '<div style="background:#fff;border-radius:16px;padding:13px 15px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">';
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">';
   html += '<span style="font-size:13px;font-weight:700;color:#2C3E50;">Acquis validés</span>';
-  html += '<span style="font-size:13px;font-weight:700;color:#5A9E82;">'+totalChecked+' / '+visible.length+'</span>';
+  html += '<span style="font-size:13px;font-weight:700;color:#5A9E82;">'+totalChecked+' / '+totalAll+'</span>';
   html += '</div>';
   html += '<div style="height:7px;background:#F0F0F0;border-radius:4px;overflow:hidden;">';
   html += '<div style="height:100%;background:linear-gradient(90deg,#A8DFCA,#5A9E82);border-radius:4px;width:'+pct+'%;transition:width .4s;"></div>';
   html += '</div></div>';
+  // Acquis prédéfinis
   visible.forEach(function(m){
     var done = checked.indexOf(m.id)>=0;
     var upcoming = !done && m.age > months;
@@ -4449,6 +4501,26 @@ function renderEveilAcquis(profile) {
     html += '<div style="font-size:11px;color:'+subCol+';margin-top:1px;font-weight:600;">'+sub+'</div></div>';
     html += '</div>';
   });
+  // Acquis personnalisés
+  customs.forEach(function(c){
+    var bg = c.checked ? '#F4F0FC' : '#fff';
+    var border = c.checked ? '1.5px solid #C8B8EE' : '1.5px dashed #D0D0D0';
+    var iconBg = c.checked ? '#9878D8' : '#F0EBF8';
+    var iconCol = c.checked ? '#fff' : '#9878D8';
+    var textCol = c.checked ? '#2C3E50' : '#555';
+    html += '<div style="background:'+bg+';border:'+border+';border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;">';
+    html += '<div onclick="toggleEveilCustom(\''+c.id+'\')" style="width:28px;height:28px;border-radius:50%;background:'+iconBg+';display:flex;align-items:center;justify-content:center;font-size:14px;color:'+iconCol+';font-weight:800;flex-shrink:0;cursor:pointer;">'+(c.checked?'✓':'○')+'</div>';
+    html += '<div style="flex:1;cursor:pointer;" onclick="toggleEveilCustom(\''+c.id+'\')">';
+    html += '<div style="font-size:13px;color:'+textCol+';font-weight:600;'+(c.checked?'text-decoration:line-through;opacity:.65;':'')+'">'+c.label+'</div>';
+    html += '<div style="font-size:11px;color:#9878D8;margin-top:1px;font-weight:600;">Personnel'+(c.checked?' · ✓ Validé':'')+'</div></div>';
+    html += '<div onclick="deleteEveilCustom(\''+c.id+'\')" style="width:26px;height:26px;border-radius:50%;background:rgba(44,62,80,0.07);display:flex;align-items:center;justify-content:center;font-size:14px;color:#B0B0B0;cursor:pointer;flex-shrink:0;">&#215;</div>';
+    html += '</div>';
+  });
+  // Bouton +
+  html += '<div onclick="showAddEveilCustom()" style="background:#F4F0FC;border:1.5px dashed #C8B8EE;border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:11px;cursor:pointer;">';
+  html += '<div style="width:28px;height:28px;border-radius:50%;background:#9878D8;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:800;flex-shrink:0;">+</div>';
+  html += '<span style="font-size:13px;color:#9878D8;font-weight:700;">Ajouter un acquis personnel</span>';
+  html += '</div>';
   el.innerHTML = html;
 }
 function obTriggerPhoto() {
