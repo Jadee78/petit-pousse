@@ -595,7 +595,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div class="child-add" onclick="showAddChild()">+</div>
       </div>
       <div class="bebe-pill" onclick="goTo('profil-enfant')" style="cursor:pointer;">
-        <div class="bebe-av">&#128118;</div>
+        <div class="bebe-av" id="bebe-av-home" onclick="event.stopPropagation();triggerPhotoUpload()" style="cursor:pointer;position:relative;overflow:hidden;" title="Changer la photo"></div>
         <div>
           <div class="bebe-name" data-child-name>Camille</div>
           <div class="bebe-age" data-child-age>8 mois</div>
@@ -2316,7 +2316,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <!-- Hero -->
     <div style="margin:0 16px 0;background:linear-gradient(135deg,#5A9E82,#3A7E62);border-radius:20px;padding:20px;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden;">
       <div style="position:absolute;right:-20px;top:-20px;width:100px;height:100px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>
-      <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0;">&#128103;</div>
+      <div id="profil-enfant-avatar" onclick="triggerPhotoUpload()" style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0;cursor:pointer;position:relative;overflow:hidden;" title="Changer la photo"></div>
       <div>
         <div style="font-size:22px;font-weight:800;color:#fff;" data-child-name>Camille</div>
         <div style="font-size:13px;color:rgba(255,255,255,0.8);margin-top:2px;" data-child-age>8 mois</div>
@@ -3133,6 +3133,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
   </div>
 
 </div>
+<input type="file" id="photo-upload-input" accept="image/*" style="display:none;" onchange="handlePhotoUpload(this)">
 <script>
 // ── SUPABASE ──
 const SUPA_URL = "https://vyehwoenfpujidplawfk.supabase.co";
@@ -4329,6 +4330,45 @@ function obCalcAge(dob) {
   var y=Math.floor(m/12),r=m%12;
   return y+" an"+(y>1?"s":"")+(r?" et "+r+" mois":"");
 }
+function triggerPhotoUpload() {
+  document.getElementById('photo-upload-input').click();
+}
+function handlePhotoUpload(input) {
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var size = 200;
+      canvas.width = size; canvas.height = size;
+      var ctx = canvas.getContext('2d');
+      var min = Math.min(img.width, img.height);
+      var sx = (img.width - min) / 2, sy = (img.height - min) / 2;
+      ctx.drawImage(img, sx, sy, min, min, 0, 0, size, size);
+      var dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+      var profiles = JSON.parse(localStorage.getItem('childProfiles')||'[]');
+      var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+      if (profiles[idx]) {
+        profiles[idx].photo = dataUrl;
+        localStorage.setItem('childProfiles', JSON.stringify(profiles));
+        applyChildProfile(profiles[idx]);
+      }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  input.value = '';
+}
+function getAvatarHTML(profile, size, fontSize) {
+  size = size || 50; fontSize = fontSize || 24;
+  if (profile && profile.photo) {
+    return '<img src="'+profile.photo+'" style="width:'+size+'px;height:'+size+'px;border-radius:50%;object-fit:cover;display:block;">';
+  }
+  var emoji = (profile && profile.sexe === 'garcon') ? '👦' : '👧';
+  return '<span style="font-size:'+fontSize+'px;">'+emoji+'</span>';
+}
 function applyChildProfile(profile) {
   if(!profile) return;
   var name = profile.displayName||profile.prenom||"bébé";
@@ -4340,7 +4380,25 @@ function applyChildProfile(profile) {
   // Éléments simples
   document.querySelectorAll("[data-child-name]").forEach(function(el){el.textContent=name;});
   document.querySelectorAll("[data-child-age]").forEach(function(el){el.textContent=age;});
-  document.querySelectorAll("[data-child-avatar]").forEach(function(el){el.textContent=avatar;});
+  document.querySelectorAll("[data-child-avatar]").forEach(function(el){
+    if (profile.photo) {
+      el.innerHTML = '<img src="'+profile.photo+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;">';
+    } else {
+      el.textContent = avatar;
+    }
+  });
+
+  // Avatar home (bebe-av)
+  var homeAv = document.getElementById('bebe-av-home');
+  if (homeAv) homeAv.innerHTML = profile.photo
+    ? '<img src="'+profile.photo+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;">'
+    : '<span style="font-size:24px;">'+avatar+'</span>';
+
+  // Avatar profil enfant (grand)
+  var peAv = document.getElementById('profil-enfant-avatar');
+  if (peAv) peAv.innerHTML = profile.photo
+    ? '<img src="'+profile.photo+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;">'
+    : '<span style="font-size:34px;">'+avatar+'</span>';
 
   // Éléments avec template [name] / [age]
   document.querySelectorAll("[data-child-tpl]").forEach(function(el){
