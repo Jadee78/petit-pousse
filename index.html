@@ -515,6 +515,15 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div id="ob-summary" style="background:#fff;border-radius:20px;padding:18px 20px;margin-top:20px;width:100%;box-shadow:0 2px 12px rgba(0,0,0,0.06);"></div>
       </div>
 
+      <!-- Étape 15 : Photo -->
+      <div id="ob-s15" class="ob-content" style="display:none;">
+        <div class="ob-illus">&#128247;</div>
+        <div class="ob-title" id="ob-photo-title">Une photo de b&#233;b&#233;&nbsp;?</div>
+        <div class="ob-sub">Optionnel &#8212; tu pourras en ajouter ou changer depuis son profil.</div>
+        <div id="ob-photo-preview" onclick="obTriggerPhoto()" style="width:120px;height:120px;border-radius:50%;background:var(--green-lt);display:flex;align-items:center;justify-content:center;font-size:56px;margin:28px auto 10px;cursor:pointer;overflow:hidden;border:3px dashed #A8DFCA;"></div>
+        <div onclick="obTriggerPhoto()" style="font-size:13px;color:var(--green);font-weight:700;cursor:pointer;margin-bottom:8px;">&#128194; Choisir dans la galerie</div>
+      </div>
+
     </div>
 
     <!-- Boutons -->
@@ -3731,7 +3740,7 @@ function obUpdateDots(n) {
 }
 function obShowStep(n) {
   obStep = n; obUpdateDots(n);
-  for (var i=1;i<=14;i++) {
+  for (var i=1;i<=15;i++) {
     var s=document.getElementById("ob-s"+i); if(!s) continue;
     s.style.display = i===n ? "flex" : "none";
     if(i===n){s.style.flexDirection="column";s.style.alignItems="center";}
@@ -3742,7 +3751,7 @@ function obShowStep(n) {
   // Soleil : masqué sur les étapes denses pour ne pas gêner
   var plant = document.getElementById("ob-plant");
   if (plant) {
-    var denseSteps = [8, 11, 13, 14];
+    var denseSteps = [8, 11, 13, 14, 15];
     if (denseSteps.indexOf(n) !== -1) plant.classList.add("hidden");
     else plant.classList.remove("hidden");
   }
@@ -3820,6 +3829,14 @@ function obShowStep(n) {
     });
     mb.style.display="block"; mb.textContent="Suivant →";
     gb.style.display="block"; gb.textContent="Ajouter plus tard";
+  } else if(n===15) {
+    var fn15=obData.surnom||obData.prenom;
+    document.getElementById("ob-photo-title").textContent="Une photo de "+fn15+" ?";
+    obData.photo=null;
+    var prev=document.getElementById("ob-photo-preview");
+    if(prev) prev.innerHTML='<span style="font-size:56px;">'+(obData.sexe==="garcon"?"👦":"👧")+'</span>';
+    mb.style.display="block"; mb.textContent="C'est parti ! 🌱";
+    gb.style.display="block"; gb.textContent="Passer";
   } else if(n===14) {
     var dn=obData.surnom||obData.prenom;
     document.getElementById("ob-final-title").textContent="Bienvenue "+dn+" ! 🌱";
@@ -4000,6 +4017,8 @@ function obNext() {
     }
     obGoTo(14);
   } else if(obStep===14) {
+    obGoTo(15);
+  } else if(obStep===15) {
     obFinish();
   }
 }
@@ -4010,6 +4029,7 @@ function obGhost() {
   else if(obStep===8) { obData.poids=null; obData.taille=null; obGoTo(9); }
   else if(obStep===11) { obData.rgoTraitement=false; obData.rgoMed=null; obData.rgoDateFin=null; obGoTo(12); }
   else if(obStep===13) { obData.prenom2=null; obData.sexe2=null; obData.dob2=null; obData.poids2=null; obData.taille2=null; obGoTo(14); }
+  else if(obStep===15) { obData.photo=null; obFinish(); }
 }
 function obSkipSurnom() { obGhost(); }
 
@@ -4040,7 +4060,7 @@ function obEdit(step) {
   obShowStep(step);
 }
 async function obFinish() {
-  var profile={role:obData.role,prenom:obData.prenom,sexe:obData.sexe,dob:obData.dob,surnom:obData.surnom,displayName:obData.surnom||obData.prenom,poids:obData.poids,taille:obData.taille,allaitement:obData.allaitement,rgo:obData.rgo,rgoTraitement:obData.rgoTraitement,rgoMed:obData.rgoMed,rgoDateFin:obData.rgoDateFin};
+  var profile={role:obData.role,prenom:obData.prenom,sexe:obData.sexe,dob:obData.dob,surnom:obData.surnom,displayName:obData.surnom||obData.prenom,poids:obData.poids,taille:obData.taille,allaitement:obData.allaitement,rgo:obData.rgo,rgoTraitement:obData.rgoTraitement,rgoMed:obData.rgoMed,rgoDateFin:obData.rgoDateFin,photo:obData.photo||null};
   var profiles=JSON.parse(localStorage.getItem("childProfiles")||"[]");
   profiles[0]=profile;
   if(obData.prenom2) {
@@ -4290,9 +4310,22 @@ function updateDynamicHome(profile) {
   // Milestone
   var ms=calcNextMilestone(profile.dob);
   var msEl=document.getElementById("home-milestone-title");
-  if(msEl) msEl.textContent="Bientôt "+ms.months+" mois dans "+(ms.days===0?"moins d'un jour":ms.days+" jour"+(ms.days>1?"s":""))+" !";
   var msSub=document.getElementById("home-milestone-sub");
-  if(msSub) msSub.textContent=getMilestoneSub(ms.months);
+  var msTag=document.querySelector("#home-milestone .ms-tag");
+  var msEmoji=document.querySelector("#home-milestone .ms-emoji");
+  var dn=profile.displayName||profile.prenom||"bébé";
+  if(ms.days===0) {
+    var age=ms.months-1;
+    if(msTag) msTag.textContent="Aujourd'hui 🎉";
+    if(msEl) msEl.textContent="Joyeux "+age+" mois "+dn+" !";
+    if(msEmoji) msEmoji.innerHTML='<div style="font-size:32px;line-height:1;">🎂</div>';
+    if(msSub) msSub.innerHTML=getMilestoneSub(age)+'<br><span onclick="triggerPhotoUpload()" style="color:var(--green);font-weight:700;cursor:pointer;font-size:13px;">📸 Mettre à jour la photo</span>';
+  } else {
+    if(msTag) msTag.textContent="Bientôt";
+    if(msEl) msEl.textContent="Bientôt "+ms.months+" mois dans "+ms.days+" jour"+(ms.days>1?"s":"")+" !";
+    if(msEmoji) msEmoji.innerHTML='<svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><polygon points="20,4 24.5,15 36,15 27,22.5 30.5,34 20,27 9.5,34 13,22.5 4,15 15.5,15" fill="#F8D050" stroke="#E0A800" stroke-width="1.2" stroke-linejoin="round"/></svg>';
+    if(msSub) msSub.textContent=getMilestoneSub(ms.months);
+  }
   // Vaccin alert
   var vacc=calcNextVaccine(profile.dob);
   var strip=document.getElementById("home-vacc-strip");
@@ -4332,6 +4365,31 @@ function obCalcAge(dob) {
 }
 function triggerPhotoUpload() {
   document.getElementById('photo-upload-input').click();
+}
+function obTriggerPhoto() {
+  var inp = document.getElementById('photo-upload-input');
+  inp.onchange = function(e) { handleObPhoto(e.target); inp.onchange = function(e2){ handlePhotoUpload(e2.target); }; };
+  inp.click();
+}
+function handleObPhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas'), size = 200;
+      canvas.width = size; canvas.height = size;
+      var ctx = canvas.getContext('2d');
+      var min = Math.min(img.width, img.height);
+      ctx.drawImage(img, (img.width-min)/2, (img.height-min)/2, min, min, 0, 0, size, size);
+      obData.photo = canvas.toDataURL('image/jpeg', 0.7);
+      var prev = document.getElementById('ob-photo-preview');
+      if (prev) prev.innerHTML = '<img src="'+obData.photo+'" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+  input.value = '';
 }
 function handlePhotoUpload(input) {
   if (!input.files || !input.files[0]) return;
