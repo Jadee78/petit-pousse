@@ -677,6 +677,47 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
       </div>
     </div>
+    <!-- MODULE ASSMAT PARENT PERMANENT -->
+    <div id="home-assmat-module" style="margin:10px 16px 0;">
+      <!-- Non configuré -->
+      <div id="assmat-mod-empty" onclick="configureAssmatParent()" style="display:none;background:linear-gradient(135deg,#F0EEFF,#E8E0FF);border-radius:18px;padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;border:1.5px dashed #C0B8E8;">
+        <div style="width:38px;height:38px;border-radius:50%;background:#C0B8E8;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👩‍🍼</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#7B68EE;">Ajouter mon assistante maternelle</div>
+          <div style="font-size:11px;color:#B0A8D0;margin-top:2px;">Suivre le journal de bébé depuis l'accueil</div>
+        </div>
+        <div style="font-size:18px;color:#C0B8E8;">+</div>
+      </div>
+      <!-- Configuré -->
+      <div id="assmat-mod-configured" style="display:none;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 2px 12px rgba(123,104,238,0.1);">
+        <!-- Header cliquable -->
+        <div onclick="toggleAssmatModule()" style="background:linear-gradient(135deg,#7B68EE,#5A50D0);padding:13px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;" id="assmat-mod-emoji">👩‍🍼</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:800;color:#fff;" id="assmat-mod-name">Mon assmat</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.7);" id="assmat-mod-status">Chargement…</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div onclick="event.stopPropagation();configureAssmatParent()" style="background:rgba(255,255,255,0.15);border-radius:8px;padding:5px 8px;font-size:11px;color:#fff;font-weight:600;">✎</div>
+            <div style="font-size:18px;color:rgba(255,255,255,0.6);transition:transform .2s;" id="assmat-mod-chevron">▾</div>
+          </div>
+        </div>
+        <!-- Corps repliable -->
+        <div id="assmat-mod-body" style="overflow:hidden;transition:max-height .3s ease;max-height:600px;">
+          <!-- Stats du jour depuis Supabase -->
+          <div id="assmat-mod-stats" style="padding:12px 16px 0;display:flex;gap:8px;flex-wrap:wrap;"></div>
+          <!-- Dernières photos -->
+          <div id="assmat-mod-photos" style="padding:10px 16px 0;display:flex;gap:6px;overflow-x:auto;"></div>
+          <!-- Actions -->
+          <div style="padding:12px 16px 14px;display:flex;gap:8px;">
+            <button onclick="openParentMessaging()" style="flex:1;background:#F0EEFF;border:none;border-radius:12px;padding:11px 8px;font-size:12px;font-weight:700;color:#7B68EE;font-family:Montserrat,sans-serif;cursor:pointer;">💬 Messages</button>
+            <button onclick="openParentPlanning()" style="flex:1;background:#EEF9F5;border:none;border-radius:12px;padding:11px 8px;font-size:12px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">📅 Planning</button>
+            <button onclick="openAssmatJournalParent()" style="flex:1;background:#FFF3E8;border:none;border-radius:12px;padding:11px 8px;font-size:12px;font-weight:700;color:#E8903A;font-family:Montserrat,sans-serif;cursor:pointer;">📋 Journal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Menu du jour accueil -->
     <div id="home-menu-card" style="margin:10px 16px 0;display:block;">
       <div style="background:#fff;border-radius:18px;padding:15px 16px;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
@@ -699,11 +740,6 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div class="mod" onclick="goTo('agenda')"><div class="mod-icon" style="background:#EAF0FF;">🗓️</div><div class="mod-t">Agenda médical</div><div class="mod-s">RDV pédiatre, kiné, ostéo...</div><div class="mod-badge" id="mod-badge-agenda">0 RDV</div></div>
     </div>
 
-    <!-- MODULE ASSMAT (caché par défaut, visible si une assmat est liée) -->
-    <div id="module-assmat-parent" style="display:none;margin:0 16px 16px;">
-      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Mon assistante maternelle</div>
-      <div id="assmat-parent-cards"></div>
-    </div>
 
   </div>
 
@@ -2763,41 +2799,69 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
   </div>
 
   <!-- ÉCRAN ASSMAT -->
-  <div id="screen-assmat" class="screen">
+  <div id="screen-assmat" class="screen" style="background:#F3F0FF;">
     <!-- Hero -->
-    <div style="background:linear-gradient(135deg,#7B68EE,#5A50D0);padding:54px 20px 24px;position:relative;overflow:hidden;">
-      <div style="position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.07);"></div>
-      <div style="position:absolute;bottom:-20px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.05);"></div>
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;position:relative;">
+    <div style="background:linear-gradient(150deg,#6C5CE7 0%,#7B68EE 50%,#9B8FFF 100%);padding:54px 20px 0;position:relative;overflow:hidden;">
+      <!-- Cercles déco -->
+      <div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none;"></div>
+      <div style="position:absolute;top:20px;right:30px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none;"></div>
+      <div style="position:absolute;bottom:20px;left:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none;"></div>
+
+      <!-- Top row -->
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;position:relative;margin-bottom:6px;">
         <div>
-          <div style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:600;margin-bottom:4px;">Bonjour 👋</div>
-          <div style="font-size:24px;font-weight:800;color:#fff;letter-spacing:-0.5px;">Espace pro</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:4px;" id="assmat-email-display">—</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.65);font-weight:600;letter-spacing:0.3px;" id="assmat-greeting">Bonjour 👋</div>
+          <div style="font-size:26px;font-weight:900;color:#fff;letter-spacing:-0.8px;margin-top:2px;line-height:1.1;">Espace <span style="color:rgba(255,255,255,0.6);font-weight:400;font-size:22px;">pro</span></div>
         </div>
-        <button onclick="doLogout()" style="background:rgba(255,255,255,0.15);border:none;border-radius:12px;padding:8px 14px;font-size:12px;font-weight:700;color:#fff;font-family:Montserrat,sans-serif;cursor:pointer;flex-shrink:0;">Déco</button>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+          <button onclick="doLogout()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:7px 14px;font-size:11px;font-weight:700;color:#fff;font-family:Montserrat,sans-serif;cursor:pointer;">Déco</button>
+          <div style="font-size:11px;color:rgba(255,255,255,0.55);text-align:right;" id="assmat-email-display">—</div>
+        </div>
       </div>
+
+      <!-- Date du jour -->
+      <div style="position:relative;background:rgba(255,255,255,0.12);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:16px;backdrop-filter:blur(4px);">
+        <div style="font-size:28px;font-weight:900;color:#fff;line-height:1;" id="assmat-day-num">—</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;" id="assmat-day-name">—</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);" id="assmat-month-year">—</div>
+        </div>
+        <div style="margin-left:auto;font-size:20px;">📅</div>
+      </div>
+
       <!-- Stats du jour -->
-      <div id="assmat-stats-bar" style="display:flex;gap:10px;margin-top:18px;position:relative;"></div>
+      <div id="assmat-stats-bar" style="display:flex;gap:8px;margin-bottom:0;position:relative;padding-bottom:20px;"></div>
+
+      <!-- Vague SVG -->
+      <div style="position:absolute;bottom:-1px;left:0;width:100%;overflow:hidden;line-height:0;">
+        <svg viewBox="0 0 400 32" preserveAspectRatio="none" style="display:block;width:100%;height:32px;"><path d="M0,16 C100,32 300,0 400,16 L400,32 L0,32 Z" fill="#F3F0FF"/></svg>
+      </div>
     </div>
 
-    <div style="padding:16px 16px 100px;">
-      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Mes familles</div>
+    <div style="padding:20px 16px 100px;">
+      <!-- Label section -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:800;color:#5A50D0;letter-spacing:-0.2px;">Mes familles</div>
+        <div onclick="openQRScanner()" style="background:linear-gradient(135deg,#7B68EE,#5A50D0);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 3px 12px rgba(123,104,238,0.35);">
+          <span>📷</span><span>Ajouter</span>
+        </div>
+      </div>
+
       <div id="assmat-families-list"></div>
 
-      <!-- Bouton scanner -->
-      <button onclick="openQRScanner()" style="width:100%;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;border-radius:18px;padding:18px;font-size:14px;font-weight:700;color:#fff;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:4px;box-shadow:0 4px 16px rgba(123,104,238,0.35);display:flex;align-items:center;justify-content:center;gap:10px;">
-        <span style="font-size:20px;">📷</span> Ajouter une famille
-      </button>
-
-      <div onclick="addRole('parent')" style="background:#fff;border:1.5px solid #EDE8DF;border-radius:14px;padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;margin-top:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
-        <div style="font-size:28px;">👨‍👩‍👦</div>
+      <!-- Accès espace parents -->
+      <div onclick="addRole('parent')" style="background:#fff;border-radius:18px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;margin-top:4px;box-shadow:0 2px 10px rgba(123,104,238,0.08);border:1.5px solid #EAE6FF;">
+        <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#EEE8FF,#E0D8FF);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">👨‍👩‍👦</div>
         <div>
           <div style="font-size:13px;font-weight:700;color:#2C3E50;">Je suis aussi maman / papa</div>
-          <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Accéder à l'espace parents</div>
+          <div style="font-size:11px;color:#9B8FD0;margin-top:2px;">Accéder à l'espace parents</div>
         </div>
-        <div style="margin-left:auto;font-size:18px;color:#C0B8E8;">›</div>
+        <div style="margin-left:auto;font-size:20px;color:#C0B8E8;">›</div>
       </div>
     </div>
+
+    <!-- FAB scanner -->
+    <div onclick="openQRScanner()" style="position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));right:20px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);display:none;align-items:center;justify-content:center;font-size:24px;box-shadow:0 6px 20px rgba(123,104,238,0.45);cursor:pointer;z-index:50;" id="assmat-fab">📷</div>
   </div>
 
   <!-- ÉCRAN JOURNAL ASSMAT -->
@@ -2813,15 +2877,15 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div id="journal-child-avatar" style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👶</div>
       </div>
       <!-- Onglets -->
-      <div style="display:flex;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -20px;padding:0 20px;">
-        <button onclick="showJournalTab('repas')" class="jtab-pro active" id="jtab-repas">🍽️<br><span style="font-size:9px;" id="jcount-repas">—</span></button>
-        <button onclick="showJournalTab('sommeil')" class="jtab-pro" id="jtab-sommeil">😴<br><span style="font-size:9px;" id="jcount-sommeil">—</span></button>
-        <button onclick="showJournalTab('changes')" class="jtab-pro" id="jtab-changes">🚿<br><span style="font-size:9px;" id="jcount-changes">—</span></button>
-        <button onclick="showJournalTab('activites')" class="jtab-pro" id="jtab-activites">🧸<br><span style="font-size:9px;" id="jcount-activites">—</span></button>
-        <button onclick="showJournalTab('medicaments')" class="jtab-pro" id="jtab-medicaments">💊<br><span style="font-size:9px;" id="jcount-medicaments">—</span></button>
-        <button onclick="showJournalTab('photos')" class="jtab-pro" id="jtab-photos">📸<br><span style="font-size:9px;" id="jcount-photos">—</span></button>
-        <button onclick="showJournalTab('messages')" class="jtab-pro" id="jtab-messages">💬<br><span style="font-size:9px;" id="jcount-messages">—</span></button>
-        <button onclick="showJournalTab('infos')" class="jtab-pro" id="jtab-infos">📋<br><span style="font-size:9px;">Infos</span></button>
+      <div style="display:flex;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -20px;padding:0 20px;scrollbar-width:none;">
+        <button onclick="showJournalTab('repas')" class="jtab-pro active" id="jtab-repas">🍽️<br><span style="font-size:8px;font-weight:700;letter-spacing:0.2px;" id="jcount-repas">Repas</span></button>
+        <button onclick="showJournalTab('sommeil')" class="jtab-pro" id="jtab-sommeil">😴<br><span style="font-size:8px;font-weight:700;letter-spacing:0.2px;" id="jcount-sommeil">Dodo</span></button>
+        <button onclick="showJournalTab('changes')" class="jtab-pro" id="jtab-changes">🚿<br><span style="font-size:8px;font-weight:700;letter-spacing:0.2px;" id="jcount-changes">Changes</span></button>
+        <button onclick="showJournalTab('activites')" class="jtab-pro" id="jtab-activites">🧸<br><span style="font-size:8px;font-weight:700;letter-spacing:0.2px;" id="jcount-activites">Éveil</span></button>
+        <button onclick="showJournalTab('medicaments')" class="jtab-pro" id="jtab-medicaments">💊<br><span style="font-size:8px;font-weight:700;letter-spacing:0.2px;" id="jcount-medicaments">Médic.</span></button>
+        <button onclick="showJournalTab('photos')" class="jtab-pro" id="jtab-photos">📸<br><span style="font-size:8px;font-weight:700;letter-spacing:0.2px;" id="jcount-photos">Photos</span></button>
+        <button onclick="showJournalTab('messages')" class="jtab-pro" id="jtab-messages">💬<br><span style="font-size:8px;font-weight:700;letter-spacing:0.2px;" id="jcount-messages">Messages</span></button>
+        <button onclick="showJournalTab('infos')" class="jtab-pro" id="jtab-infos">📋<br><span style="font-size:8px;font-weight:700;letter-spacing:0.2px;">Infos</span></button>
       </div>
     </div>
 
@@ -6603,81 +6667,244 @@ function loadAgendaScreen() { renderAgenda(); }
 // MODULE ASSMAT CÔTÉ PARENT
 // ═══════════════════════════════════════════════
 
+var assmatModuleOpen = true;
+
+function initAssmatParentModuleUI() {
+  var cfg = JSON.parse(localStorage.getItem("parent_assmat_config") || "null");
+  var empty = document.getElementById("assmat-mod-empty");
+  var configured = document.getElementById("assmat-mod-configured");
+  if (!empty || !configured) return;
+  if (!cfg || !cfg.enabled) {
+    empty.style.display = "flex";
+    configured.style.display = "none";
+  } else {
+    empty.style.display = "none";
+    configured.style.display = "block";
+    var nameEl = document.getElementById("assmat-mod-name");
+    var emojiEl = document.getElementById("assmat-mod-emoji");
+    if (nameEl) nameEl.textContent = cfg.name || "Mon assmat";
+    if (emojiEl) emojiEl.textContent = cfg.emoji || "👩‍🍼";
+    assmatModuleOpen = cfg.open !== false;
+    applyAssmatModuleToggle();
+    loadAssmatParentModule();
+  }
+}
+
+function toggleAssmatModule() {
+  assmatModuleOpen = !assmatModuleOpen;
+  var cfg = JSON.parse(localStorage.getItem("parent_assmat_config") || "{}");
+  cfg.open = assmatModuleOpen;
+  localStorage.setItem("parent_assmat_config", JSON.stringify(cfg));
+  applyAssmatModuleToggle();
+}
+
+function applyAssmatModuleToggle() {
+  var body = document.getElementById("assmat-mod-body");
+  var chevron = document.getElementById("assmat-mod-chevron");
+  if (body) body.style.maxHeight = assmatModuleOpen ? "600px" : "0";
+  if (chevron) chevron.style.transform = assmatModuleOpen ? "rotate(0deg)" : "rotate(-90deg)";
+}
+
+function configureAssmatParent() {
+  var cfg = JSON.parse(localStorage.getItem("parent_assmat_config") || "{}");
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:900;display:flex;align-items:flex-end;";
+  overlay.innerHTML =
+    '<div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:24px 20px calc(32px + env(safe-area-inset-bottom,0px));box-sizing:border-box;">' +
+    '<div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 20px;"></div>' +
+    '<div style="font-size:18px;font-weight:800;color:#2C3E50;margin-bottom:4px;">Mon assistante maternelle</div>' +
+    '<div style="font-size:13px;color:#7F8C8D;margin-bottom:20px;">Personnalise comment tu l\'appelles</div>' +
+    '<div style="font-size:11px;font-weight:700;color:#7B68EE;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Prénom / surnom</div>' +
+    '<input id="cfg-assmat-name" type="text" placeholder="Ex: Nathalie, Mamie Josette, Nounou…" value="' + (cfg.name||'') + '" style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:12px 14px;font-size:14px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;margin-bottom:14px;">' +
+    '<div style="font-size:11px;font-weight:700;color:#7B68EE;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Emoji</div>' +
+    '<div style="display:flex;gap:10px;margin-bottom:20px;">' +
+    ['👩‍🍼','👩','🧑','👵','👩‍❤️‍👩'].map(function(e){
+      return '<div onclick="selectAssmatEmoji(this,\''+e+'\')" style="width:44px;height:44px;border-radius:12px;border:2px solid '+(cfg.emoji===e?'#7B68EE':'#EDE8DF')+';display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;background:'+(cfg.emoji===e?'#F0EEFF':'#fff')+'" data-emoji="'+e+'">'+e+'</div>';
+    }).join('') +
+    '</div>' +
+    '<button onclick="saveAssmatConfig()" style="width:100%;background:linear-gradient(135deg,#7B68EE,#5A50D0);color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>' +
+    '</div>';
+  overlay.onclick = function(e){ if(e.target===overlay) document.body.removeChild(overlay); };
+  overlay.id = "assmat-cfg-overlay";
+  document.body.appendChild(overlay);
+  var input = document.getElementById("cfg-assmat-name");
+  if (input) setTimeout(function(){ input.focus(); }, 100);
+}
+
+var selectedAssmatEmoji = null;
+function selectAssmatEmoji(el, emoji) {
+  selectedAssmatEmoji = emoji;
+  document.querySelectorAll("[data-emoji]").forEach(function(b){
+    b.style.borderColor = b.dataset.emoji === emoji ? "#7B68EE" : "#EDE8DF";
+    b.style.background = b.dataset.emoji === emoji ? "#F0EEFF" : "#fff";
+  });
+}
+function saveAssmatConfig() {
+  var name = (document.getElementById("cfg-assmat-name")||{}).value || "";
+  if (!name.trim()) { alert("Saisis un prénom."); return; }
+  var cfg = JSON.parse(localStorage.getItem("parent_assmat_config") || "{}");
+  cfg.name = name.trim();
+  cfg.emoji = selectedAssmatEmoji || cfg.emoji || "👩‍🍼";
+  cfg.enabled = true;
+  cfg.open = true;
+  localStorage.setItem("parent_assmat_config", JSON.stringify(cfg));
+  var o = document.getElementById("assmat-cfg-overlay");
+  if (o) document.body.removeChild(o);
+  initAssmatParentModuleUI();
+}
+
 async function loadAssmatParentModule() {
   if (!sb || !currentUser) return;
   var today = new Date().toISOString().slice(0,10);
+  var statusEl = document.getElementById("assmat-mod-status");
+  var statsEl = document.getElementById("assmat-mod-stats");
+  var photosEl = document.getElementById("assmat-mod-photos");
+
   try {
     var { data, error } = await sb.from("assmat_journals")
-      .select("*")
-      .eq("parent_id", currentUser.id)
-      .eq("date", today)
-      .order("updated_at", { ascending: false });
-    if (error || !data || data.length === 0) { hideAssmatParentModule(); return; }
+      .select("*").eq("parent_id", currentUser.id).eq("date", today)
+      .order("updated_at", { ascending: false }).limit(5);
 
-    var module = document.getElementById("module-assmat-parent");
-    var cards = document.getElementById("assmat-parent-cards");
-    if (!module || !cards) return;
-    module.style.display = "block";
-
-    var profiles = JSON.parse(localStorage.getItem("childProfiles") || "[]");
-    var html = "";
-    data.forEach(function(entry) {
-      var j = entry.data || {};
-      var child = profiles[entry.child_idx] || {};
-      var avatar = child.sexe === "fille" ? "👧" : "👦";
-      var prenom = child.prenom || ("Enfant " + (entry.child_idx + 1));
-      var repas = (j.repas||[]).length;
-      var sommeil = (j.sommeil||[]).length;
-      var changes = (j.changes||[]).length;
-      var activites = (j.activites||[]).length;
-      var photos = (j.photos||[]).length;
-      var updatedAt = new Date(entry.updated_at).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-
-      html += '<div onclick="openAssmatParentView(\'' + entry.assmat_id + '\',\'' + currentUser.id + '\',' + entry.child_idx + ')" style="background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 3px 16px rgba(123,104,238,0.1);margin-bottom:12px;cursor:pointer;">';
-      html += '<div style="background:linear-gradient(135deg,#7B68EE,#5A50D0);padding:14px 16px;display:flex;align-items:center;gap:12px;">';
-      html += '<div style="font-size:26px;">' + avatar + '</div>';
-      html += '<div style="flex:1;"><div style="font-size:15px;font-weight:800;color:#fff;">' + prenom + ' chez l\'assmat</div>';
-      html += '<div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">Mis à jour à ' + updatedAt + '</div></div>';
-      html += '<div style="font-size:18px;color:rgba(255,255,255,0.5);">›</div></div>';
-
-      html += '<div style="padding:12px 16px;display:flex;gap:8px;flex-wrap:wrap;">';
-      if (repas) html += '<div style="background:#FFF3E8;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#E8903A;">🍽️ ' + repas + ' repas</div>';
-      if (sommeil) html += '<div style="background:#EEE8FF;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#7B68EE;">😴 ' + sommeil + ' dodo</div>';
-      if (changes) html += '<div style="background:#E8F5EE;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#5A9E82;">🚿 ' + changes + ' changes</div>';
-      if (activites) html += '<div style="background:#FFF8E0;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#C8A030;">🧸 ' + activites + ' activités</div>';
-      if (photos) html += '<div style="background:#EEE8FF;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#7B68EE;">📸 ' + photos + ' photos</div>';
-      if (!repas && !sommeil && !changes && !activites && !photos) html += '<div style="font-size:12px;color:#B0B8C1;font-style:italic;">Journal vide pour aujourd\'hui</div>';
-      html += '</div>';
-
-      // Dernière photo si dispo
-      if (j.photos && j.photos.length > 0) {
-        html += '<div style="padding:0 16px 14px;display:flex;gap:6px;overflow-x:auto;">';
-        j.photos.slice(-3).forEach(function(p) {
-          html += '<img src="' + p + '" style="width:70px;height:70px;border-radius:10px;object-fit:cover;flex-shrink:0;">';
-        });
-        html += '</div>';
-      }
-
-      html += '</div>';
-    });
-    cards.innerHTML = html;
-
-    // Stocker le timestamp de la dernière visite pour les notifs
-    var lastSeen = localStorage.getItem("assmat_last_seen_" + currentUser.id) || "0";
-    var hasNew = data.some(function(e) { return e.updated_at > lastSeen; });
-    if (hasNew) {
-      localStorage.setItem("assmat_notif_pending", "1");
-      localStorage.setItem("assmat_last_seen_" + currentUser.id, new Date().toISOString());
-    } else {
-      localStorage.removeItem("assmat_notif_pending");
+    if (error || !data || !data.length) {
+      if (statusEl) statusEl.textContent = "Aucune mise à jour aujourd'hui";
+      if (statsEl) statsEl.innerHTML = '';
+      if (photosEl) photosEl.innerHTML = '';
+      return;
     }
+
+    var j = data[0].data || {};
+    var time = new Date(data[0].updated_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    if (statusEl) statusEl.textContent = "Mis à jour à " + time;
+
+    var repas=(j.repas||[]).length, sommeil=(j.sommeil||[]).length, changes=(j.changes||[]).length, activites=(j.activites||[]).length, photos=(j.photos||[]).length;
+    var stats = '';
+    if (repas) stats += '<div style="background:#FFF3E8;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#E8903A;">🍽️ '+repas+' repas</div>';
+    if (sommeil) stats += '<div style="background:#EEE8FF;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#7B68EE;">😴 '+sommeil+' dodo</div>';
+    if (changes) stats += '<div style="background:#E8F5EE;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#5A9E82;">🚿 '+changes+' changes</div>';
+    if (activites) stats += '<div style="background:#FFF8E0;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#C8A030;">🧸 '+activites+'</div>';
+    if (!repas&&!sommeil&&!changes&&!activites) stats = '<div style="font-size:12px;color:#B0B8C1;font-style:italic;padding:4px 0;">Journal vide pour aujourd\'hui</div>';
+    if (statsEl) statsEl.innerHTML = stats;
+
+    if (photosEl && j.photos && j.photos.length) {
+      photosEl.innerHTML = j.photos.slice(-4).map(function(p){
+        return '<img src="'+p+'" style="width:64px;height:64px;border-radius:10px;object-fit:cover;flex-shrink:0;">';
+      }).join('');
+    } else if (photosEl) photosEl.innerHTML = '';
+
+    var lastSeen = localStorage.getItem("assmat_last_seen_"+currentUser.id)||"0";
+    if (data[0].updated_at > lastSeen) {
+      localStorage.setItem("assmat_notif_pending","1");
+      localStorage.setItem("assmat_last_seen_"+currentUser.id, new Date().toISOString());
+    } else { localStorage.removeItem("assmat_notif_pending"); }
     updateBellDot();
-  } catch(e) { hideAssmatParentModule(); }
+  } catch(e) { if(statusEl) statusEl.textContent = "Hors ligne"; }
 }
 
-function hideAssmatParentModule() {
-  var el = document.getElementById("module-assmat-parent");
-  if (el) el.style.display = "none";
+function openAssmatJournalParent() {
+  loadAssmatParentModule().then(function(){
+    if (!sb || !currentUser) return;
+    var today = new Date().toISOString().slice(0,10);
+    sb.from("assmat_journals").select("data,updated_at").eq("parent_id",currentUser.id).eq("date",today).order("updated_at",{ascending:false}).limit(1)
+      .then(function(r){ if(r.data&&r.data[0]) showAssmatParentDetail(r.data[0].data||{},0,r.data[0].updated_at); });
+  });
+}
+
+function openParentMessaging() {
+  var cfg = JSON.parse(localStorage.getItem("parent_assmat_config")||"{}");
+  var msgs = JSON.parse(localStorage.getItem("parent_msg_out")||"[]");
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:900;display:flex;align-items:flex-end;";
+  var html = '<div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;height:70vh;display:flex;flex-direction:column;padding:20px 0 0;">';
+  html += '<div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 14px;"></div>';
+  html += '<div style="font-size:16px;font-weight:800;color:#2C3E50;padding:0 20px 12px;border-bottom:0.5px solid #EDE8DF;">💬 Messages à '+(cfg.name||"l'assmat")+'</div>';
+  html += '<div id="parent-msg-list" style="flex:1;overflow-y:auto;padding:14px 20px;display:flex;flex-direction:column;gap:8px;">';
+  if (!msgs.length) html += '<div style="text-align:center;padding:32px 0;font-size:13px;color:#B0B8C1;">Aucun message envoyé</div>';
+  msgs.forEach(function(m){
+    var t = new Date(m.ts).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    html += '<div style="align-self:flex-end;max-width:80%;background:linear-gradient(135deg,#7B68EE,#5A50D0);color:#fff;border-radius:18px 18px 4px 18px;padding:11px 14px;font-size:13px;line-height:1.5;">' + m.texte + '</div>';
+    html += '<div style="text-align:right;font-size:10px;color:#B0A8C8;">Moi · '+t+'</div>';
+  });
+  html += '</div>';
+  html += '<div style="padding:12px 20px calc(20px + env(safe-area-inset-bottom,0px));border-top:0.5px solid #EDE8DF;display:flex;gap:8px;">';
+  html += '<input id="parent-msg-input" type="text" placeholder="Écrire à '+(cfg.name||"l\'assmat")+'…" style="flex:1;border:1.5px solid #D0C8F0;border-radius:22px;padding:11px 16px;font-size:13px;font-family:Montserrat,sans-serif;outline:none;">';
+  html += '<button onclick="sendParentMessage()" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;font-size:20px;color:#fff;cursor:pointer;">↑</button>';
+  html += '</div></div>';
+  overlay.innerHTML = html;
+  overlay.onclick = function(e){ if(e.target===overlay) document.body.removeChild(overlay); };
+  overlay.id = "parent-msg-overlay";
+  document.body.appendChild(overlay);
+}
+
+function sendParentMessage() {
+  var input = document.getElementById("parent-msg-input");
+  if (!input||!input.value.trim()) return;
+  var msgs = JSON.parse(localStorage.getItem("parent_msg_out")||"[]");
+  msgs.push({ texte: input.value.trim(), ts: new Date().toISOString() });
+  localStorage.setItem("parent_msg_out", JSON.stringify(msgs));
+  input.value = "";
+  var o = document.getElementById("parent-msg-overlay");
+  if (o) { document.body.removeChild(o); openParentMessaging(); }
+}
+
+function openParentPlanning() {
+  var JOURS = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi"];
+  var planning = JSON.parse(localStorage.getItem("parent_planning")||"{}");
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:900;display:flex;align-items:flex-end;";
+  var html = '<div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:24px 20px calc(32px + env(safe-area-inset-bottom,0px));box-sizing:border-box;max-height:80vh;overflow-y:auto;">';
+  html += '<div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 18px;"></div>';
+  html += '<div style="font-size:16px;font-weight:800;color:#2C3E50;margin-bottom:4px;">📅 Planning de garde</div>';
+  html += '<div style="font-size:13px;color:#7F8C8D;margin-bottom:18px;">Les jours et horaires chez l\'assmat</div>';
+  JOURS.forEach(function(jour){
+    var key = jour.toLowerCase();
+    var p = planning[key]||{actif:false,debut:"08:00",fin:"17:30"};
+    html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">';
+    html += '<div onclick="toggleParentPlanJour(this,\''+key+'\')" data-key="'+key+'" style="width:36px;height:22px;border-radius:11px;background:'+(p.actif?"linear-gradient(135deg,#7B68EE,#5A50D0)":"#EDE8DF")+';position:relative;cursor:pointer;flex-shrink:0;" id="ptoggle-'+key+'"><div style="position:absolute;top:3px;'+(p.actif?"right:3px":"left:3px")+';width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.2);" id="pthumb-'+key+'"></div></div>';
+    html += '<div style="font-size:13px;font-weight:700;color:'+(p.actif?"#2C3E50":"#B0B8C1")+';width:72px;" id="plabel-'+key+'">'+jour+'</div>';
+    html += '<input id="pdebut-'+key+'" type="time" value="'+p.debut+'" '+(p.actif?"":"disabled")+' style="flex:1;border:1.5px solid #EDE8DF;border-radius:10px;padding:7px 8px;font-size:12px;font-family:Montserrat,sans-serif;outline:none;min-width:0;">';
+    html += '<span style="font-size:11px;color:#B0B8C1;">→</span>';
+    html += '<input id="pfin-'+key+'" type="time" value="'+p.fin+'" '+(p.actif?"":"disabled")+' style="flex:1;border:1.5px solid #EDE8DF;border-radius:10px;padding:7px 8px;font-size:12px;font-family:Montserrat,sans-serif;outline:none;min-width:0;">';
+    html += '</div>';
+  });
+  html += '<button onclick="saveParentPlanning()" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;border-radius:14px;padding:13px;font-size:14px;font-weight:700;color:#fff;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>';
+  html += '</div>';
+  overlay.innerHTML = html;
+  overlay.onclick = function(e){ if(e.target===overlay) document.body.removeChild(overlay); };
+  overlay.id = "parent-plan-overlay";
+  document.body.appendChild(overlay);
+}
+
+function toggleParentPlanJour(el, key) {
+  var planning = JSON.parse(localStorage.getItem("parent_planning")||"{}");
+  if (!planning[key]) planning[key]={actif:false,debut:"08:00",fin:"17:30"};
+  planning[key].actif = !planning[key].actif;
+  localStorage.setItem("parent_planning", JSON.stringify(planning));
+  var tog = document.getElementById("ptoggle-"+key);
+  var thumb = document.getElementById("pthumb-"+key);
+  var label = document.getElementById("plabel-"+key);
+  var deb = document.getElementById("pdebut-"+key);
+  var fin = document.getElementById("pfin-"+key);
+  if(tog) tog.style.background = planning[key].actif?"linear-gradient(135deg,#7B68EE,#5A50D0)":"#EDE8DF";
+  if(thumb) thumb.style[planning[key].actif?"right":"left"]="3px", thumb.style[planning[key].actif?"left":"right"]="auto";
+  if(label) label.style.color = planning[key].actif?"#2C3E50":"#B0B8C1";
+  if(deb) deb.disabled = !planning[key].actif;
+  if(fin) fin.disabled = !planning[key].actif;
+}
+
+function saveParentPlanning() {
+  var JOURS = ["lundi","mardi","mercredi","jeudi","vendredi"];
+  var planning = JSON.parse(localStorage.getItem("parent_planning")||"{}");
+  JOURS.forEach(function(key){
+    if(!planning[key]) planning[key]={actif:false,debut:"08:00",fin:"17:30"};
+    var deb = document.getElementById("pdebut-"+key);
+    var fin = document.getElementById("pfin-"+key);
+    if(deb) planning[key].debut = deb.value;
+    if(fin) planning[key].fin = fin.value;
+  });
+  localStorage.setItem("parent_planning", JSON.stringify(planning));
+  var o = document.getElementById("parent-plan-overlay");
+  if(o) document.body.removeChild(o);
+  showToast("Planning enregistré ✓");
 }
 
 async function openAssmatParentView(assmatId, parentId, childIdx) {
@@ -6783,6 +7010,21 @@ function initAssmatScreen() {
     var el = document.getElementById("assmat-email-display");
     if (el) el.textContent = currentUser.email;
   }
+  // Greeting dynamique
+  var h = new Date().getHours();
+  var greet = h < 6 ? "Bonne nuit 🌙" : h < 12 ? "Bonjour 👋" : h < 18 ? "Bon après-midi ☀️" : "Bonsoir 🌙";
+  var gEl = document.getElementById("assmat-greeting");
+  if (gEl) gEl.textContent = greet;
+  // Date
+  var now = new Date();
+  var jours = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+  var mois = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+  var dayNumEl = document.getElementById("assmat-day-num");
+  var dayNameEl = document.getElementById("assmat-day-name");
+  var monthYearEl = document.getElementById("assmat-month-year");
+  if (dayNumEl) dayNumEl.textContent = now.getDate();
+  if (dayNameEl) dayNameEl.textContent = jours[now.getDay()];
+  if (monthYearEl) monthYearEl.textContent = mois[now.getMonth()] + " " + now.getFullYear();
   renderAssmatFamilies();
 }
 
@@ -6792,7 +7034,7 @@ function renderAssmatFamilies() {
   if (!container) return;
 
   if (families.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:40px 16px 20px;"><div style="font-size:52px;margin-bottom:12px;">👶</div><div style="font-size:15px;font-weight:700;color:#2C3E50;margin-bottom:6px;">Aucun enfant gardé</div><div style="font-size:13px;color:#7F8C8D;line-height:1.6;">Scanne le QR code des parents pour<br>commencer à remplir le journal</div></div>';
+    container.innerHTML = '<div style="text-align:center;padding:40px 16px 24px;"><div style="width:80px;height:80px;border-radius:28px;background:linear-gradient(135deg,#EEE8FF,#DDD5FF);display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 16px;">👶</div><div style="font-size:16px;font-weight:800;color:#5A50D0;margin-bottom:8px;">Aucune famille liée</div><div style="font-size:13px;color:#9B8FD0;line-height:1.7;">Demande aux parents de générer<br>leur <strong>QR code familial</strong> dans l\'app,<br>puis scanne-le pour commencer.</div></div>';
     var statsBar = document.getElementById("assmat-stats-bar");
     if (statsBar) statsBar.innerHTML = '';
     return;
@@ -6820,16 +7062,16 @@ function renderAssmatFamilies() {
       var avatar = child.avatar || (child.sex === 'fille' ? '👧' : '👦');
       var photoKey = child.photo || null;
 
-      html += '<div onclick="openJournal(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="background:#fff;border-radius:22px;margin-bottom:14px;box-shadow:0 3px 16px rgba(123,104,238,0.12);cursor:pointer;overflow:hidden;">';
+      html += '<div style="background:#fff;border-radius:22px;margin-bottom:14px;box-shadow:0 3px 16px rgba(123,104,238,0.12);overflow:hidden;">';
 
-      // Bandeau couleur en haut
-      html += '<div style="background:linear-gradient(135deg,#7B68EE,#5A50D0);padding:16px 18px 14px;display:flex;align-items:center;gap:14px;">';
+      // Bandeau couleur en haut — clic → journal
+      html += '<div onclick="openJournal(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="background:linear-gradient(135deg,#7B68EE,#5A50D0);padding:16px 18px 14px;display:flex;align-items:center;gap:14px;cursor:pointer;">';
       html += '<div style="width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;border:2px solid rgba(255,255,255,0.4);">' + avatar + '</div>';
       html += '<div style="flex:1;">';
       html += '<div style="font-size:19px;font-weight:800;color:#fff;letter-spacing:-0.3px;">' + child.name + '</div>';
       html += '<div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:2px;">' + assmatAgeStr(child.dob) + (planTxt ? ' · ' + planTxt : '') + '</div>';
       html += '</div>';
-      html += '<div style="font-size:22px;color:rgba(255,255,255,0.5);">›</div>';
+      html += '<div onclick="event.stopPropagation();openChildFiche(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="background:rgba(255,255,255,0.18);border-radius:10px;padding:6px 10px;font-size:11px;font-weight:700;color:#fff;cursor:pointer;flex-shrink:0;">👤 Fiche</div>';
       html += '</div>';
 
       // Stats du bas
@@ -6852,9 +7094,15 @@ function renderAssmatFamilies() {
   var statsBar = document.getElementById("assmat-stats-bar");
   if (statsBar) {
     statsBar.innerHTML =
-      '<div style="flex:1;background:rgba(255,255,255,0.15);border-radius:14px;padding:10px 12px;text-align:center;"><div style="font-size:20px;font-weight:800;color:#fff;">' + totalChildren + '</div><div style="font-size:10px;color:rgba(255,255,255,0.7);font-weight:600;margin-top:2px;">enfant(s)</div></div>' +
-      '<div style="flex:1;background:rgba(255,255,255,0.15);border-radius:14px;padding:10px 12px;text-align:center;"><div style="font-size:20px;font-weight:800;color:#fff;">' + totalEntries + '</div><div style="font-size:10px;color:rgba(255,255,255,0.7);font-weight:600;margin-top:2px;">entrées auj.</div></div>' +
-      '<div style="flex:1;background:rgba(255,255,255,0.15);border-radius:14px;padding:10px 12px;text-align:center;"><div style="font-size:20px;font-weight:800;color:#fff;">' + new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}) + '</div><div style="font-size:10px;color:rgba(255,255,255,0.7);font-weight:600;margin-top:2px;">aujourd\'hui</div></div>';
+      '<div style="flex:1;background:rgba(255,255,255,0.18);border-radius:16px;padding:12px 8px;text-align:center;backdrop-filter:blur(4px);">' +
+        '<div style="font-size:24px;font-weight:900;color:#fff;line-height:1;">' + totalChildren + '</div>' +
+        '<div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:700;margin-top:4px;letter-spacing:0.5px;">ENFANT(S)</div></div>' +
+      '<div style="flex:1;background:rgba(255,255,255,0.18);border-radius:16px;padding:12px 8px;text-align:center;backdrop-filter:blur(4px);">' +
+        '<div style="font-size:24px;font-weight:900;color:#fff;line-height:1;">' + totalEntries + '</div>' +
+        '<div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:700;margin-top:4px;letter-spacing:0.5px;">ENTRÉES</div></div>' +
+      '<div style="flex:1;background:rgba(255,255,255,0.18);border-radius:16px;padding:12px 8px;text-align:center;backdrop-filter:blur(4px);">' +
+        '<div style="font-size:14px;font-weight:900;color:#fff;line-height:1;">' + new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}).toUpperCase() + '</div>' +
+        '<div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:700;margin-top:4px;letter-spacing:0.5px;">AUJOURD\'HUI</div></div>';
   }
 }
 
@@ -6878,6 +7126,142 @@ function assmatAgeStr(dob) {
   var months = (now.getFullYear() - birth.getFullYear()) * 12 + now.getMonth() - birth.getMonth();
   if (months < 0) months = 0;
   return months < 24 ? months + " mois" : Math.floor(months/12) + " ans";
+}
+
+// ─── Fiche enfant (côté assmat) ───
+
+function openChildFiche(parentId, fi, ci) {
+  var families = JSON.parse(localStorage.getItem("assmat_families") || "[]");
+  var fam = families[fi] || {};
+  var child = (fam.children || [])[ci] || {};
+  var ficheKey = "assmat_fiche_" + parentId + "_" + ci;
+  var fiche = JSON.parse(localStorage.getItem(ficheKey) || "{}");
+  _ficheVaccins = Object.assign({}, fiche.vaccins_faits || {});
+
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:910;display:flex;align-items:flex-end;";
+  overlay.id = "fiche-overlay";
+
+  var avatar = child.avatar || (child.sex === 'fille' ? '👧' : '👦');
+  var html = '<div onclick="event.stopPropagation()" style="background:#F8F9FA;border-radius:24px 24px 0 0;width:100%;max-height:88vh;overflow-y:auto;padding:0 0 calc(28px + env(safe-area-inset-bottom,0px));box-sizing:border-box;">';
+
+  // Header violet
+  html += '<div style="background:linear-gradient(135deg,#7B68EE,#5A50D0);border-radius:24px 24px 0 0;padding:20px 20px 22px;display:flex;align-items:center;gap:14px;">';
+  html += '<div style="width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">' + avatar + '</div>';
+  html += '<div style="flex:1;"><div style="font-size:20px;font-weight:800;color:#fff;">' + (child.name||'Enfant') + '</div>';
+  html += '<div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:2px;">' + assmatAgeStr(child.dob) + '</div></div>';
+  html += '<div onclick="document.body.removeChild(document.getElementById(\'fiche-overlay\'))" style="font-size:22px;color:rgba(255,255,255,0.6);cursor:pointer;padding:4px;">✕</div>';
+  html += '</div>';
+
+  html += '<div style="padding:18px 20px 0;">';
+
+  function ficheSection(title, id, content) {
+    return '<div style="background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;">' +
+      '<div style="font-size:13px;font-weight:800;color:#2C3E50;margin-bottom:12px;">' + title + '</div>' +
+      content + '</div>';
+  }
+
+  function ficheInput(label, key, val, placeholder) {
+    return '<div style="margin-bottom:10px;"><div style="font-size:11px;font-weight:700;color:#7F8C8D;margin-bottom:5px;">' + label + '</div>' +
+      '<input data-key="' + key + '" type="text" value="' + (val||'').replace(/"/g,'&quot;') + '" placeholder="' + placeholder + '" ' +
+      'style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:10px;padding:10px 12px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;"></div>';
+  }
+
+  function ficheTextarea(label, key, val, placeholder) {
+    return '<div style="margin-bottom:10px;"><div style="font-size:11px;font-weight:700;color:#7F8C8D;margin-bottom:5px;">' + label + '</div>' +
+      '<textarea data-key="' + key + '" placeholder="' + placeholder + '" rows="3" ' +
+      'style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:10px;padding:10px 12px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;resize:none;">' + (val||'') + '</textarea></div>';
+  }
+
+  // Médecin traitant
+  html += ficheSection('🏥 Médecin traitant', 'med',
+    ficheInput('Nom du médecin', 'medecin_nom', fiche.medecin_nom, 'Dr Dupont') +
+    ficheInput('Téléphone', 'medecin_tel', fiche.medecin_tel, '01 23 45 67 89') +
+    ficheInput('Cabinet / Adresse', 'medecin_adresse', fiche.medecin_adresse, '12 rue de la Paix, Paris')
+  );
+
+  // Numéros d'urgence
+  html += ficheSection('🚨 Contacts d\'urgence', 'urg',
+    ficheInput('Maman — prénom & tél.', 'urgence_maman', fiche.urgence_maman, 'Sophie — 06 12 34 56 78') +
+    ficheInput('Papa — prénom & tél.', 'urgence_papa', fiche.urgence_papa, 'Julien — 06 87 65 43 21') +
+    ficheInput('Autre contact', 'urgence_autre', fiche.urgence_autre, 'Grand-mère — 06 …')
+  );
+
+  // Allergies
+  html += ficheSection('⚠️ Allergies & intolérances', 'all',
+    ficheTextarea('Allergies connues', 'allergies', fiche.allergies, 'Ex: arachides, lait de vache, oeufs…\nAucune allergie connue') +
+    ficheInput('Médicaments d\'urgence', 'allergie_medicament', fiche.allergie_medicament, 'Ex: Proviodine, Doliprane…')
+  );
+
+  // Aliments introduits
+  html += ficheSection('🍽️ Aliments introduits / évités', 'ali',
+    ficheTextarea('Aliments déjà goûtés ✓', 'aliments_intro', fiche.aliments_intro, 'Ex: carotte, courgette, poulet, poire…') +
+    ficheTextarea('Aliments à éviter ✗', 'aliments_eviter', fiche.aliments_eviter, 'Ex: miel (< 1 an), sel ajouté…')
+  );
+
+  // Vaccins
+  html += ficheSection('💉 Vaccins réalisés', 'vac', ficheVaccinsHTML(fiche));
+
+  html += '</div>';
+
+  html += '<div style="padding:14px 20px 0;display:flex;gap:10px;">';
+  html += '<button onclick="saveChildFiche(\'' + ficheKey + '\')" style="flex:1;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;color:#fff;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>';
+  html += '</div>';
+
+  html += '</div>';
+  overlay.innerHTML = html;
+  overlay.onclick = function(e){ if(e.target===overlay) document.body.removeChild(overlay); };
+  document.body.appendChild(overlay);
+}
+
+function ficheVaccinsHTML(fiche) {
+  var VACCINS = [
+    { label: '2 mois', items: ['Hexavalent (DTCaP-Hib-HepB)', 'Méningocoque B', 'Rotavirus'] },
+    { label: '4 mois', items: ['Hexavalent', 'Méningocoque B', 'Rotavirus'] },
+    { label: '5 mois', items: ['Méningocoque C'] },
+    { label: '11 mois', items: ['Hexavalent', 'Méningocoque B', 'Pneumocoque'] },
+    { label: '12 mois', items: ['ROR (rougeole-oreillons-rubéole)', 'Méningocoque C'] },
+    { label: '16-18 mois', items: ['ROR 2e dose'] },
+    { label: '6 ans', items: ['DTCaP rappel'] }
+  ];
+  var vaccsDone = fiche.vaccins_faits || {};
+  var html = '';
+  VACCINS.forEach(function(group){
+    html += '<div style="margin-bottom:10px;"><div style="font-size:11px;font-weight:700;color:#7B68EE;margin-bottom:6px;">' + group.label + '</div>';
+    group.items.forEach(function(v){
+      var key = v.replace(/[^a-z0-9]/gi,'_');
+      var done = vaccsDone[key] || false;
+      html += '<div onclick="toggleVaccin(this,\''+key+'\')" data-vkey="'+key+'" style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:'+(done?'#E8F5EE':'#F8F9FA')+';border-radius:10px;margin-bottom:4px;cursor:pointer;border:1.5px solid '+(done?'#5A9E82':'#EDE8DF')+';">';
+      html += '<div style="width:22px;height:22px;border-radius:50%;background:'+(done?'#5A9E82':'#EDE8DF')+';display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex-shrink:0;font-weight:800;">'+(done?'✓':'')+'</div>';
+      html += '<div style="font-size:12px;font-weight:600;color:'+(done?'#5A9E82':'#7F8C8D')+';flex:1;">' + v + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  return html;
+}
+
+var _ficheVaccins = {};
+function toggleVaccin(el, key) {
+  _ficheVaccins[key] = !_ficheVaccins[key];
+  var done = _ficheVaccins[key];
+  el.style.background = done ? '#E8F5EE' : '#F8F9FA';
+  el.style.borderColor = done ? '#5A9E82' : '#EDE8DF';
+  var circle = el.querySelector('div');
+  if (circle) { circle.style.background = done ? '#5A9E82' : '#EDE8DF'; circle.textContent = done ? '✓' : ''; }
+  var label = el.querySelectorAll('div')[1];
+  if (label) label.style.color = done ? '#5A9E82' : '#7F8C8D';
+}
+
+function saveChildFiche(ficheKey) {
+  var existingFiche = JSON.parse(localStorage.getItem(ficheKey) || "{}");
+  var fields = document.querySelectorAll("#fiche-overlay [data-key]");
+  fields.forEach(function(f){ existingFiche[f.dataset.key] = f.value || f.textContent; });
+  existingFiche.vaccins_faits = Object.assign(existingFiche.vaccins_faits || {}, _ficheVaccins);
+  localStorage.setItem(ficheKey, JSON.stringify(existingFiche));
+  var o = document.getElementById("fiche-overlay");
+  if (o) document.body.removeChild(o);
+  showToast("Fiche enregistrée ✓");
 }
 
 function removeFamilyAssmat(fi) {
@@ -7036,6 +7420,8 @@ function showJournalTab(tab) {
   updateJournalCounts();
 }
 
+var JTAB_LABELS = {repas:"Repas",sommeil:"Dodo",changes:"Changes",activites:"Éveil",medicaments:"Médic.",photos:"Photos",messages:"Messages"};
+
 function updateJournalCounts() {
   var j = getJournal();
   var tabs = ["repas","sommeil","changes","activites","medicaments","photos"];
@@ -7043,14 +7429,20 @@ function updateJournalCounts() {
     var el = document.getElementById("jcount-" + t);
     if (!el) return;
     var count = (j[t]||[]).length;
-    el.textContent = count > 0 ? count : "·";
-    el.style.color = count > 0 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.4)";
+    var label = JTAB_LABELS[t] || t;
+    el.innerHTML = count > 0
+      ? label + ' <span style="background:rgba(255,255,255,0.3);border-radius:8px;padding:1px 5px;font-size:8px;">' + count + '</span>'
+      : label;
+    el.style.color = count > 0 ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.5)";
   });
   var msgs = JSON.parse(localStorage.getItem(getMsgKey()) || "[]");
   var msgEl = document.getElementById("jcount-messages");
   if (msgEl) {
-    msgEl.textContent = msgs.length > 0 ? msgs.length : "·";
-    msgEl.style.color = msgs.length > 0 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.4)";
+    var mc = msgs.length;
+    msgEl.innerHTML = mc > 0
+      ? 'Messages <span style="background:rgba(255,255,255,0.3);border-radius:8px;padding:1px 5px;font-size:8px;">' + mc + '</span>'
+      : 'Messages';
+    msgEl.style.color = mc > 0 ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.5)";
   }
 }
 
