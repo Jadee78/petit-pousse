@@ -2467,7 +2467,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
 
     <!-- Personnes autorisées à récupérer -->
-    <div class="sec-hd" style="margin-top:4px;"><span class="sec-t">Récupérateurs autorisés</span><span onclick="openAddRecupAuthorized()" style="font-size:13px;color:#7B68EE;font-weight:600;cursor:pointer;">+ Ajouter</span></div>
+    <div class="sec-hd" style="margin-top:4px;"><span class="sec-t" data-child-tpl="Qui peut récupérer [name] ?">Qui peut récupérer Camille ?</span><span onclick="openAddRecupAuthorized()" style="font-size:13px;color:#7B68EE;font-weight:600;cursor:pointer;">+ Ajouter</span></div>
     <div style="padding:0 16px 24px;display:flex;flex-direction:column;gap:8px;" id="profil-recup-list">
       <div style="font-size:13px;color:#B0B8C1;font-style:italic;padding:4px 0;">Aucune personne ajoutée</div>
     </div>
@@ -7459,7 +7459,7 @@ function openAddRecupAuthorized() {
   };
   overlay.innerHTML = '<div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:24px 20px calc(32px + env(safe-area-inset-bottom,0px));box-sizing:border-box;">' +
     '<div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 20px;"></div>' +
-    '<div style="font-size:17px;font-weight:800;color:#2C3E50;margin-bottom:18px;">Ajouter un récupérateur</div>' +
+    '<div style="font-size:17px;font-weight:800;color:#2C3E50;margin-bottom:18px;">Ajouter une personne autorisée</div>' +
     inp("Prénom / lien", "ra-nom", "Ex: Mamie, Tata Sophie, Papa…") +
     inp("Téléphone", "ra-tel", "06 12 34 56 78", "tel") +
     inp("Heure de récupération", "ra-heure", "Ex: 17h30", "text") +
@@ -7478,7 +7478,7 @@ function saveRecupAuthorized() {
   var o = document.getElementById("recup-auth-overlay");
   if (o) document.body.removeChild(o);
   loadProfilRecupList();
-  showToast("Récupérateur ajouté ✓");
+  showToast("Personne ajoutée ✓");
 }
 
 function deleteRecupAuthorized(i) {
