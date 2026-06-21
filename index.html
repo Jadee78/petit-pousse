@@ -3364,8 +3364,10 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
         <div onclick="closeComptine()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;cursor:pointer;">&#215;</div>
       </div>
-      <div style="border-radius:16px;overflow:hidden;background:#000;position:relative;">
-        <iframe id="comptine-iframe" width="100%" height="220" style="display:block;border:none;" allow="autoplay; encrypted-media" allowfullscreen src=""></iframe>
+      <div id="comptine-ytbtn" style="border-radius:16px;background:linear-gradient(135deg,#FF4444,#CC0000);padding:28px 20px;text-align:center;cursor:pointer;" onclick="openComptineYoutube()">
+        <div style="font-size:36px;margin-bottom:10px;">&#9654;</div>
+        <div style="font-size:15px;font-weight:800;color:#fff;">Ouvrir sur YouTube</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;">S'ouvre dans votre navigateur</div>
       </div>
     </div>
   </div>
@@ -4677,17 +4679,17 @@ function toggleEveilAcquis(id) {
   renderEveilAcquis();
 }
 // ── Comptines — mini lecteur ──────────────────────────────────────────────
+var _comptineQuery = '';
 function playComptine(query, title) {
-  var m = document.getElementById('modal-comptine');
-  var iframe = document.getElementById('comptine-iframe');
+  _comptineQuery = query;
   var t = document.getElementById('comptine-title');
   if(t) t.textContent = title;
-  iframe.src = 'https://www.youtube-nocookie.com/embed?listType=search&list='+query+'&autoplay=1&rel=0';
-  m.style.display = 'flex';
+  document.getElementById('modal-comptine').style.display = 'flex';
+}
+function openComptineYoutube() {
+  window.open('https://www.youtube.com/results?search_query=' + _comptineQuery, '_blank');
 }
 function closeComptine() {
-  var iframe = document.getElementById('comptine-iframe');
-  iframe.src = '';
   document.getElementById('modal-comptine').style.display = 'none';
 }
 
@@ -7158,14 +7160,11 @@ function renderAssmatFamilies() {
       var planJour = planning[todayStr];
       var planTxt = planJour && planJour.actif ? planJour.debut + ' → ' + planJour.fin : null;
 
-      var avatar = child.avatar || (child.sex === 'fille' ? '👧' : '👦');
-      var photoKey = child.photo || null;
-
       html += '<div style="background:#fff;border-radius:18px;margin-bottom:10px;box-shadow:0 1px 8px rgba(0,0,0,0.05);overflow:hidden;border:1px solid #F0EEFF;">';
 
       // Ligne principale — clic → journal
       html += '<div onclick="openJournal(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;">';
-      html += '<div style="width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,#EEE8FF,#DDD5FF);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">' + avatar + '</div>';
+      html += childAvatarHtml(fam.parentId, fi, ci, child, 50, '14px');
       html += '<div style="flex:1;">';
       html += '<div style="font-size:16px;font-weight:700;color:#2C3E50;">' + child.name + '</div>';
       html += '<div style="font-size:12px;color:#9B8FD0;margin-top:2px;">' + assmatAgeStr(child.dob) + (planTxt ? ' · ' + planTxt : '') + '</div>';
@@ -7239,12 +7238,11 @@ function openChildFiche(parentId, fi, ci) {
   overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:910;display:flex;align-items:flex-end;";
   overlay.id = "fiche-overlay";
 
-  var avatar = child.avatar || (child.sex === 'fille' ? '👧' : '👦');
   var html = '<div onclick="event.stopPropagation()" style="background:#F8F9FA;border-radius:24px 24px 0 0;width:100%;max-height:88vh;overflow-y:auto;padding:0 0 calc(28px + env(safe-area-inset-bottom,0px));box-sizing:border-box;">';
 
   // Header violet
   html += '<div style="background:linear-gradient(135deg,#7B68EE,#5A50D0);border-radius:24px 24px 0 0;padding:20px 20px 22px;display:flex;align-items:center;gap:14px;">';
-  html += '<div style="width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">' + avatar + '</div>';
+  html += childAvatarHtml(parentId, fi, ci, child, 52, '50%');
   html += '<div style="flex:1;"><div style="font-size:20px;font-weight:800;color:#fff;">' + (child.name||'Enfant') + '</div>';
   html += '<div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:2px;">' + assmatAgeStr(child.dob) + '</div></div>';
   html += '<div onclick="document.body.removeChild(document.getElementById(\'fiche-overlay\'))" style="font-size:22px;color:rgba(255,255,255,0.6);cursor:pointer;padding:4px;">✕</div>';
@@ -7626,7 +7624,7 @@ function openJournal(parentId, familyIdx, childIdx) {
   var avatarEl = document.getElementById("journal-child-avatar");
   if (nameEl) nameEl.textContent = child.name;
   if (dateEl) dateEl.textContent = new Date().toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
-  if (avatarEl) avatarEl.textContent = child.avatar || (child.sex==='fille'?'👧':'👦');
+  if (avatarEl) avatarEl.innerHTML = childAvatarHtml(parentId, familyIdx, childIdx, child, 40, '50%');
   showJournalTab("repas");
   updateJournalCounts();
   hideAllScreens();
@@ -8172,6 +8170,86 @@ function renderInfosTab() {
 }
 
 // Étendre renderJournalTab pour les nouveaux onglets
+// ── Avatars enfants (illustration + photo) ──
+var _photoUploadParentId = null, _photoUploadFamilyIdx = null, _photoUploadChildIdx = null;
+
+function svgBoy(s) {
+  s = s || 50;
+  return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">'
+    +'<ellipse cx="25" cy="17" rx="9" ry="10" fill="#FECBA1"/>'
+    +'<path d="M16 13 Q16 5 25 5 Q34 5 34 13" fill="#7B4F2E"/>'
+    +'<circle cx="21.5" cy="16" r="1.6" fill="#3D2B1F"/>'
+    +'<circle cx="28.5" cy="16" r="1.6" fill="#3D2B1F"/>'
+    +'<path d="M22 20 Q25 22.5 28 20" stroke="#D4786A" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
+    +'<rect x="22" y="26" width="6" height="3" fill="#FECBA1"/>'
+    +'<path d="M14 29 Q14 29 14 43 Q14 44 15 44 L35 44 Q36 44 36 43 L36 29 Z" fill="#5B9BD5"/>'
+    +'<path d="M21 29 Q25 33 29 29" fill="#4A88C5"/>'
+    +'<path d="M14 31 L6 41" stroke="#FECBA1" stroke-width="5" stroke-linecap="round"/>'
+    +'<path d="M36 31 L44 41" stroke="#FECBA1" stroke-width="5" stroke-linecap="round"/>'
+    +'<rect x="15" y="43" width="8" height="7" rx="3.5" fill="#2C3E50"/>'
+    +'<rect x="27" y="43" width="8" height="7" rx="3.5" fill="#2C3E50"/>'
+    +'</svg>';
+}
+
+function svgGirl(s) {
+  s = s || 50;
+  return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">'
+    +'<ellipse cx="25" cy="17" rx="11" ry="13" fill="#D4689A"/>'
+    +'<ellipse cx="25" cy="16" rx="9" ry="10" fill="#FECBA1"/>'
+    +'<ellipse cx="14" cy="23" rx="3.5" ry="6.5" fill="#D4689A"/>'
+    +'<ellipse cx="36" cy="23" rx="3.5" ry="6.5" fill="#D4689A"/>'
+    +'<circle cx="21.5" cy="15" r="1.6" fill="#3D2B1F"/>'
+    +'<circle cx="28.5" cy="15" r="1.6" fill="#3D2B1F"/>'
+    +'<path d="M22 19 Q25 21.5 28 19" stroke="#D4786A" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
+    +'<rect x="22" y="25" width="6" height="3" fill="#FECBA1"/>'
+    +'<path d="M16 27 L11 50 L39 50 L34 27 Z" fill="#F07EBF"/>'
+    +'<path d="M21 27 Q25 31 29 27" fill="#E060A8"/>'
+    +'<path d="M16 30 L8 41" stroke="#FECBA1" stroke-width="5" stroke-linecap="round"/>'
+    +'<path d="M34 30 L42 41" stroke="#FECBA1" stroke-width="5" stroke-linecap="round"/>'
+    +'</svg>';
+}
+
+function getChildPhoto(parentId, ci) {
+  return localStorage.getItem('assmat_child_photo_' + parentId + '_' + ci) || null;
+}
+
+function childAvatarHtml(parentId, fi, ci, child, size, radius, clickable) {
+  var s = size || 50; var r = radius !== undefined ? radius : '14px';
+  var photo = getChildPhoto(parentId, ci);
+  var onclick = clickable !== false ? 'onclick="event.stopPropagation();uploadChildPhoto(\''+parentId+'\','+fi+','+ci+')" ' : '';
+  var wrap = 'style="width:'+s+'px;height:'+s+'px;border-radius:'+r+';overflow:hidden;flex-shrink:0;cursor:pointer;position:relative;"';
+  if (photo) {
+    return '<div '+onclick+wrap+'><img src="'+photo+'" style="width:100%;height:100%;object-fit:cover;display:block;"></div>';
+  }
+  var isFille = child.sex === 'fille';
+  var bg = isFille ? 'linear-gradient(135deg,#FFE4F0,#FFD0E6)' : 'linear-gradient(135deg,#E0EEFF,#C8DFFF)';
+  return '<div '+onclick+'style="width:'+s+'px;height:'+s+'px;border-radius:'+r+';overflow:hidden;flex-shrink:0;cursor:pointer;background:'+bg+';display:flex;align-items:center;justify-content:center;">'+(isFille ? svgGirl(Math.round(s*0.85)) : svgBoy(Math.round(s*0.85)))+'</div>';
+}
+
+function uploadChildPhoto(parentId, fi, ci) {
+  _photoUploadParentId = parentId;
+  _photoUploadFamilyIdx = fi;
+  _photoUploadChildIdx = ci;
+  document.getElementById('child-photo-input').click();
+}
+
+(function(){
+  var inp = document.createElement('input');
+  inp.type = 'file'; inp.id = 'child-photo-input'; inp.accept = 'image/*'; inp.style.display = 'none';
+  inp.addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    if (!file || _photoUploadParentId === null) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      localStorage.setItem('assmat_child_photo_' + _photoUploadParentId + '_' + _photoUploadChildIdx, ev.target.result);
+      renderAssmatFamilies();
+      inp.value = '';
+    };
+    reader.readAsDataURL(file);
+  });
+  document.body.appendChild(inp);
+})();
+
 var _origRenderJournalTab = renderJournalTab;
 renderJournalTab = function(tab) {
   if (tab === "messages") { renderMessages(); return; }
