@@ -6857,13 +6857,33 @@ async function openParentMessaging() {
 async function sendParentMessage() {
   var input = document.getElementById("parent-msg-input");
   if (!input || !input.value.trim()) return;
-  var cfg = JSON.parse(localStorage.getItem("parent_assmat_config")||"{}");
   if (!sb || !currentUser) { showToast("Connexion requise"); return; }
-  if (!cfg.assmat_id) { showToast("Ouvre d'abord le journal pour lier ton assmat"); return; }
+  var cfg = JSON.parse(localStorage.getItem("parent_assmat_config")||"{}");
+  var assmatId = cfg.assmat_id;
+
+  // Si pas encore connu, on le cherche dans les messages reçus ou le journal
+  if (!assmatId) {
+    try {
+      var r = await sb.from("assmat_messages").select("assmat_id").eq("parent_id", currentUser.id).limit(1);
+      if (r.data && r.data[0]) assmatId = r.data[0].assmat_id;
+    } catch(e) {}
+  }
+  if (!assmatId) {
+    try {
+      var r2 = await sb.from("assmat_journals").select("assmat_id").eq("parent_id", currentUser.id).limit(1);
+      if (r2.data && r2.data[0]) assmatId = r2.data[0].assmat_id;
+    } catch(e) {}
+  }
+  if (!assmatId) { showToast("Aucune assmat liée — demande-lui de remplir le journal une fois"); return; }
+
+  // Sauvegarder pour les prochaines fois
+  cfg.assmat_id = assmatId;
+  localStorage.setItem("parent_assmat_config", JSON.stringify(cfg));
+
   var texte = input.value.trim();
   input.value = "";
   try {
-    var { error } = await sb.from("assmat_messages").insert({ parent_id: currentUser.id, assmat_id: cfg.assmat_id, texte: texte, de: "parent" });
+    var { error } = await sb.from("assmat_messages").insert({ parent_id: currentUser.id, assmat_id: assmatId, texte: texte, de: "parent" });
     if (error) { showToast("Erreur : " + error.message); return; }
     var o = document.getElementById("parent-msg-overlay");
     if (o) { document.body.removeChild(o); openParentMessaging(); }
