@@ -2827,10 +2827,16 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div id="journal-tab-medicaments" style="display:none;"><div id="journal-medicaments-list"></div></div>
       <div id="journal-tab-photos" style="display:none;">
         <div id="journal-photos-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;"></div>
-        <label style="display:block;width:100%;background:#F0EEFF;border:1.5px dashed #C0B8E8;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#7B68EE;text-align:center;cursor:pointer;margin-top:10px;box-sizing:border-box;">
-          📸 Ajouter une photo
-          <input type="file" accept="image/*" capture="environment" onchange="addJournalPhoto(this)" style="display:none;">
-        </label>
+        <div style="display:flex;gap:10px;margin-top:12px;">
+          <label style="flex:1;background:#F0EEFF;border:1.5px dashed #C0B8E8;border-radius:14px;padding:14px 10px;font-size:12px;font-weight:700;color:#7B68EE;text-align:center;cursor:pointer;box-sizing:border-box;line-height:1.4;">
+            📸<br>Caméra
+            <input type="file" accept="image/*" capture="environment" onchange="addJournalPhoto(this)" style="display:none;">
+          </label>
+          <label style="flex:1;background:#EEE8FF;border:1.5px dashed #C0B8E8;border-radius:14px;padding:14px 10px;font-size:12px;font-weight:700;color:#7B68EE;text-align:center;cursor:pointer;box-sizing:border-box;line-height:1.4;">
+            🖼️<br>Pellicule
+            <input type="file" accept="image/*" onchange="addJournalPhoto(this)" style="display:none;">
+          </label>
+        </div>
       </div>
 
       <!-- MESSAGES -->
@@ -3860,6 +3866,10 @@ function showAssmatInterface() {
   var el = document.getElementById("screen-assmat");
   if (el) { el.style.display = "block"; el.classList.add("active"); }
   document.getElementById("tabbar").style.display = "none";
+  var plant = document.getElementById("ob-plant");
+  if (plant) plant.style.display = "none";
+  var dots = document.getElementById("ob-dots");
+  if (dots) dots.style.display = "none";
   initAssmatScreen();
 }
 
@@ -6611,6 +6621,7 @@ function renderAssmatFamilies() {
   }
 
   var today = new Date().toISOString().slice(0,10);
+  var todayStr = new Date().toLocaleDateString('fr-FR', { weekday:'long' }).toLowerCase();
   var totalChildren = 0, totalEntries = 0;
 
   var html = '';
@@ -6622,21 +6633,37 @@ function renderAssmatFamilies() {
       var repas = (journal.repas||[]).length;
       var sommeil = (journal.sommeil||[]).length;
       var changes = (journal.changes||[]).length;
-      var count = repas + sommeil + changes + (journal.activites||[]).length;
-      totalEntries += count;
-      var avatar = child.avatar || (child.sex === 'fille' ? '👧' : '👦');
+      totalEntries += repas + sommeil + changes + (journal.activites||[]).length;
 
-      html += '<div onclick="openJournal(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="background:#fff;border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);cursor:pointer;display:flex;align-items:center;gap:14px;border-left:4px solid #7B68EE;">';
-      html += '<div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#EEE8FF,#D8D0FF);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">' + avatar + '</div>';
+      var planning = JSON.parse(localStorage.getItem("assmat_planning_" + fam.parentId + "_" + ci) || "{}");
+      var planJour = planning[todayStr];
+      var planTxt = planJour && planJour.actif ? planJour.debut + ' → ' + planJour.fin : null;
+
+      var avatar = child.avatar || (child.sex === 'fille' ? '👧' : '👦');
+      var photoKey = child.photo || null;
+
+      html += '<div onclick="openJournal(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="background:#fff;border-radius:22px;margin-bottom:14px;box-shadow:0 3px 16px rgba(123,104,238,0.12);cursor:pointer;overflow:hidden;">';
+
+      // Bandeau couleur en haut
+      html += '<div style="background:linear-gradient(135deg,#7B68EE,#5A50D0);padding:16px 18px 14px;display:flex;align-items:center;gap:14px;">';
+      html += '<div style="width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;border:2px solid rgba(255,255,255,0.4);">' + avatar + '</div>';
       html += '<div style="flex:1;">';
-      html += '<div style="font-size:16px;font-weight:800;color:#2C3E50;">' + child.name + '</div>';
-      html += '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;">' + assmatAgeStr(child.dob) + '</div>';
-      html += '<div style="display:flex;gap:8px;margin-top:8px;">';
-      html += assmatStatPill('🍽️', repas, '#FFF3E8', '#E8903A');
-      html += assmatStatPill('😴', sommeil, '#EEE8FF', '#7B68EE');
-      html += assmatStatPill('🚿', changes, '#E8F5EE', '#5A9E82');
-      html += '</div></div>';
-      html += '<div style="font-size:20px;color:#C0B8E8;">›</div>';
+      html += '<div style="font-size:19px;font-weight:800;color:#fff;letter-spacing:-0.3px;">' + child.name + '</div>';
+      html += '<div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:2px;">' + assmatAgeStr(child.dob) + (planTxt ? ' · ' + planTxt : '') + '</div>';
+      html += '</div>';
+      html += '<div style="font-size:22px;color:rgba(255,255,255,0.5);">›</div>';
+      html += '</div>';
+
+      // Stats du bas
+      html += '<div style="padding:12px 18px;display:flex;gap:10px;">';
+      html += assmatStatPillFull('🍽️', repas, 'repas', '#FFF3E8', '#E8903A');
+      html += assmatStatPillFull('😴', sommeil, 'dodo', '#EEE8FF', '#7B68EE');
+      html += assmatStatPillFull('🚿', changes, 'changes', '#E8F5EE', '#5A9E82');
+      html += '<div style="flex:1;display:flex;align-items:center;justify-content:flex-end;">';
+      html += '<div style="font-size:11px;font-weight:600;color:' + ((repas+sommeil+changes)>0 ? '#5A9E82' : '#B0B8C1') + ';">';
+      html += (repas+sommeil+changes) > 0 ? 'Journal rempli ✓' : 'Journal vide';
+      html += '</div></div></div>';
+
       html += '</div>';
     });
   });
@@ -6657,6 +6684,13 @@ function assmatStatPill(emoji, count, bg, color) {
   return '<div style="display:flex;align-items:center;gap:4px;background:' + bg + ';border-radius:10px;padding:4px 8px;">' +
     '<span style="font-size:12px;">' + emoji + '</span>' +
     '<span style="font-size:11px;font-weight:700;color:' + color + ';">' + count + '</span></div>';
+}
+
+function assmatStatPillFull(emoji, count, label, bg, color) {
+  return '<div style="display:flex;flex-direction:column;align-items:center;gap:2px;background:' + bg + ';border-radius:12px;padding:8px 10px;min-width:52px;">' +
+    '<span style="font-size:16px;">' + emoji + '</span>' +
+    '<span style="font-size:13px;font-weight:800;color:' + color + ';">' + count + '</span>' +
+    '<span style="font-size:9px;font-weight:600;color:' + color + ';opacity:0.7;">' + label + '</span></div>';
 }
 
 function assmatAgeStr(dob) {
