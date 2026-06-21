@@ -3160,11 +3160,12 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
   </div>
 
   <!-- PANNEAU NOTIFICATIONS -->
-  <div id="modal-notif" style="display:none;position:fixed;inset:0;z-index:700;align-items:flex-end;justify-content:center;background:rgba(44,62,80,0.5);">
-    <div style="background:#F7F5EF;border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:440px;max-height:85vh;overflow-y:auto;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-        <div style="font-size:17px;font-weight:800;color:#2C3E50;">&#128276; Notifications</div>
-        <div onclick="closeNotifPanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#7F8C8D;">&#215;</div>
+  <div id="modal-notif" onclick="closeNotifPanel()" style="display:none;position:fixed;inset:0;z-index:700;align-items:flex-end;justify-content:center;background:rgba(20,30,40,0.6);">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:28px 28px 0 0;padding:20px 20px calc(32px + env(safe-area-inset-bottom,0px));width:100%;max-width:440px;max-height:80vh;overflow-y:auto;box-shadow:0 -4px 30px rgba(0,0,0,0.15);">
+      <div style="width:36px;height:4px;background:#E0E5EA;border-radius:4px;margin:0 auto 18px;"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div style="font-size:17px;font-weight:800;color:#2C3E50;">🔔 Notifications</div>
+        <div onclick="closeNotifPanel()" style="width:32px;height:32px;border-radius:50%;background:#F0F2F5;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#7F8C8D;">✕</div>
       </div>
       <div id="notif-list"></div>
     </div>
@@ -5986,11 +5987,27 @@ function openNotifPanel() {
   var notifs = buildNotifs();
   var list = document.getElementById("notif-list");
   if (!notifs.length) {
-    list.innerHTML = '<div style="text-align:center;padding:30px 0;"><div style="font-size:48px;margin-bottom:12px;">&#10003;</div><div style="font-size:15px;font-weight:700;color:#2C3E50;margin-bottom:6px;">Tout est à jour !</div><div style="font-size:13px;color:#7F8C8D;">Aucune alerte pour le moment</div></div>';
+    list.innerHTML = [
+      '<div style="text-align:center;padding:40px 0;">',
+        '<div style="font-size:48px;margin-bottom:12px;">✅</div>',
+        '<div style="font-size:15px;font-weight:700;color:#2C3E50;margin-bottom:6px;">Tout est à jour !</div>',
+        '<div style="font-size:13px;color:#9BA8B5;">Aucune alerte pour le moment</div>',
+      '</div>'
+    ].join('');
   } else {
-    var h = "";
+    var h = '';
     notifs.forEach(function(n) {
-      h += '<div '+(n.action?'onclick="'+n.action+';closeNotifPanel()"':'')+' style="background:'+n.bg+';border-radius:16px;padding:14px 15px;display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;border-left:3px solid '+n.color+';'+(n.action?'cursor:pointer;':'')+'"><div style="font-size:24px;flex-shrink:0;">'+n.icon+'</div><div style="flex:1;"><div style="font-size:13px;font-weight:800;color:#2C3E50;">'+n.title+'</div><div style="font-size:12px;color:#7F8C8D;margin-top:3px;line-height:1.45;">'+n.sub+'</div></div></div>';
+      var bg = n.bg || '#F7F5EF';
+      var color = n.color || '#2C3E50';
+      var icon = n.icon || '🔔';
+      var title = n.title || '';
+      var sub = n.sub || '';
+      h += '<div style="background:' + bg + ';border-radius:16px;padding:16px;display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;border-left:4px solid ' + color + ';box-shadow:0 1px 6px rgba(0,0,0,0.06);"' + (n.action ? ' onclick="' + n.action.replace(/"/g, '&quot;') + ';closeNotifPanel()" style="cursor:pointer;"' : '') + '>';
+      h += '<div style="font-size:26px;flex-shrink:0;line-height:1.2;">' + icon + '</div>';
+      h += '<div style="flex:1;min-width:0;">';
+      h += '<div style="font-size:14px;font-weight:800;color:#2C3E50;margin-bottom:4px;">' + title + '</div>';
+      h += '<div style="font-size:12px;color:#5A6A7A;line-height:1.5;">' + sub + '</div>';
+      h += '</div></div>';
     });
     list.innerHTML = h;
   }
