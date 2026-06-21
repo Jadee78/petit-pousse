@@ -2458,6 +2458,20 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
 
+    <!-- Mon assmat -->
+    <div class="sec-hd" style="margin-top:4px;"><span class="sec-t">Mon assistante maternelle</span><span onclick="openEditAssmatContact()" style="font-size:13px;color:#7B68EE;font-weight:600;cursor:pointer;">Modifier</span></div>
+    <div style="padding:0 16px 14px;">
+      <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);" id="profil-assmat-contact-card">
+        <div style="padding:14px 16px;text-align:center;font-size:13px;color:#B0B8C1;font-style:italic;">Pas encore renseigné — clique sur Modifier</div>
+      </div>
+    </div>
+
+    <!-- Personnes autorisées à récupérer -->
+    <div class="sec-hd" style="margin-top:4px;"><span class="sec-t">Récupérateurs autorisés</span><span onclick="openAddRecupAuthorized()" style="font-size:13px;color:#7B68EE;font-weight:600;cursor:pointer;">+ Ajouter</span></div>
+    <div style="padding:0 16px 24px;display:flex;flex-direction:column;gap:8px;" id="profil-recup-list">
+      <div style="font-size:13px;color:#B0B8C1;font-style:italic;padding:4px 0;">Aucune personne ajoutée</div>
+    </div>
+
   </div>
 
   <!-- MENUS SEMAINE -->
@@ -2920,8 +2934,9 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div style="background:#fff;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
           <div style="font-size:13px;font-weight:800;color:#2C3E50;margin-bottom:12px;">🚗 Récupération ce soir</div>
           <div id="recup-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
-          <div style="display:flex;gap:8px;">
-            <input id="recup-input" type="text" placeholder="Qui vient récupérer ? (ex: Maman, Papa, Grand-père…)" style="flex:1;border:1.5px solid #EDE8DF;border-radius:12px;padding:10px 13px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;" onkeydown="if(event.key==='Enter')addRecup()">
+          <div style="display:flex;gap:8px;margin-bottom:6px;">
+            <input id="recup-input" type="text" placeholder="Nom (ex: Mamie, Papa…)" style="flex:1;border:1.5px solid #EDE8DF;border-radius:12px;padding:10px 13px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;">
+            <input id="recup-tel" type="tel" placeholder="Tel." style="width:110px;border:1.5px solid #EDE8DF;border-radius:12px;padding:10px 10px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;">
             <button onclick="addRecup()" style="background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;border-radius:12px;padding:10px 16px;font-size:13px;font-weight:700;color:#fff;font-family:Montserrat,sans-serif;cursor:pointer;">+</button>
           </div>
         </div>
@@ -3406,6 +3421,7 @@ function goTo(id) {
   if (id === 'menus') { loadMenusScreen(); }
   if (id === 'courses') { loadCoursesScreen(); }
   if (id === 'agenda') { loadAgendaScreen(); }
+  if (id === 'profil-enfant') { loadProfilAssmatContact(); loadProfilRecupList(); }
 }
 function goBack() {
   hist.pop();
@@ -7267,6 +7283,178 @@ function saveChildFiche(ficheKey) {
   showToast("Fiche enregistrée ✓");
 }
 
+// ─── Assmat contact côté parents ───
+
+function getAssmatContactKey() {
+  var profiles = JSON.parse(localStorage.getItem("childProfiles") || "[]");
+  var idx = parseInt(localStorage.getItem("activeChildIdx") || "0");
+  return "parent_assmat_contact_" + (profiles[idx] ? (profiles[idx].prenom||"child") : "child");
+}
+
+function loadProfilAssmatContact() {
+  var key = getAssmatContactKey();
+  var c = JSON.parse(localStorage.getItem(key) || "null");
+  var card = document.getElementById("profil-assmat-contact-card");
+  if (!card) return;
+  if (!c || (!c.nom && !c.tel && !c.adresse)) {
+    card.innerHTML = '<div style="padding:14px 16px;text-align:center;font-size:13px;color:#B0B8C1;font-style:italic;">Pas encore renseigné — clique sur Modifier</div>';
+    return;
+  }
+  var html = '';
+  if (c.nom) html += '<div style="padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:0.5px solid #F0EEFF;"><div style="font-size:18px;width:28px;text-align:center;">👤</div><div style="flex:1;"><div style="font-size:11px;color:#9B8FD0;font-weight:600;">NOM</div><div style="font-size:13px;font-weight:700;color:#2C3E50;">'+c.nom+'</div></div></div>';
+  if (c.tel) html += '<div style="padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:0.5px solid #F0EEFF;"><div style="font-size:18px;width:28px;text-align:center;">📞</div><div style="flex:1;"><div style="font-size:11px;color:#9B8FD0;font-weight:600;">TÉLÉPHONE</div><a href="tel:'+c.tel+'" style="font-size:13px;font-weight:700;color:#7B68EE;text-decoration:none;">'+c.tel+'</a></div></div>';
+  if (c.adresse) html += '<div style="padding:12px 16px;display:flex;align-items:center;gap:12px;"><div style="font-size:18px;width:28px;text-align:center;">📍</div><div style="flex:1;"><div style="font-size:11px;color:#9B8FD0;font-weight:600;">ADRESSE</div><div style="font-size:13px;font-weight:600;color:#2C3E50;">'+c.adresse+'</div></div></div>';
+  card.innerHTML = html;
+}
+
+function openEditAssmatContact() {
+  var key = getAssmatContactKey();
+  var c = JSON.parse(localStorage.getItem(key) || "{}");
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:900;display:flex;align-items:flex-end;";
+  overlay.id = "assmat-contact-overlay";
+  var inp = function(label, id, val, ph) {
+    return '<div style="margin-bottom:12px;"><div style="font-size:11px;font-weight:700;color:#7B68EE;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">'+label+'</div>' +
+      '<input id="'+id+'" type="text" value="'+(val||'').replace(/"/g,'&quot;')+'" placeholder="'+ph+'" style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:11px 14px;font-size:14px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;"></div>';
+  };
+  overlay.innerHTML = '<div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:24px 20px calc(32px + env(safe-area-inset-bottom,0px));box-sizing:border-box;">' +
+    '<div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 20px;"></div>' +
+    '<div style="font-size:17px;font-weight:800;color:#2C3E50;margin-bottom:18px;">Coordonnées de l\'assmat</div>' +
+    inp("Prénom / nom", "ac-nom", c.nom, "Ex: Nathalie Martin") +
+    inp("Téléphone", "ac-tel", c.tel, "06 12 34 56 78") +
+    inp("Adresse", "ac-adresse", c.adresse, "12 rue des Lilas, Paris") +
+    '<button onclick="saveAssmatContactParent()" style="width:100%;background:linear-gradient(135deg,#7B68EE,#5A50D0);color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>' +
+    '</div>';
+  overlay.onclick = function(e){ if(e.target===overlay) document.body.removeChild(overlay); };
+  document.body.appendChild(overlay);
+}
+
+function saveAssmatContactParent() {
+  var key = getAssmatContactKey();
+  var c = {
+    nom: (document.getElementById("ac-nom")||{}).value||"",
+    tel: (document.getElementById("ac-tel")||{}).value||"",
+    adresse: (document.getElementById("ac-adresse")||{}).value||""
+  };
+  localStorage.setItem(key, JSON.stringify(c));
+  var o = document.getElementById("assmat-contact-overlay");
+  if (o) document.body.removeChild(o);
+  loadProfilAssmatContact();
+  showToast("Coordonnées enregistrées ✓");
+}
+
+// ─── Récupérateurs autorisés côté parents ───
+
+function getRecupAuthorizedKey() {
+  var profiles = JSON.parse(localStorage.getItem("childProfiles") || "[]");
+  var idx = parseInt(localStorage.getItem("activeChildIdx") || "0");
+  return "parent_recup_authorized_" + (profiles[idx] ? (profiles[idx].prenom||"child") : "child");
+}
+
+function loadProfilRecupList() {
+  var list = JSON.parse(localStorage.getItem(getRecupAuthorizedKey()) || "[]");
+  var container = document.getElementById("profil-recup-list");
+  if (!container) return;
+  if (!list.length) {
+    container.innerHTML = '<div style="font-size:13px;color:#B0B8C1;font-style:italic;padding:4px 0;">Aucune personne ajoutée</div>';
+    return;
+  }
+  container.innerHTML = list.map(function(p, i) {
+    return '<div style="background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 1px 8px rgba(0,0,0,0.04);display:flex;align-items:center;gap:12px;">' +
+      '<div style="width:38px;height:38px;border-radius:12px;background:#F0EEFF;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🚗</div>' +
+      '<div style="flex:1;">' +
+        '<div style="font-size:14px;font-weight:700;color:#2C3E50;">' + p.nom + '</div>' +
+        (p.tel ? '<div style="font-size:12px;color:#7B68EE;font-weight:600;margin-top:1px;">' + p.tel + '</div>' : '') +
+        (p.heure ? '<div style="font-size:11px;color:#9B8FD0;margin-top:2px;">Récupère à ' + p.heure + '</div>' : '') +
+      '</div>' +
+      '<button onclick="sharePickupMessage('+i+')" style="background:#F0EEFF;border:none;border-radius:10px;padding:7px 10px;font-size:11px;font-weight:700;color:#7B68EE;font-family:Montserrat,sans-serif;cursor:pointer;flex-shrink:0;">Partager</button>' +
+      '<div onclick="deleteRecupAuthorized('+i+')" style="font-size:16px;color:#C0C8D0;cursor:pointer;padding:4px;flex-shrink:0;">✕</div>' +
+    '</div>';
+  }).join('');
+}
+
+function openAddRecupAuthorized() {
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:900;display:flex;align-items:flex-end;";
+  overlay.id = "recup-auth-overlay";
+  var inp = function(label, id, ph, type) {
+    return '<div style="margin-bottom:12px;"><div style="font-size:11px;font-weight:700;color:#7B68EE;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">'+label+'</div>' +
+      '<input id="'+id+'" type="'+(type||'text')+'" placeholder="'+ph+'" style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:11px 14px;font-size:14px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;"></div>';
+  };
+  overlay.innerHTML = '<div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:24px 20px calc(32px + env(safe-area-inset-bottom,0px));box-sizing:border-box;">' +
+    '<div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 20px;"></div>' +
+    '<div style="font-size:17px;font-weight:800;color:#2C3E50;margin-bottom:18px;">Ajouter un récupérateur</div>' +
+    inp("Prénom / lien", "ra-nom", "Ex: Mamie, Tata Sophie, Papa…") +
+    inp("Téléphone", "ra-tel", "06 12 34 56 78", "tel") +
+    inp("Heure de récupération", "ra-heure", "Ex: 17h30", "text") +
+    '<button onclick="saveRecupAuthorized()" style="width:100%;background:linear-gradient(135deg,#7B68EE,#5A50D0);color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Ajouter</button>' +
+    '</div>';
+  overlay.onclick = function(e){ if(e.target===overlay) document.body.removeChild(overlay); };
+  document.body.appendChild(overlay);
+}
+
+function saveRecupAuthorized() {
+  var nom = (document.getElementById("ra-nom")||{}).value||"";
+  if (!nom.trim()) { showToast("Saisis un prénom"); return; }
+  var list = JSON.parse(localStorage.getItem(getRecupAuthorizedKey()) || "[]");
+  list.push({ nom: nom.trim(), tel: ((document.getElementById("ra-tel")||{}).value||"").trim(), heure: ((document.getElementById("ra-heure")||{}).value||"").trim() });
+  localStorage.setItem(getRecupAuthorizedKey(), JSON.stringify(list));
+  var o = document.getElementById("recup-auth-overlay");
+  if (o) document.body.removeChild(o);
+  loadProfilRecupList();
+  showToast("Récupérateur ajouté ✓");
+}
+
+function deleteRecupAuthorized(i) {
+  var list = JSON.parse(localStorage.getItem(getRecupAuthorizedKey()) || "[]");
+  list.splice(i, 1);
+  localStorage.setItem(getRecupAuthorizedKey(), JSON.stringify(list));
+  loadProfilRecupList();
+}
+
+function sharePickupMessage(i) {
+  var list = JSON.parse(localStorage.getItem(getRecupAuthorizedKey()) || "[]");
+  var p = list[i];
+  if (!p) return;
+  var profiles = JSON.parse(localStorage.getItem("childProfiles") || "[]");
+  var idx = parseInt(localStorage.getItem("activeChildIdx") || "0");
+  var enfant = profiles[idx] ? (profiles[idx].prenom || "l'enfant") : "l'enfant";
+  var ac = JSON.parse(localStorage.getItem(getAssmatContactKey()) || "{}");
+  var assmatNom = ac.nom || "l'assistante maternelle";
+  var assmatTel = ac.tel ? " (tél : " + ac.tel + ")" : "";
+  var assmatAdr = ac.adresse ? " — " + ac.adresse : "";
+  var heure = p.heure ? " à " + p.heure : "";
+  var msg = "Bonjour, " + p.nom + " viendra récupérer " + enfant + " chez " + assmatNom + assmatAdr + assmatTel + heure + ".\n" +
+    (p.tel ? "Son numéro : " + p.tel + "." : "") + "\nMerci !";
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(msg).then(function() {
+      showShareMessageOverlay(msg, true);
+    }).catch(function() { showShareMessageOverlay(msg, false); });
+  } else { showShareMessageOverlay(msg, false); }
+}
+
+function showShareMessageOverlay(msg, copied) {
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:900;display:flex;align-items:flex-end;";
+  overlay.innerHTML = '<div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:24px 20px calc(32px + env(safe-area-inset-bottom,0px));box-sizing:border-box;">' +
+    '<div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 16px;"></div>' +
+    '<div style="font-size:15px;font-weight:800;color:#2C3E50;margin-bottom:12px;">Message à partager</div>' +
+    '<div style="background:#F5F3FF;border-radius:14px;padding:16px;font-size:14px;line-height:1.7;color:#2C3E50;white-space:pre-wrap;margin-bottom:16px;border-left:3px solid #7B68EE;">' + msg + '</div>' +
+    (copied ? '<div style="text-align:center;font-size:13px;color:#5A9E82;font-weight:700;margin-bottom:12px;">Copié dans le presse-papier ✓</div>' : '') +
+    '<button onclick="copyAndClose(this.parentNode.parentNode, \''+encodeURIComponent(msg)+'\')" style="width:100%;background:linear-gradient(135deg,#7B68EE,#5A50D0);color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Copier le message</button>' +
+    '</div>';
+  overlay.onclick = function(e){ if(e.target===overlay) document.body.removeChild(overlay); };
+  document.body.appendChild(overlay);
+}
+
+function copyAndClose(overlay, encodedMsg) {
+  var msg = decodeURIComponent(encodedMsg);
+  if (navigator.clipboard) navigator.clipboard.writeText(msg);
+  if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+  showToast("Message copié ✓");
+}
+
 function removeFamilyAssmat(fi) {
   if (!confirm("Retirer cette famille ?")) return;
   var families = JSON.parse(localStorage.getItem("assmat_families") || "[]");
@@ -7779,11 +7967,13 @@ function getAuthorizedKey() {
 
 function addRecup() {
   var input = document.getElementById("recup-input");
+  var telInput = document.getElementById("recup-tel");
   if (!input || !input.value.trim()) return;
   var list = JSON.parse(localStorage.getItem(getRecupKey()) || "[]");
-  list.push(input.value.trim());
+  list.push({ nom: input.value.trim(), tel: (telInput ? telInput.value.trim() : "") });
   localStorage.setItem(getRecupKey(), JSON.stringify(list));
   input.value = "";
+  if (telInput) telInput.value = "";
   renderRecup();
 }
 
@@ -7803,9 +7993,14 @@ function renderRecup() {
     return;
   }
   container.innerHTML = list.map(function(p, i) {
+    var nom = typeof p === "string" ? p : (p.nom || "");
+    var tel = typeof p === "string" ? "" : (p.tel || "");
     return '<div style="display:flex;align-items:center;gap:10px;background:#F0EEFF;border-radius:12px;padding:10px 12px;">' +
       '<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🚗</div>' +
-      '<div style="flex:1;font-size:13px;font-weight:700;color:#2C3E50;">' + p + '</div>' +
+      '<div style="flex:1;">' +
+        '<div style="font-size:13px;font-weight:700;color:#2C3E50;">' + nom + '</div>' +
+        (tel ? '<a href="tel:'+tel+'" style="font-size:12px;color:#7B68EE;text-decoration:none;font-weight:600;">'+tel+'</a>' : '') +
+      '</div>' +
       '<div onclick="deleteRecup(' + i + ')" style="font-size:16px;color:#C0B8E8;cursor:pointer;padding:4px;">✕</div></div>';
   }).join("");
 }
