@@ -595,9 +595,12 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           <img src="logo.png" style="width:44px;height:44px;" />
           <span class="brand-name">Petit Pousse</span>
         </div>
-        <div class="bell-btn" onclick="openNotifPanel()" id="bell-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2C3E50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-          <div class="bell-dot" id="bell-dot" style="display:none;"></div>
+        <div onclick="refreshMeteo()" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;min-width:42px;">
+          <div id="meteo-icon" style="width:26px;height:26px;display:flex;align-items:center;justify-content:center;"></div>
+          <div id="meteo-temp" style="font-size:12px;font-weight:800;color:#2C3E50;line-height:1;">—</div>
+          <div id="meteo-ville" style="display:none;"></div>
+          <div id="meteo-desc" style="display:none;"></div>
+          <div id="meteo-ressenti" style="display:none;"></div>
         </div>
       </div>
       <div class="home-greeting-sub">Bonjour Jade !</div>
@@ -626,9 +629,9 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
         <div style="margin-left:4px;color:#7F8C8D;font-size:16px;">&#8250;</div>
       </div>
+      <!-- Ticker sous le prénom -->
+      <div id="home-ticker" onclick="openNotifPanel()" style="display:none;overflow:hidden;margin-top:10px;background:rgba(255,255,255,0.18);border-radius:12px;padding:7px 0;cursor:pointer;"><div class="ticker-inner" id="ticker-content"></div></div>
     </div>
-    <!-- Ticker notifications -->
-    <div id="home-ticker" style="display:none;margin-top:10px;" onclick="openNotifPanel()"><div class="ticker-inner" id="ticker-content"></div></div>
 
     <div class="milestone" id="home-milestone">
       <div class="ms-emoji"><svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><polygon points="20,4 24.5,15 36,15 27,22.5 30.5,34 20,27 9.5,34 13,22.5 4,15 15.5,15" fill="#F8D050" stroke="#E0A800" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
@@ -636,6 +639,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div class="ms-tag">Bient&#244;t</div>
         <div class="ms-title" id="home-milestone-title">9 mois dans 18 jours !</div>
         <div class="ms-sub" id="home-milestone-sub">Visite m&#233;dicale &#224; pr&#233;voir &#183; Nouvelles saveurs</div>
+        <div id="home-vacc-ms" style="display:none;font-size:11px;color:rgba(255,255,255,0.85);margin-top:5px;font-weight:600;"></div>
       </div>
     </div>
     <div class="alert-strip" id="home-vacc-strip">
@@ -645,16 +649,6 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div class="al-s" id="home-vacc-sub">DTCaP-Hib-HepB &#183; 3e injection &#183; Pense &#224; prendre RDV</div>
       </div>
     </div>
-    <!-- Météo compacte -->
-    <div id="home-meteo" onclick="refreshMeteo()" style="margin:10px 16px 0;background:rgba(234,244,255,0.9);border-radius:14px;padding:9px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;border:1px solid #D0E8FF;">
-      <div id="meteo-icon" style="flex-shrink:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;"></div>
-      <div style="font-size:17px;font-weight:800;color:#2C3E50;line-height:1;" id="meteo-temp">—</div>
-      <div style="flex:1;font-size:10px;color:#5A7EA8;font-weight:600;" id="meteo-ville">Chargement...</div>
-      <div id="meteo-desc" style="display:none;"></div>
-      <div id="meteo-ressenti" style="display:none;"></div>
-      <div style="font-size:14px;color:#AED6F1;">›</div>
-    </div>
-
     <!-- Carte allaitement accueil (visible si activé) -->
     <div id="home-allait-card" style="display:none;margin:10px 16px 0;" onclick="goTo('allait')" style="cursor:pointer;">
       <div style="background:linear-gradient(135deg,#EEF9F5,#D6F0E8);border-radius:18px;padding:16px;cursor:pointer;">
@@ -4607,12 +4601,10 @@ function updateDynamicHome(profile) {
   // Vaccin alert
   var vacc=calcNextVaccine(profile.dob);
   var strip=document.getElementById("home-vacc-strip");
-  if(vacc && strip) {
-    strip.style.display="flex";
-    var vt=document.getElementById("home-vacc-title");
-    var vs=document.getElementById("home-vacc-sub");
-    if(vt) vt.textContent = vacc.days<=0 ? "Vaccin à faire !" : "Vaccin dans "+vacc.days+" jour"+(vacc.days>1?"s":"");
-    if(vs) vs.textContent = vacc.short+" · Pense à prendre RDV";
+  var vaccMs=document.getElementById("home-vacc-ms");
+  if(vacc) {
+    if(strip) { strip.style.display="flex"; var vt=document.getElementById("home-vacc-title"); var vs=document.getElementById("home-vacc-sub"); if(vt) vt.textContent = vacc.days<=0 ? "Vaccin à faire !" : "Vaccin dans "+vacc.days+" jour"+(vacc.days>1?"s":""); if(vs) vs.textContent = vacc.short+" · Pense à prendre RDV"; }
+    if(vaccMs) { vaccMs.style.display="block"; vaccMs.textContent = "💉 "+(vacc.days<=0?"Vaccin à faire aujourd'hui !":vacc.days===1?"Vaccin demain — "+vacc.short:"Vaccin dans "+vacc.days+" jours — "+vacc.short); }
     // Module badge
     var mb=document.getElementById("mod-badge-vaccin");
     if(mb) mb.textContent = vacc.days<=0 ? "Urgent !" : "J-"+vacc.days;
@@ -4626,8 +4618,9 @@ function updateDynamicHome(profile) {
       vd.textContent=vacc.date.getDate()+" "+mo[vacc.date.getMonth()]+" "+vacc.date.getFullYear();
     }
     if(vdy) vdy.textContent = vacc.days<=0 ? "Dès maintenant !" : "Dans "+vacc.days+" jour"+(vacc.days>1?"s":"");
-  } else if(strip) {
-    strip.style.display="none";
+  } else {
+    if(strip) strip.style.display="none";
+    if(vaccMs) vaccMs.style.display="none";
   }
 }
 
@@ -8274,12 +8267,22 @@ function updateTicker() {
   var ticker = document.getElementById('home-ticker');
   var content = document.getElementById('ticker-content');
   if (!ticker || !content) return;
+  var messages = [];
   var notifs = buildNotifs();
-  if (!notifs.length) { ticker.style.display = 'none'; return; }
-  var sep = '<span style="color:#B0C8E0;margin:0 20px;">•</span>';
-  var items = notifs.map(function(n){
-    return '<span style="font-size:12px;font-weight:700;color:#2C3E50;">'+n.icon+' '+n.title+'</span>';
-  }).join(sep);
+  notifs.forEach(function(n){ messages.push(n.icon + ' ' + n.title); });
+  // Toujours ajouter le prochain vaccin si pas déjà en alerte
+  var profiles = JSON.parse(localStorage.getItem('childProfiles')||'[]');
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var profile = profiles[idx];
+  if (profile && profile.dob) {
+    var vacc = calcNextVaccine(profile.dob);
+    if (vacc && !notifs.some(function(n){ return n.title.indexOf('Vaccin')!==-1; })) {
+      messages.push('💉 Prochain vaccin : ' + vacc.short + ' — dans ' + vacc.days + ' jour' + (vacc.days>1?'s':''));
+    }
+  }
+  if (!messages.length) messages.push('🌱 Bienvenue dans Petit Pousse');
+  var sep = '<span style="color:rgba(255,255,255,0.35);margin:0 18px;">•</span>';
+  var items = messages.map(function(m){ return '<span style="font-size:11px;font-weight:700;color:#fff;">'+m+'</span>'; }).join(sep);
   content.innerHTML = items + sep + items;
   ticker.style.display = 'block';
 }
