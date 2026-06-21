@@ -180,6 +180,8 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .ob-ct-btn.active { background:#fff; color:var(--green); box-shadow:0 1px 8px rgba(0,0,0,0.08); }
 .jtab { border:none;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;color:#7F8C8D;font-family:Montserrat,sans-serif;cursor:pointer;white-space:nowrap;background:rgba(44,62,80,0.07); }
 .jtab.active { background:var(--green-bg);color:var(--green); }
+.jtab-pro { border:none;flex:1;min-width:52px;padding:10px 4px 12px;font-size:18px;font-family:Montserrat,sans-serif;cursor:pointer;color:rgba(255,255,255,0.55);background:transparent;border-bottom:3px solid transparent;transition:all .2s;text-align:center;line-height:1.4;font-weight:700; }
+.jtab-pro.active { color:#fff;border-bottom:3px solid #fff;background:rgba(255,255,255,0.1); }
 </style>
 </head>
 <body>
@@ -2755,74 +2757,79 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
   <!-- ÉCRAN ASSMAT -->
   <div id="screen-assmat" class="screen">
-    <div style="background:linear-gradient(160deg,#f0f8f4,#e8f5ee);padding:54px 20px 16px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
+    <!-- Hero -->
+    <div style="background:linear-gradient(135deg,#7B68EE,#5A50D0);padding:54px 20px 24px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.07);"></div>
+      <div style="position:absolute;bottom:-20px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.05);"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;position:relative;">
         <div>
-          <div style="font-size:22px;font-weight:800;color:#2C3E50;letter-spacing:-0.5px;">Espace pro 👩‍🍼</div>
-          <div style="font-size:13px;color:#7F8C8D;margin-top:2px;" id="assmat-email-display">—</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:600;margin-bottom:4px;">Bonjour 👋</div>
+          <div style="font-size:24px;font-weight:800;color:#fff;letter-spacing:-0.5px;">Espace pro</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:4px;" id="assmat-email-display">—</div>
         </div>
-        <button onclick="doLogout()" style="background:rgba(44,62,80,0.08);border:none;border-radius:12px;padding:8px 14px;font-size:12px;font-weight:700;color:#7F8C8D;font-family:Montserrat,sans-serif;cursor:pointer;">Déco</button>
+        <button onclick="doLogout()" style="background:rgba(255,255,255,0.15);border:none;border-radius:12px;padding:8px 14px;font-size:12px;font-weight:700;color:#fff;font-family:Montserrat,sans-serif;cursor:pointer;flex-shrink:0;">Déco</button>
       </div>
+      <!-- Stats du jour -->
+      <div id="assmat-stats-bar" style="display:flex;gap:10px;margin-top:18px;position:relative;"></div>
     </div>
-    <div style="padding:16px;">
+
+    <div style="padding:16px 16px 100px;">
+      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Mes familles</div>
       <div id="assmat-families-list"></div>
-      <button onclick="openQRScanner()" style="width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:18px;padding:18px;font-size:14px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:4px;">📷 Scanner le code famille</button>
-      <div onclick="addRole('parent')" style="background:#fff;border:1.5px dashed #EDE8DF;border-radius:14px;padding:14px 18px;cursor:pointer;text-align:center;margin-top:12px;">
-        <div style="font-size:20px;margin-bottom:4px;">👨‍👩‍👦</div>
-        <div style="font-size:13px;font-weight:700;color:#5A9E82;">Je suis aussi maman / papa</div>
-        <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Ajouter mes propres enfants à ce compte</div>
+
+      <!-- Bouton scanner -->
+      <button onclick="openQRScanner()" style="width:100%;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;border-radius:18px;padding:18px;font-size:14px;font-weight:700;color:#fff;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:4px;box-shadow:0 4px 16px rgba(123,104,238,0.35);display:flex;align-items:center;justify-content:center;gap:10px;">
+        <span style="font-size:20px;">📷</span> Ajouter une famille
+      </button>
+
+      <div onclick="addRole('parent')" style="background:#fff;border:1.5px solid #EDE8DF;border-radius:14px;padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;margin-top:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);">
+        <div style="font-size:28px;">👨‍👩‍👦</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Je suis aussi maman / papa</div>
+          <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Accéder à l'espace parents</div>
+        </div>
+        <div style="margin-left:auto;font-size:18px;color:#C0B8E8;">›</div>
       </div>
     </div>
   </div>
 
   <!-- ÉCRAN JOURNAL ASSMAT -->
-  <div id="screen-assmat-journal" class="screen">
-    <div style="background:linear-gradient(160deg,#f0f8f4,#e8f5ee);padding:54px 20px 12px;position:sticky;top:0;z-index:10;">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-        <div onclick="showAssmatInterface()" style="width:36px;height:36px;border-radius:50%;background:rgba(44,62,80,0.08);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;flex-shrink:0;">&#8249;</div>
-        <div>
-          <div style="font-size:18px;font-weight:800;color:#2C3E50;" id="journal-child-name">—</div>
-          <div style="font-size:12px;color:#7F8C8D;" id="journal-date-display">—</div>
+  <div id="screen-assmat-journal" class="screen" style="background:#F7F5FF;">
+    <!-- Header sticky -->
+    <div id="journal-header" style="background:linear-gradient(135deg,#7B68EE,#5A50D0);padding:54px 20px 0;position:sticky;top:0;z-index:10;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div onclick="showAssmatInterface()" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;cursor:pointer;flex-shrink:0;">&#8249;</div>
+        <div style="flex:1;">
+          <div style="font-size:19px;font-weight:800;color:#fff;" id="journal-child-name">—</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.7);" id="journal-date-display">—</div>
         </div>
+        <div id="journal-child-avatar" style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👶</div>
       </div>
-      <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;">
-        <button onclick="showJournalTab('repas')" class="jtab active" id="jtab-repas">🍽️ Repas</button>
-        <button onclick="showJournalTab('sommeil')" class="jtab" id="jtab-sommeil">😴 Sommeil</button>
-        <button onclick="showJournalTab('changes')" class="jtab" id="jtab-changes">🚿 Changes</button>
-        <button onclick="showJournalTab('activites')" class="jtab" id="jtab-activites">🧸 Activités</button>
-        <button onclick="showJournalTab('medicaments')" class="jtab" id="jtab-medicaments">💊 Médocs</button>
-        <button onclick="showJournalTab('photos')" class="jtab" id="jtab-photos">📸 Photos</button>
+      <!-- Onglets -->
+      <div style="display:flex;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -20px;padding:0 20px;">
+        <button onclick="showJournalTab('repas')" class="jtab-pro active" id="jtab-repas">🍽️<br><span style="font-size:9px;" id="jcount-repas">—</span></button>
+        <button onclick="showJournalTab('sommeil')" class="jtab-pro" id="jtab-sommeil">😴<br><span style="font-size:9px;" id="jcount-sommeil">—</span></button>
+        <button onclick="showJournalTab('changes')" class="jtab-pro" id="jtab-changes">🚿<br><span style="font-size:9px;" id="jcount-changes">—</span></button>
+        <button onclick="showJournalTab('activites')" class="jtab-pro" id="jtab-activites">🧸<br><span style="font-size:9px;" id="jcount-activites">—</span></button>
+        <button onclick="showJournalTab('medicaments')" class="jtab-pro" id="jtab-medicaments">💊<br><span style="font-size:9px;" id="jcount-medicaments">—</span></button>
+        <button onclick="showJournalTab('photos')" class="jtab-pro" id="jtab-photos">📸<br><span style="font-size:9px;" id="jcount-photos">—</span></button>
       </div>
     </div>
-    <div style="padding:16px;">
-      <div id="journal-tab-repas">
-        <div id="journal-repas-list"></div>
-        <button onclick="openAddJournal('repas')" style="width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:8px;">+ Ajouter un repas</button>
-      </div>
-      <div id="journal-tab-sommeil" style="display:none;">
-        <div id="journal-sommeil-list"></div>
-        <button onclick="openAddJournal('sommeil')" style="width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:8px;">+ Ajouter une sieste / nuit</button>
-      </div>
-      <div id="journal-tab-changes" style="display:none;">
-        <div id="journal-changes-list"></div>
-        <button onclick="openAddJournal('changes')" style="width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:8px;">+ Ajouter un change</button>
-      </div>
-      <div id="journal-tab-activites" style="display:none;">
-        <div id="journal-activites-list"></div>
-        <button onclick="openAddJournal('activites')" style="width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:8px;">+ Ajouter une activité</button>
-      </div>
-      <div id="journal-tab-medicaments" style="display:none;">
-        <div id="journal-medicaments-list"></div>
-        <button onclick="openAddJournal('medicaments')" style="width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:8px;">+ Ajouter un médicament</button>
-      </div>
+
+    <!-- Contenu onglets -->
+    <div style="padding:16px 16px 100px;min-height:50vh;">
+      <div id="journal-tab-repas"><div id="journal-repas-list"></div></div>
+      <div id="journal-tab-sommeil" style="display:none;"><div id="journal-sommeil-list"></div></div>
+      <div id="journal-tab-changes" style="display:none;"><div id="journal-changes-list"></div></div>
+      <div id="journal-tab-activites" style="display:none;"><div id="journal-activites-list"></div></div>
+      <div id="journal-tab-medicaments" style="display:none;"><div id="journal-medicaments-list"></div></div>
       <div id="journal-tab-photos" style="display:none;">
         <div id="journal-photos-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;"></div>
-        <label style="display:block;width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#5A9E82;text-align:center;cursor:pointer;margin-top:8px;box-sizing:border-box;">
-          📸 Ajouter une photo
-          <input type="file" accept="image/*" capture="environment" onchange="addJournalPhoto(this)" style="display:none;">
-        </label>
       </div>
     </div>
+
+    <!-- Bouton + flottant -->
+    <div id="journal-fab" onclick="openAddJournalCurrent()" style="position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));right:20px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);box-shadow:0 4px 20px rgba(123,104,238,0.45);display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;cursor:pointer;z-index:50;line-height:1;">+</div>
   </div>
 
   <!-- MODAL QR SCANNER -->
@@ -6548,30 +6555,61 @@ function renderAssmatFamilies() {
   var families = JSON.parse(localStorage.getItem("assmat_families") || "[]");
   var container = document.getElementById("assmat-families-list");
   if (!container) return;
+
   if (families.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:40px 16px;"><div style="font-size:52px;margin-bottom:12px;">👨‍👩‍👦</div><div style="font-size:15px;font-weight:700;color:#2C3E50;margin-bottom:6px;">Aucune famille liée</div><div style="font-size:13px;color:#7F8C8D;line-height:1.6;">Scanne le QR code d\'une famille pour commencer à remplir son journal</div></div>';
+    container.innerHTML = '<div style="text-align:center;padding:40px 16px 20px;"><div style="font-size:52px;margin-bottom:12px;">👶</div><div style="font-size:15px;font-weight:700;color:#2C3E50;margin-bottom:6px;">Aucun enfant gardé</div><div style="font-size:13px;color:#7F8C8D;line-height:1.6;">Scanne le QR code des parents pour<br>commencer à remplir le journal</div></div>';
+    var statsBar = document.getElementById("assmat-stats-bar");
+    if (statsBar) statsBar.innerHTML = '';
     return;
   }
+
   var today = new Date().toISOString().slice(0,10);
+  var totalChildren = 0, totalEntries = 0;
+
   var html = '';
   families.forEach(function(fam, fi) {
-    html += '<div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.05);margin-bottom:14px;">';
-    html += '<div style="padding:12px 16px 10px;background:#EEF9F5;border-bottom:0.5px solid #E0F0E8;"><div style="font-size:11px;font-weight:700;color:#5A9E82;text-transform:uppercase;letter-spacing:0.5px;">Famille ' + (fam.parentName || fam.parentEmail || 'Famille ' + (fi+1)) + '</div></div>';
     fam.children.forEach(function(child, ci) {
+      totalChildren++;
       var jkey = "assmat_j_" + fam.parentId + "_" + ci + "_" + today;
       var journal = JSON.parse(localStorage.getItem(jkey) || "{}");
-      var count = ((journal.repas||[]).length + (journal.sommeil||[]).length + (journal.changes||[]).length + (journal.activites||[]).length);
+      var repas = (journal.repas||[]).length;
+      var sommeil = (journal.sommeil||[]).length;
+      var changes = (journal.changes||[]).length;
+      var count = repas + sommeil + changes + (journal.activites||[]).length;
+      totalEntries += count;
       var avatar = child.avatar || (child.sex === 'fille' ? '👧' : '👦');
-      html += '<div onclick="openJournal(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;border-bottom:0.5px solid #EDE8DF;">';
-      html += '<div style="font-size:30px;">' + avatar + '</div>';
-      html += '<div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">' + child.name + '</div>';
-      html += '<div style="font-size:12px;color:#7F8C8D;">' + assmatAgeStr(child.dob) + (count ? ' · <span style="color:#5A9E82;font-weight:600;">' + count + ' entrée(s) aujourd\'hui</span>' : ' · Journal vide') + '</div></div>';
-      html += '<div style="font-size:18px;color:#A8DFCA;font-weight:700;">›</div></div>';
+
+      html += '<div onclick="openJournal(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="background:#fff;border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);cursor:pointer;display:flex;align-items:center;gap:14px;border-left:4px solid #7B68EE;">';
+      html += '<div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#EEE8FF,#D8D0FF);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">' + avatar + '</div>';
+      html += '<div style="flex:1;">';
+      html += '<div style="font-size:16px;font-weight:800;color:#2C3E50;">' + child.name + '</div>';
+      html += '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;">' + assmatAgeStr(child.dob) + '</div>';
+      html += '<div style="display:flex;gap:8px;margin-top:8px;">';
+      html += assmatStatPill('🍽️', repas, '#FFF3E8', '#E8903A');
+      html += assmatStatPill('😴', sommeil, '#EEE8FF', '#7B68EE');
+      html += assmatStatPill('🚿', changes, '#E8F5EE', '#5A9E82');
+      html += '</div></div>';
+      html += '<div style="font-size:20px;color:#C0B8E8;">›</div>';
+      html += '</div>';
     });
-    html += '<div onclick="removeFamilyAssmat(' + fi + ')" style="padding:10px 16px;text-align:center;cursor:pointer;"><div style="font-size:12px;font-weight:600;color:#E74C3C;">Retirer cette famille</div></div>';
-    html += '</div>';
   });
+
+  html += '<div onclick="openGererFamilles()" style="text-align:center;padding:4px;cursor:pointer;margin-bottom:8px;"><div style="font-size:12px;color:#B0A8D0;">Gérer les familles ›</div></div>';
   container.innerHTML = html;
+
+  var statsBar = document.getElementById("assmat-stats-bar");
+  if (statsBar) {
+    statsBar.innerHTML =
+      '<div style="flex:1;background:rgba(255,255,255,0.15);border-radius:14px;padding:10px 12px;text-align:center;"><div style="font-size:20px;font-weight:800;color:#fff;">' + totalChildren + '</div><div style="font-size:10px;color:rgba(255,255,255,0.7);font-weight:600;margin-top:2px;">enfant(s)</div></div>' +
+      '<div style="flex:1;background:rgba(255,255,255,0.15);border-radius:14px;padding:10px 12px;text-align:center;"><div style="font-size:20px;font-weight:800;color:#fff;">' + totalEntries + '</div><div style="font-size:10px;color:rgba(255,255,255,0.7);font-weight:600;margin-top:2px;">entrées auj.</div></div>' +
+      '<div style="flex:1;background:rgba(255,255,255,0.15);border-radius:14px;padding:10px 12px;text-align:center;"><div style="font-size:20px;font-weight:800;color:#fff;">' + new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}) + '</div><div style="font-size:10px;color:rgba(255,255,255,0.7);font-weight:600;margin-top:2px;">aujourd\'hui</div></div>';
+  }
+}
+
+function assmatStatPill(emoji, count, bg, color) {
+  return '<div style="display:flex;align-items:center;gap:4px;background:' + bg + ';border-radius:10px;padding:4px 8px;">' +
+    '<span style="font-size:12px;">' + emoji + '</span>' +
+    '<span style="font-size:11px;font-weight:700;color:' + color + ';">' + count + '</span></div>';
 }
 
 function assmatAgeStr(dob) {
@@ -6589,6 +6627,19 @@ function removeFamilyAssmat(fi) {
   families.splice(fi, 1);
   localStorage.setItem("assmat_families", JSON.stringify(families));
   renderAssmatFamilies();
+}
+
+function openGererFamilles() {
+  var families = JSON.parse(localStorage.getItem("assmat_families") || "[]");
+  if (families.length === 0) return;
+  var names = families.map(function(f, i) {
+    return (i+1) + ". " + f.children.map(function(c){ return c.name; }).join(" & ");
+  }).join("\n");
+  var idx = prompt("Quelle famille retirer ?\n\n" + names + "\n\nSaisis le numéro :");
+  if (!idx) return;
+  var fi = parseInt(idx) - 1;
+  if (isNaN(fi) || fi < 0 || fi >= families.length) return;
+  removeFamilyAssmat(fi);
 }
 
 // ─── QR Scanner ───
@@ -6658,10 +6709,14 @@ function openJournal(parentId, familyIdx, childIdx) {
   currentJournalParentId = parentId;
   currentJournalFamilyIdx = familyIdx;
   currentJournalChildIdx = childIdx;
-  document.getElementById("journal-child-name").textContent = child.name;
-  var now = new Date();
-  document.getElementById("journal-date-display").textContent = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+  var nameEl = document.getElementById("journal-child-name");
+  var dateEl = document.getElementById("journal-date-display");
+  var avatarEl = document.getElementById("journal-child-avatar");
+  if (nameEl) nameEl.textContent = child.name;
+  if (dateEl) dateEl.textContent = new Date().toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+  if (avatarEl) avatarEl.textContent = child.avatar || (child.sex==='fille'?'👧':'👦');
   showJournalTab("repas");
+  updateJournalCounts();
   document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
   var jscreen = document.getElementById("screen-assmat-journal");
   if (jscreen) { jscreen.classList.add("active"); jscreen.scrollTop = 0; }
@@ -6686,9 +6741,26 @@ function showJournalTab(tab) {
     var panel = document.getElementById("journal-tab-" + t);
     var btn = document.getElementById("jtab-" + t);
     if (panel) panel.style.display = t === tab ? "block" : "none";
-    if (btn) btn.className = t === tab ? "jtab active" : "jtab";
+    if (btn) btn.className = t === tab ? "jtab-pro active" : "jtab-pro";
   });
   renderJournalTab(tab);
+  updateJournalCounts();
+}
+
+function updateJournalCounts() {
+  var j = getJournal();
+  var tabs = ["repas","sommeil","changes","activites","medicaments","photos"];
+  tabs.forEach(function(t) {
+    var el = document.getElementById("jcount-" + t);
+    if (!el) return;
+    var count = (j[t]||[]).length;
+    el.textContent = count > 0 ? count : "·";
+    el.style.color = count > 0 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.4)";
+  });
+}
+
+function openAddJournalCurrent() {
+  openAddJournal(currentJournalTab || "repas");
 }
 
 function renderJournalTab(tab) {
@@ -6779,6 +6851,7 @@ function deleteJournalEntry(type, idx) {
   if (j[type]) j[type].splice(idx, 1);
   saveJournal(j);
   renderJournalTab(type);
+  updateJournalCounts();
   renderAssmatFamilies();
 }
 
@@ -6922,6 +6995,7 @@ function saveJournalEntry() {
   saveJournal(j);
   closeAddJournal();
   renderJournalTab(type);
+  updateJournalCounts();
   renderAssmatFamilies();
 }
 
