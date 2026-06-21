@@ -2922,8 +2922,9 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div id="journal-tab-messages" style="display:none;">
         <div id="journal-messages-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;"></div>
         <div style="position:sticky;bottom:80px;display:flex;gap:8px;background:#F7F5FF;padding:8px 0;">
+          <button onclick="toggleEmojiPicker('assmat')" style="width:38px;height:38px;border-radius:50%;background:#F0EEFF;border:none;font-size:20px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;">🙂</button>
           <input id="msg-input" type="text" placeholder="Écrire un message…" style="flex:1;border:1.5px solid #D0C8F0;border-radius:22px;padding:11px 16px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;background:#fff;" onkeydown="if(event.key==='Enter')sendMessage()">
-          <button onclick="sendMessage()" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;font-size:20px;color:#fff;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;">↑</button>
+          <button onclick="sendMessage()" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;font-size:22px;color:#fff;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;">↑</button>
         </div>
       </div>
 
@@ -6829,8 +6830,9 @@ async function openParentMessaging() {
   html += '<div style="font-size:16px;font-weight:800;color:#2C3E50;padding:0 20px 12px;border-bottom:0.5px solid #EDE8DF;">Messages avec '+assmatName+'</div>';
   html += '<div id="parent-msg-list" style="flex:1;overflow-y:auto;padding:14px 20px;display:flex;flex-direction:column;gap:8px;"><div style="text-align:center;padding:20px;font-size:13px;color:#B0B8C1;">Chargement…</div></div>';
   html += '<div style="padding:12px 20px calc(20px + env(safe-area-inset-bottom,0px));border-top:0.5px solid #EDE8DF;display:flex;gap:8px;">';
+  html += '<button onclick="toggleEmojiPicker(\'parent\')" style="width:38px;height:38px;border-radius:50%;background:#F0EEFF;border:none;font-size:20px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;">🙂</button>';
   html += '<input id="parent-msg-input" type="text" placeholder="Écrire à '+assmatName+'…" style="flex:1;border:1.5px solid #D0C8F0;border-radius:22px;padding:11px 16px;font-size:13px;font-family:Montserrat,sans-serif;outline:none;" onkeydown="if(event.key===\'Enter\')sendParentMessage()">';
-  html += '<button onclick="sendParentMessage()" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;font-size:20px;color:#fff;cursor:pointer;flex-shrink:0;">↑</button>';
+  html += '<button onclick="sendParentMessage()" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;font-size:22px;color:#fff;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;">↑</button>';
   html += '</div></div>';
   overlay.innerHTML = html;
   overlay.onclick = function(e){ if(e.target===overlay) document.body.removeChild(overlay); };
@@ -7024,6 +7026,59 @@ function updateBellDot() {
   var dot = document.querySelector(".bell-dot");
   var pending = localStorage.getItem("assmat_notif_pending");
   if (dot) dot.style.display = pending ? "block" : "none";
+}
+
+// ─── Emoji Picker ───
+var EMOJIS = [
+  '😀','😃','😄','😁','😆','😅','😂','🤣','😊','😇',
+  '🥰','😍','🤩','😘','😗','😙','😚','😋','😛','😜',
+  '🤗','🤭','🤫','🤔','😐','😑','😶','😏','😒','🙄',
+  '😬','🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕',
+  '❤️','🧡','💛','💚','💙','💜','🖤','🤍','💕','💞',
+  '💓','💗','💖','💘','💝','💟','☮️','✨','🌟','⭐',
+  '👶','🍼','🧸','🌸','🌺','🌻','🌈','🦋','🐣','🐥',
+  '👍','👏','🙌','🤝','🤜','✌️','🤞','👋','🙏','💪'
+];
+
+function toggleEmojiPicker(context) {
+  var existing = document.getElementById("emoji-picker-popup");
+  if (existing) { existing.parentNode.removeChild(existing); return; }
+
+  var inputId = context === 'parent' ? 'parent-msg-input' : 'msg-input';
+  var popup = document.createElement("div");
+  popup.id = "emoji-picker-popup";
+  popup.style.cssText = "position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0px));left:8px;right:8px;background:#fff;border-radius:20px;padding:14px;box-shadow:0 -4px 30px rgba(0,0,0,0.15);z-index:9999;display:grid;grid-template-columns:repeat(10,1fr);gap:2px;max-height:200px;overflow-y:auto;";
+
+  EMOJIS.forEach(function(e) {
+    var btn = document.createElement("button");
+    btn.textContent = e;
+    btn.style.cssText = "background:none;border:none;font-size:22px;padding:4px;cursor:pointer;border-radius:8px;line-height:1;";
+    btn.ontouchstart = function() { btn.style.background = "#F0EEFF"; };
+    btn.ontouchend = function() { btn.style.background = "none"; };
+    btn.onclick = function() {
+      var input = document.getElementById(inputId);
+      if (input) {
+        var pos = input.selectionStart || input.value.length;
+        input.value = input.value.slice(0, pos) + e + input.value.slice(pos);
+        input.focus();
+        input.selectionStart = input.selectionEnd = pos + e.length;
+      }
+      popup.parentNode.removeChild(popup);
+    };
+    popup.appendChild(btn);
+  });
+
+  document.body.appendChild(popup);
+
+  // Ferme en cliquant ailleurs
+  setTimeout(function() {
+    document.addEventListener("click", function closePicker(ev) {
+      if (!popup.contains(ev.target) && ev.target.id !== "emoji-picker-popup") {
+        if (popup.parentNode) popup.parentNode.removeChild(popup);
+        document.removeEventListener("click", closePicker);
+      }
+    });
+  }, 100);
 }
 
 function showToast(msg) {
