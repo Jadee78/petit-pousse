@@ -153,6 +153,12 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
   from { opacity:0; transform:translateY(16px); }
   to { opacity:1; transform:translateY(0); }
 }
+@keyframes ticker-run {
+  0% { transform:translateX(100vw); }
+  100% { transform:translateX(-100%); }
+}
+.ticker-inner { display:inline-block; white-space:nowrap; animation:ticker-run 22s linear infinite; }
+#home-ticker { overflow:hidden; background:linear-gradient(90deg,#F0F8FF,#E8F4FF); border-top:1px solid #D0E8FF; border-bottom:1px solid #D0E8FF; padding:7px 0; cursor:pointer; }
 /* ══ LOCK SCREEN ══ */
 #screen-lock { background:linear-gradient(160deg,#f0f8f4 0%,#e8f5ee 60%,#f5f0f8 100%); flex-direction:column; align-items:center; justify-content:flex-start; padding:80px 28px 40px; }
 #screen-lock.active { display:flex !important; }
@@ -621,6 +627,9 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div style="margin-left:4px;color:#7F8C8D;font-size:16px;">&#8250;</div>
       </div>
     </div>
+    <!-- Ticker notifications -->
+    <div id="home-ticker" style="display:none;margin-top:10px;" onclick="openNotifPanel()"><div class="ticker-inner" id="ticker-content"></div></div>
+
     <div class="milestone" id="home-milestone">
       <div class="ms-emoji"><svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><polygon points="20,4 24.5,15 36,15 27,22.5 30.5,34 20,27 9.5,34 13,22.5 4,15 15.5,15" fill="#F8D050" stroke="#E0A800" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
       <div>
@@ -636,18 +645,14 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div class="al-s" id="home-vacc-sub">DTCaP-Hib-HepB &#183; 3e injection &#183; Pense &#224; prendre RDV</div>
       </div>
     </div>
-    <!-- Météo -->
-    <div id="home-meteo" style="margin:10px 16px 0;background:linear-gradient(135deg,#EAF4FF,#D0E8FF);border-radius:18px;padding:13px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="refreshMeteo()">
-      <div style="width:44px;height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;" id="meteo-icon"><svg viewBox="0 0 44 44" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="20" fill="#EAF4FF" stroke="#AED6F1" stroke-width="2"/><line x1="22" y1="12" x2="22" y2="22" stroke="#5A9E82" stroke-width="2.5" stroke-linecap="round"/><line x1="22" y1="22" x2="30" y2="28" stroke="#AED6F1" stroke-width="2.5" stroke-linecap="round"/><circle cx="22" cy="22" r="2.5" fill="#5A9E82"/></svg></div>
-      <div style="flex:1;">
-        <div style="font-size:10px;font-weight:700;color:#3A7EC8;letter-spacing:1px;text-transform:uppercase;" id="meteo-ville">Chargement...</div>
-        <div style="font-size:20px;font-weight:800;color:#2C3E50;line-height:1.1;" id="meteo-temp">—</div>
-        <div style="font-size:11px;color:#5A7EA8;margin-top:1px;" id="meteo-desc">—</div>
-      </div>
-      <div style="text-align:right;flex-shrink:0;">
-        <div style="font-size:10px;color:#7F8C8D;">Ressenti</div>
-        <div style="font-size:14px;font-weight:700;color:#2C3E50;" id="meteo-ressenti">—</div>
-      </div>
+    <!-- Météo compacte -->
+    <div id="home-meteo" onclick="refreshMeteo()" style="margin:10px 16px 0;background:rgba(234,244,255,0.9);border-radius:14px;padding:9px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;border:1px solid #D0E8FF;">
+      <div id="meteo-icon" style="flex-shrink:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;"></div>
+      <div style="font-size:17px;font-weight:800;color:#2C3E50;line-height:1;" id="meteo-temp">—</div>
+      <div style="flex:1;font-size:10px;color:#5A7EA8;font-weight:600;" id="meteo-ville">Chargement...</div>
+      <div id="meteo-desc" style="display:none;"></div>
+      <div id="meteo-ressenti" style="display:none;"></div>
+      <div style="font-size:14px;color:#AED6F1;">›</div>
     </div>
 
     <!-- Carte allaitement accueil (visible si activé) -->
@@ -6009,6 +6014,7 @@ function updateBellDot() {
   var notifs = buildNotifs();
   var dot = document.getElementById("bell-dot");
   if (dot) dot.style.display = notifs.length ? "block" : "none";
+  updateTicker();
 }
 
 // ── PARTAGER ──
@@ -8262,6 +8268,21 @@ function uploadChildPhoto(parentId, fi, ci) {
   });
   document.body.appendChild(inp);
 })();
+
+// ── Ticker notifications défilant ──
+function updateTicker() {
+  var ticker = document.getElementById('home-ticker');
+  var content = document.getElementById('ticker-content');
+  if (!ticker || !content) return;
+  var notifs = buildNotifs();
+  if (!notifs.length) { ticker.style.display = 'none'; return; }
+  var sep = '<span style="color:#B0C8E0;margin:0 20px;">•</span>';
+  var items = notifs.map(function(n){
+    return '<span style="font-size:12px;font-weight:700;color:#2C3E50;">'+n.icon+' '+n.title+'</span>';
+  }).join(sep);
+  content.innerHTML = items + sep + items;
+  ticker.style.display = 'block';
+}
 
 var _origRenderJournalTab = renderJournalTab;
 renderJournalTab = function(tab) {
