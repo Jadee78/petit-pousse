@@ -27,7 +27,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .st-icons { font-size:13px; }
 #tabbar { position:fixed; bottom:0; left:0; right:0; height:calc(64px + env(safe-area-inset-bottom,0px)); background:rgba(255,255,255,0.97); border-top:0.5px solid var(--line); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); display:flex; justify-content:space-around; align-items:flex-start; padding-top:10px; padding-bottom:env(safe-area-inset-bottom,0px); z-index:100; }
 .tab { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; cursor:pointer; padding:0 4px; }
-.tab-icon { width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; background:transparent; transition:background 0.2s; }
+.tab-icon { width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; background:transparent; transition:background 0.2s; }
 .tab.active .tab-icon { background:var(--green-bg); }
 .tab-icon svg { display:block; color:var(--sub); }
 .tab.active .tab-icon svg { color:var(--green); }
@@ -729,15 +729,18 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
 
-    <div class="sec-hd"><span class="sec-t">Modules</span></div>
-    <div class="mods">
-      <div class="mod" onclick="goTo('vaccins')"><div class="mod-icon" style="background:#E8F5EE;">💉</div><div class="mod-t">Vaccins</div><div class="mod-s">Calendrier & suivi</div><div class="mod-badge" id="mod-badge-vaccin">Prochain J6</div></div>
-      <div class="mod" onclick="switchTab('alim')"><div class="mod-icon" style="background:#FEF0E4;">🥣</div><div class="mod-t">Diversification</div><div class="mod-s">Aliments & menus</div><div class="mod-badge" data-child-age>8 mois</div></div>
-      <div class="mod" onclick="switchTab('sommeil')"><div class="mod-icon" style="background:#EEE8F8;">🌙</div><div class="mod-t">Sommeil</div><div class="mod-s">Nuit & siestes</div><div class="mod-badge">11h 20min</div></div>
-      <div class="mod" onclick="switchTab('sante')"><div class="mod-icon" style="background:#FDEAEA;">🩺</div><div class="mod-t">Santé</div><div class="mod-s">Température & notes</div><div class="mod-badge">37,2°</div></div>
-      <div class="mod" onclick="goTo('eveil')"><div class="mod-icon" style="background:#FFF8E0;">⭐</div><div class="mod-t">Éveil</div><div class="mod-s">Activités & jeux</div><div class="mod-badge">Nouveau</div></div>
-      <div class="mod" onclick="goTo('courses')"><div class="mod-icon" style="background:#E8F5EE;">🛒</div><div class="mod-t">Courses</div><div class="mod-s">Liste & rappels</div><div class="mod-badge" id="mod-badge-courses">0 item</div></div>
-      <div class="mod" onclick="goTo('agenda')"><div class="mod-icon" style="background:#EAF0FF;">🗓️</div><div class="mod-t">Agenda médical</div><div class="mod-s">RDV pédiatre, kiné, ostéo...</div><div class="mod-badge" id="mod-badge-agenda">0 RDV</div></div>
+    <!-- Raccourcis Agenda + Courses -->
+    <div style="display:flex;gap:10px;margin:10px 16px 0;">
+      <div onclick="goTo('agenda')" style="flex:1;background:#fff;border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
+        <div style="width:38px;height:38px;border-radius:11px;background:#EAF0FF;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🗓️</div>
+        <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Agenda</div><div style="font-size:11px;color:#9BA8B5;margin-top:1px;" id="mod-badge-agenda">0 RDV</div></div>
+        <div style="margin-left:auto;font-size:18px;color:#C8D0D8;">›</div>
+      </div>
+      <div onclick="goTo('courses')" style="flex:1;background:#fff;border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
+        <div style="width:38px;height:38px;border-radius:11px;background:#E8F5EE;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🛒</div>
+        <div><div style="font-size:13px;font-weight:700;color:#2C3E50;">Courses</div><div style="font-size:11px;color:#9BA8B5;margin-top:1px;" id="mod-badge-courses">0 item</div></div>
+        <div style="margin-left:auto;font-size:18px;color:#C8D0D8;">›</div>
+      </div>
     </div>
 
 
@@ -1226,6 +1229,16 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;">&#9654;</div>
         </div>
       </div>
+    </div>
+
+    <!-- Accès Vaccins depuis Sommeil -->
+    <div onclick="goTo('vaccins')" style="margin:14px 16px 0;background:#fff;border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
+      <div style="width:44px;height:44px;border-radius:13px;background:#E8F5EE;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">💉</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;color:#2C3E50;">Carnet de vaccins</div>
+        <div style="font-size:12px;color:#9BA8B5;margin-top:2px;" id="mod-badge-vaccin">Calendrier & suivi</div>
+      </div>
+      <div style="font-size:20px;color:#C8D0D8;">›</div>
     </div>
 
     <!-- Notes Sommeil -->
@@ -1924,7 +1937,6 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div style="background:linear-gradient(160deg,#9878D8,#7858B8);padding:6px 20px 22px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
         <div style="display:flex;align-items:center;gap:9px;">
-          <span onclick="goBack()" style="font-size:26px;color:rgba(255,255,255,0.85);cursor:pointer;line-height:1;margin-right:2px;">&#8249;</span>
           <img src="logo.png" style="width:36px;height:36px;" />
           <span style="font-size:18px;font-weight:800;color:#fff;">Éveil</span>
         </div>
@@ -3388,9 +3400,10 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
   <!-- TABBAR -->
   <div id="tabbar">
     <div class="tab active" id="tab-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-lbl">Accueil</div></div>
-    <div class="tab" id="tab-alim" onclick="switchTab('alim')"><div class="tab-icon">🥣</div><div class="tab-lbl">Alimentation</div></div>
+    <div class="tab" id="tab-alim" onclick="switchTab('alim')"><div class="tab-icon">🥣</div><div class="tab-lbl">Aliments</div></div>
     <div class="tab" id="tab-sommeil" onclick="switchTab('sommeil')"><div class="tab-icon">🌙</div><div class="tab-lbl">Sommeil</div></div>
     <div class="tab" id="tab-sante" onclick="switchTab('sante')"><div class="tab-icon">🩺</div><div class="tab-lbl">Santé</div></div>
+    <div class="tab" id="tab-eveil" onclick="switchTab('eveil')"><div class="tab-icon">⭐</div><div class="tab-lbl">Éveil</div></div>
     <div class="tab" id="tab-profil" onclick="switchTab('profil')"><div class="tab-icon">👤</div><div class="tab-lbl">Profil</div></div>
   </div>
 
