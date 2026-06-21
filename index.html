@@ -6755,6 +6755,14 @@ function updateBellDot() {
   if (dot) dot.style.display = pending ? "block" : "none";
 }
 
+function showToast(msg) {
+  var t = document.createElement("div");
+  t.textContent = msg;
+  t.style.cssText = "position:fixed;bottom:calc(90px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:rgba(44,62,80,0.92);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;font-family:Montserrat,sans-serif;z-index:9999;white-space:nowrap;max-width:90vw;text-align:center;";
+  document.body.appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 3000);
+}
+
 // ═══════════════════════════════════════════════
 // ESPACE ASSMAT
 // ═══════════════════════════════════════════════
@@ -6988,18 +6996,30 @@ function saveJournal(j) {
 }
 
 async function pushJournalToSupabase(j) {
-  if (!sb || !currentUser || !currentJournalParentId) return;
+  if (!sb || !currentUser || !currentJournalParentId) {
+    console.warn("pushJournal: manque sb/user/parentId", !!sb, !!currentUser, currentJournalParentId);
+    return;
+  }
   var today = new Date().toISOString().slice(0,10);
   try {
-    await sb.from("assmat_journals").upsert({
+    var res = await sb.from("assmat_journals").upsert({
       assmat_id: currentUser.id,
-      parent_id: currentJournalParentId,
+      parent_id: String(currentJournalParentId),
       child_idx: currentJournalChildIdx || 0,
       date: today,
       data: j,
       updated_at: new Date().toISOString()
     }, { onConflict: "assmat_id,parent_id,child_idx,date" });
-  } catch(e) {}
+    if (res.error) {
+      console.error("Supabase error:", res.error);
+      showToast("⚠️ Synchro échouée : " + res.error.message);
+    } else {
+      showToast("✓ Synchronisé avec les parents");
+    }
+  } catch(e) {
+    console.error("pushJournal catch:", e);
+    showToast("⚠️ Erreur synchro : " + e.message);
+  }
 }
 
 function showJournalTab(tab) {
