@@ -2813,6 +2813,8 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <button onclick="showJournalTab('activites')" class="jtab-pro" id="jtab-activites">🧸<br><span style="font-size:9px;" id="jcount-activites">—</span></button>
         <button onclick="showJournalTab('medicaments')" class="jtab-pro" id="jtab-medicaments">💊<br><span style="font-size:9px;" id="jcount-medicaments">—</span></button>
         <button onclick="showJournalTab('photos')" class="jtab-pro" id="jtab-photos">📸<br><span style="font-size:9px;" id="jcount-photos">—</span></button>
+        <button onclick="showJournalTab('messages')" class="jtab-pro" id="jtab-messages">💬<br><span style="font-size:9px;" id="jcount-messages">—</span></button>
+        <button onclick="showJournalTab('infos')" class="jtab-pro" id="jtab-infos">📋<br><span style="font-size:9px;">Infos</span></button>
       </div>
     </div>
 
@@ -2825,6 +2827,51 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div id="journal-tab-medicaments" style="display:none;"><div id="journal-medicaments-list"></div></div>
       <div id="journal-tab-photos" style="display:none;">
         <div id="journal-photos-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;"></div>
+        <label style="display:block;width:100%;background:#F0EEFF;border:1.5px dashed #C0B8E8;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#7B68EE;text-align:center;cursor:pointer;margin-top:10px;box-sizing:border-box;">
+          📸 Ajouter une photo
+          <input type="file" accept="image/*" capture="environment" onchange="addJournalPhoto(this)" style="display:none;">
+        </label>
+      </div>
+
+      <!-- MESSAGES -->
+      <div id="journal-tab-messages" style="display:none;">
+        <div id="journal-messages-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;"></div>
+        <div style="position:sticky;bottom:80px;display:flex;gap:8px;background:#F7F5FF;padding:8px 0;">
+          <input id="msg-input" type="text" placeholder="Écrire un message…" style="flex:1;border:1.5px solid #D0C8F0;border-radius:22px;padding:11px 16px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;background:#fff;" onkeydown="if(event.key==='Enter')sendMessage()">
+          <button onclick="sendMessage()" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;font-size:20px;color:#fff;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;">↑</button>
+        </div>
+      </div>
+
+      <!-- INFOS PRATIQUES -->
+      <div id="journal-tab-infos" style="display:none;">
+
+        <!-- Récupération du jour -->
+        <div style="background:#fff;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
+          <div style="font-size:13px;font-weight:800;color:#2C3E50;margin-bottom:12px;">🚗 Récupération ce soir</div>
+          <div id="recup-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
+          <div style="display:flex;gap:8px;">
+            <input id="recup-input" type="text" placeholder="Qui vient récupérer ? (ex: Maman, Papa, Grand-père…)" style="flex:1;border:1.5px solid #EDE8DF;border-radius:12px;padding:10px 13px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;" onkeydown="if(event.key==='Enter')addRecup()">
+            <button onclick="addRecup()" style="background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;border-radius:12px;padding:10px 16px;font-size:13px;font-weight:700;color:#fff;font-family:Montserrat,sans-serif;cursor:pointer;">+</button>
+          </div>
+        </div>
+
+        <!-- Planning hebdo -->
+        <div style="background:#fff;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
+          <div style="font-size:13px;font-weight:800;color:#2C3E50;margin-bottom:14px;">📅 Planning de garde</div>
+          <div id="planning-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+          <button onclick="savePlanning()" style="width:100%;margin-top:14px;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;border-radius:14px;padding:12px;font-size:13px;font-weight:700;color:#fff;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer le planning</button>
+        </div>
+
+        <!-- Personnes autorisées à récupérer -->
+        <div style="background:#fff;border-radius:18px;padding:16px;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
+          <div style="font-size:13px;font-weight:800;color:#2C3E50;margin-bottom:12px;">✅ Personnes autorisées</div>
+          <div id="authorized-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
+          <div style="display:flex;gap:8px;">
+            <input id="authorized-input" type="text" placeholder="Prénom + lien (ex: Jade - Maman)" style="flex:1;border:1.5px solid #EDE8DF;border-radius:12px;padding:10px 13px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;">
+            <button onclick="addAuthorized()" style="background:#EEF9F5;border:none;border-radius:12px;padding:10px 16px;font-size:13px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;">+</button>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -6737,12 +6784,14 @@ function saveJournal(j) {
 
 function showJournalTab(tab) {
   currentJournalTab = tab;
-  ["repas","sommeil","changes","activites","medicaments","photos"].forEach(function(t) {
+  ["repas","sommeil","changes","activites","medicaments","photos","messages","infos"].forEach(function(t) {
     var panel = document.getElementById("journal-tab-" + t);
     var btn = document.getElementById("jtab-" + t);
     if (panel) panel.style.display = t === tab ? "block" : "none";
     if (btn) btn.className = t === tab ? "jtab-pro active" : "jtab-pro";
   });
+  var fab = document.getElementById("journal-fab");
+  if (fab) fab.style.display = (tab === "messages" || tab === "infos") ? "none" : "flex";
   renderJournalTab(tab);
   updateJournalCounts();
 }
@@ -6757,6 +6806,12 @@ function updateJournalCounts() {
     el.textContent = count > 0 ? count : "·";
     el.style.color = count > 0 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.4)";
   });
+  var msgs = JSON.parse(localStorage.getItem(getMsgKey()) || "[]");
+  var msgEl = document.getElementById("jcount-messages");
+  if (msgEl) {
+    msgEl.textContent = msgs.length > 0 ? msgs.length : "·";
+    msgEl.style.color = msgs.length > 0 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.4)";
+  }
 }
 
 function openAddJournalCurrent() {
@@ -7028,6 +7083,185 @@ function closeModal(id) {
   var el = document.getElementById(id);
   if (el) el.style.display = "none";
 }
+
+// ─── Messagerie ───
+
+function getMsgKey() {
+  return "assmat_msg_" + currentJournalParentId + "_" + currentJournalChildIdx;
+}
+
+function sendMessage() {
+  var input = document.getElementById("msg-input");
+  if (!input || !input.value.trim()) return;
+  var msgs = JSON.parse(localStorage.getItem(getMsgKey()) || "[]");
+  msgs.push({ auteur: "assmat", texte: input.value.trim(), ts: new Date().toISOString() });
+  localStorage.setItem(getMsgKey(), JSON.stringify(msgs));
+  input.value = "";
+  renderMessages();
+  updateJournalCounts();
+}
+
+function renderMessages() {
+  var msgs = JSON.parse(localStorage.getItem(getMsgKey()) || "[]");
+  var list = document.getElementById("journal-messages-list");
+  if (!list) return;
+  if (msgs.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:32px 16px;"><div style="font-size:40px;margin-bottom:10px;">💬</div><div style="font-size:13px;color:#7F8C8D;">Aucun message — écris le premier !</div></div>';
+    return;
+  }
+  var html = "";
+  msgs.forEach(function(m, i) {
+    var isAssmat = m.auteur === "assmat";
+    var time = new Date(m.ts).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+    var date = new Date(m.ts).toLocaleDateString('fr-FR', { day:'numeric', month:'short' });
+    html += '<div style="display:flex;flex-direction:column;align-items:' + (isAssmat ? "flex-end" : "flex-start") + ';">';
+    html += '<div style="max-width:80%;background:' + (isAssmat ? "linear-gradient(135deg,#7B68EE,#5A50D0)" : "#fff") + ';color:' + (isAssmat ? "#fff" : "#2C3E50") + ';border-radius:' + (isAssmat ? "18px 18px 4px 18px" : "18px 18px 18px 4px") + ';padding:11px 14px;font-size:13px;line-height:1.5;box-shadow:0 1px 6px rgba(0,0,0,0.08);">' + m.texte + '</div>';
+    html += '<div style="font-size:10px;color:#B0A8C8;margin-top:3px;padding:0 4px;">' + (isAssmat ? "Moi" : "Parents") + ' · ' + time + '</div>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+  list.scrollTop = list.scrollHeight;
+}
+
+// ─── Récupération ───
+
+function getRecupKey() {
+  var today = new Date().toISOString().slice(0,10);
+  return "assmat_recup_" + currentJournalParentId + "_" + currentJournalChildIdx + "_" + today;
+}
+
+function getAuthorizedKey() {
+  return "assmat_authorized_" + currentJournalParentId + "_" + currentJournalChildIdx;
+}
+
+function addRecup() {
+  var input = document.getElementById("recup-input");
+  if (!input || !input.value.trim()) return;
+  var list = JSON.parse(localStorage.getItem(getRecupKey()) || "[]");
+  list.push(input.value.trim());
+  localStorage.setItem(getRecupKey(), JSON.stringify(list));
+  input.value = "";
+  renderRecup();
+}
+
+function deleteRecup(i) {
+  var list = JSON.parse(localStorage.getItem(getRecupKey()) || "[]");
+  list.splice(i, 1);
+  localStorage.setItem(getRecupKey(), JSON.stringify(list));
+  renderRecup();
+}
+
+function renderRecup() {
+  var list = JSON.parse(localStorage.getItem(getRecupKey()) || "[]");
+  var container = document.getElementById("recup-list");
+  if (!container) return;
+  if (list.length === 0) {
+    container.innerHTML = '<div style="font-size:12px;color:#B0B8C1;font-style:italic;">Personne de renseigné pour ce soir</div>';
+    return;
+  }
+  container.innerHTML = list.map(function(p, i) {
+    return '<div style="display:flex;align-items:center;gap:10px;background:#F0EEFF;border-radius:12px;padding:10px 12px;">' +
+      '<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🚗</div>' +
+      '<div style="flex:1;font-size:13px;font-weight:700;color:#2C3E50;">' + p + '</div>' +
+      '<div onclick="deleteRecup(' + i + ')" style="font-size:16px;color:#C0B8E8;cursor:pointer;padding:4px;">✕</div></div>';
+  }).join("");
+}
+
+function addAuthorized() {
+  var input = document.getElementById("authorized-input");
+  if (!input || !input.value.trim()) return;
+  var list = JSON.parse(localStorage.getItem(getAuthorizedKey()) || "[]");
+  list.push(input.value.trim());
+  localStorage.setItem(getAuthorizedKey(), JSON.stringify(list));
+  input.value = "";
+  renderAuthorized();
+}
+
+function deleteAuthorized(i) {
+  var list = JSON.parse(localStorage.getItem(getAuthorizedKey()) || "[]");
+  list.splice(i, 1);
+  localStorage.setItem(getAuthorizedKey(), JSON.stringify(list));
+  renderAuthorized();
+}
+
+function renderAuthorized() {
+  var list = JSON.parse(localStorage.getItem(getAuthorizedKey()) || "[]");
+  var container = document.getElementById("authorized-list");
+  if (!container) return;
+  if (list.length === 0) {
+    container.innerHTML = '<div style="font-size:12px;color:#B0B8C1;font-style:italic;">Aucune personne renseignée</div>';
+    return;
+  }
+  container.innerHTML = list.map(function(p, i) {
+    return '<div style="display:flex;align-items:center;gap:10px;background:#EEF9F5;border-radius:12px;padding:10px 12px;">' +
+      '<div style="font-size:18px;">✅</div>' +
+      '<div style="flex:1;font-size:13px;font-weight:700;color:#2C3E50;">' + p + '</div>' +
+      '<div onclick="deleteAuthorized(' + i + ')" style="font-size:16px;color:#A8DFCA;cursor:pointer;padding:4px;">✕</div></div>';
+  }).join("");
+}
+
+// ─── Planning hebdo ───
+
+function getPlanningKey() {
+  return "assmat_planning_" + currentJournalParentId + "_" + currentJournalChildIdx;
+}
+
+var JOURS = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi"];
+
+function renderPlanning() {
+  var planning = JSON.parse(localStorage.getItem(getPlanningKey()) || "{}");
+  var container = document.getElementById("planning-list");
+  if (!container) return;
+  container.innerHTML = JOURS.map(function(jour) {
+    var key = jour.toLowerCase();
+    var p = planning[key] || { actif: false, debut: "08:00", fin: "17:30" };
+    return '<div style="display:flex;align-items:center;gap:10px;">' +
+      '<div onclick="togglePlanningJour(\'' + key + '\')" style="width:36px;height:22px;border-radius:11px;background:' + (p.actif ? "linear-gradient(135deg,#7B68EE,#5A50D0)" : "#EDE8DF") + ';position:relative;cursor:pointer;flex-shrink:0;transition:all .2s;" id="toggle-planning-' + key + '">' +
+        '<div style="position:absolute;top:3px;' + (p.actif ? "right:3px" : "left:3px") + ';width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.2);transition:all .2s;" id="thumb-planning-' + key + '"></div>' +
+      '</div>' +
+      '<div style="font-size:13px;font-weight:700;color:' + (p.actif ? "#2C3E50" : "#B0B8C1") + ';width:70px;">' + jour + '</div>' +
+      '<input id="plan-debut-' + key + '" type="time" value="' + p.debut + '" ' + (p.actif ? '' : 'disabled') + ' style="flex:1;border:1.5px solid #EDE8DF;border-radius:10px;padding:7px 10px;font-size:12px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;min-width:0;">' +
+      '<span style="font-size:11px;color:#B0B8C1;flex-shrink:0;">→</span>' +
+      '<input id="plan-fin-' + key + '" type="time" value="' + p.fin + '" ' + (p.actif ? '' : 'disabled') + ' style="flex:1;border:1.5px solid #EDE8DF;border-radius:10px;padding:7px 10px;font-size:12px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;min-width:0;">' +
+    '</div>';
+  }).join("");
+}
+
+function togglePlanningJour(key) {
+  var planning = JSON.parse(localStorage.getItem(getPlanningKey()) || "{}");
+  if (!planning[key]) planning[key] = { actif: false, debut: "08:00", fin: "17:30" };
+  planning[key].actif = !planning[key].actif;
+  localStorage.setItem(getPlanningKey(), JSON.stringify(planning));
+  renderPlanning();
+}
+
+function savePlanning() {
+  var planning = JSON.parse(localStorage.getItem(getPlanningKey()) || "{}");
+  JOURS.forEach(function(jour) {
+    var key = jour.toLowerCase();
+    if (!planning[key]) planning[key] = { actif: false, debut: "08:00", fin: "17:30" };
+    var debutEl = document.getElementById("plan-debut-" + key);
+    var finEl = document.getElementById("plan-fin-" + key);
+    if (debutEl) planning[key].debut = debutEl.value;
+    if (finEl) planning[key].fin = finEl.value;
+  });
+  localStorage.setItem(getPlanningKey(), JSON.stringify(planning));
+  showToast("Planning enregistré ✓");
+}
+
+function renderInfosTab() {
+  renderRecup();
+  renderAuthorized();
+  renderPlanning();
+}
+
+// Étendre renderJournalTab pour les nouveaux onglets
+var _origRenderJournalTab = renderJournalTab;
+renderJournalTab = function(tab) {
+  if (tab === "messages") { renderMessages(); return; }
+  if (tab === "infos") { renderInfosTab(); return; }
+  _origRenderJournalTab(tab);
+};
 
 </script>
 </body>
