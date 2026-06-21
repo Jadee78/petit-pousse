@@ -3943,7 +3943,7 @@ async function addRole(role) {
 function hideAllScreens() {
   document.querySelectorAll(".screen").forEach(function(s){
     s.classList.remove("active");
-    if (s.id === "screen-assmat" || s.id === "screen-rolechoice") s.style.display = "none";
+    s.style.display = "";
   });
 }
 
