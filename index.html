@@ -5994,7 +5994,8 @@ function openNotifPanel() {
       var icon = n.icon || '🔔';
       var title = n.title || '';
       var sub = n.sub || '';
-      h += '<div style="background:' + bg + ';border-radius:16px;padding:16px;display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;border-left:4px solid ' + color + ';box-shadow:0 1px 6px rgba(0,0,0,0.06);"' + (n.action ? ' onclick="' + n.action.replace(/"/g, '&quot;') + ';closeNotifPanel()" style="cursor:pointer;"' : '') + '>';
+      var cardStyle = 'background:' + bg + ';border-radius:16px;padding:16px;display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;border-left:4px solid ' + color + ';box-shadow:0 1px 6px rgba(0,0,0,0.06);' + (n.action ? 'cursor:pointer;' : '');
+      h += '<div style="' + cardStyle + '"' + (n.action ? ' onclick="' + n.action.replace(/"/g, '&quot;') + ';closeNotifPanel()"' : '') + '>';
       h += '<div style="font-size:26px;flex-shrink:0;line-height:1.2;">' + icon + '</div>';
       h += '<div style="flex:1;min-width:0;">';
       h += '<div style="font-size:14px;font-weight:800;color:#2C3E50;margin-bottom:4px;">' + title + '</div>';
