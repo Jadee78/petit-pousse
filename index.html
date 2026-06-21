@@ -10,6 +10,8 @@
 <title>Petit Pousse</title>
 <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent; }
 :root {
@@ -177,6 +179,8 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .ob-contact-toggle { display:flex; background:rgba(44,62,80,0.07); border-radius:14px; padding:3px; margin-top:20px; width:100%; }
 .ob-ct-btn { flex:1; text-align:center; font-size:13px; font-weight:700; padding:10px; border-radius:11px; cursor:pointer; transition:all .2s; color:var(--sub); }
 .ob-ct-btn.active { background:#fff; color:var(--green); box-shadow:0 1px 8px rgba(0,0,0,0.08); }
+.jtab { border:none;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;color:#7F8C8D;font-family:Montserrat,sans-serif;cursor:pointer;white-space:nowrap;background:rgba(44,62,80,0.07); }
+.jtab.active { background:var(--green-bg);color:var(--green); }
 </style>
 </head>
 <body>
@@ -2220,11 +2224,19 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div style="margin:16px 16px 0;">
       <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Partager</div>
       <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div onclick="shareApp()" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;">
+        <div onclick="shareApp()" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;border-bottom:0.5px solid #EDE8DF;">
           <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#5A9E82,#3A7E62);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128279;</div>
           <div style="flex:1;">
             <div style="font-size:14px;font-weight:700;color:#2C3E50;">Partager Petit Pousse</div>
             <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Envoyer le lien à la famille</div>
+          </div>
+          <div style="font-size:16px;color:#5A9E82;font-weight:700;">›</div>
+        </div>
+        <div onclick="showFamilyQR()" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;">
+          <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#7B68EE,#5A50D0);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128248;</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:#2C3E50;">Mon code famille</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">QR code pour l'assistante maternelle</div>
           </div>
           <div style="font-size:16px;color:#5A9E82;font-weight:700;">›</div>
         </div>
@@ -2743,20 +2755,108 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
   </div>
 
   <!-- ÉCRAN ASSMAT -->
-  <div id="screen-assmat" class="screen" style="background:linear-gradient(160deg,#f0f8f4,#e8f4ee);display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;">
-    <div style="font-size:64px;margin-bottom:16px;">👩‍🍼</div>
-    <div style="font-size:22px;font-weight:800;color:#2C3E50;margin-bottom:8px;text-align:center;">Espace Assistante Maternelle</div>
-    <div style="font-size:14px;color:#7F8C8D;text-align:center;line-height:1.7;margin-bottom:32px;">Cet espace est en cours de construction.<br>Il sera disponible très bientôt !</div>
-    <div style="background:#fff;border-radius:20px;padding:18px 20px;width:100%;max-width:360px;box-shadow:0 2px 16px rgba(0,0,0,0.06);margin-bottom:16px;">
-      <div style="font-size:13px;font-weight:700;color:#5A9E82;margin-bottom:4px;">Connecté en tant qu'</div>
-      <div style="font-size:13px;color:#2C3E50;" id="assmat-email-display">—</div>
+  <div id="screen-assmat" class="screen">
+    <div style="background:linear-gradient(160deg,#f0f8f4,#e8f5ee);padding:54px 20px 16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:22px;font-weight:800;color:#2C3E50;letter-spacing:-0.5px;">Espace pro 👩‍🍼</div>
+          <div style="font-size:13px;color:#7F8C8D;margin-top:2px;" id="assmat-email-display">—</div>
+        </div>
+        <button onclick="doLogout()" style="background:rgba(44,62,80,0.08);border:none;border-radius:12px;padding:8px 14px;font-size:12px;font-weight:700;color:#7F8C8D;font-family:Montserrat,sans-serif;cursor:pointer;">Déco</button>
+      </div>
     </div>
-    <div onclick="addRole('parent')" style="background:#fff;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px 18px;width:100%;max-width:360px;cursor:pointer;text-align:center;margin-bottom:16px;">
-      <div style="font-size:22px;margin-bottom:4px;">👨‍👩‍👦</div>
-      <div style="font-size:13px;font-weight:700;color:#5A9E82;">Je suis aussi maman / papa</div>
-      <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Ajouter mes propres enfants à ce compte</div>
+    <div style="padding:16px;">
+      <div id="assmat-families-list"></div>
+      <button onclick="openQRScanner()" style="width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:18px;padding:18px;font-size:14px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:4px;">📷 Scanner le code famille</button>
+      <div onclick="addRole('parent')" style="background:#fff;border:1.5px dashed #EDE8DF;border-radius:14px;padding:14px 18px;cursor:pointer;text-align:center;margin-top:12px;">
+        <div style="font-size:20px;margin-bottom:4px;">👨‍👩‍👦</div>
+        <div style="font-size:13px;font-weight:700;color:#5A9E82;">Je suis aussi maman / papa</div>
+        <div style="font-size:11px;color:#7F8C8D;margin-top:2px;">Ajouter mes propres enfants à ce compte</div>
+      </div>
     </div>
-    <button onclick="doLogout()" style="background:rgba(44,62,80,0.08);border:none;border-radius:14px;padding:13px 28px;font-size:14px;font-weight:700;color:#7F8C8D;font-family:Montserrat,sans-serif;cursor:pointer;">Se déconnecter</button>
+  </div>
+
+  <!-- ÉCRAN JOURNAL ASSMAT -->
+  <div id="screen-assmat-journal" class="screen">
+    <div style="background:linear-gradient(160deg,#f0f8f4,#e8f5ee);padding:54px 20px 12px;position:sticky;top:0;z-index:10;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div onclick="showAssmatInterface()" style="width:36px;height:36px;border-radius:50%;background:rgba(44,62,80,0.08);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;flex-shrink:0;">&#8249;</div>
+        <div>
+          <div style="font-size:18px;font-weight:800;color:#2C3E50;" id="journal-child-name">—</div>
+          <div style="font-size:12px;color:#7F8C8D;" id="journal-date-display">—</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;">
+        <button onclick="showJournalTab('repas')" class="jtab active" id="jtab-repas">🍽️ Repas</button>
+        <button onclick="showJournalTab('sommeil')" class="jtab" id="jtab-sommeil">😴 Sommeil</button>
+        <button onclick="showJournalTab('changes')" class="jtab" id="jtab-changes">🚿 Changes</button>
+        <button onclick="showJournalTab('activites')" class="jtab" id="jtab-activites">🧸 Activités</button>
+        <button onclick="showJournalTab('medicaments')" class="jtab" id="jtab-medicaments">💊 Médocs</button>
+        <button onclick="showJournalTab('photos')" class="jtab" id="jtab-photos">📸 Photos</button>
+      </div>
+    </div>
+    <div style="padding:16px;">
+      <div id="journal-tab-repas">
+        <div id="journal-repas-list"></div>
+        <button onclick="openAddJournal('repas')" style="width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:8px;">+ Ajouter un repas</button>
+      </div>
+      <div id="journal-tab-sommeil" style="display:none;">
+        <div id="journal-sommeil-list"></div>
+        <button onclick="openAddJournal('sommeil')" style="width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:8px;">+ Ajouter une sieste / nuit</button>
+      </div>
+      <div id="journal-tab-changes" style="display:none;">
+        <div id="journal-changes-list"></div>
+        <button onclick="openAddJournal('changes')" style="width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:8px;">+ Ajouter un change</button>
+      </div>
+      <div id="journal-tab-activites" style="display:none;">
+        <div id="journal-activites-list"></div>
+        <button onclick="openAddJournal('activites')" style="width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:8px;">+ Ajouter une activité</button>
+      </div>
+      <div id="journal-tab-medicaments" style="display:none;">
+        <div id="journal-medicaments-list"></div>
+        <button onclick="openAddJournal('medicaments')" style="width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#5A9E82;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:8px;">+ Ajouter un médicament</button>
+      </div>
+      <div id="journal-tab-photos" style="display:none;">
+        <div id="journal-photos-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;"></div>
+        <label style="display:block;width:100%;background:#EEF9F5;border:1.5px dashed #A8DFCA;border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:#5A9E82;text-align:center;cursor:pointer;margin-top:8px;box-sizing:border-box;">
+          📸 Ajouter une photo
+          <input type="file" accept="image/*" capture="environment" onchange="addJournalPhoto(this)" style="display:none;">
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL QR SCANNER -->
+  <div id="modal-qr-scanner" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:999;flex-direction:column;align-items:center;justify-content:center;">
+    <div style="color:#fff;font-size:16px;font-weight:700;margin-bottom:20px;">Scanner le code QR famille</div>
+    <div style="position:relative;width:260px;height:260px;border-radius:20px;overflow:hidden;background:#000;">
+      <video id="qr-video" style="width:100%;height:100%;object-fit:cover;" playsinline autoplay muted></video>
+      <div style="position:absolute;inset:20px;border:3px solid #5A9E82;border-radius:12px;pointer-events:none;box-shadow:0 0 0 2000px rgba(0,0,0,0.3);"></div>
+      <canvas id="qr-canvas" style="display:none;"></canvas>
+    </div>
+    <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:16px;text-align:center;padding:0 32px;">Placez le code QR dans le cadre vert</div>
+    <button onclick="closeQRScanner()" style="margin-top:28px;background:rgba(255,255,255,0.15);border:none;border-radius:14px;padding:13px 32px;font-size:14px;font-weight:700;color:#fff;font-family:Montserrat,sans-serif;cursor:pointer;">Annuler</button>
+  </div>
+
+  <!-- MODAL QR FAMILLE (côté parent) -->
+  <div id="modal-family-qr" onclick="closeModal('modal-family-qr')" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999;align-items:center;justify-content:center;">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px;padding:28px 24px;width:88%;max-width:320px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.18);">
+      <div style="font-size:22px;font-weight:800;color:#2C3E50;margin-bottom:4px;">Mon code famille</div>
+      <div style="font-size:13px;color:#7F8C8D;margin-bottom:20px;">Montre ce code à ton assistante maternelle</div>
+      <div id="family-qr-container" style="display:flex;justify-content:center;margin-bottom:14px;"></div>
+      <div style="font-size:11px;color:#B0B8C1;margin-bottom:20px;">Ne pas partager publiquement</div>
+      <button onclick="closeModal('modal-family-qr')" style="width:100%;background:#5A9E82;color:#fff;border:none;border-radius:14px;padding:13px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Fermer</button>
+    </div>
+  </div>
+
+  <!-- MODAL AJOUT JOURNAL -->
+  <div id="modal-journal" onclick="closeAddJournal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:998;align-items:flex-end;">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:24px 20px calc(28px + env(safe-area-inset-bottom,0px));max-height:85vh;overflow-y:auto;box-sizing:border-box;">
+      <div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 18px;"></div>
+      <div style="font-size:18px;font-weight:800;color:#2C3E50;margin-bottom:16px;" id="modal-journal-title">Ajouter</div>
+      <div id="modal-journal-body"></div>
+      <button onclick="saveJournalEntry()" style="width:100%;background:#5A9E82;color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:8px;">Enregistrer</button>
+    </div>
   </div>
 
   <!-- MODAL RECETTE -->
@@ -3705,12 +3805,9 @@ function hideAllScreens() {
 function showAssmatInterface() {
   hideAllScreens();
   var el = document.getElementById("screen-assmat");
-  if (el) { el.style.display = "flex"; el.classList.add("active"); }
+  if (el) { el.style.display = "block"; el.classList.add("active"); }
   document.getElementById("tabbar").style.display = "none";
-  if (currentUser) {
-    var emailEl = document.getElementById("assmat-email-display");
-    if (emailEl) emailEl.textContent = currentUser.email;
-  }
+  initAssmatScreen();
 }
 
 async function doLogout() {
@@ -6424,6 +6521,439 @@ function renderAgenda() {
   wrap.innerHTML = h;
 }
 function loadAgendaScreen() { renderAgenda(); }
+
+// ═══════════════════════════════════════════════
+// ESPACE ASSMAT
+// ═══════════════════════════════════════════════
+
+var qrStream = null;
+var currentJournalParentId = null;
+var currentJournalFamilyIdx = null;
+var currentJournalChildIdx = null;
+var currentJournalTab = "repas";
+var modalJournalType = null;
+var jfType = null;
+var jfPris = false;
+
+var jInputStyle = "width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:11px 14px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;margin-bottom:10px;display:block;";
+
+function initAssmatScreen() {
+  if (currentUser) {
+    var el = document.getElementById("assmat-email-display");
+    if (el) el.textContent = currentUser.email;
+  }
+  renderAssmatFamilies();
+}
+
+function renderAssmatFamilies() {
+  var families = JSON.parse(localStorage.getItem("assmat_families") || "[]");
+  var container = document.getElementById("assmat-families-list");
+  if (!container) return;
+  if (families.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:40px 16px;"><div style="font-size:52px;margin-bottom:12px;">👨‍👩‍👦</div><div style="font-size:15px;font-weight:700;color:#2C3E50;margin-bottom:6px;">Aucune famille liée</div><div style="font-size:13px;color:#7F8C8D;line-height:1.6;">Scanne le QR code d\'une famille pour commencer à remplir son journal</div></div>';
+    return;
+  }
+  var today = new Date().toISOString().slice(0,10);
+  var html = '';
+  families.forEach(function(fam, fi) {
+    html += '<div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.05);margin-bottom:14px;">';
+    html += '<div style="padding:12px 16px 10px;background:#EEF9F5;border-bottom:0.5px solid #E0F0E8;"><div style="font-size:11px;font-weight:700;color:#5A9E82;text-transform:uppercase;letter-spacing:0.5px;">Famille ' + (fam.parentName || fam.parentEmail || 'Famille ' + (fi+1)) + '</div></div>';
+    fam.children.forEach(function(child, ci) {
+      var jkey = "assmat_j_" + fam.parentId + "_" + ci + "_" + today;
+      var journal = JSON.parse(localStorage.getItem(jkey) || "{}");
+      var count = ((journal.repas||[]).length + (journal.sommeil||[]).length + (journal.changes||[]).length + (journal.activites||[]).length);
+      var avatar = child.avatar || (child.sex === 'fille' ? '👧' : '👦');
+      html += '<div onclick="openJournal(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;border-bottom:0.5px solid #EDE8DF;">';
+      html += '<div style="font-size:30px;">' + avatar + '</div>';
+      html += '<div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">' + child.name + '</div>';
+      html += '<div style="font-size:12px;color:#7F8C8D;">' + assmatAgeStr(child.dob) + (count ? ' · <span style="color:#5A9E82;font-weight:600;">' + count + ' entrée(s) aujourd\'hui</span>' : ' · Journal vide') + '</div></div>';
+      html += '<div style="font-size:18px;color:#A8DFCA;font-weight:700;">›</div></div>';
+    });
+    html += '<div onclick="removeFamilyAssmat(' + fi + ')" style="padding:10px 16px;text-align:center;cursor:pointer;"><div style="font-size:12px;font-weight:600;color:#E74C3C;">Retirer cette famille</div></div>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function assmatAgeStr(dob) {
+  if (!dob) return "—";
+  var birth = new Date(dob);
+  var now = new Date();
+  var months = (now.getFullYear() - birth.getFullYear()) * 12 + now.getMonth() - birth.getMonth();
+  if (months < 0) months = 0;
+  return months < 24 ? months + " mois" : Math.floor(months/12) + " ans";
+}
+
+function removeFamilyAssmat(fi) {
+  if (!confirm("Retirer cette famille ?")) return;
+  var families = JSON.parse(localStorage.getItem("assmat_families") || "[]");
+  families.splice(fi, 1);
+  localStorage.setItem("assmat_families", JSON.stringify(families));
+  renderAssmatFamilies();
+}
+
+// ─── QR Scanner ───
+
+async function openQRScanner() {
+  document.getElementById("modal-qr-scanner").style.display = "flex";
+  try {
+    qrStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+    var video = document.getElementById("qr-video");
+    video.srcObject = qrStream;
+    await video.play();
+    requestAnimationFrame(scanQRFrame);
+  } catch(e) {
+    alert("Impossible d'accéder à la caméra. Vérifie les permissions de l'app.");
+    closeQRScanner();
+  }
+}
+
+function scanQRFrame() {
+  if (!qrStream) return;
+  var video = document.getElementById("qr-video");
+  var canvas = document.getElementById("qr-canvas");
+  if (!video || video.readyState !== video.HAVE_ENOUGH_DATA) { requestAnimationFrame(scanQRFrame); return; }
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(video, 0, 0);
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  var code = jsQR(imageData.data, imageData.width, imageData.height);
+  if (code) {
+    closeQRScanner();
+    handleQRData(code.data);
+    return;
+  }
+  requestAnimationFrame(scanQRFrame);
+}
+
+function closeQRScanner() {
+  if (qrStream) { qrStream.getTracks().forEach(function(t) { t.stop(); }); qrStream = null; }
+  document.getElementById("modal-qr-scanner").style.display = "none";
+}
+
+function handleQRData(raw) {
+  try {
+    var decoded = JSON.parse(atob(raw));
+    if (!decoded.uid || !decoded.children) { alert("QR code invalide. Demande à la famille de générer son code depuis Petit Pousse."); return; }
+    var families = JSON.parse(localStorage.getItem("assmat_families") || "[]");
+    if (families.find(function(f) { return f.parentId === decoded.uid; })) {
+      alert("Cette famille est déjà liée à ton compte !"); return;
+    }
+    families.push({ parentId: decoded.uid, parentEmail: decoded.email || "", parentName: decoded.name || decoded.email || "Famille", children: decoded.children });
+    localStorage.setItem("assmat_families", JSON.stringify(families));
+    renderAssmatFamilies();
+    showToast("Famille ajoutée avec succès 👨‍👩‍👦");
+  } catch(e) {
+    alert("QR code non reconnu. Vérifie que la famille utilise bien Petit Pousse.");
+  }
+}
+
+// ─── Journal ───
+
+function openJournal(parentId, familyIdx, childIdx) {
+  var families = JSON.parse(localStorage.getItem("assmat_families") || "[]");
+  var fam = families[familyIdx];
+  if (!fam) return;
+  var child = fam.children[childIdx];
+  currentJournalParentId = parentId;
+  currentJournalFamilyIdx = familyIdx;
+  currentJournalChildIdx = childIdx;
+  document.getElementById("journal-child-name").textContent = child.name;
+  var now = new Date();
+  document.getElementById("journal-date-display").textContent = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+  showJournalTab("repas");
+  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  var jscreen = document.getElementById("screen-assmat-journal");
+  if (jscreen) { jscreen.classList.add("active"); jscreen.scrollTop = 0; }
+}
+
+function getJournalKey() {
+  var today = new Date().toISOString().slice(0,10);
+  return "assmat_j_" + currentJournalParentId + "_" + currentJournalChildIdx + "_" + today;
+}
+
+function getJournal() {
+  return JSON.parse(localStorage.getItem(getJournalKey()) || '{"repas":[],"sommeil":[],"changes":[],"activites":[],"medicaments":[],"photos":[]}');
+}
+
+function saveJournal(j) {
+  localStorage.setItem(getJournalKey(), JSON.stringify(j));
+}
+
+function showJournalTab(tab) {
+  currentJournalTab = tab;
+  ["repas","sommeil","changes","activites","medicaments","photos"].forEach(function(t) {
+    var panel = document.getElementById("journal-tab-" + t);
+    var btn = document.getElementById("jtab-" + t);
+    if (panel) panel.style.display = t === tab ? "block" : "none";
+    if (btn) btn.className = t === tab ? "jtab active" : "jtab";
+  });
+  renderJournalTab(tab);
+}
+
+function renderJournalTab(tab) {
+  var j = getJournal();
+  var list, html;
+
+  if (tab === "repas") {
+    list = document.getElementById("journal-repas-list"); html = "";
+    (j.repas||[]).forEach(function(r,i) {
+      html += '<div style="background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:8px;box-shadow:0 1px 6px rgba(0,0,0,0.04);display:flex;gap:12px;align-items:flex-start;">';
+      html += '<div style="font-size:24px;margin-top:2px;">🍽️</div><div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#2C3E50;">' + r.aliment + '</div>';
+      if (r.quantite) html += '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;">' + r.quantite + '</div>';
+      if (r.note) html += '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;font-style:italic;">' + r.note + '</div>';
+      html += '<div style="font-size:11px;color:#A8DFCA;margin-top:4px;font-weight:600;">' + (r.heure||"") + '</div></div>';
+      html += '<div onclick="deleteJournalEntry(\'repas\',' + i + ')" style="font-size:16px;color:#E0E0E0;cursor:pointer;padding:2px 4px;flex-shrink:0;">✕</div></div>';
+    });
+    if (list) list.innerHTML = html;
+  }
+  else if (tab === "sommeil") {
+    list = document.getElementById("journal-sommeil-list"); html = "";
+    (j.sommeil||[]).forEach(function(s,i) {
+      var duree = "";
+      if (s.debut && s.fin) {
+        var ms = new Date("2000-01-01T" + s.fin) - new Date("2000-01-01T" + s.debut);
+        if (ms > 0) { var m = ms/60000; duree = Math.floor(m/60) + "h" + (m%60>0 ? String(Math.round(m%60)).padStart(2,'0') : ""); }
+      }
+      html += '<div style="background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:8px;box-shadow:0 1px 6px rgba(0,0,0,0.04);display:flex;gap:12px;align-items:flex-start;">';
+      html += '<div style="font-size:24px;margin-top:2px;">' + (s.type==="nuit"?"🌙":"🌤️") + '</div><div style="flex:1;">';
+      html += '<div style="font-size:13px;font-weight:700;color:#2C3E50;">' + (s.type==="nuit"?"Nuit":"Sieste") + (duree?" · "+duree:"") + '</div>';
+      html += '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;">' + (s.debut||"—") + ' → ' + (s.fin||"—") + '</div>';
+      if (s.note) html += '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;font-style:italic;">' + s.note + '</div>';
+      html += '</div><div onclick="deleteJournalEntry(\'sommeil\',' + i + ')" style="font-size:16px;color:#E0E0E0;cursor:pointer;padding:2px 4px;flex-shrink:0;">✕</div></div>';
+    });
+    if (list) list.innerHTML = html;
+  }
+  else if (tab === "changes") {
+    list = document.getElementById("journal-changes-list"); html = "";
+    (j.changes||[]).forEach(function(c,i) {
+      var emoji = c.type==="pipi"?"💧":c.type==="selles"?"💩":"💧💩";
+      var label = c.type==="pipi"?"Pipi":c.type==="selles"?"Selles":"Pipi + selles";
+      html += '<div style="background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:8px;box-shadow:0 1px 6px rgba(0,0,0,0.04);display:flex;gap:12px;align-items:flex-start;">';
+      html += '<div style="font-size:24px;margin-top:2px;">' + emoji + '</div><div style="flex:1;">';
+      html += '<div style="font-size:13px;font-weight:700;color:#2C3E50;">' + label + '</div>';
+      if (c.note) html += '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;font-style:italic;">' + c.note + '</div>';
+      html += '<div style="font-size:11px;color:#A8DFCA;margin-top:4px;font-weight:600;">' + (c.heure||"") + '</div>';
+      html += '</div><div onclick="deleteJournalEntry(\'changes\',' + i + ')" style="font-size:16px;color:#E0E0E0;cursor:pointer;padding:2px 4px;flex-shrink:0;">✕</div></div>';
+    });
+    if (list) list.innerHTML = html;
+  }
+  else if (tab === "activites") {
+    list = document.getElementById("journal-activites-list"); html = "";
+    (j.activites||[]).forEach(function(a,i) {
+      html += '<div style="background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:8px;box-shadow:0 1px 6px rgba(0,0,0,0.04);display:flex;gap:12px;align-items:flex-start;">';
+      html += '<div style="font-size:24px;margin-top:2px;">🧸</div><div style="flex:1;">';
+      html += '<div style="font-size:13px;font-weight:700;color:#2C3E50;">' + a.description + '</div>';
+      html += '<div style="font-size:11px;color:#A8DFCA;margin-top:4px;font-weight:600;">' + (a.heure||"") + '</div>';
+      html += '</div><div onclick="deleteJournalEntry(\'activites\',' + i + ')" style="font-size:16px;color:#E0E0E0;cursor:pointer;padding:2px 4px;flex-shrink:0;">✕</div></div>';
+    });
+    if (list) list.innerHTML = html;
+  }
+  else if (tab === "medicaments") {
+    list = document.getElementById("journal-medicaments-list"); html = "";
+    (j.medicaments||[]).forEach(function(m,i) {
+      html += '<div style="background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:8px;box-shadow:0 1px 6px rgba(0,0,0,0.04);display:flex;gap:12px;align-items:flex-start;">';
+      html += '<div style="font-size:24px;margin-top:2px;">💊</div><div style="flex:1;">';
+      html += '<div style="font-size:13px;font-weight:700;color:#2C3E50;">' + m.nom + '</div>';
+      if (m.dose) html += '<div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Dose : ' + m.dose + '</div>';
+      html += '<div style="font-size:11px;margin-top:4px;font-weight:600;color:' + (m.pris?"#5A9E82":"#F39C12") + ';">' + (m.heure||"") + ' · ' + (m.pris?"✓ Donné":"En attente") + '</div>';
+      html += '</div><div onclick="deleteJournalEntry(\'medicaments\',' + i + ')" style="font-size:16px;color:#E0E0E0;cursor:pointer;padding:2px 4px;flex-shrink:0;">✕</div></div>';
+    });
+    if (list) list.innerHTML = html;
+  }
+  else if (tab === "photos") {
+    var grid = document.getElementById("journal-photos-grid");
+    html = "";
+    (j.photos||[]).forEach(function(p,i) {
+      html += '<div style="position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#EDE8DF;">';
+      html += '<img src="' + p + '" style="width:100%;height:100%;object-fit:cover;">';
+      html += '<div onclick="deleteJournalEntry(\'photos\',' + i + ')" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.5);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;">✕</div>';
+      html += '</div>';
+    });
+    if (grid) grid.innerHTML = html;
+  }
+}
+
+function deleteJournalEntry(type, idx) {
+  var j = getJournal();
+  if (j[type]) j[type].splice(idx, 1);
+  saveJournal(j);
+  renderJournalTab(type);
+  renderAssmatFamilies();
+}
+
+function addJournalPhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement("canvas");
+      var max = 800;
+      var ratio = Math.min(max/img.width, max/img.height, 1);
+      canvas.width = img.width * ratio;
+      canvas.height = img.height * ratio;
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      var j = getJournal();
+      j.photos = j.photos || [];
+      j.photos.push(canvas.toDataURL("image/jpeg", 0.75));
+      saveJournal(j);
+      renderJournalTab("photos");
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+  input.value = "";
+}
+
+// ─── Modal ajout journal ───
+
+function openAddJournal(type) {
+  modalJournalType = type;
+  jfType = null; jfPris = false;
+  var title = document.getElementById("modal-journal-title");
+  var body = document.getElementById("modal-journal-body");
+  var now = new Date().toTimeString().slice(0,5);
+
+  if (type === "repas") {
+    title.textContent = "🍽️ Ajouter un repas";
+    body.innerHTML =
+      '<input id="jf-aliment" type="text" placeholder="Aliment (ex: Purée carotte, yaourt)" style="' + jInputStyle + '">' +
+      '<input id="jf-quantite" type="text" placeholder="Quantité (ex: 150g, 120ml, moitié)" style="' + jInputStyle + '">' +
+      '<input id="jf-heure" type="time" value="' + now + '" style="' + jInputStyle + '">' +
+      '<input id="jf-note" type="text" placeholder="Note (ex: a bien mangé, a refusé les légumes)" style="' + jInputStyle + '">';
+  } else if (type === "sommeil") {
+    title.textContent = "😴 Ajouter une sieste / nuit";
+    jfType = "sieste";
+    body.innerHTML =
+      '<div style="display:flex;gap:8px;margin-bottom:12px;">' +
+      '<div onclick="jfSetSleepType(this,\'sieste\')" class="jf-type-btn active" id="jft-sieste" style="flex:1;border:2px solid #5A9E82;border-radius:12px;padding:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;color:#5A9E82;background:#EEF9F5;">🌤️ Sieste</div>' +
+      '<div onclick="jfSetSleepType(this,\'nuit\')" class="jf-type-btn" id="jft-nuit" style="flex:1;border:2px solid #EDE8DF;border-radius:12px;padding:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;color:#7F8C8D;background:#fff;">🌙 Nuit</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;margin-bottom:10px;">' +
+      '<div style="flex:1;"><div style="font-size:11px;font-weight:700;color:#5A9E82;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;">Début</div><input id="jf-debut" type="time" value="' + now + '" style="' + jInputStyle + 'margin-bottom:0;"></div>' +
+      '<div style="flex:1;"><div style="font-size:11px;font-weight:700;color:#5A9E82;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;">Fin</div><input id="jf-fin" type="time" style="' + jInputStyle + 'margin-bottom:0;"></div>' +
+      '</div><div style="height:10px;"></div>' +
+      '<input id="jf-note" type="text" placeholder="Note (optionnel)" style="' + jInputStyle + '">';
+  } else if (type === "changes") {
+    title.textContent = "🚿 Ajouter un change";
+    jfType = "pipi";
+    body.innerHTML =
+      '<div style="display:flex;gap:6px;margin-bottom:12px;">' +
+      '<div onclick="jfSetChangeType(this,\'pipi\')" class="jf-type-btn active" id="jft-pipi" style="flex:1;border:2px solid #5A9E82;border-radius:12px;padding:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;color:#5A9E82;background:#EEF9F5;">💧 Pipi</div>' +
+      '<div onclick="jfSetChangeType(this,\'selles\')" class="jf-type-btn" id="jft-selles" style="flex:1;border:2px solid #EDE8DF;border-radius:12px;padding:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;color:#7F8C8D;background:#fff;">💩 Selles</div>' +
+      '<div onclick="jfSetChangeType(this,\'mixte\')" class="jf-type-btn" id="jft-mixte" style="flex:1;border:2px solid #EDE8DF;border-radius:12px;padding:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;color:#7F8C8D;background:#fff;">💧💩 Mixte</div>' +
+      '</div>' +
+      '<input id="jf-heure" type="time" value="' + now + '" style="' + jInputStyle + '">' +
+      '<input id="jf-note" type="text" placeholder="Note (optionnel)" style="' + jInputStyle + '">';
+  } else if (type === "activites") {
+    title.textContent = "🧸 Ajouter une activité";
+    body.innerHTML =
+      '<input id="jf-description" type="text" placeholder="Ex: Lecture d\'albums, Peinture, Parc..." style="' + jInputStyle + '">' +
+      '<input id="jf-heure" type="time" value="' + now + '" style="' + jInputStyle + '">';
+  } else if (type === "medicaments") {
+    title.textContent = "💊 Ajouter un médicament";
+    body.innerHTML =
+      '<input id="jf-nom" type="text" placeholder="Médicament (ex: Doliprane, Gaviscon)" style="' + jInputStyle + '">' +
+      '<input id="jf-dose" type="text" placeholder="Dose (ex: 2ml, 1 sachet)" style="' + jInputStyle + '">' +
+      '<input id="jf-heure" type="time" value="' + now + '" style="' + jInputStyle + '">' +
+      '<div onclick="jfTogglePris()" id="jf-pris-row" style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px 14px;background:#EEF9F5;border-radius:12px;">' +
+      '<div id="jf-pris-check" style="width:22px;height:22px;border-radius:50%;border:2px solid #5A9E82;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;"></div>' +
+      '<div style="font-size:13px;font-weight:600;color:#2C3E50;">Médicament déjà donné</div></div>';
+  }
+  document.getElementById("modal-journal").style.display = "flex";
+}
+
+function closeAddJournal() { document.getElementById("modal-journal").style.display = "none"; }
+
+function jfSetSleepType(el, type) {
+  jfType = type;
+  ["sieste","nuit"].forEach(function(t) {
+    var b = document.getElementById("jft-" + t);
+    if (!b) return;
+    b.style.borderColor = t===type?"#5A9E82":"#EDE8DF";
+    b.style.color = t===type?"#5A9E82":"#7F8C8D";
+    b.style.background = t===type?"#EEF9F5":"#fff";
+  });
+}
+
+function jfSetChangeType(el, type) {
+  jfType = type;
+  ["pipi","selles","mixte"].forEach(function(t) {
+    var b = document.getElementById("jft-" + t);
+    if (!b) return;
+    b.style.borderColor = t===type?"#5A9E82":"#EDE8DF";
+    b.style.color = t===type?"#5A9E82":"#7F8C8D";
+    b.style.background = t===type?"#EEF9F5":"#fff";
+  });
+}
+
+function jfTogglePris() {
+  jfPris = !jfPris;
+  var check = document.getElementById("jf-pris-check");
+  if (check) check.textContent = jfPris ? "✓" : "";
+}
+
+function saveJournalEntry() {
+  var type = modalJournalType;
+  var j = getJournal();
+  var entry = {};
+
+  if (type === "repas") {
+    var aliment = (document.getElementById("jf-aliment")||{}).value||"";
+    if (!aliment.trim()) { alert("Saisis l'aliment."); return; }
+    entry = { aliment: aliment.trim(), quantite: ((document.getElementById("jf-quantite")||{}).value||"").trim(), heure: ((document.getElementById("jf-heure")||{}).value||""), note: ((document.getElementById("jf-note")||{}).value||"").trim() };
+  } else if (type === "sommeil") {
+    entry = { type: jfType||"sieste", debut: ((document.getElementById("jf-debut")||{}).value||""), fin: ((document.getElementById("jf-fin")||{}).value||""), note: ((document.getElementById("jf-note")||{}).value||"").trim() };
+  } else if (type === "changes") {
+    entry = { type: jfType||"pipi", heure: ((document.getElementById("jf-heure")||{}).value||""), note: ((document.getElementById("jf-note")||{}).value||"").trim() };
+  } else if (type === "activites") {
+    var desc = ((document.getElementById("jf-description")||{}).value||"").trim();
+    if (!desc) { alert("Saisis une description."); return; }
+    entry = { description: desc, heure: ((document.getElementById("jf-heure")||{}).value||"") };
+  } else if (type === "medicaments") {
+    var nom = ((document.getElementById("jf-nom")||{}).value||"").trim();
+    if (!nom) { alert("Saisis le nom du médicament."); return; }
+    entry = { nom: nom, dose: ((document.getElementById("jf-dose")||{}).value||"").trim(), heure: ((document.getElementById("jf-heure")||{}).value||""), pris: jfPris };
+  }
+
+  j[type] = j[type] || [];
+  j[type].push(entry);
+  saveJournal(j);
+  closeAddJournal();
+  renderJournalTab(type);
+  renderAssmatFamilies();
+}
+
+// ─── QR Code famille (côté parent) ───
+
+function showFamilyQR() {
+  var container = document.getElementById("family-qr-container");
+  if (!container) return;
+  container.innerHTML = "";
+  var profiles = JSON.parse(localStorage.getItem("childProfiles") || "[]");
+  var data = {
+    uid: currentUser ? currentUser.id : ("local_" + Date.now()),
+    name: profiles[0] ? (profiles[0].prenom || "") : "",
+    email: currentUser ? currentUser.email : "",
+    children: profiles.map(function(p) {
+      return { name: p.prenom||"", dob: p.dob||"", avatar: p.sexe==="fille"?"👧":"👦", sex: p.sexe||"" };
+    })
+  };
+  var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  try {
+    new QRCode(container, { text: encoded, width: 200, height: 200, colorDark: "#2C3E50", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+  } catch(e) {
+    container.innerHTML = '<div style="font-size:12px;color:#E74C3C;">Erreur génération QR</div>';
+  }
+  document.getElementById("modal-family-qr").style.display = "flex";
+}
+
+function closeModal(id) {
+  var el = document.getElementById(id);
+  if (el) el.style.display = "none";
+}
 
 </script>
 </body>
