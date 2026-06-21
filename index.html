@@ -2799,69 +2799,63 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
   </div>
 
   <!-- ÉCRAN ASSMAT -->
-  <div id="screen-assmat" class="screen" style="background:#F3F0FF;">
-    <!-- Hero -->
-    <div style="background:linear-gradient(150deg,#6C5CE7 0%,#7B68EE 50%,#9B8FFF 100%);padding:54px 20px 0;position:relative;overflow:hidden;">
-      <!-- Cercles déco -->
-      <div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none;"></div>
-      <div style="position:absolute;top:20px;right:30px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none;"></div>
-      <div style="position:absolute;bottom:20px;left:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none;"></div>
+  <div id="screen-assmat" class="screen" style="background:#fff;">
 
-      <!-- Top row -->
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;position:relative;margin-bottom:6px;">
-        <div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.65);font-weight:600;letter-spacing:0.3px;" id="assmat-greeting">Bonjour 👋</div>
-          <div style="font-size:26px;font-weight:900;color:#fff;letter-spacing:-0.8px;margin-top:2px;line-height:1.1;">Espace <span style="color:rgba(255,255,255,0.6);font-weight:400;font-size:22px;">pro</span></div>
+    <!-- Header sticky (même style que accueil parents) -->
+    <div style="background:linear-gradient(160deg,#F0EEFF 0%,#E6DEFF 100%);padding:10px 20px 22px;position:sticky;top:0;z-index:10;">
+
+      <!-- Status bar -->
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:44px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <img src="logo.png" style="width:36px;height:36px;" onerror="this.style.display='none'"/>
+          <span style="font-size:17px;font-weight:800;color:#2C3E50;letter-spacing:-0.3px;">Petit Pousse</span>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-          <button onclick="doLogout()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:7px 14px;font-size:11px;font-weight:700;color:#fff;font-family:Montserrat,sans-serif;cursor:pointer;">Déco</button>
-          <div style="font-size:11px;color:rgba(255,255,255,0.55);text-align:right;" id="assmat-email-display">—</div>
-        </div>
+        <button onclick="doLogout()" style="background:rgba(123,104,238,0.12);border:none;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;color:#7B68EE;font-family:Montserrat,sans-serif;cursor:pointer;">Déconnexion</button>
       </div>
 
-      <!-- Date du jour -->
-      <div style="position:relative;background:rgba(255,255,255,0.12);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:16px;backdrop-filter:blur(4px);">
-        <div style="font-size:28px;font-weight:900;color:#fff;line-height:1;" id="assmat-day-num">—</div>
-        <div>
-          <div style="font-size:13px;font-weight:700;color:#fff;" id="assmat-day-name">—</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);" id="assmat-month-year">—</div>
+      <!-- Greeting -->
+      <div style="font-size:13px;color:#9B8FD0;" id="assmat-greeting">Bonjour</div>
+      <div style="font-size:28px;font-weight:400;color:#2C3E50;margin-top:2px;font-family:'Sacramento',cursive;line-height:1.2;">Espace assistante maternelle</div>
+
+      <!-- Carte du jour -->
+      <div style="background:rgba(255,255,255,0.85);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;margin-top:16px;box-shadow:0 2px 10px rgba(123,104,238,0.1);">
+        <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#EEE8FF,#DDD5FF);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <div style="text-align:center;line-height:1;">
+            <div style="font-size:18px;font-weight:900;color:#7B68EE;" id="assmat-day-num">—</div>
+            <div style="font-size:8px;font-weight:700;color:#9B8FD0;letter-spacing:0.5px;" id="assmat-day-short">—</div>
+          </div>
         </div>
-        <div style="margin-left:auto;font-size:20px;">📅</div>
-      </div>
-
-      <!-- Stats du jour -->
-      <div id="assmat-stats-bar" style="display:flex;gap:8px;margin-bottom:0;position:relative;padding-bottom:20px;"></div>
-
-      <!-- Vague SVG -->
-      <div style="position:absolute;bottom:-1px;left:0;width:100%;overflow:hidden;line-height:0;">
-        <svg viewBox="0 0 400 32" preserveAspectRatio="none" style="display:block;width:100%;height:32px;"><path d="M0,16 C100,32 300,0 400,16 L400,32 L0,32 Z" fill="#F3F0FF"/></svg>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:700;color:#2C3E50;" id="assmat-day-name">—</div>
+          <div style="font-size:11px;color:#9B8FD0;margin-top:1px;" id="assmat-email-display">—</div>
+        </div>
+        <div id="assmat-stats-bar" style="display:flex;gap:6px;"></div>
       </div>
     </div>
 
-    <div style="padding:20px 16px 100px;">
-      <!-- Label section -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-        <div style="font-size:13px;font-weight:800;color:#5A50D0;letter-spacing:-0.2px;">Mes familles</div>
-        <div onclick="openQRScanner()" style="background:linear-gradient(135deg,#7B68EE,#5A50D0);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 3px 12px rgba(123,104,238,0.35);">
-          <span>📷</span><span>Ajouter</span>
+    <!-- Corps -->
+    <div style="padding:16px 16px 100px;">
+
+      <!-- Section familles -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div style="font-size:15px;font-weight:700;color:#2C3E50;">Mes enfants gardés</div>
+        <div onclick="openQRScanner()" style="background:#F0EEFF;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;color:#7B68EE;cursor:pointer;display:flex;align-items:center;gap:6px;">
+          + Ajouter
         </div>
       </div>
 
       <div id="assmat-families-list"></div>
 
       <!-- Accès espace parents -->
-      <div onclick="addRole('parent')" style="background:#fff;border-radius:18px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;margin-top:4px;box-shadow:0 2px 10px rgba(123,104,238,0.08);border:1.5px solid #EAE6FF;">
-        <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#EEE8FF,#E0D8FF);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">👨‍👩‍👦</div>
+      <div onclick="addRole('parent')" style="background:#fff;border-radius:18px;padding:15px 16px;cursor:pointer;display:flex;align-items:center;gap:14px;margin-top:8px;box-shadow:0 1px 8px rgba(0,0,0,0.05);border:1px solid #F0EEFF;">
+        <div style="width:42px;height:42px;border-radius:12px;background:#F0EEFF;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👨‍👩‍👦</div>
         <div>
-          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Je suis aussi maman / papa</div>
-          <div style="font-size:11px;color:#9B8FD0;margin-top:2px;">Accéder à l'espace parents</div>
+          <div style="font-size:13px;font-weight:700;color:#2C3E50;">Je suis aussi parent</div>
+          <div style="font-size:11px;color:#9B8FD0;margin-top:1px;">Accéder à l'espace parents</div>
         </div>
-        <div style="margin-left:auto;font-size:20px;color:#C0B8E8;">›</div>
+        <div style="margin-left:auto;font-size:18px;color:#C0B8E8;">›</div>
       </div>
     </div>
-
-    <!-- FAB scanner -->
-    <div onclick="openQRScanner()" style="position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));right:20px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);display:none;align-items:center;justify-content:center;font-size:24px;box-shadow:0 6px 20px rgba(123,104,238,0.45);cursor:pointer;z-index:50;" id="assmat-fab">📷</div>
   </div>
 
   <!-- ÉCRAN JOURNAL ASSMAT -->
@@ -6997,25 +6991,22 @@ var jfPris = false;
 var jInputStyle = "width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:11px 14px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;margin-bottom:10px;display:block;";
 
 function initAssmatScreen() {
-  if (currentUser) {
-    var el = document.getElementById("assmat-email-display");
-    if (el) el.textContent = currentUser.email;
-  }
-  // Greeting dynamique
-  var h = new Date().getHours();
-  var greet = h < 6 ? "Bonne nuit 🌙" : h < 12 ? "Bonjour 👋" : h < 18 ? "Bon après-midi ☀️" : "Bonsoir 🌙";
+  var now = new Date();
+  var jours = ["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
+  var joursFull = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+  var mois = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+  var h = now.getHours();
+  var greet = h < 12 ? "Bonjour" : h < 18 ? "Bon après-midi" : "Bonsoir";
   var gEl = document.getElementById("assmat-greeting");
   if (gEl) gEl.textContent = greet;
-  // Date
-  var now = new Date();
-  var jours = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
-  var mois = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
   var dayNumEl = document.getElementById("assmat-day-num");
+  var dayShortEl = document.getElementById("assmat-day-short");
   var dayNameEl = document.getElementById("assmat-day-name");
-  var monthYearEl = document.getElementById("assmat-month-year");
+  var emailEl = document.getElementById("assmat-email-display");
   if (dayNumEl) dayNumEl.textContent = now.getDate();
-  if (dayNameEl) dayNameEl.textContent = jours[now.getDay()];
-  if (monthYearEl) monthYearEl.textContent = mois[now.getMonth()] + " " + now.getFullYear();
+  if (dayShortEl) dayShortEl.textContent = jours[now.getDay()].toUpperCase();
+  if (dayNameEl) dayNameEl.textContent = joursFull[now.getDay()] + " " + now.getDate() + " " + mois[now.getMonth()] + " " + now.getFullYear();
+  if (emailEl && currentUser) emailEl.textContent = currentUser.email;
   renderAssmatFamilies();
 }
 
@@ -7025,7 +7016,7 @@ function renderAssmatFamilies() {
   if (!container) return;
 
   if (families.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:40px 16px 24px;"><div style="width:80px;height:80px;border-radius:28px;background:linear-gradient(135deg,#EEE8FF,#DDD5FF);display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 16px;">👶</div><div style="font-size:16px;font-weight:800;color:#5A50D0;margin-bottom:8px;">Aucune famille liée</div><div style="font-size:13px;color:#9B8FD0;line-height:1.7;">Demande aux parents de générer<br>leur <strong>QR code familial</strong> dans l\'app,<br>puis scanne-le pour commencer.</div></div>';
+    container.innerHTML = '<div style="text-align:center;padding:32px 16px 20px;"><div style="width:72px;height:72px;border-radius:22px;background:#F0EEFF;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 14px;">👶</div><div style="font-size:15px;font-weight:700;color:#2C3E50;margin-bottom:6px;">Aucun enfant gardé</div><div style="font-size:13px;color:#9B8FD0;line-height:1.7;">Demande aux parents de générer<br>leur QR code dans l\'app,<br>puis scanne-le pour commencer.</div></div>';
     var statsBar = document.getElementById("assmat-stats-bar");
     if (statsBar) statsBar.innerHTML = '';
     return;
@@ -7053,26 +7044,27 @@ function renderAssmatFamilies() {
       var avatar = child.avatar || (child.sex === 'fille' ? '👧' : '👦');
       var photoKey = child.photo || null;
 
-      html += '<div style="background:#fff;border-radius:22px;margin-bottom:14px;box-shadow:0 3px 16px rgba(123,104,238,0.12);overflow:hidden;">';
+      html += '<div style="background:#fff;border-radius:18px;margin-bottom:10px;box-shadow:0 1px 8px rgba(0,0,0,0.05);overflow:hidden;border:1px solid #F0EEFF;">';
 
-      // Bandeau couleur en haut — clic → journal
-      html += '<div onclick="openJournal(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="background:linear-gradient(135deg,#7B68EE,#5A50D0);padding:16px 18px 14px;display:flex;align-items:center;gap:14px;cursor:pointer;">';
-      html += '<div style="width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;border:2px solid rgba(255,255,255,0.4);">' + avatar + '</div>';
+      // Ligne principale — clic → journal
+      html += '<div onclick="openJournal(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;">';
+      html += '<div style="width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,#EEE8FF,#DDD5FF);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">' + avatar + '</div>';
       html += '<div style="flex:1;">';
-      html += '<div style="font-size:19px;font-weight:800;color:#fff;letter-spacing:-0.3px;">' + child.name + '</div>';
-      html += '<div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:2px;">' + assmatAgeStr(child.dob) + (planTxt ? ' · ' + planTxt : '') + '</div>';
+      html += '<div style="font-size:16px;font-weight:700;color:#2C3E50;">' + child.name + '</div>';
+      html += '<div style="font-size:12px;color:#9B8FD0;margin-top:2px;">' + assmatAgeStr(child.dob) + (planTxt ? ' · ' + planTxt : '') + '</div>';
       html += '</div>';
-      html += '<div onclick="event.stopPropagation();openChildFiche(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="background:rgba(255,255,255,0.18);border-radius:10px;padding:6px 10px;font-size:11px;font-weight:700;color:#fff;cursor:pointer;flex-shrink:0;">👤 Fiche</div>';
+      html += '<div onclick="event.stopPropagation();openChildFiche(\'' + fam.parentId + '\',' + fi + ',' + ci + ')" style="background:#F0EEFF;border-radius:10px;padding:6px 10px;font-size:11px;font-weight:700;color:#7B68EE;cursor:pointer;flex-shrink:0;">Fiche</div>';
+      html += '<div style="font-size:18px;color:#C0B8E8;margin-left:6px;">›</div>';
       html += '</div>';
 
       // Stats du bas
-      html += '<div style="padding:12px 18px;display:flex;gap:10px;">';
-      html += assmatStatPillFull('🍽️', repas, 'repas', '#FFF3E8', '#E8903A');
-      html += assmatStatPillFull('😴', sommeil, 'dodo', '#EEE8FF', '#7B68EE');
-      html += assmatStatPillFull('🚿', changes, 'changes', '#E8F5EE', '#5A9E82');
-      html += '<div style="flex:1;display:flex;align-items:center;justify-content:flex-end;">';
-      html += '<div style="font-size:11px;font-weight:600;color:' + ((repas+sommeil+changes)>0 ? '#5A9E82' : '#B0B8C1') + ';">';
-      html += (repas+sommeil+changes) > 0 ? 'Journal rempli ✓' : 'Journal vide';
+      html += '<div style="padding:0 16px 12px;display:flex;gap:8px;border-top:1px solid #F5F3FF;">';
+      html += '<div style="display:flex;align-items:center;gap:5px;background:#FFF3E8;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#E8903A;margin-top:10px;">🍽️ ' + repas + '</div>';
+      html += '<div style="display:flex;align-items:center;gap:5px;background:#EEE8FF;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#7B68EE;margin-top:10px;">😴 ' + sommeil + '</div>';
+      html += '<div style="display:flex;align-items:center;gap:5px;background:#E8F5EE;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#5A9E82;margin-top:10px;">🚿 ' + changes + '</div>';
+      html += '<div style="flex:1;display:flex;align-items:center;justify-content:flex-end;margin-top:10px;">';
+      html += '<div style="font-size:11px;font-weight:600;color:' + ((repas+sommeil+changes)>0 ? '#5A9E82' : '#C0C8D0') + ';">';
+      html += (repas+sommeil+changes) > 0 ? 'Journal rempli ✓' : 'Vide';
       html += '</div></div></div>';
 
       html += '</div>';
@@ -7085,15 +7077,12 @@ function renderAssmatFamilies() {
   var statsBar = document.getElementById("assmat-stats-bar");
   if (statsBar) {
     statsBar.innerHTML =
-      '<div style="flex:1;background:rgba(255,255,255,0.18);border-radius:16px;padding:12px 8px;text-align:center;backdrop-filter:blur(4px);">' +
-        '<div style="font-size:24px;font-weight:900;color:#fff;line-height:1;">' + totalChildren + '</div>' +
-        '<div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:700;margin-top:4px;letter-spacing:0.5px;">ENFANT(S)</div></div>' +
-      '<div style="flex:1;background:rgba(255,255,255,0.18);border-radius:16px;padding:12px 8px;text-align:center;backdrop-filter:blur(4px);">' +
-        '<div style="font-size:24px;font-weight:900;color:#fff;line-height:1;">' + totalEntries + '</div>' +
-        '<div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:700;margin-top:4px;letter-spacing:0.5px;">ENTRÉES</div></div>' +
-      '<div style="flex:1;background:rgba(255,255,255,0.18);border-radius:16px;padding:12px 8px;text-align:center;backdrop-filter:blur(4px);">' +
-        '<div style="font-size:14px;font-weight:900;color:#fff;line-height:1;">' + new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}).toUpperCase() + '</div>' +
-        '<div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:700;margin-top:4px;letter-spacing:0.5px;">AUJOURD\'HUI</div></div>';
+      '<div style="background:#EEE8FF;border-radius:12px;padding:8px 12px;text-align:center;min-width:52px;">' +
+        '<div style="font-size:20px;font-weight:900;color:#7B68EE;line-height:1;">' + totalChildren + '</div>' +
+        '<div style="font-size:9px;color:#9B8FD0;font-weight:700;margin-top:3px;">enfants</div></div>' +
+      '<div style="background:#EEE8FF;border-radius:12px;padding:8px 12px;text-align:center;min-width:52px;">' +
+        '<div style="font-size:20px;font-weight:900;color:#7B68EE;line-height:1;">' + totalEntries + '</div>' +
+        '<div style="font-size:9px;color:#9B8FD0;font-weight:700;margin-top:3px;">entrées</div></div>';
   }
 }
 
