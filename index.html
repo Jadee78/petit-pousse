@@ -6776,6 +6776,13 @@ async function loadAssmatParentModule() {
       }).join('');
     } else if (photosEl) photosEl.innerHTML = '';
 
+    // Sauvegarder l'assmat_id pour les messages
+    if (data[0].assmat_id) {
+      var cfg2 = JSON.parse(localStorage.getItem("parent_assmat_config")||"{}");
+      cfg2.assmat_id = data[0].assmat_id;
+      localStorage.setItem("parent_assmat_config", JSON.stringify(cfg2));
+    }
+
     var lastSeen = localStorage.getItem("assmat_last_seen_"+currentUser.id)||"0";
     if (data[0].updated_at > lastSeen) {
       localStorage.setItem("assmat_notif_pending","1");
@@ -6794,41 +6801,57 @@ function openAssmatJournalParent() {
   });
 }
 
-function openParentMessaging() {
+async function openParentMessaging() {
   var cfg = JSON.parse(localStorage.getItem("parent_assmat_config")||"{}");
-  var msgs = JSON.parse(localStorage.getItem("parent_msg_out")||"[]");
+  var assmatName = cfg.name || "l'assmat";
   var overlay = document.createElement("div");
   overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:900;display:flex;align-items:flex-end;";
+  overlay.id = "parent-msg-overlay";
+
   var html = '<div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;height:70vh;display:flex;flex-direction:column;padding:20px 0 0;">';
   html += '<div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 14px;"></div>';
-  html += '<div style="font-size:16px;font-weight:800;color:#2C3E50;padding:0 20px 12px;border-bottom:0.5px solid #EDE8DF;">💬 Messages à '+(cfg.name||"l'assmat")+'</div>';
-  html += '<div id="parent-msg-list" style="flex:1;overflow-y:auto;padding:14px 20px;display:flex;flex-direction:column;gap:8px;">';
-  if (!msgs.length) html += '<div style="text-align:center;padding:32px 0;font-size:13px;color:#B0B8C1;">Aucun message envoyé</div>';
-  msgs.forEach(function(m){
-    var t = new Date(m.ts).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-    html += '<div style="align-self:flex-end;max-width:80%;background:linear-gradient(135deg,#7B68EE,#5A50D0);color:#fff;border-radius:18px 18px 4px 18px;padding:11px 14px;font-size:13px;line-height:1.5;">' + m.texte + '</div>';
-    html += '<div style="text-align:right;font-size:10px;color:#B0A8C8;">Moi · '+t+'</div>';
-  });
-  html += '</div>';
+  html += '<div style="font-size:16px;font-weight:800;color:#2C3E50;padding:0 20px 12px;border-bottom:0.5px solid #EDE8DF;">Messages avec '+assmatName+'</div>';
+  html += '<div id="parent-msg-list" style="flex:1;overflow-y:auto;padding:14px 20px;display:flex;flex-direction:column;gap:8px;"><div style="text-align:center;padding:20px;font-size:13px;color:#B0B8C1;">Chargement…</div></div>';
   html += '<div style="padding:12px 20px calc(20px + env(safe-area-inset-bottom,0px));border-top:0.5px solid #EDE8DF;display:flex;gap:8px;">';
-  html += '<input id="parent-msg-input" type="text" placeholder="Écrire à '+(cfg.name||"l\'assmat")+'…" style="flex:1;border:1.5px solid #D0C8F0;border-radius:22px;padding:11px 16px;font-size:13px;font-family:Montserrat,sans-serif;outline:none;">';
-  html += '<button onclick="sendParentMessage()" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;font-size:20px;color:#fff;cursor:pointer;">↑</button>';
+  html += '<input id="parent-msg-input" type="text" placeholder="Écrire à '+assmatName+'…" style="flex:1;border:1.5px solid #D0C8F0;border-radius:22px;padding:11px 16px;font-size:13px;font-family:Montserrat,sans-serif;outline:none;" onkeydown="if(event.key===\'Enter\')sendParentMessage()">';
+  html += '<button onclick="sendParentMessage()" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7B68EE,#5A50D0);border:none;font-size:20px;color:#fff;cursor:pointer;flex-shrink:0;">↑</button>';
   html += '</div></div>';
   overlay.innerHTML = html;
   overlay.onclick = function(e){ if(e.target===overlay) document.body.removeChild(overlay); };
-  overlay.id = "parent-msg-overlay";
   document.body.appendChild(overlay);
+
+  // Charger les messages depuis Supabase
+  var listEl = document.getElementById("parent-msg-list");
+  if (!sb || !currentUser) { if(listEl) listEl.innerHTML = '<div style="text-align:center;padding:20px;font-size:13px;color:#E74C3C;">Connexion requise</div>'; return; }
+  try {
+    var { data, error } = await sb.from("assmat_messages").select("*").eq("parent_id", currentUser.id).order("created_at", {ascending:true});
+    if (!listEl) return;
+    if (error || !data || !data.length) { listEl.innerHTML = '<div style="text-align:center;padding:32px 0;font-size:13px;color:#B0B8C1;">Aucun message — écris le premier !</div>'; return; }
+    listEl.innerHTML = data.map(function(m){
+      var isMoi = m.de === 'parent';
+      var t = new Date(m.created_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+      return '<div style="display:flex;flex-direction:column;align-items:'+(isMoi?'flex-end':'flex-start')+';gap:2px;">' +
+        '<div style="max-width:80%;background:'+(isMoi?'linear-gradient(135deg,#7B68EE,#5A50D0)':'#F5F3FF')+';color:'+(isMoi?'#fff':'#2C3E50')+';border-radius:'+(isMoi?'18px 18px 4px 18px':'18px 18px 18px 4px')+';padding:11px 14px;font-size:13px;line-height:1.5;">'+m.texte+'</div>' +
+        '<div style="font-size:10px;color:#B0A8C8;padding:0 4px;">'+(isMoi?'Moi':assmatName)+' · '+t+'</div></div>';
+    }).join('');
+    listEl.scrollTop = listEl.scrollHeight;
+  } catch(e) { if(listEl) listEl.innerHTML = '<div style="text-align:center;padding:20px;font-size:13px;color:#E74C3C;">Erreur : '+e.message+'</div>'; }
 }
 
-function sendParentMessage() {
+async function sendParentMessage() {
   var input = document.getElementById("parent-msg-input");
-  if (!input||!input.value.trim()) return;
-  var msgs = JSON.parse(localStorage.getItem("parent_msg_out")||"[]");
-  msgs.push({ texte: input.value.trim(), ts: new Date().toISOString() });
-  localStorage.setItem("parent_msg_out", JSON.stringify(msgs));
+  if (!input || !input.value.trim()) return;
+  var cfg = JSON.parse(localStorage.getItem("parent_assmat_config")||"{}");
+  if (!sb || !currentUser) { showToast("Connexion requise"); return; }
+  if (!cfg.assmat_id) { showToast("Ouvre d'abord le journal pour lier ton assmat"); return; }
+  var texte = input.value.trim();
   input.value = "";
-  var o = document.getElementById("parent-msg-overlay");
-  if (o) { document.body.removeChild(o); openParentMessaging(); }
+  try {
+    var { error } = await sb.from("assmat_messages").insert({ parent_id: currentUser.id, assmat_id: cfg.assmat_id, texte: texte, de: "parent" });
+    if (error) { showToast("Erreur : " + error.message); return; }
+    var o = document.getElementById("parent-msg-overlay");
+    if (o) { document.body.removeChild(o); openParentMessaging(); }
+  } catch(e) { showToast("Erreur : " + e.message); }
 }
 
 function openParentPlanning() {
@@ -7702,37 +7725,45 @@ function getMsgKey() {
   return "assmat_msg_" + currentJournalParentId + "_" + currentJournalChildIdx;
 }
 
-function sendMessage() {
+async function sendMessage() {
   var input = document.getElementById("msg-input");
   if (!input || !input.value.trim()) return;
-  var msgs = JSON.parse(localStorage.getItem(getMsgKey()) || "[]");
-  msgs.push({ auteur: "assmat", texte: input.value.trim(), ts: new Date().toISOString() });
-  localStorage.setItem(getMsgKey(), JSON.stringify(msgs));
+  if (!sb || !currentUser || !currentJournalParentId) { showToast("Connexion requise"); return; }
+  var texte = input.value.trim();
   input.value = "";
-  renderMessages();
-  updateJournalCounts();
+  try {
+    var { error } = await sb.from("assmat_messages").insert({ parent_id: currentJournalParentId, assmat_id: currentUser.id, texte: texte, de: "assmat" });
+    if (error) { showToast("Erreur : " + error.message); return; }
+    renderMessages();
+    updateJournalCounts();
+  } catch(e) { showToast("Erreur : " + e.message); }
 }
 
-function renderMessages() {
-  var msgs = JSON.parse(localStorage.getItem(getMsgKey()) || "[]");
+async function renderMessages() {
   var list = document.getElementById("journal-messages-list");
   if (!list) return;
-  if (msgs.length === 0) {
-    list.innerHTML = '<div style="text-align:center;padding:32px 16px;"><div style="font-size:40px;margin-bottom:10px;">💬</div><div style="font-size:13px;color:#7F8C8D;">Aucun message — écris le premier !</div></div>';
+  if (!sb || !currentUser || !currentJournalParentId) {
+    list.innerHTML = '<div style="text-align:center;padding:32px 16px;font-size:13px;color:#7F8C8D;">Connexion requise</div>';
     return;
   }
-  var html = "";
-  msgs.forEach(function(m, i) {
-    var isAssmat = m.auteur === "assmat";
-    var time = new Date(m.ts).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-    var date = new Date(m.ts).toLocaleDateString('fr-FR', { day:'numeric', month:'short' });
-    html += '<div style="display:flex;flex-direction:column;align-items:' + (isAssmat ? "flex-end" : "flex-start") + ';">';
-    html += '<div style="max-width:80%;background:' + (isAssmat ? "linear-gradient(135deg,#7B68EE,#5A50D0)" : "#fff") + ';color:' + (isAssmat ? "#fff" : "#2C3E50") + ';border-radius:' + (isAssmat ? "18px 18px 4px 18px" : "18px 18px 18px 4px") + ';padding:11px 14px;font-size:13px;line-height:1.5;box-shadow:0 1px 6px rgba(0,0,0,0.08);">' + m.texte + '</div>';
-    html += '<div style="font-size:10px;color:#B0A8C8;margin-top:3px;padding:0 4px;">' + (isAssmat ? "Moi" : "Parents") + ' · ' + time + '</div>';
-    html += '</div>';
-  });
-  list.innerHTML = html;
-  list.scrollTop = list.scrollHeight;
+  list.innerHTML = '<div style="text-align:center;padding:20px;font-size:13px;color:#B0B8C1;">Chargement…</div>';
+  try {
+    var { data, error } = await sb.from("assmat_messages").select("*")
+      .eq("parent_id", currentJournalParentId).eq("assmat_id", currentUser.id)
+      .order("created_at", {ascending: true});
+    if (error || !data || !data.length) {
+      list.innerHTML = '<div style="text-align:center;padding:32px 16px;"><div style="font-size:36px;margin-bottom:10px;">💬</div><div style="font-size:13px;color:#7F8C8D;">Aucun message — écris le premier !</div></div>';
+      return;
+    }
+    list.innerHTML = data.map(function(m) {
+      var isAssmat = m.de === "assmat";
+      var time = new Date(m.created_at).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+      return '<div style="display:flex;flex-direction:column;align-items:' + (isAssmat ? "flex-end" : "flex-start") + ';gap:2px;">' +
+        '<div style="max-width:80%;background:' + (isAssmat ? "linear-gradient(135deg,#7B68EE,#5A50D0)" : "#fff") + ';color:' + (isAssmat ? "#fff" : "#2C3E50") + ';border-radius:' + (isAssmat ? "18px 18px 4px 18px" : "18px 18px 18px 4px") + ';padding:11px 14px;font-size:13px;line-height:1.5;box-shadow:0 1px 6px rgba(0,0,0,0.06);">' + m.texte + '</div>' +
+        '<div style="font-size:10px;color:#B0A8C8;padding:0 4px;">' + (isAssmat ? "Moi" : "Parents") + ' · ' + time + '</div></div>';
+    }).join('');
+    list.scrollTop = list.scrollHeight;
+  } catch(e) { list.innerHTML = '<div style="text-align:center;padding:20px;font-size:13px;color:#E74C3C;">Erreur : '+e.message+'</div>'; }
 }
 
 // ─── Récupération ───
