@@ -641,9 +641,6 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div class="ms-sub" id="home-milestone-sub">Visite m&#233;dicale &#224; pr&#233;voir &#183; Nouvelles saveurs</div>
       </div>
     </div>
-    <div class="alert-strip" id="home-vacc-strip" style="display:none;">
-      <div><div class="al-t" id="home-vacc-title"></div><div class="al-s" id="home-vacc-sub"></div></div>
-    </div>
     <!-- Carte allaitement accueil (visible si activé) -->
     <div id="home-allait-card" style="display:none;margin:10px 16px 0;" onclick="goTo('allait')" style="cursor:pointer;">
       <div style="background:linear-gradient(135deg,#EEF9F5,#D6F0E8);border-radius:18px;padding:16px;cursor:pointer;">
@@ -4597,9 +4594,7 @@ function updateDynamicHome(profile) {
   }
   // Vaccin alert
   var vacc=calcNextVaccine(profile.dob);
-  var strip=document.getElementById("home-vacc-strip");
   if(vacc) {
-    if(strip) { strip.style.display="flex"; var vt=document.getElementById("home-vacc-title"); var vs=document.getElementById("home-vacc-sub"); if(vt) vt.textContent = vacc.days<=0 ? "Vaccin à faire !" : "Vaccin dans "+vacc.days+" jour"+(vacc.days>1?"s":""); if(vs) vs.textContent = vacc.short+" · Pense à prendre RDV"; }
     // Module badge
     var mb=document.getElementById("mod-badge-vaccin");
     if(mb) mb.textContent = vacc.days<=0 ? "Urgent !" : "J-"+vacc.days;
@@ -4613,9 +4608,6 @@ function updateDynamicHome(profile) {
       vd.textContent=vacc.date.getDate()+" "+mo[vacc.date.getMonth()]+" "+vacc.date.getFullYear();
     }
     if(vdy) vdy.textContent = vacc.days<=0 ? "Dès maintenant !" : "Dans "+vacc.days+" jour"+(vacc.days>1?"s":"");
-  } else {
-    if(strip) strip.style.display="none";
-    if(vaccMs) vaccMs.style.display="none";
   }
 }
 
