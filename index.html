@@ -681,7 +681,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div id="home-assmat-module" style="margin:10px 16px 0;">
       <!-- Non configuré -->
       <div id="assmat-mod-empty" onclick="configureAssmatParent()" style="display:none;background:linear-gradient(135deg,#F0EEFF,#E8E0FF);border-radius:18px;padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;border:1.5px dashed #C0B8E8;">
-        <div style="width:38px;height:38px;border-radius:50%;background:#C0B8E8;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👩‍🍼</div>
+        <div style="width:38px;height:38px;border-radius:12px;background:#B0A8D8;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;">AP</div>
         <div style="flex:1;">
           <div style="font-size:13px;font-weight:700;color:#7B68EE;">Ajouter mon assistante maternelle</div>
           <div style="font-size:11px;color:#B0A8D0;margin-top:2px;">Suivre le journal de bébé depuis l'accueil</div>
@@ -692,7 +692,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div id="assmat-mod-configured" style="display:none;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 2px 12px rgba(123,104,238,0.1);">
         <!-- Header cliquable -->
         <div onclick="toggleAssmatModule()" style="background:linear-gradient(135deg,#7B68EE,#5A50D0);padding:13px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;">
-          <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;" id="assmat-mod-emoji">👩‍🍼</div>
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;letter-spacing:-0.5px;" id="assmat-mod-emoji">AP</div>
           <div style="flex:1;">
             <div style="font-size:14px;font-weight:800;color:#fff;" id="assmat-mod-name">Mon assmat</div>
             <div style="font-size:11px;color:rgba(255,255,255,0.7);" id="assmat-mod-status">Chargement…</div>
@@ -6680,10 +6680,16 @@ function initAssmatParentModuleUI() {
   } else {
     empty.style.display = "none";
     configured.style.display = "block";
+    var assmatName = cfg.name || "Mon assmat";
     var nameEl = document.getElementById("assmat-mod-name");
     var emojiEl = document.getElementById("assmat-mod-emoji");
-    if (nameEl) nameEl.textContent = cfg.name || "Mon assmat";
-    if (emojiEl) emojiEl.textContent = cfg.emoji || "👩‍🍼";
+    // Initiales de l'assmat dans le carré
+    var initials = assmatName.split(" ").map(function(w){return w[0]||"";}).join("").slice(0,2).toUpperCase();
+    if (emojiEl) emojiEl.textContent = initials || "AP";
+    // "[prénom bébé] est chez [assmat]"
+    var profiles = JSON.parse(localStorage.getItem("childProfiles") || "[]");
+    var babyName = profiles[0] ? (profiles[0].prenom || "") : "";
+    if (nameEl) nameEl.textContent = babyName ? babyName + " est chez " + assmatName : assmatName;
     assmatModuleOpen = cfg.open !== false;
     applyAssmatModuleToggle();
     loadAssmatParentModule();
@@ -6713,15 +6719,9 @@ function configureAssmatParent() {
     '<div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:24px 20px calc(32px + env(safe-area-inset-bottom,0px));box-sizing:border-box;">' +
     '<div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 20px;"></div>' +
     '<div style="font-size:18px;font-weight:800;color:#2C3E50;margin-bottom:4px;">Mon assistante maternelle</div>' +
-    '<div style="font-size:13px;color:#7F8C8D;margin-bottom:20px;">Personnalise comment tu l\'appelles</div>' +
+    '<div style="font-size:13px;color:#7F8C8D;margin-bottom:20px;">Prénom ou surnom de ton assmat</div>' +
     '<div style="font-size:11px;font-weight:700;color:#7B68EE;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Prénom / surnom</div>' +
-    '<input id="cfg-assmat-name" type="text" placeholder="Ex: Nathalie, Mamie Josette, Nounou…" value="' + (cfg.name||'') + '" style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:12px 14px;font-size:14px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;margin-bottom:14px;">' +
-    '<div style="font-size:11px;font-weight:700;color:#7B68EE;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Emoji</div>' +
-    '<div style="display:flex;gap:10px;margin-bottom:20px;">' +
-    ['👩‍🍼','👩','🧑','👵','👩‍❤️‍👩'].map(function(e){
-      return '<div onclick="selectAssmatEmoji(this,\''+e+'\')" style="width:44px;height:44px;border-radius:12px;border:2px solid '+(cfg.emoji===e?'#7B68EE':'#EDE8DF')+';display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;background:'+(cfg.emoji===e?'#F0EEFF':'#fff')+'" data-emoji="'+e+'">'+e+'</div>';
-    }).join('') +
-    '</div>' +
+    '<input id="cfg-assmat-name" type="text" placeholder="Ex: Nathalie, Mamie Josette, Nounou…" value="' + (cfg.name||'') + '" style="width:100%;box-sizing:border-box;border:1.5px solid #EDE8DF;border-radius:12px;padding:12px 14px;font-size:14px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;margin-bottom:20px;">' +
     '<button onclick="saveAssmatConfig()" style="width:100%;background:linear-gradient(135deg,#7B68EE,#5A50D0);color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>' +
     '</div>';
   overlay.onclick = function(e){ if(e.target===overlay) document.body.removeChild(overlay); };
@@ -6731,20 +6731,11 @@ function configureAssmatParent() {
   if (input) setTimeout(function(){ input.focus(); }, 100);
 }
 
-var selectedAssmatEmoji = null;
-function selectAssmatEmoji(el, emoji) {
-  selectedAssmatEmoji = emoji;
-  document.querySelectorAll("[data-emoji]").forEach(function(b){
-    b.style.borderColor = b.dataset.emoji === emoji ? "#7B68EE" : "#EDE8DF";
-    b.style.background = b.dataset.emoji === emoji ? "#F0EEFF" : "#fff";
-  });
-}
 function saveAssmatConfig() {
   var name = (document.getElementById("cfg-assmat-name")||{}).value || "";
   if (!name.trim()) { alert("Saisis un prénom."); return; }
   var cfg = JSON.parse(localStorage.getItem("parent_assmat_config") || "{}");
   cfg.name = name.trim();
-  cfg.emoji = selectedAssmatEmoji || cfg.emoji || "👩‍🍼";
   cfg.enabled = true;
   cfg.open = true;
   localStorage.setItem("parent_assmat_config", JSON.stringify(cfg));
