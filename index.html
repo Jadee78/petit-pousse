@@ -7363,9 +7363,9 @@ function openJournal(parentId, familyIdx, childIdx) {
   if (avatarEl) avatarEl.textContent = child.avatar || (child.sex==='fille'?'👧':'👦');
   showJournalTab("repas");
   updateJournalCounts();
-  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  hideAllScreens();
   var jscreen = document.getElementById("screen-assmat-journal");
-  if (jscreen) { jscreen.classList.add("active"); jscreen.scrollTop = 0; }
+  if (jscreen) { jscreen.style.display = "block"; jscreen.classList.add("active"); jscreen.scrollTop = 0; }
 }
 
 function getJournalKey() {
