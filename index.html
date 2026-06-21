@@ -698,6 +698,13 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div class="mod" onclick="goTo('courses')"><div class="mod-icon" style="background:#E8F5EE;">🛒</div><div class="mod-t">Courses</div><div class="mod-s">Liste & rappels</div><div class="mod-badge" id="mod-badge-courses">0 item</div></div>
       <div class="mod" onclick="goTo('agenda')"><div class="mod-icon" style="background:#EAF0FF;">🗓️</div><div class="mod-t">Agenda médical</div><div class="mod-s">RDV pédiatre, kiné, ostéo...</div><div class="mod-badge" id="mod-badge-agenda">0 RDV</div></div>
     </div>
+
+    <!-- MODULE ASSMAT (caché par défaut, visible si une assmat est liée) -->
+    <div id="module-assmat-parent" style="display:none;margin:0 16px 16px;">
+      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Mon assistante maternelle</div>
+      <div id="assmat-parent-cards"></div>
+    </div>
+
   </div>
 
   <!-- VACCINS -->
@@ -3332,6 +3339,7 @@ function switchTab(id) {
   var tab = document.getElementById("tab-" + id);
   if (tab) tab.classList.add("active");
   setTimeout(function(){ maybeShowRubriqueMsg(id); }, 300);
+  if (id === "home") setTimeout(function() { loadAssmatParentModule(); }, 400);
 }
 function goTo(id) {
   showScreen(id); hist.push(id);
@@ -3892,6 +3900,7 @@ function goToApp() {
   document.getElementById("screen-login").classList.remove("active");
   document.getElementById("screen-home").classList.add("active");
   document.getElementById("tabbar").style.display = "flex";
+  setTimeout(function() { loadAssmatParentModule(); updateBellDot(); }, 600);
 }
 // ══ ONBOARDING ══
 var obStep = 0;
@@ -5880,6 +5889,11 @@ function buildNotifs() {
     }
   }
 
+  // Nouvelles entrées assmat
+  if (localStorage.getItem("assmat_notif_pending") === "1") {
+    notifs.unshift({ icon:"&#128105;&#8205;&#127868;", color:"#7B68EE", bg:"#F0EEFF", title:"Nouveau du côté de l'assmat", sub:"Le journal de bébé a été mis à jour — retourne sur l'accueil pour voir", action:"switchTab('home')" });
+  }
+
   return notifs;
 }
 
@@ -6586,6 +6600,162 @@ function renderAgenda() {
 function loadAgendaScreen() { renderAgenda(); }
 
 // ═══════════════════════════════════════════════
+// MODULE ASSMAT CÔTÉ PARENT
+// ═══════════════════════════════════════════════
+
+async function loadAssmatParentModule() {
+  if (!sb || !currentUser) return;
+  var today = new Date().toISOString().slice(0,10);
+  try {
+    var { data, error } = await sb.from("assmat_journals")
+      .select("*")
+      .eq("parent_id", currentUser.id)
+      .eq("date", today)
+      .order("updated_at", { ascending: false });
+    if (error || !data || data.length === 0) { hideAssmatParentModule(); return; }
+
+    var module = document.getElementById("module-assmat-parent");
+    var cards = document.getElementById("assmat-parent-cards");
+    if (!module || !cards) return;
+    module.style.display = "block";
+
+    var profiles = JSON.parse(localStorage.getItem("childProfiles") || "[]");
+    var html = "";
+    data.forEach(function(entry) {
+      var j = entry.data || {};
+      var child = profiles[entry.child_idx] || {};
+      var avatar = child.sexe === "fille" ? "👧" : "👦";
+      var prenom = child.prenom || ("Enfant " + (entry.child_idx + 1));
+      var repas = (j.repas||[]).length;
+      var sommeil = (j.sommeil||[]).length;
+      var changes = (j.changes||[]).length;
+      var activites = (j.activites||[]).length;
+      var photos = (j.photos||[]).length;
+      var updatedAt = new Date(entry.updated_at).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+
+      html += '<div onclick="openAssmatParentView(\'' + entry.assmat_id + '\',\'' + currentUser.id + '\',' + entry.child_idx + ')" style="background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 3px 16px rgba(123,104,238,0.1);margin-bottom:12px;cursor:pointer;">';
+      html += '<div style="background:linear-gradient(135deg,#7B68EE,#5A50D0);padding:14px 16px;display:flex;align-items:center;gap:12px;">';
+      html += '<div style="font-size:26px;">' + avatar + '</div>';
+      html += '<div style="flex:1;"><div style="font-size:15px;font-weight:800;color:#fff;">' + prenom + ' chez l\'assmat</div>';
+      html += '<div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">Mis à jour à ' + updatedAt + '</div></div>';
+      html += '<div style="font-size:18px;color:rgba(255,255,255,0.5);">›</div></div>';
+
+      html += '<div style="padding:12px 16px;display:flex;gap:8px;flex-wrap:wrap;">';
+      if (repas) html += '<div style="background:#FFF3E8;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#E8903A;">🍽️ ' + repas + ' repas</div>';
+      if (sommeil) html += '<div style="background:#EEE8FF;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#7B68EE;">😴 ' + sommeil + ' dodo</div>';
+      if (changes) html += '<div style="background:#E8F5EE;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#5A9E82;">🚿 ' + changes + ' changes</div>';
+      if (activites) html += '<div style="background:#FFF8E0;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#C8A030;">🧸 ' + activites + ' activités</div>';
+      if (photos) html += '<div style="background:#EEE8FF;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:#7B68EE;">📸 ' + photos + ' photos</div>';
+      if (!repas && !sommeil && !changes && !activites && !photos) html += '<div style="font-size:12px;color:#B0B8C1;font-style:italic;">Journal vide pour aujourd\'hui</div>';
+      html += '</div>';
+
+      // Dernière photo si dispo
+      if (j.photos && j.photos.length > 0) {
+        html += '<div style="padding:0 16px 14px;display:flex;gap:6px;overflow-x:auto;">';
+        j.photos.slice(-3).forEach(function(p) {
+          html += '<img src="' + p + '" style="width:70px;height:70px;border-radius:10px;object-fit:cover;flex-shrink:0;">';
+        });
+        html += '</div>';
+      }
+
+      html += '</div>';
+    });
+    cards.innerHTML = html;
+
+    // Stocker le timestamp de la dernière visite pour les notifs
+    var lastSeen = localStorage.getItem("assmat_last_seen_" + currentUser.id) || "0";
+    var hasNew = data.some(function(e) { return e.updated_at > lastSeen; });
+    if (hasNew) {
+      localStorage.setItem("assmat_notif_pending", "1");
+      localStorage.setItem("assmat_last_seen_" + currentUser.id, new Date().toISOString());
+    } else {
+      localStorage.removeItem("assmat_notif_pending");
+    }
+    updateBellDot();
+  } catch(e) { hideAssmatParentModule(); }
+}
+
+function hideAssmatParentModule() {
+  var el = document.getElementById("module-assmat-parent");
+  if (el) el.style.display = "none";
+}
+
+async function openAssmatParentView(assmatId, parentId, childIdx) {
+  if (!sb) return;
+  var today = new Date().toISOString().slice(0,10);
+  try {
+    var { data } = await sb.from("assmat_journals")
+      .select("data,updated_at")
+      .eq("assmat_id", assmatId)
+      .eq("parent_id", parentId)
+      .eq("child_idx", childIdx)
+      .eq("date", today)
+      .single();
+    if (!data) return;
+    showAssmatParentDetail(data.data || {}, childIdx, data.updated_at);
+  } catch(e) {}
+}
+
+function showAssmatParentDetail(j, childIdx, updatedAt) {
+  var profiles = JSON.parse(localStorage.getItem("childProfiles") || "[]");
+  var child = profiles[childIdx] || {};
+  var prenom = child.prenom || "Votre enfant";
+  var avatar = child.sexe === "fille" ? "👧" : "👦";
+  var time = new Date(updatedAt).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+
+  var html = '<div style="font-size:28px;margin-bottom:6px;">' + avatar + '</div>';
+  html += '<div style="font-size:18px;font-weight:800;color:#2C3E50;margin-bottom:2px;">' + prenom + ' chez l\'assmat</div>';
+  html += '<div style="font-size:12px;color:#7F8C8D;margin-bottom:20px;">Mis à jour à ' + time + '</div>';
+
+  function section(title, items, renderFn) {
+    if (!items || !items.length) return '';
+    var s = '<div style="margin-bottom:16px;"><div style="font-size:12px;font-weight:800;color:#2C3E50;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">' + title + '</div>';
+    items.forEach(function(item) { s += renderFn(item); });
+    s += '</div>'; return s;
+  }
+
+  html += section('🍽️ Repas', j.repas, function(r) {
+    return '<div style="background:#FFF3E8;border-radius:12px;padding:10px 12px;margin-bottom:6px;font-size:13px;"><strong>' + r.aliment + '</strong>' + (r.quantite?' · '+r.quantite:'') + '<span style="color:#B0B8C1;float:right;">' + (r.heure||'') + '</span>' + (r.note?'<div style="color:#7F8C8D;font-size:11px;margin-top:3px;font-style:italic;">' + r.note + '</div>':'') + '</div>';
+  });
+  html += section('😴 Sommeil', j.sommeil, function(s) {
+    var duree = '';
+    if (s.debut && s.fin) { var ms = new Date("2000-01-01T"+s.fin)-new Date("2000-01-01T"+s.debut); if(ms>0){var m=ms/60000;duree=' ('+Math.floor(m/60)+'h'+String(Math.round(m%60)).padStart(2,'0')+')';} }
+    return '<div style="background:#EEE8FF;border-radius:12px;padding:10px 12px;margin-bottom:6px;font-size:13px;"><strong>' + (s.type==='nuit'?'Nuit':'Sieste') + duree + '</strong> · ' + (s.debut||'—') + ' → ' + (s.fin||'—') + (s.note?'<div style="color:#7F8C8D;font-size:11px;margin-top:3px;font-style:italic;">'+s.note+'</div>':'') + '</div>';
+  });
+  html += section('🚿 Changes', j.changes, function(c) {
+    var label = c.type==='pipi'?'💧 Pipi':c.type==='selles'?'💩 Selles':'💧💩 Mixte';
+    return '<div style="background:#E8F5EE;border-radius:12px;padding:10px 12px;margin-bottom:6px;font-size:13px;">' + label + '<span style="color:#B0B8C1;float:right;">' + (c.heure||'') + '</span></div>';
+  });
+  html += section('🧸 Activités', j.activites, function(a) {
+    return '<div style="background:#FFF8E0;border-radius:12px;padding:10px 12px;margin-bottom:6px;font-size:13px;"><strong>' + a.description + '</strong><span style="color:#B0B8C1;float:right;">' + (a.heure||'') + '</span></div>';
+  });
+  html += section('💊 Médicaments', j.medicaments, function(m) {
+    return '<div style="background:#FDEAEA;border-radius:12px;padding:10px 12px;margin-bottom:6px;font-size:13px;"><strong>' + m.nom + '</strong>' + (m.dose?' · '+m.dose:'') + '<span style="color:' + (m.pris?'#5A9E82':'#F39C12') + ';float:right;">' + (m.pris?'✓ Donné':'En attente') + '</span></div>';
+  });
+
+  if (j.photos && j.photos.length) {
+    html += '<div style="margin-bottom:16px;"><div style="font-size:12px;font-weight:800;color:#2C3E50;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">📸 Photos</div>';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">';
+    j.photos.forEach(function(p) { html += '<img src="' + p + '" style="width:100%;aspect-ratio:1;border-radius:10px;object-fit:cover;">'; });
+    html += '</div></div>';
+  }
+
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:800;display:flex;align-items:flex-end;";
+  overlay.innerHTML = '<div style="background:#fff;border-radius:24px 24px 0 0;width:100%;max-height:85vh;overflow-y:auto;padding:20px 20px calc(28px + env(safe-area-inset-bottom,0px));box-sizing:border-box;"><div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 18px;"></div>' + html + '</div>';
+  overlay.onclick = function(e) { if (e.target === overlay) document.body.removeChild(overlay); };
+  document.body.appendChild(overlay);
+  localStorage.removeItem("assmat_notif_pending");
+  updateBellDot();
+}
+
+function updateBellDot() {
+  var dot = document.querySelector(".bell-dot");
+  var pending = localStorage.getItem("assmat_notif_pending");
+  if (dot) dot.style.display = pending ? "block" : "none";
+}
+
+// ═══════════════════════════════════════════════
 // ESPACE ASSMAT
 // ═══════════════════════════════════════════════
 
@@ -6814,6 +6984,22 @@ function getJournal() {
 
 function saveJournal(j) {
   localStorage.setItem(getJournalKey(), JSON.stringify(j));
+  pushJournalToSupabase(j);
+}
+
+async function pushJournalToSupabase(j) {
+  if (!sb || !currentUser || !currentJournalParentId) return;
+  var today = new Date().toISOString().slice(0,10);
+  try {
+    await sb.from("assmat_journals").upsert({
+      assmat_id: currentUser.id,
+      parent_id: currentJournalParentId,
+      child_idx: currentJournalChildIdx || 0,
+      date: today,
+      data: j,
+      updated_at: new Date().toISOString()
+    }, { onConflict: "assmat_id,parent_id,child_idx,date" });
+  } catch(e) {}
 }
 
 function showJournalTab(tab) {
