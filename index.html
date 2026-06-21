@@ -596,8 +596,8 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           <span class="brand-name">Petit Pousse</span>
         </div>
         <div onclick="refreshMeteo()" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;min-width:42px;">
-          <div id="meteo-icon" style="width:26px;height:26px;display:flex;align-items:center;justify-content:center;"></div>
-          <div id="meteo-temp" style="font-size:12px;font-weight:800;color:#2C3E50;line-height:1;">—</div>
+          <div id="meteo-icon" style="font-size:22px;line-height:1;text-align:center;">⛅</div>
+          <div id="meteo-temp" style="font-size:12px;font-weight:800;color:#2C3E50;line-height:1;">—°</div>
           <div id="meteo-ville" style="display:none;"></div>
           <div id="meteo-desc" style="display:none;"></div>
           <div id="meteo-ressenti" style="display:none;"></div>
@@ -6144,13 +6144,13 @@ function renderMeteoWidget(data) {
   if (!el) return;
   if (!data) {
     document.getElementById('meteo-ville').textContent = 'Position non disponible';
-    document.getElementById('meteo-icon').innerHTML = '<svg viewBox="0 0 24 24" fill="none" width="32" height="32"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.3 7 13 7 13s7-7.7 7-13c0-3.9-3.1-7-7-7z" stroke="#7A4830" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="9" r="2.5" stroke="#7A4830" stroke-width="1.5"/></svg>';
+    document.getElementById('meteo-icon').textContent = '📍';
     document.getElementById('meteo-temp').textContent = '—';
     document.getElementById('meteo-desc').textContent = 'Autorise la localisation';
     document.getElementById('meteo-ressenti').textContent = '—';
     return;
   }
-  document.getElementById('meteo-icon').innerHTML = getMeteoSVG(data.code, 44);
+  document.getElementById('meteo-icon').textContent = WMO_EMOJI[data.code] || '🌡️';
   document.getElementById('meteo-ville').textContent = data.ville.toUpperCase();
   document.getElementById('meteo-temp').textContent = data.temp + '°C';
   document.getElementById('meteo-desc').textContent = WMO_DESC[data.code] || 'Temps variable';
@@ -6222,9 +6222,9 @@ function buildMeteoAdvice(d) {
   }
   return h;
 }
-// Charger la météo au démarrage
+// Charger la météo + ticker au démarrage
 (function() {
-  setTimeout(function() { refreshMeteo(); }, 1500);
+  setTimeout(function() { refreshMeteo(); updateTicker(); }, 1500);
 })();
 
 // ── CONTACTS ──
@@ -7035,11 +7035,16 @@ function showAssmatParentDetail(j, childIdx, updatedAt) {
   updateBellDot();
 }
 
-function updateBellDot() {
-  var dot = document.querySelector(".bell-dot");
-  var pending = localStorage.getItem("assmat_notif_pending");
-  if (dot) dot.style.display = pending ? "block" : "none";
-}
+// (updateBellDot déjà définie plus haut, celle-ci est fusionnée)
+(function(){
+  var _orig = updateBellDot;
+  updateBellDot = function() {
+    _orig();
+    var pending = localStorage.getItem("assmat_notif_pending");
+    var dot = document.querySelector(".bell-dot");
+    if (dot) dot.style.display = pending ? "block" : "none";
+  };
+})();
 
 // ─── Emoji Picker ───
 var EMOJIS = [
