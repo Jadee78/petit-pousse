@@ -10,7 +10,6 @@
 <title>Petit Pousse</title>
 <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent; }
@@ -6931,7 +6930,7 @@ function saveJournalEntry() {
 function showFamilyQR() {
   var container = document.getElementById("family-qr-container");
   if (!container) return;
-  container.innerHTML = "";
+  container.innerHTML = '<div style="width:200px;height:200px;background:#EEF9F5;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#7F8C8D;">Chargement...</div>';
   var profiles = JSON.parse(localStorage.getItem("childProfiles") || "[]");
   var data = {
     uid: currentUser ? currentUser.id : ("local_" + Date.now()),
@@ -6941,12 +6940,13 @@ function showFamilyQR() {
       return { name: p.prenom||"", dob: p.dob||"", avatar: p.sexe==="fille"?"👧":"👦", sex: p.sexe||"" };
     })
   };
-  var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-  try {
-    new QRCode(container, { text: encoded, width: 200, height: 200, colorDark: "#2C3E50", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
-  } catch(e) {
-    container.innerHTML = '<div style="font-size:12px;color:#E74C3C;">Erreur génération QR</div>';
-  }
+  var encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(data)))));
+  var img = document.createElement("img");
+  img.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=10&data=" + encoded;
+  img.style.cssText = "width:200px;height:200px;border-radius:12px;display:block;";
+  img.onerror = function() { container.innerHTML = '<div style="font-size:12px;color:#E74C3C;text-align:center;padding:16px;">Erreur — vérifie ta connexion internet</div>'; };
+  container.innerHTML = "";
+  container.appendChild(img);
   document.getElementById("modal-family-qr").style.display = "flex";
 }
 
