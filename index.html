@@ -630,7 +630,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div style="margin-left:4px;color:#7F8C8D;font-size:16px;">&#8250;</div>
       </div>
       <!-- Ticker sous le prénom -->
-      <div id="home-ticker" onclick="openNotifPanel()" style="display:none;overflow:hidden;margin-top:10px;background:rgba(255,255,255,0.18);border-radius:12px;padding:7px 0;cursor:pointer;"><div class="ticker-inner" id="ticker-content"></div></div>
+      <div id="home-ticker" onclick="openNotifPanel()" style="display:none;overflow:hidden;margin-top:10px;background:rgba(44,62,80,0.25);border-radius:12px;padding:7px 0;cursor:pointer;"><div class="ticker-inner" id="ticker-content"></div></div>
     </div>
 
     <div class="milestone" id="home-milestone">
@@ -639,7 +639,6 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div class="ms-tag">Bient&#244;t</div>
         <div class="ms-title" id="home-milestone-title">9 mois dans 18 jours !</div>
         <div class="ms-sub" id="home-milestone-sub">Visite m&#233;dicale &#224; pr&#233;voir &#183; Nouvelles saveurs</div>
-        <div id="home-vacc-ms" style="display:none;font-size:11px;color:#2C3E50;margin-top:5px;font-weight:700;background:rgba(255,255,255,0.7);border-radius:8px;padding:3px 8px;display:inline-block;"></div>
       </div>
     </div>
     <div class="alert-strip" id="home-vacc-strip" style="display:none;">
@@ -4597,10 +4596,8 @@ function updateDynamicHome(profile) {
   // Vaccin alert
   var vacc=calcNextVaccine(profile.dob);
   var strip=document.getElementById("home-vacc-strip");
-  var vaccMs=document.getElementById("home-vacc-ms");
   if(vacc) {
     if(strip) { strip.style.display="flex"; var vt=document.getElementById("home-vacc-title"); var vs=document.getElementById("home-vacc-sub"); if(vt) vt.textContent = vacc.days<=0 ? "Vaccin à faire !" : "Vaccin dans "+vacc.days+" jour"+(vacc.days>1?"s":""); if(vs) vs.textContent = vacc.short+" · Pense à prendre RDV"; }
-    if(vaccMs) { vaccMs.style.display="block"; vaccMs.textContent = "💉 "+(vacc.days<=0?"Vaccin à faire aujourd'hui !":vacc.days===1?"Vaccin demain — "+vacc.short:"Vaccin dans "+vacc.days+" jours — "+vacc.short); }
     // Module badge
     var mb=document.getElementById("mod-badge-vaccin");
     if(mb) mb.textContent = vacc.days<=0 ? "Urgent !" : "J-"+vacc.days;
@@ -8283,7 +8280,7 @@ function updateTicker() {
   }
   if (!messages.length) messages.push('🌱 Bienvenue dans Petit Pousse');
   var sep = '<span style="color:rgba(255,255,255,0.35);margin:0 18px;">•</span>';
-  var items = messages.map(function(m){ return '<span style="font-size:11px;font-weight:700;color:#fff;">'+m+'</span>'; }).join(sep);
+  var items = messages.map(function(m){ return '<span style="font-size:11px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.3);">'+m+'</span>'; }).join(sep);
   content.innerHTML = items + sep + items;
   ticker.style.display = 'block';
 }
