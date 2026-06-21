@@ -6633,7 +6633,7 @@ function closeQRScanner() {
 
 function handleQRData(raw) {
   try {
-    var decoded = JSON.parse(atob(raw));
+    var decoded = JSON.parse(decodeURIComponent(atob(raw)));
     if (!decoded.uid || !decoded.children) { alert("QR code invalide. Demande à la famille de générer son code depuis Petit Pousse."); return; }
     var families = JSON.parse(localStorage.getItem("assmat_families") || "[]");
     if (families.find(function(f) { return f.parentId === decoded.uid; })) {
@@ -6940,9 +6940,9 @@ function showFamilyQR() {
       return { name: p.prenom||"", dob: p.dob||"", avatar: p.sexe==="fille"?"👧":"👦", sex: p.sexe||"" };
     })
   };
-  var encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(data)))));
+  var encoded = btoa(encodeURIComponent(JSON.stringify(data)));
   var img = document.createElement("img");
-  img.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=10&data=" + encoded;
+  img.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=10&data=" + encodeURIComponent(encoded);
   img.style.cssText = "width:200px;height:200px;border-radius:12px;display:block;";
   img.onerror = function() { container.innerHTML = '<div style="font-size:12px;color:#E74C3C;text-align:center;padding:16px;">Erreur — vérifie ta connexion internet</div>'; };
   container.innerHTML = "";
