@@ -2290,18 +2290,59 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
 
-    <!-- Compte -->
+    <!-- Sécurité du compte -->
     <div style="margin:16px 16px 0;">
-      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Compte</div>
+      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Sécurité du compte</div>
       <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-        <div onclick="doLogout()" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;">
-          <div style="font-size:24px;">&#128274;</div>
-          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#E74C3C;">Se d&#233;connecter</div><div style="font-size:12px;color:#7F8C8D;">Revenir &#224; l'&#233;cran de connexion</div></div>
-          <div style="font-size:16px;color:#E74C3C;font-weight:700;">&#8250;</div>
+        <div onclick="openChangePwd()" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;border-bottom:1px solid #F0EBFA;">
+          <div style="width:40px;height:40px;border-radius:12px;background:#F0EBFA;display:flex;align-items:center;justify-content:center;font-size:20px;">🔑</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Changer le mot de passe</div><div style="font-size:12px;color:#7F8C8D;">Modifier ton mot de passe actuel</div></div>
+          <div style="font-size:18px;color:#C8B0E8;">›</div>
+        </div>
+        <div onclick="openCguScreen()" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;border-bottom:1px solid #F0EBFA;">
+          <div style="width:40px;height:40px;border-radius:12px;background:#F0EBFA;display:flex;align-items:center;justify-content:center;font-size:20px;">📄</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#2C3E50;">Conditions d'utilisation</div><div style="font-size:12px;color:#7F8C8D;">Politique de confidentialité & CGU</div></div>
+          <div style="font-size:18px;color:#C8B0E8;">›</div>
+        </div>
+        <div onclick="doLogout()" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;border-bottom:1px solid #F0EBFA;">
+          <div style="width:40px;height:40px;border-radius:12px;background:#FFF0F0;display:flex;align-items:center;justify-content:center;font-size:20px;">🚪</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#E74C3C;">Se déconnecter</div><div style="font-size:12px;color:#7F8C8D;">Revenir à l'écran de connexion</div></div>
+          <div style="font-size:18px;color:#E74C3C;">›</div>
+        </div>
+        <div onclick="openDeleteAccount()" style="padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;">
+          <div style="width:40px;height:40px;border-radius:12px;background:#FFF0F0;display:flex;align-items:center;justify-content:center;font-size:20px;">🗑️</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#E74C3C;">Supprimer mon compte</div><div style="font-size:12px;color:#7F8C8D;">Effacer définitivement toutes les données</div></div>
+          <div style="font-size:18px;color:#E74C3C;">›</div>
         </div>
       </div>
     </div>
-    <div style="height:24px;"></div>
+    <div style="height:30px;"></div>
+  </div>
+
+  <!-- MODAL CHANGER MOT DE PASSE -->
+  <div id="modal-changepwd" style="display:none;position:fixed;inset:0;background:rgba(44,62,80,0.55);z-index:1000;align-items:flex-end;" onclick="closeChangePwd()">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;padding:28px 20px 40px;width:100%;box-sizing:border-box;">
+      <div style="font-size:17px;font-weight:800;color:#2C3E50;margin-bottom:6px;">🔑 Changer le mot de passe</div>
+      <div style="font-size:13px;color:#7F8C8D;margin-bottom:20px;">Choisis un nouveau mot de passe sécurisé (min. 6 caractères)</div>
+      <input id="pwd-new" type="password" placeholder="Nouveau mot de passe" style="width:100%;box-sizing:border-box;border:1.5px solid #EAE4F4;border-radius:14px;padding:13px 16px;font-size:14px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;margin-bottom:10px;">
+      <input id="pwd-confirm" type="password" placeholder="Confirmer le mot de passe" style="width:100%;box-sizing:border-box;border:1.5px solid #EAE4F4;border-radius:14px;padding:13px 16px;font-size:14px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;margin-bottom:10px;">
+      <div id="pwd-err" style="font-size:13px;color:#E74C3C;min-height:18px;margin-bottom:10px;text-align:center;"></div>
+      <button onclick="doChangePwd()" style="width:100%;background:linear-gradient(135deg,#9B84D4,#7A6AC8);color:#fff;border:none;border-radius:16px;padding:15px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;margin-bottom:10px;">Enregistrer</button>
+      <button onclick="closeChangePwd()" style="width:100%;background:#F5F0FB;border:none;border-radius:16px;padding:13px;font-size:14px;font-weight:700;color:#8C849C;font-family:Montserrat,sans-serif;cursor:pointer;">Annuler</button>
+    </div>
+  </div>
+
+  <!-- MODAL SUPPRIMER COMPTE -->
+  <div id="modal-deleteaccount" style="display:none;position:fixed;inset:0;background:rgba(44,62,80,0.55);z-index:1000;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;" onclick="closeDeleteAccount()">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px;padding:28px 22px;width:100%;box-sizing:border-box;max-width:360px;">
+      <div style="text-align:center;font-size:36px;margin-bottom:12px;">⚠️</div>
+      <div style="font-size:17px;font-weight:800;color:#2C3E50;text-align:center;margin-bottom:8px;">Supprimer mon compte</div>
+      <div style="font-size:13px;color:#7F8C8D;text-align:center;line-height:1.6;margin-bottom:20px;">Toutes tes données (profil bébé, menus, médicaments, rendez-vous) seront <strong style="color:#E74C3C;">effacées définitivement</strong>. Cette action est irréversible.</div>
+      <div style="font-size:12px;color:#7F8C8D;margin-bottom:8px;font-weight:600;">Tape <span style="color:#E74C3C;font-family:monospace;">SUPPRIMER</span> pour confirmer</div>
+      <input id="delete-confirm-input" type="text" placeholder="SUPPRIMER" style="width:100%;box-sizing:border-box;border:2px solid #E74C3C;border-radius:14px;padding:12px 16px;font-size:14px;font-family:Montserrat,sans-serif;color:#E74C3C;outline:none;margin-bottom:14px;text-align:center;letter-spacing:2px;">
+      <button onclick="doDeleteAccount()" style="width:100%;background:#E74C3C;color:#fff;border:none;border-radius:16px;padding:15px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;margin-bottom:10px;">Supprimer définitivement</button>
+      <button onclick="closeDeleteAccount()" style="width:100%;background:#F5F0FB;border:none;border-radius:16px;padding:13px;font-size:14px;font-weight:700;color:#8C849C;font-family:Montserrat,sans-serif;cursor:pointer;">Annuler</button>
+    </div>
   </div>
 
 
@@ -3993,6 +4034,60 @@ function showAssmatInterface() {
   initAssmatScreen();
 }
 
+function openChangePwd() {
+  var m = document.getElementById('modal-changepwd');
+  m.style.display = 'flex';
+  document.getElementById('pwd-new').value = '';
+  document.getElementById('pwd-confirm').value = '';
+  document.getElementById('pwd-err').textContent = '';
+}
+function closeChangePwd() { document.getElementById('modal-changepwd').style.display = 'none'; }
+async function doChangePwd() {
+  var p1 = document.getElementById('pwd-new').value;
+  var p2 = document.getElementById('pwd-confirm').value;
+  var err = document.getElementById('pwd-err');
+  err.textContent = '';
+  if (!p1) { err.textContent = 'Entre un nouveau mot de passe'; return; }
+  if (p1.length < 6) { err.textContent = 'Minimum 6 caractères'; return; }
+  if (p1 !== p2) { err.textContent = 'Les mots de passe ne correspondent pas'; return; }
+  var res = await sb.auth.updateUser({ password: p1 });
+  if (res.error) { err.textContent = res.error.message; return; }
+  closeChangePwd();
+  var b = document.createElement('div');
+  b.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#9B84D4;color:#fff;padding:10px 22px;border-radius:20px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.15);white-space:nowrap;';
+  b.textContent = 'Mot de passe mis à jour ✓';
+  document.body.appendChild(b);
+  setTimeout(function(){ b.remove(); }, 2500);
+}
+function openDeleteAccount() {
+  var m = document.getElementById('modal-deleteaccount');
+  m.style.display = 'flex';
+  document.getElementById('delete-confirm-input').value = '';
+}
+function closeDeleteAccount() { document.getElementById('modal-deleteaccount').style.display = 'none'; }
+async function doDeleteAccount() {
+  var val = document.getElementById('delete-confirm-input').value.trim();
+  if (val !== 'SUPPRIMER') {
+    document.getElementById('delete-confirm-input').style.border = '2px solid #E74C3C';
+    document.getElementById('delete-confirm-input').placeholder = 'Tape SUPPRIMER exactement';
+    return;
+  }
+  // Effacer toutes les données locales
+  var keysToRemove = [];
+  for (var i = 0; i < localStorage.length; i++) { keysToRemove.push(localStorage.key(i)); }
+  keysToRemove.forEach(function(k){ localStorage.removeItem(k); });
+  // Déconnexion Supabase
+  await sb.auth.signOut();
+  currentUser = null;
+  closeDeleteAccount();
+  hideAllScreens();
+  document.getElementById('tabbar').style.display = 'none';
+  document.getElementById('screen-login').classList.add('active');
+  loginTab('connect');
+}
+function openCguScreen() {
+  showCgu();
+}
 async function doLogout() {
   await sb.auth.signOut();
   currentUser = null;
