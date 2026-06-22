@@ -26,12 +26,12 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .st-time { font-size:15px; font-weight:700; }
 .st-icons { font-size:13px; }
 #tabbar { position:fixed; bottom:0; left:0; right:0; height:calc(64px + env(safe-area-inset-bottom,0px)); background:rgba(255,255,255,0.97); border-top:0.5px solid var(--line); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); display:flex; justify-content:space-around; align-items:flex-start; padding-top:10px; padding-bottom:env(safe-area-inset-bottom,0px); z-index:100; }
-.tab { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; cursor:pointer; padding:0 4px; }
+.tab { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; cursor:pointer; padding:0 2px; min-width:0; }
 .tab-icon { width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; background:transparent; transition:background 0.2s; }
 .tab.active .tab-icon { background:var(--green-bg); }
 .tab-icon svg { display:block; color:var(--sub); }
 .tab.active .tab-icon svg { color:var(--green); }
-.tab-lbl { font-size:10px; font-weight:600; color:var(--sub); }
+.tab-lbl { font-size:9px; font-weight:600; color:var(--sub); white-space:nowrap; }
 .tab.active .tab-lbl { color:var(--green); font-weight:700; }
 .home-header { background:linear-gradient(160deg,#EDE6F8 0%,#E4D8F4 100%); padding:2px 20px 10px; }
 .hd-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
