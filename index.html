@@ -90,7 +90,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 #screen-login { background: linear-gradient(160deg, #f0ebf8 0%, #e8e0f4 50%, #fff 100%); }
 .login-wrap { display:flex; flex-direction:column; align-items:center; padding:60px 28px 40px; min-height:100vh; }
 .login-logo { display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:40px; }
-.login-logo img { width:80px; height:80px; }
+.login-logo img { width:70%; mix-blend-mode:multiply; }
 .login-logo-name { font-size:28px; font-weight:800; color:var(--text); letter-spacing:-0.5px; }
 .login-logo-tag { font-size:13px; color:var(--sub); margin-top:-6px; }
 .login-tabs { display:flex; background:rgba(44,62,80,0.07); border-radius:14px; padding:3px; margin-bottom:28px; width:100%; }
@@ -2492,13 +2492,27 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <input id="courses-new-item" type="text" placeholder="Ajouter un article..." onkeydown="if(event.key==='Enter')addCoursesItem()" style="flex:1;border:1.5px solid #EAE4F4;border-radius:12px;padding:11px 14px;font-size:13px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;background:#fff;">
       <button onclick="addCoursesItem()" style="background:#4A8AC8;color:#fff;border:none;border-radius:12px;padding:11px 16px;font-size:16px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">+</button>
     </div>
+    <!-- Générer depuis menus -->
+    <div style="margin:0 16px 12px;">
+      <button onclick="generateFromMenus()" style="width:100%;background:linear-gradient(135deg,#9B84D4,#7A6AC8);color:#fff;border:none;border-radius:14px;padding:13px 16px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+        <span style="font-size:16px;">📋</span> Générer depuis mes menus
+      </button>
+    </div>
     <!-- Stats + reset -->
     <div style="margin:0 16px 10px;display:flex;align-items:center;justify-content:space-between;">
       <span style="font-size:12px;color:#7F8C8D;" id="courses-stats">0 article</span>
       <button onclick="clearCheckedCourses()" style="background:transparent;border:none;font-size:12px;color:#E74C3C;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Effacer cochés</button>
     </div>
     <!-- Liste -->
-    <div id="courses-list" style="padding:0 16px 20px;display:flex;flex-direction:column;gap:7px;"></div>
+    <div id="courses-list" style="padding:0 16px 12px;display:flex;flex-direction:column;gap:7px;"></div>
+    <!-- Commander en ligne -->
+    <div style="margin:0 16px 20px;">
+      <div style="font-size:12px;font-weight:700;color:#8C849C;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Commander en ligne</div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="openCarrefour()" style="flex:1;background:#004F9F;color:#fff;border:none;border-radius:14px;padding:14px 12px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">🛒 Carrefour</button>
+        <button onclick="openLeclerc()" style="flex:1;background:#F9A800;color:#1A1A1A;border:none;border-radius:14px;padding:14px 12px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">🛒 E.Leclerc</button>
+      </div>
+    </div>
   </div>
 
   <!-- AGENDA MÉDICAL -->
@@ -2592,8 +2606,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
   <div id="screen-login" class="screen" style="padding-bottom:0;">
     <div class="login-wrap">
       <div class="login-logo">
-        <img src="PETIT.png" style="width:60%;mix-blend-mode:multiply;" />
-        <div class="login-logo-tag">L'app qui grandit avec bébé</div>
+        <img src="PETIT.png" />
       </div>
       <div class="login-tabs">
         <div class="ltab active" id="ltab-connect" onclick="loginTab('connect')">Connexion</div>
@@ -6572,6 +6585,63 @@ function removeCoursesItem(id) {
   data.items = data.items.filter(function(it){ return it.id !== id; });
   saveCoursesData(data);
   renderCoursesList();
+}
+function generateFromMenus() {
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var menus = JSON.parse(localStorage.getItem('menus-'+idx)||'{}');
+  var data = getCoursesData();
+  var existing = data.items.map(function(it){ return it.text.toLowerCase().trim(); });
+  var added = 0;
+  var now = new Date();
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(now);
+    d.setDate(now.getDate() - i);
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    var m = menus[ds];
+    if (!m || m.type !== 'maison') continue;
+    ['matin','midi','soir'].forEach(function(repas) {
+      if (!m[repas]) return;
+      m[repas].split(/[,\n]+/).forEach(function(item) {
+        var clean = item.trim();
+        if (!clean) return;
+        if (existing.indexOf(clean.toLowerCase()) === -1) {
+          data.items.push({ id: Date.now() + Math.random(), text: clean, done: false });
+          existing.push(clean.toLowerCase());
+          added++;
+        }
+      });
+    });
+  }
+  saveCoursesData(data);
+  renderCoursesList();
+  if (added === 0) {
+    alert('Aucun nouvel aliment trouvé dans les menus de la semaine.');
+  } else {
+    var banner = document.createElement('div');
+    banner.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#9B84D4;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.15);';
+    banner.textContent = added + ' article' + (added>1?'s':'') + ' ajouté' + (added>1?'s':'') + ' ✓';
+    document.body.appendChild(banner);
+    setTimeout(function(){ banner.remove(); }, 2500);
+  }
+}
+function openCarrefour() {
+  var data = getCoursesData();
+  var items = data.items.filter(function(it){ return !it.done; });
+  if (items.length) {
+    var query = items.map(function(it){ return it.text; }).join(' ');
+    window.open('https://www.carrefour.fr/r/courses/#/search?q='+encodeURIComponent(items[0].text), '_blank');
+  } else {
+    window.open('https://www.carrefour.fr/r/courses/', '_blank');
+  }
+}
+function openLeclerc() {
+  var data = getCoursesData();
+  var items = data.items.filter(function(it){ return !it.done; });
+  if (items.length) {
+    window.open('https://courses.e.leclerc/search?query='+encodeURIComponent(items[0].text), '_blank');
+  } else {
+    window.open('https://courses.e.leclerc/', '_blank');
+  }
 }
 function loadCoursesScreen() {
   var data = getCoursesData();
