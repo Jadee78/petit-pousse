@@ -4120,6 +4120,7 @@ function goToApp() {
   document.getElementById("screen-login").classList.remove("active");
   document.getElementById("screen-home").classList.add("active");
   document.getElementById("tabbar").style.display = "flex";
+  initAssmatParentModuleUI();
   setTimeout(function() { loadAssmatParentModule(); updateBellDot(); }, 600);
 }
 // ══ ONBOARDING ══
