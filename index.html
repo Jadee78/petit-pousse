@@ -9,6 +9,7 @@
 <meta name="theme-color" content="#9B84D4">
 <title>Petit Pousse</title>
 <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <style>
@@ -8376,22 +8377,33 @@ renderJournalTab = function(tab) {
 // ── NOTIFICATIONS PUSH NATIVES ──────────────────────────────────────────────
 
 async function initNotifications() {
-  if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
+  // OneSignal
+  window.OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: '9d991755-e468-4ddc-b6b9-51a0abc9aead',
+      serviceWorkerPath: '/petit-pousse/OneSignalSDKWorker.js',
+      serviceWorkerParam: { scope: '/petit-pousse/' },
+      notifyButton: { enable: false },
+      promptOptions: {
+        slidedown: {
+          prompts: [{
+            type: 'push',
+            autoPrompt: true,
+            delay: { pageViews: 1, timeDelay: 5 },
+            text: {
+              actionMessage: 'Reçois les rappels vaccins et médicaments de Petit Pousse',
+              acceptButton: 'Oui !',
+              cancelButton: 'Plus tard'
+            }
+          }]
+        }
+      }
+    });
+  });
 
-  // Enregistrer le service worker
-  try {
-    await navigator.serviceWorker.register('/petit-pousse/sw.js');
-  } catch(e) {}
-
-  // Demander la permission si pas encore accordée
-  if (Notification.permission === 'default') {
-    var perm = await Notification.requestPermission();
-    if (perm !== 'granted') return;
-  }
-  if (Notification.permission !== 'granted') return;
-
-  // Programmer les rappels
-  scheduleReminders();
+  // Notifs locales en complément (vaccins, médicaments)
+  if (Notification.permission === 'granted') scheduleReminders();
 }
 
 function scheduleReminders() {
