@@ -8373,6 +8373,83 @@ renderJournalTab = function(tab) {
   _origRenderJournalTab(tab);
 };
 
+// ── NOTIFICATIONS PUSH NATIVES ──────────────────────────────────────────────
+
+async function initNotifications() {
+  if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
+
+  // Enregistrer le service worker
+  try {
+    await navigator.serviceWorker.register('/petit-pousse/sw.js');
+  } catch(e) {}
+
+  // Demander la permission si pas encore accordée
+  if (Notification.permission === 'default') {
+    var perm = await Notification.requestPermission();
+    if (perm !== 'granted') return;
+  }
+  if (Notification.permission !== 'granted') return;
+
+  // Programmer les rappels
+  scheduleReminders();
+}
+
+function scheduleReminders() {
+  var profiles = JSON.parse(localStorage.getItem('childProfiles') || '[]');
+  var idx = parseInt(localStorage.getItem('activeChildIdx') || '0');
+  var profile = profiles[idx];
+  if (!profile) return;
+
+  // Rappel vaccins
+  if (profile.dob) {
+    var vacc = calcNextVaccine(profile.dob);
+    if (vacc && vacc.days <= 7) {
+      scheduleNotif(
+        'vaccin_' + vacc.short,
+        '💉 Vaccin bientôt !',
+        'Le vaccin ' + vacc.short + ' approche — dans ' + vacc.days + ' jour' + (vacc.days > 1 ? 's' : '') + '. Pense à prendre RDV.',
+        2000
+      );
+    }
+  }
+
+  // Rappel médicaments du jour
+  var meds = JSON.parse(localStorage.getItem('meds_' + idx) || '[]');
+  var today = new Date().toDateString();
+  meds.forEach(function(med) {
+    if (!med.slots || med.slots[0] === 'Si besoin') return;
+    var done = JSON.parse(localStorage.getItem('med_done_' + med.id + '_' + today) || '[]');
+    var remaining = med.slots.filter(function(s) { return !done.includes(s); });
+    if (remaining.length > 0) {
+      scheduleNotif(
+        'med_' + med.id,
+        '💊 ' + med.name,
+        remaining.length + ' prise' + (remaining.length > 1 ? 's' : '') + ' restante' + (remaining.length > 1 ? 's' : '') + ' aujourd\'hui : ' + remaining.join(', '),
+        5000
+      );
+    }
+  });
+}
+
+var _notifScheduled = {};
+function scheduleNotif(id, title, body, delay) {
+  if (_notifScheduled[id]) return;
+  _notifScheduled[id] = true;
+  setTimeout(function() {
+    if (Notification.permission === 'granted') {
+      new Notification(title, {
+        body: body,
+        icon: '/petit-pousse/logo.png',
+        badge: '/petit-pousse/logo.png',
+        tag: id
+      });
+    }
+  }, delay || 1000);
+}
+
+// Lancer après chargement
+setTimeout(initNotifications, 3000);
+
 </script>
 </body>
 </html>
