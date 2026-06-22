@@ -8410,35 +8410,94 @@ function scheduleReminders() {
   var profiles = JSON.parse(localStorage.getItem('childProfiles') || '[]');
   var idx = parseInt(localStorage.getItem('activeChildIdx') || '0');
   var profile = profiles[idx];
-  if (!profile) return;
+  if (!profile || !profile.dob) return;
 
-  // Rappel vaccins
-  if (profile.dob) {
-    var vacc = calcNextVaccine(profile.dob);
-    if (vacc && vacc.days <= 7) {
-      scheduleNotif(
-        'vaccin_' + vacc.short,
-        '💉 Vaccin bientôt !',
-        'Le vaccin ' + vacc.short + ' approche — dans ' + vacc.days + ' jour' + (vacc.days > 1 ? 's' : '') + '. Pense à prendre RDV.',
-        2000
-      );
-    }
+  var now = new Date();
+  var today = now.toDateString();
+  var name = profile.surnom || profile.prenom || 'Bébé';
+  var dob = new Date(profile.dob);
+
+  // 1. MOIS ANNIVERSAIRE
+  var months = (now.getFullYear() - dob.getFullYear()) * 12 + (now.getMonth() - dob.getMonth());
+  var anniversaryDay = new Date(dob);
+  anniversaryDay.setMonth(dob.getMonth() + months);
+  if (anniversaryDay.toDateString() === today) {
+    scheduleNotif('anniv_' + months,
+      '🎂 ' + months + ' mois !',
+      name + ' a ' + months + ' mois aujourd\'hui ! Joyeux moisiversaire 🌱', 3000);
+  }
+  // Annonce 3 jours avant
+  var nextAnniv = new Date(dob);
+  nextAnniv.setMonth(dob.getMonth() + months + 1);
+  var daysToNext = Math.round((nextAnniv - now) / 86400000);
+  if (daysToNext === 3) {
+    scheduleNotif('anniv_soon_' + (months+1),
+      '🌱 Bientôt ' + (months+1) + ' mois !',
+      name + ' aura ' + (months+1) + ' mois dans 3 jours — de nouvelles activités t\'attendent !', 4000);
   }
 
-  // Rappel médicaments du jour
+  // 2. MÉDICAMENTS — rappels heure par heure
   var meds = JSON.parse(localStorage.getItem('meds_' + idx) || '[]');
-  var today = new Date().toDateString();
+  var slotHours = { 'Matin': 8, 'Midi': 12, 'Soir': 19, 'Nuit': 22 };
   meds.forEach(function(med) {
     if (!med.slots || med.slots[0] === 'Si besoin') return;
     var done = JSON.parse(localStorage.getItem('med_done_' + med.id + '_' + today) || '[]');
-    var remaining = med.slots.filter(function(s) { return !done.includes(s); });
-    if (remaining.length > 0) {
-      scheduleNotif(
-        'med_' + med.id,
-        '💊 ' + med.name,
-        remaining.length + ' prise' + (remaining.length > 1 ? 's' : '') + ' restante' + (remaining.length > 1 ? 's' : '') + ' aujourd\'hui : ' + remaining.join(', '),
-        5000
-      );
+    med.slots.forEach(function(slot) {
+      if (done.includes(slot)) return;
+      var h = slotHours[slot];
+      if (h === undefined) return;
+      var slotTime = new Date(now);
+      slotTime.setHours(h, 0, 0, 0);
+      var diff = slotTime - now;
+      if (diff > 0 && diff < 3600000) {
+        // Dans moins d'1h : rappel immédiat
+        scheduleNotif('med_' + med.id + '_' + slot,
+          '💊 ' + med.name + ' — ' + slot,
+          'N\'oublie pas la prise de ' + slot.toLowerCase() + ' pour ' + name + (med.dose ? ' (' + med.dose + ')' : ''), diff > 5000 ? diff : 5000);
+      } else if (diff > 0) {
+        // Programmer pour plus tard
+        setTimeout(function() {
+          scheduleNotif('med_' + med.id + '_' + slot + '_alarm',
+            '💊 ' + med.name + ' — ' + slot,
+            'C\'est l\'heure de la prise de ' + slot.toLowerCase() + ' pour ' + name + (med.dose ? ' (' + med.dose + ')' : ''), 500);
+        }, diff - 300000); // 5 min avant
+      }
+    });
+  });
+
+  // 3. VACCINS
+  var vacc = calcNextVaccine(profile.dob);
+  if (vacc) {
+    if (vacc.days === 0) {
+      scheduleNotif('vacc_today', '💉 Vaccin aujourd\'hui !',
+        'C\'est le jour du vaccin ' + vacc.short + ' — n\'oublie pas carnet de santé + vaccin du frigo !', 6000);
+    } else if (vacc.days === 1) {
+      scheduleNotif('vacc_demain', '💉 Vaccin demain !',
+        'Rappel : vaccin ' + vacc.short + ' demain. Sors le vaccin du frigo ce soir.', 6000);
+    } else if (vacc.days <= 7) {
+      scheduleNotif('vacc_soon', '💉 Vaccin dans ' + vacc.days + ' jours',
+        'Le vaccin ' + vacc.short + ' approche — pense à prendre RDV si pas encore fait.', 6000);
+    }
+  }
+
+  // 4. RDV AGENDA
+  var rdvs = JSON.parse(localStorage.getItem('rdvs_' + idx) || '[]');
+  rdvs.forEach(function(rdv) {
+    if (!rdv.date) return;
+    var rdvDate = new Date(rdv.date);
+    var daysTo = Math.round((rdvDate - now) / 86400000);
+    if (daysTo === 1) {
+      scheduleNotif('rdv_' + rdv.id + '_j1', '📅 RDV demain',
+        (rdv.titre || 'Rendez-vous') + ' demain' + (rdv.heure ? ' à ' + rdv.heure : '') + ' — pense à préparer le carnet de santé.', 7000);
+    } else if (daysTo === 0 && rdv.heure) {
+      var parts = rdv.heure.split(':');
+      var rdvTime = new Date(now);
+      rdvTime.setHours(parseInt(parts[0]), parseInt(parts[1] || 0), 0, 0);
+      var diffRdv = rdvTime - now;
+      if (diffRdv > 3600000 && diffRdv < 7200000) {
+        scheduleNotif('rdv_' + rdv.id + '_1h', '📅 RDV dans 1h !',
+          (rdv.titre || 'Rendez-vous') + ' dans 1h. N\'oublie pas le carnet de santé !', diffRdv - 3600000);
+      }
     }
   });
 }
@@ -8453,14 +8512,21 @@ function scheduleNotif(id, title, body, delay) {
         body: body,
         icon: '/petit-pousse/logo.png',
         badge: '/petit-pousse/logo.png',
-        tag: id
+        tag: id,
+        requireInteraction: false
       });
     }
   }, delay || 1000);
 }
 
-// Lancer après chargement
+// Lancer après chargement + toutes les heures
 setTimeout(initNotifications, 3000);
+setInterval(function() {
+  if (Notification.permission === 'granted') {
+    _notifScheduled = {};
+    scheduleReminders();
+  }
+}, 3600000);
 
 </script>
 </body>
