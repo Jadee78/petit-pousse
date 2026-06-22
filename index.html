@@ -8601,14 +8601,27 @@ async function checkPendingNotifications() {
       .eq("user_id", String(currentUser.id)).eq("read", false)
       .order("created_at", { ascending: true }).limit(10);
     if (!data || !data.length) return;
+    var ids = data.map(function(n) { return n.id; });
+    // Marquer comme lus immédiatement pour éviter doublons
+    await sb.from("notifications").update({ read: true }).in("id", ids);
     data.forEach(function(n, i) {
       setTimeout(function() {
-        try { new Notification(n.title, { body: n.body, icon: '/petit-pousse/PETIT.png', badge: '/petit-pousse/PETIT.png' }); } catch(e) {}
-      }, i * 800);
+        showPushNotif(n.title, n.body);
+      }, i * 1000);
     });
-    var ids = data.map(function(n) { return n.id; });
-    await sb.from("notifications").update({ read: true }).in("id", ids);
   } catch(e) {}
+}
+
+function showPushNotif(title, body) {
+  if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.ready.then(function(reg) {
+      reg.showNotification(title, { body: body, icon: '/petit-pousse/logo.png', badge: '/petit-pousse/logo.png' });
+    }).catch(function() {
+      try { new Notification(title, { body: body, icon: '/petit-pousse/logo.png' }); } catch(e) {}
+    });
+  } else {
+    try { new Notification(title, { body: body, icon: '/petit-pousse/logo.png' }); } catch(e) {}
+  }
 }
 
 // ── Courbe de croissance ──
@@ -8900,15 +8913,7 @@ function scheduleNotif(id, title, body, delay) {
   if (_notifScheduled[id]) return;
   _notifScheduled[id] = true;
   setTimeout(function() {
-    if (Notification.permission === 'granted') {
-      new Notification(title, {
-        body: body,
-        icon: '/petit-pousse/logo.png',
-        badge: '/petit-pousse/logo.png',
-        tag: id,
-        requireInteraction: false
-      });
-    }
+    if (Notification.permission === 'granted') showPushNotif(title, body);
   }, delay || 1000);
 }
 
