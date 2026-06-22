@@ -8600,10 +8600,12 @@ function closeAddMeasure() {
 }
 function saveAddMeasure() {
   var date = document.getElementById('growth-date').value;
-  var poids = parseFloat(document.getElementById('growth-poids').value.replace(',','.'));
-  var taille = parseFloat(document.getElementById('growth-taille').value.replace(',','.'));
-  if (!date || (!poids && !taille)) return;
-  var idx = activeChildIdx || 0;
+  var poidsVal = document.getElementById('growth-poids').value.replace(',','.');
+  var tailleVal = document.getElementById('growth-taille').value.replace(',','.');
+  var poids = poidsVal ? parseFloat(poidsVal) : null;
+  var taille = tailleVal ? parseFloat(tailleVal) : null;
+  if (!date || (!poids && !taille)) { showToast('Entre au moins le poids ou la taille'); return; }
+  var idx = parseInt(localStorage.getItem('activeChildIdx') || '0');
   var data = getGrowthMeasures(idx);
   var existing = data.findIndex(function(m){ return m.date === date; });
   var entry = { date: date, poids: poids||null, taille: taille||null };
@@ -8626,6 +8628,7 @@ function deleteGrowthMeasure(idx, date) {
   renderGrowthCurve(idx);
 }
 function renderGrowthCurve(idx) {
+  if (idx === undefined) idx = parseInt(localStorage.getItem('activeChildIdx') || '0');
   var svgEl = document.getElementById('growth-curve-svg');
   var listEl = document.getElementById('growth-measures-list');
   if (!svgEl) return;
