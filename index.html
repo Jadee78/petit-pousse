@@ -8361,7 +8361,7 @@ function updateTicker() {
   }
   if (!messages.length) messages.push('🌱 Bienvenue dans Petit Pousse');
   var sep = '<span style="color:rgba(255,255,255,0.35);margin:0 18px;">•</span>';
-  var items = messages.map(function(m){ return '<span style="font-size:11px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.3);">'+m+'</span>'; }).join(sep);
+  var items = messages.map(function(m){ return '<span style="font-size:9px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.3);">'+m+'</span>'; }).join(sep);
   content.innerHTML = items + sep + items;
   ticker.style.display = 'block';
 }
