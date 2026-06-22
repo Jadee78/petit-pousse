@@ -90,7 +90,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 #screen-login { background: linear-gradient(160deg, #f0ebf8 0%, #e8e0f4 50%, #fff 100%); }
 .login-wrap { display:flex; flex-direction:column; align-items:center; padding:60px 28px 40px; min-height:100vh; }
 .login-logo { display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:40px; }
-.login-logo img { width:70%; mix-blend-mode:multiply; }
+.login-logo img { width:70%; }
 .login-logo-name { font-size:28px; font-weight:800; color:var(--text); letter-spacing:-0.5px; }
 .login-logo-tag { font-size:13px; color:var(--sub); margin-top:-6px; }
 .login-tabs { display:flex; background:rgba(44,62,80,0.07); border-radius:14px; padding:3px; margin-bottom:28px; width:100%; }
@@ -2602,6 +2602,47 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
   </div>
 
+  <!-- CGU -->
+  <div id="screen-cgu" class="screen" style="background:#F5F0FB;overflow-y:auto;">
+    <div class="status-bar" style="background:linear-gradient(160deg,#9B84D4,#7A6AC8);">
+      <span class="st-time" style="color:#fff;">9:41</span><span class="st-icons" style="color:#fff;">&#9679;&#9679;&#9679; &#128267;</span>
+    </div>
+    <div style="background:linear-gradient(160deg,#9B84D4,#7A6AC8);padding:6px 20px 20px;">
+      <div style="display:flex;align-items:center;gap:9px;">
+        <span onclick="hideCgu()" style="font-size:26px;color:#fff;cursor:pointer;line-height:1;">&#8249;</span>
+        <span style="font-size:17px;font-weight:800;color:#fff;">Conditions d'utilisation</span>
+      </div>
+    </div>
+    <div style="padding:20px 16px 40px;">
+      <div style="background:#fff;border-radius:20px;padding:20px;box-shadow:0 1px 8px rgba(0,0,0,0.06);font-size:13px;color:#3C354E;line-height:1.7;">
+
+        <div style="font-size:15px;font-weight:800;color:#9B84D4;margin-bottom:16px;">Bienvenue sur Petit Pousse</div>
+
+        <div style="font-weight:700;color:#2C3E50;margin-bottom:6px;">1. Objet</div>
+        <p style="margin:0 0 14px;">Petit Pousse est une application d'accompagnement parental. Elle fournit des informations générales sur l'alimentation, l'éveil, le sommeil et le suivi médical du nourrisson. <strong>Elle ne remplace pas l'avis d'un professionnel de santé.</strong></p>
+
+        <div style="font-weight:700;color:#2C3E50;margin-bottom:6px;">2. Données personnelles</div>
+        <p style="margin:0 0 14px;">Vos données (profil enfant, menus, rendez-vous, médicaments) sont stockées <strong>sur votre appareil</strong> et sur nos serveurs sécurisés (Supabase). Seul votre email et votre mot de passe sont utilisés pour l'authentification. Nous ne vendons ni ne partageons vos données avec des tiers.</p>
+
+        <div style="font-weight:700;color:#2C3E50;margin-bottom:6px;">3. Responsabilité</div>
+        <p style="margin:0 0 14px;">Les informations proposées par Petit Pousse sont à titre indicatif. En cas de doute sur la santé de votre enfant, consultez toujours un médecin ou un pédiatre. L'éditeur ne peut être tenu responsable des décisions prises sur la base des contenus de l'application.</p>
+
+        <div style="font-weight:700;color:#2C3E50;margin-bottom:6px;">4. Vos droits (RGPD)</div>
+        <p style="margin:0 0 14px;">Conformément au Règlement Général sur la Protection des Données, vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour exercer ces droits ou supprimer votre compte, rendez-vous dans <strong>Profil → Sécurité du compte</strong>.</p>
+
+        <div style="font-weight:700;color:#2C3E50;margin-bottom:6px;">5. Propriété intellectuelle</div>
+        <p style="margin:0 0 14px;">Le contenu de l'application (textes, visuels, logo) est la propriété de Petit Pousse. Toute reproduction sans autorisation est interdite.</p>
+
+        <div style="font-weight:700;color:#2C3E50;margin-bottom:6px;">6. Contact</div>
+        <p style="margin:0 0 0;">Pour toute question : <span style="color:#9B84D4;font-weight:700;">contact@petitpousse.fr</span></p>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid #EAE4F4;font-size:11px;color:#8C849C;">Dernière mise à jour : juin 2026</div>
+      </div>
+
+      <button onclick="hideCgu()" style="width:100%;margin-top:16px;background:linear-gradient(135deg,#9B84D4,#7A6AC8);color:#fff;border:none;border-radius:16px;padding:16px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">J'ai lu et compris</button>
+    </div>
+  </div>
+
   <!-- LOGIN / INSCRIPTION -->
   <div id="screen-login" class="screen" style="padding-bottom:0;">
     <div class="login-wrap">
@@ -2649,9 +2690,13 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           <div class="lf-label">Mot de passe</div>
           <input id="signup-password" class="lf-input" type="password" placeholder="Minimum 6 caractères" autocomplete="new-password" />
         </div>
-        <div id="signup-err" style="font-size:13px;color:#E74C3C;text-align:center;min-height:18px;margin-top:-6px;"></div>
+        <!-- Case CGU -->
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-top:2px;">
+          <input type="checkbox" id="signup-cgu" style="width:18px;height:18px;accent-color:#9B84D4;flex-shrink:0;margin-top:1px;cursor:pointer;" />
+          <label for="signup-cgu" style="font-size:12px;color:#8C849C;line-height:1.5;cursor:pointer;">J'ai lu et j'accepte les <span onclick="showCgu()" style="color:#9B84D4;font-weight:700;text-decoration:underline;">conditions d'utilisation</span> de Petit Pousse</label>
+        </div>
+        <div id="signup-err" style="font-size:13px;color:#E74C3C;text-align:center;min-height:18px;margin-top:-4px;"></div>
         <button class="lf-btn" id="signup-btn" onclick="doSignup()">Créer mon compte</button>
-        <div class="lf-foot">En créant un compte, vous acceptez nos conditions d'utilisation</div>
       </div>
     </div>
   </div>
@@ -3819,12 +3864,23 @@ async function doLogin() {
   await afterLogin();
 }
 
+function showCgu() {
+  hideAllScreens();
+  document.getElementById('screen-cgu').classList.add('active');
+}
+function hideCgu() {
+  document.getElementById('screen-cgu').classList.remove('active');
+  document.getElementById('screen-login').classList.add('active');
+  loginTab('signup');
+}
 async function doSignup() {
   var email = document.getElementById("signup-email").value.trim();
   var pwd = document.getElementById("signup-password").value;
   var errEl = document.getElementById("signup-err");
   var btn = document.getElementById("signup-btn");
   errEl.textContent = "";
+  var cgu = document.getElementById("signup-cgu");
+  if (cgu && !cgu.checked) { errEl.textContent = "Accepte les conditions d'utilisation pour continuer"; return; }
   if (!email || !pwd) { errEl.textContent = "Remplis tous les champs"; return; }
   if (pwd.length < 6) { errEl.textContent = "Mot de passe trop court (min. 6 caractères)"; return; }
   btn.textContent = "Création…"; btn.style.opacity = "0.7";
