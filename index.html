@@ -3929,7 +3929,7 @@ async function doSignup() {
   btn.textContent = "Créer mon compte"; btn.style.opacity = "1";
   if (result.error) { errEl.textContent = result.error.message; return; }
   currentUser = result.data.user;
-  // Sauvegarder le rôle dans user_profiles (booléens multi-rôles)
+  // Sauvegarder le rôle
   if (currentUser) {
     await sb.from("user_profiles").upsert({
       id: currentUser.id,
@@ -3938,10 +3938,21 @@ async function doSignup() {
       is_assmat: signupRole === "assmat"
     });
   }
+  // Si pas de session → email de confirmation envoyé, Supabase attend la validation
+  if (!result.data.session) {
+    loginTab('connect');
+    var conf = document.getElementById('login-err');
+    conf.style.color = '#9B84D4';
+    conf.textContent = '📧 Un email de confirmation a été envoyé à ' + email + '. Clique sur le lien pour activer ton compte, puis connecte-toi.';
+    document.getElementById("signup-email").value = "";
+    document.getElementById("signup-password").value = "";
+    var cguEl = document.getElementById("signup-cgu");
+    if (cguEl) cguEl.checked = false;
+    return;
+  }
   if (signupRole === "assmat") {
     showAssmatInterface();
   } else {
-    // Parent → onboarding
     hideAllScreens();
     obHistory = []; obEditFromRecap = false;
     document.getElementById("screen-onboarding").classList.add("active");
