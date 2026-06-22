@@ -8486,7 +8486,10 @@ function scheduleReminders() {
     if (!rdv.date) return;
     var rdvDate = new Date(rdv.date);
     var daysTo = Math.round((rdvDate - now) / 86400000);
-    if (daysTo === 1) {
+    if (daysTo === 7) {
+      scheduleNotif('rdv_' + rdv.id + '_j7', '📅 RDV dans 7 jours',
+        (rdv.titre || 'Rendez-vous') + ' dans une semaine' + (rdv.heure ? ' à ' + rdv.heure : '') + '.', 7000);
+    } else if (daysTo === 1) {
       scheduleNotif('rdv_' + rdv.id + '_j1', '📅 RDV demain',
         (rdv.titre || 'Rendez-vous') + ' demain' + (rdv.heure ? ' à ' + rdv.heure : '') + ' — pense à préparer le carnet de santé.', 7000);
     } else if (daysTo === 0 && rdv.heure) {
