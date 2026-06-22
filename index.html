@@ -4518,6 +4518,8 @@ function lockKey(k) {
         var idx=parseInt(localStorage.getItem("activeChildIdx")||"0");
         applyChildProfile(profiles[idx]||profiles[0]);
         updateChildSelectors();
+        initAssmatParentModuleUI();
+        setTimeout(function(){ loadAssmatParentModule(); updateBellDot(); checkPendingNotifications(); }, 600);
       } else {
         lockEntry=""; lockUpdateDots(0);
         document.getElementById("lock-err").textContent="Code incorrect, réessaie";
