@@ -2388,35 +2388,14 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
 
-    <!-- Courbe de poids -->
+    <!-- Courbe de croissance interactive -->
     <div style="margin:0 16px 0;background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-      <div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Courbe de poids</div>
-      <svg viewBox="0 0 280 85" width="100%" style="overflow:visible;">
-        <!-- Gridlines -->
-        <line x1="30" y1="8" x2="30" y2="68" stroke="#F5F5F5" stroke-width="1"/>
-        <line x1="78" y1="8" x2="78" y2="68" stroke="#F5F5F5" stroke-width="1"/>
-        <line x1="126" y1="8" x2="126" y2="68" stroke="#F5F5F5" stroke-width="1"/>
-        <line x1="174" y1="8" x2="174" y2="68" stroke="#F5F5F5" stroke-width="1"/>
-        <line x1="222" y1="8" x2="222" y2="68" stroke="#F5F5F5" stroke-width="1"/>
-        <!-- Zone normale (bande verte claire) -->
-        <path d="M30,62 Q78,54 126,46 Q174,38 222,30" fill="none" stroke="#C8B0E8" stroke-width="12" stroke-linecap="round" opacity="0.4"/>
-        <!-- Courbe Camille -->
-        <path d="M30,60 Q54,52 78,50 Q102,47 126,44 Q150,40 174,36 Q198,31 222,28" fill="none" stroke="#9B84D4" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- Points de mesure -->
-        <circle cx="78" cy="50" r="3.5" fill="#C8B0E8"/>
-        <circle cx="126" cy="44" r="3.5" fill="#C8B0E8"/>
-        <circle cx="174" cy="36" r="3.5" fill="#C8B0E8"/>
-        <!-- Point actuel -->
-        <circle cx="222" cy="28" r="5.5" fill="#9B84D4"/>
-        <circle cx="222" cy="28" r="3" fill="#fff"/>
-        <!-- Labels X -->
-        <text x="30" y="80" text-anchor="middle" font-size="8" fill="#9A9A9A">Nais.</text>
-        <text x="78" y="80" text-anchor="middle" font-size="8" fill="#9A9A9A">2m</text>
-        <text x="126" y="80" text-anchor="middle" font-size="8" fill="#9A9A9A">4m</text>
-        <text x="174" y="80" text-anchor="middle" font-size="8" fill="#9A9A9A">6m</text>
-        <text x="222" y="80" text-anchor="middle" font-size="8" fill="#9B84D4" font-weight="bold">8m</text>
-      </svg>
-      <div style="font-size:11px;color:#9B84D4;margin-top:4px;">&#10003; Courbe normale · Percentile ~40</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div style="font-size:12px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:0.5px;">Courbe de croissance</div>
+        <span onclick="openAddMeasure()" style="font-size:13px;color:#9B84D4;font-weight:700;cursor:pointer;background:#F0EEFF;padding:5px 12px;border-radius:20px;">+ Mesure</span>
+      </div>
+      <div id="growth-curve-svg"></div>
+      <div id="growth-measures-list" style="margin-top:10px;display:flex;flex-direction:column;gap:6px;"></div>
     </div>
 
     <!-- Allergies -->
@@ -3443,6 +3422,29 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="font-size:12px;font-weight:700;color:#8A68C8;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Qu'a-t-il/elle appris ?</div>
       <input id="eveil-custom-input" type="text" placeholder="Ex : dit son prénom, mange à la cuillère..." style="width:100%;border:1.5px solid #E0D8F0;border-radius:14px;padding:13px 15px;font-size:14px;color:#2C3E50;font-family:Montserrat,sans-serif;background:#fff;outline:none;box-sizing:border-box;" />
       <button onclick="submitEveilCustom()" style="width:100%;margin-top:14px;background:#9878D8;color:#fff;border:none;border-radius:16px;padding:15px;font-size:15px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Ajouter ✓</button>
+    </div>
+  </div>
+
+  <!-- MODAL MESURE CROISSANCE -->
+  <div id="modal-growth" onclick="closeAddMeasure()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:flex-end;">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:24px 24px 0 0;width:100%;padding:24px 20px calc(32px + env(safe-area-inset-bottom,0px));box-sizing:border-box;">
+      <div style="width:40px;height:4px;border-radius:2px;background:#E0E0E0;margin:0 auto 18px;"></div>
+      <div style="font-size:18px;font-weight:800;color:#2C3E50;margin-bottom:18px;">📏 Nouvelle mesure</div>
+      <div style="margin-bottom:12px;">
+        <div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Date</div>
+        <input id="growth-date" type="date" style="width:100%;border:1.5px solid #EAE4F4;border-radius:14px;padding:12px 14px;font-size:14px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;box-sizing:border-box;background:#fff;">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Poids (kg)</div>
+          <input id="growth-poids" type="number" inputmode="decimal" step="0.01" min="0" max="30" placeholder="ex : 7,2" style="width:100%;border:1.5px solid #EAE4F4;border-radius:14px;padding:12px 14px;font-size:14px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;box-sizing:border-box;">
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#7F8C8D;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Taille (cm)</div>
+          <input id="growth-taille" type="number" inputmode="decimal" step="0.5" min="0" max="120" placeholder="ex : 68" style="width:100%;border:1.5px solid #EAE4F4;border-radius:14px;padding:12px 14px;font-size:14px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;box-sizing:border-box;">
+        </div>
+      </div>
+      <button onclick="saveAddMeasure()" style="width:100%;background:#9B84D4;color:#fff;border:none;border-radius:16px;padding:15px;font-size:15px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>
     </div>
   </div>
 
@@ -5185,8 +5187,13 @@ function applyChildProfile(profile) {
   // Poids / taille sur écran profil enfant
   var pp = document.getElementById("profil-poids");
   var pt = document.getElementById("profil-taille");
-  if (pp) pp.innerHTML = profile.poids ? profile.poids+'<span style="font-size:13px;"> kg</span>' : '—';
-  if (pt) pt.innerHTML = profile.taille ? profile.taille+'<span style="font-size:13px;"> cm</span>' : '—';
+  var idx = activeChildIdx || 0;
+  var gm = getGrowthMeasures(idx);
+  var lastP = gm.filter(function(m){return m.poids;}).slice(-1)[0];
+  var lastT = gm.filter(function(m){return m.taille;}).slice(-1)[0];
+  if (pp) pp.innerHTML = (lastP||profile.poids) ? ((lastP?lastP.poids:profile.poids)+'<span style="font-size:13px;"> kg</span>') : '—';
+  if (pt) pt.innerHTML = (lastT||profile.taille) ? ((lastT?lastT.taille:profile.taille)+'<span style="font-size:13px;"> cm</span>') : '—';
+  renderGrowthCurve(idx);
 
   // Infos médicales dynamiques
   applyInfoMedDisplay(profile);
@@ -8573,6 +8580,124 @@ function uploadChildPhoto(parentId, fi, ci) {
   });
   document.body.appendChild(inp);
 })();
+
+// ── Courbe de croissance ──
+function getGrowthMeasures(idx) {
+  return JSON.parse(localStorage.getItem('growthMeasures_' + idx) || '[]');
+}
+function saveGrowthMeasuresData(idx, data) {
+  localStorage.setItem('growthMeasures_' + idx, JSON.stringify(data));
+}
+function openAddMeasure() {
+  var today = new Date().toISOString().slice(0,10);
+  document.getElementById('growth-date').value = today;
+  document.getElementById('growth-poids').value = '';
+  document.getElementById('growth-taille').value = '';
+  document.getElementById('modal-growth').style.display = 'flex';
+}
+function closeAddMeasure() {
+  document.getElementById('modal-growth').style.display = 'none';
+}
+function saveAddMeasure() {
+  var date = document.getElementById('growth-date').value;
+  var poids = parseFloat(document.getElementById('growth-poids').value.replace(',','.'));
+  var taille = parseFloat(document.getElementById('growth-taille').value.replace(',','.'));
+  if (!date || (!poids && !taille)) return;
+  var idx = activeChildIdx || 0;
+  var data = getGrowthMeasures(idx);
+  var existing = data.findIndex(function(m){ return m.date === date; });
+  var entry = { date: date, poids: poids||null, taille: taille||null };
+  if (existing >= 0) data[existing] = entry; else data.push(entry);
+  data.sort(function(a,b){ return a.date.localeCompare(b.date); });
+  saveGrowthMeasuresData(idx, data);
+  // mise à jour poids/taille affichés
+  var lastWithPoids = data.filter(function(m){return m.poids;}).slice(-1)[0];
+  var lastWithTaille = data.filter(function(m){return m.taille;}).slice(-1)[0];
+  var pp = document.getElementById('profil-poids');
+  var pt = document.getElementById('profil-taille');
+  if (pp && lastWithPoids) pp.innerHTML = lastWithPoids.poids+'<span style="font-size:13px;"> kg</span>';
+  if (pt && lastWithTaille) pt.innerHTML = lastWithTaille.taille+'<span style="font-size:13px;"> cm</span>';
+  closeAddMeasure();
+  renderGrowthCurve(idx);
+}
+function deleteGrowthMeasure(idx, date) {
+  var data = getGrowthMeasures(idx).filter(function(m){ return m.date !== date; });
+  saveGrowthMeasuresData(idx, data);
+  renderGrowthCurve(idx);
+}
+function renderGrowthCurve(idx) {
+  var svgEl = document.getElementById('growth-curve-svg');
+  var listEl = document.getElementById('growth-measures-list');
+  if (!svgEl) return;
+  var profiles = JSON.parse(localStorage.getItem('childProfiles') || '[]');
+  var profile = profiles[idx];
+  var measures = getGrowthMeasures(idx);
+  // initialiser depuis profil si vide
+  if (measures.length === 0 && profile && profile.poids && profile.dob) {
+    measures = [{ date: profile.dob, poids: parseFloat(profile.poids)||null, taille: parseFloat(profile.taille)||null }];
+    saveGrowthMeasuresData(idx, measures);
+  }
+  var pts = measures.filter(function(m){ return m.poids; }).map(function(m) {
+    var dob = profile && profile.dob ? new Date(profile.dob) : new Date(m.date);
+    var ageM = (new Date(m.date) - dob) / (1000*60*60*24*30.44);
+    return { age: Math.max(0, ageM), poids: parseFloat(m.poids), date: m.date };
+  });
+  if (pts.length === 0) {
+    svgEl.innerHTML = '<div style="text-align:center;padding:20px 0;color:#C0B8E8;font-size:13px;">Aucune mesure enregistrée</div>';
+    if (listEl) listEl.innerHTML = '';
+    return;
+  }
+  var W=280,H=80,padL=30,padR=10,padT=8,padB=20,chartW=W-padL-padR,chartH=H-padT-padB;
+  var maxAge = Math.max(pts[pts.length-1].age+1,3);
+  var allPoids = pts.map(function(p){return p.poids;});
+  var maxP = Math.max.apply(null,allPoids)*1.12, minP = Math.min.apply(null,allPoids)*0.9;
+  if (maxP === minP) { maxP += 1; minP -= 1; }
+  function tx(a){ return padL+(a/maxAge)*chartW; }
+  function ty(p){ return padT+chartH-((p-minP)/(maxP-minP))*chartH; }
+  var svg = '<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="overflow:visible;">';
+  var steps = Math.min(6,Math.ceil(maxAge));
+  for(var i=0;i<=steps;i++){
+    var xg=tx(i*maxAge/steps);
+    svg+='<line x1="'+xg.toFixed(0)+'" y1="'+padT+'" x2="'+xg.toFixed(0)+'" y2="'+(padT+chartH)+'" stroke="#F0EEF8" stroke-width="1"/>';
+  }
+  [0,0.5,1].forEach(function(r){
+    var yg=ty(minP+r*(maxP-minP));
+    svg+='<line x1="'+padL+'" y1="'+yg.toFixed(0)+'" x2="'+(padL+chartW)+'" y2="'+yg.toFixed(0)+'" stroke="#F0EEF8" stroke-width="1"/>';
+    svg+='<text x="'+(padL-3)+'" y="'+yg.toFixed(0)+'" text-anchor="end" font-size="7" fill="#C0B8E8" dy="3">'+(minP+r*(maxP-minP)).toFixed(1)+'</text>';
+  });
+  if(pts.length>1){
+    var d=pts.map(function(p,i){return(i===0?'M':'L')+tx(p.age).toFixed(1)+','+ty(p.poids).toFixed(1);}).join(' ');
+    svg+='<path d="'+d+'" fill="none" stroke="#C8B0E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+  }
+  pts.forEach(function(p,i){
+    var cx=tx(p.age).toFixed(1),cy=ty(p.poids).toFixed(1),last=i===pts.length-1;
+    svg+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(last?5:3.5)+'" fill="'+(last?'#9B84D4':'#C8B0E8')+'"/>';
+    if(last) svg+='<circle cx="'+cx+'" cy="'+cy+'" r="2.5" fill="#fff"/>';
+    svg+='<text x="'+cx+'" y="'+(parseFloat(cy)-7)+'" text-anchor="middle" font-size="7.5" fill="'+(last?'#9B84D4':'#A099C0')+'" font-weight="'+(last?700:400)+'">'+p.poids+'kg</text>';
+  });
+  for(var j=0;j<=steps;j++){
+    var al=Math.round(j*maxAge/steps),xl=tx(al);
+    svg+='<text x="'+xl.toFixed(0)+'" y="'+(padT+chartH+13)+'" text-anchor="middle" font-size="7.5" fill="#9A9A9A">'+(al===0?'Nais.':al+'m')+'</text>';
+  }
+  svg+='</svg>';
+  svgEl.innerHTML = svg;
+  if(listEl){
+    var html='';
+    var all=measures.slice().sort(function(a,b){return b.date.localeCompare(a.date);});
+    all.forEach(function(m){
+      var d=new Date(m.date);
+      var label=d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+      var vals=[];
+      if(m.poids) vals.push(m.poids+' kg');
+      if(m.taille) vals.push(m.taille+' cm');
+      html+='<div style="display:flex;align-items:center;gap:10px;background:#F8F6FF;border-radius:12px;padding:9px 12px;">';
+      html+='<div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#2C3E50;">'+label+'</div><div style="font-size:11px;color:#9B84D4;margin-top:2px;">'+vals.join(' · ')+'</div></div>';
+      html+='<div onclick="deleteGrowthMeasure('+idx+',\''+m.date+'\')" style="width:28px;height:28px;border-radius:50%;background:#FFE8E8;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:#E74C3C;flex-shrink:0;">✕</div>';
+      html+='</div>';
+    });
+    listEl.innerHTML = html;
+  }
+}
 
 // ── Ticker notifications défilant ──
 function updateTicker() {
