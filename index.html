@@ -43,7 +43,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .home-greeting-sub { font-size:13px; color:var(--sub); }
 .home-greeting { font-size:28px; font-weight:400; color:var(--text); margin-top:2px; font-family:"Sacramento",cursive; }
 .child-selector { display:flex; gap:8px; margin-top:14px; align-items:center; }
-.child-btn-active { display:flex; align-items:center; gap:7px; background:var(--green-lt); border-radius:22px; padding:6px 13px 6px 7px; box-shadow:0 2px 8px rgba(90,158,130,0.2); }
+.child-btn-active { display:flex; align-items:center; gap:7px; background:#A8DCC8; border-radius:22px; padding:6px 13px 6px 7px; box-shadow:0 2px 8px rgba(60,180,140,0.2); }
 .child-btn-inactive { display:flex; align-items:center; gap:7px; background:rgba(44,62,80,0.07); border-radius:22px; padding:6px 13px 6px 7px; }
 .child-av { width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.7); display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
 .child-name-active { font-size:13px; font-weight:700; color:var(--text); }
@@ -52,13 +52,13 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .ac-sexe-btn.ac-active { border-color:#9B84D4 !important; background:#F0EBFA; }
 .ac-sexe-btn.ac-active div:last-child { color:#9B84D4; }
 .bebe-pill { background:rgba(255,255,255,0.9); border-radius:16px; padding:14px 16px; display:flex; align-items:center; gap:14px; margin-top:14px; }
-.bebe-av { width:50px; height:50px; border-radius:50%; background:var(--green-lt); display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
+.bebe-av { width:50px; height:50px; border-radius:50%; background:#A8DCC8; display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
 .bebe-name { font-size:16px; font-weight:700; color:var(--text); }
 .bebe-age { font-size:13px; color:var(--sub); margin-top:2px; }
-.bebe-badge { margin-left:auto; background:var(--green-lt); border-radius:12px; padding:6px 14px; text-align:center; }
+.bebe-badge { margin-left:auto; background:#A8DCC8; border-radius:12px; padding:6px 14px; text-align:center; }
 .bebe-badge-val { font-size:22px; font-weight:800; color:var(--text); line-height:1; }
 .bebe-badge-lbl { font-size:10px; color:var(--sub); margin-top:2px; }
-.milestone { margin:12px 16px 0; background:linear-gradient(135deg,#DDD0F4 0%,#C8B0E8 100%); border-radius:18px; padding:16px; display:flex; align-items:center; gap:14px; position:relative; overflow:hidden; }
+.milestone { margin:12px 16px 0; background:linear-gradient(135deg,#B8E8D0 0%,#8CD0B4 100%); border-radius:18px; padding:16px; display:flex; align-items:center; gap:14px; position:relative; overflow:hidden; }
 .milestone::after { content:""; position:absolute; right:-20px; top:-20px; width:80px; height:80px; background:rgba(255,255,255,0.12); border-radius:50%; }
 .ms-emoji { font-size:40px; flex-shrink:0; }
 .ms-tag { font-size:10px; font-weight:700; color:rgba(44,62,80,0.6); text-transform:uppercase; letter-spacing:1px; }
@@ -753,7 +753,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
       <!-- Sélecteur enfant -->
       <div style="display:flex;gap:8px;align-items:center;">
-        <div class="fc-pill" onclick="switchChild(0)" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:#C8B0E8;border-radius:22px;padding:6px 13px 6px 7px;box-shadow:0 2px 8px rgba(90,158,130,0.2);">
+        <div class="fc-pill" onclick="switchChild(0)" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:#A8DCC8;border-radius:22px;padding:6px 13px 6px 7px;box-shadow:0 2px 8px rgba(60,180,140,0.2);">
           <div style="width:26px;height:26px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;" data-child-avatar>&#128103;</div>
           <span style="font-size:12px;font-weight:700;color:#2C3E50;" data-child-name>Camille</span>
           <span style="font-size:9px;color:rgba(44,62,80,0.5);">&#9660;</span>
@@ -845,12 +845,12 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
   <!-- ALIMENTATION -->
   <div id="screen-alim" class="screen">
-    <div class="status-bar" style="background:linear-gradient(160deg,#D4884A,#B46828);">
+    <div class="status-bar" style="background:linear-gradient(160deg,#5AB8A0,#3A9882);">
       <span class="st-time" style="color:#fff;">9:41</span>
       <span class="st-icons" style="color:#fff;">&#9679;&#9679;&#9679; &#128267;</span>
     </div>
     <!-- Header orange/terracotta -->
-    <div style="background:linear-gradient(160deg,#D4884A,#B46828);padding:6px 20px 22px;">
+    <div style="background:linear-gradient(160deg,#5AB8A0,#3A9882);padding:6px 20px 22px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
         <div style="display:flex;align-items:center;gap:9px;">
           <img src="logo.svg" style="width:36px;height:36px;" />
@@ -1065,12 +1065,12 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
   <!-- SOMMEIL -->
   <div id="screen-sommeil" class="screen">
-    <div class="status-bar" style="background:linear-gradient(160deg,#3A7A65,#2A5A4A);">
+    <div class="status-bar" style="background:linear-gradient(160deg,#4A9AB8,#3A7A98);">
       <span class="st-time" style="color:#fff;">9:41</span>
       <span class="st-icons" style="color:#fff;">&#9679;&#9679;&#9679; &#128267;</span>
     </div>
     <!-- Header vert foncé -->
-    <div style="background:linear-gradient(160deg,#3A7A65,#2A5A4A);padding:6px 20px 22px;">
+    <div style="background:linear-gradient(160deg,#4A9AB8,#3A7A98);padding:6px 20px 22px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
         <div style="display:flex;align-items:center;gap:9px;">
           <img src="logo.svg" style="width:36px;height:36px;" />
@@ -2646,25 +2646,25 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div onclick="hideAddSommeil()" style="width:32px;height:32px;border-radius:50%;background:rgba(44,62,80,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#7F8C8D;">&#215;</div>
       </div>
       <div style="margin-bottom:14px;">
-        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Type</div>
+        <div style="font-size:12px;font-weight:700;color:#4A9AB8;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Type</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <div onclick="selectSomType('nuit')" id="som-type-nuit" style="background:#3A7A65;border:2px solid #3A7A65;border-radius:12px;padding:11px;text-align:center;font-size:12px;font-weight:700;color:#fff;cursor:pointer;">&#127769; Nuit</div>
+          <div onclick="selectSomType('nuit')" id="som-type-nuit" style="background:#4A9AB8;border:2px solid #4A9AB8;border-radius:12px;padding:11px;text-align:center;font-size:12px;font-weight:700;color:#fff;cursor:pointer;">&#127769; Nuit</div>
           <div onclick="selectSomType('sieste')" id="som-type-sieste" style="background:#fff;border:2px solid #E8E0F4;border-radius:12px;padding:11px;text-align:center;font-size:12px;font-weight:700;color:#7F8C8D;cursor:pointer;">&#128564; Sieste</div>
         </div>
       </div>
       <div style="display:flex;gap:10px;margin-bottom:14px;">
         <div style="flex:1;">
-          <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Début</div>
+          <div style="font-size:12px;font-weight:700;color:#4A9AB8;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Début</div>
           <input id="som-start" type="time" class="lf-input" />
         </div>
         <div style="flex:1;">
-          <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Fin</div>
+          <div style="font-size:12px;font-weight:700;color:#4A9AB8;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Fin</div>
           <input id="som-end" type="time" class="lf-input" />
         </div>
       </div>
       <!-- Endormissement SVG kawaii -->
       <div style="margin-bottom:16px;">
-        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.5px;">Endormissement</div>
+        <div style="font-size:12px;font-weight:700;color:#4A9AB8;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.5px;">Endormissement</div>
         <div style="display:flex;justify-content:center;gap:32px;">
           <div onclick="selectSomEndo('facile')" style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;">
             <div id="som-endo-facile" style="width:72px;height:72px;border-radius:50%;border:3px solid #D4A820;box-shadow:0 4px 16px rgba(212,168,32,0.25);transition:all 0.2s;overflow:hidden;">
@@ -2696,7 +2696,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
       <!-- Qualité de nuit SVG kawaii -->
       <div style="margin-bottom:16px;">
-        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.5px;">Qualité de nuit</div>
+        <div style="font-size:12px;font-weight:700;color:#4A9AB8;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.5px;">Qualité de nuit</div>
         <div style="display:flex;justify-content:center;gap:18px;">
           <div onclick="selectSomQualite('bonne')" style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;">
             <div id="som-qual-bonne" style="width:64px;height:64px;border-radius:50%;border:3px solid #D4A820;box-shadow:0 4px 16px rgba(212,168,32,0.25);transition:all 0.2s;overflow:hidden;">
@@ -2737,10 +2737,10 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         </div>
       </div>
       <div style="margin-bottom:20px;">
-        <div style="font-size:12px;font-weight:700;color:#3A7A65;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Note <span style="font-weight:400;color:#B0B8C1;">(optionnel)</span></div>
+        <div style="font-size:12px;font-weight:700;color:#4A9AB8;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;">Note <span style="font-weight:400;color:#B0B8C1;">(optionnel)</span></div>
         <input id="som-note" type="text" class="lf-input" placeholder="Ex: réveils, rituel utilisé..." autocomplete="off" />
       </div>
-      <button onclick="saveSommeil()" style="width:100%;background:#3A7A65;color:#fff;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>
+      <button onclick="saveSommeil()" style="width:100%;background:#4A9AB8;color:#fff;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">Enregistrer</button>
     </div>
   </div>
 
@@ -3591,8 +3591,8 @@ function hideAddSommeil() { document.getElementById("modal-add-sommeil").style.d
 function selectSomType(t) {
   somType = t;
   var n = document.getElementById("som-type-nuit"), s = document.getElementById("som-type-sieste");
-  n.style.background = t==="nuit"?"#3A7A65":"#fff"; n.style.borderColor = t==="nuit"?"#3A7A65":"#E8E0F4"; n.style.color = t==="nuit"?"#fff":"#7F8C8D";
-  s.style.background = t==="sieste"?"#3A7A65":"#fff"; s.style.borderColor = t==="sieste"?"#3A7A65":"#E8E0F4"; s.style.color = t==="sieste"?"#fff":"#7F8C8D";
+  n.style.background = t==="nuit"?"#4A9AB8":"#fff"; n.style.borderColor = t==="nuit"?"#4A9AB8":"#E8E0F4"; n.style.color = t==="nuit"?"#fff":"#7F8C8D";
+  s.style.background = t==="sieste"?"#4A9AB8":"#fff"; s.style.borderColor = t==="sieste"?"#4A9AB8":"#E8E0F4"; s.style.color = t==="sieste"?"#fff":"#7F8C8D";
 }
 function selectSomEndo(e) {
   somEndo = e;
@@ -4820,72 +4820,72 @@ function getAvatarHTML(profile, size, fontSize) {
 /* ── ÉVEIL : banque d'activités par âge ── */
 var EVEIL_BANQUE = {
   '0-3': [
-    { ic:'👁️', bg:'#F0EBFA', t:'Contraste noir & blanc', s:'Stimulation visuelle', dur:'5 min', dc:'#9B84D4', desc:'Les bébés voient d\'abord les contrastes forts. Montrer des images noir et blanc stimule fortement le cortex visuel en développement.' },
-    { ic:'🤲', bg:'#FAE0EE', t:'Massage doux', s:'Éveil corporel', dur:'10 min', dc:'#C07840', desc:'Le toucher libère de l\'ocytocine chez bébé et renforce le lien d\'attachement. Privilégie des mouvements lents et doux.' },
+    { ic:'👁️', bg:'#D4F4EC', t:'Contraste noir & blanc', s:'Stimulation visuelle', dur:'5 min', dc:'#3A9882', desc:'Les bébés voient d\'abord les contrastes forts. Montrer des images noir et blanc stimule fortement le cortex visuel en développement.' },
+    { ic:'🤲', bg:'#D0EEF4', t:'Massage doux', s:'Éveil corporel', dur:'10 min', dc:'#3A98B8', desc:'Le toucher libère de l\'ocytocine chez bébé et renforce le lien d\'attachement. Privilégie des mouvements lents et doux.' },
     { ic:'🎵', bg:'#F2EFF9', t:'Comptines douces', s:'Langage & rythme', dur:'5 min', dc:'#8A78CC', desc:'Ta voix est le son préféré de bébé. Les comptines répétitives posent les bases du rythme et du langage.' },
     { ic:'🌀', bg:'#FFF3CD', t:'Mobile au-dessus', s:'Suivi visuel', dur:'10 min', dc:'#A07820', desc:'Suivre un objet en mouvement développe la coordination œil-cerveau et renforce les muscles oculaires.' },
-    { ic:'🗣️', bg:'#F0EBFA', t:'Parler à bébé', s:'Lien & langage', dur:'10 min', dc:'#9B84D4', desc:'Même sans comprendre les mots, bébé enregistre l\'intonation, le rythme et le vocabulaire. C\'est son premier cours de langue.' },
-    { ic:'🤱', bg:'#FAE0EE', t:'Peau à peau', s:'Attachement', dur:'15 min', dc:'#C07840', desc:'Régule la température, le rythme cardiaque et le cortisol de bébé. Le contact peau à peau est fondamental les premiers mois.' },
+    { ic:'🗣️', bg:'#D4F4EC', t:'Parler à bébé', s:'Lien & langage', dur:'10 min', dc:'#3A9882', desc:'Même sans comprendre les mots, bébé enregistre l\'intonation, le rythme et le vocabulaire. C\'est son premier cours de langue.' },
+    { ic:'🤱', bg:'#D0EEF4', t:'Peau à peau', s:'Attachement', dur:'15 min', dc:'#3A98B8', desc:'Régule la température, le rythme cardiaque et le cortisol de bébé. Le contact peau à peau est fondamental les premiers mois.' },
   ],
   '4-6': [
-    { ic:'🪞', bg:'#F0EBFA', t:'Miroir mon ami', s:'Conscience de soi', dur:'10 min', dc:'#9B84D4', desc:'Bébé ne se reconnaît pas encore mais le miroir fascine. Il découvre qu\'il peut provoquer un mouvement en bougeant.' },
-    { ic:'🖐️', bg:'#FAE0EE', t:'Attraper un hochet', s:'Motricité fine', dur:'10 min', dc:'#C07840', desc:'La préhension volontaire se développe vers 4-5 mois. Chaque objet attrapé renforce la connexion cerveau-main.' },
+    { ic:'🪞', bg:'#D4F4EC', t:'Miroir mon ami', s:'Conscience de soi', dur:'10 min', dc:'#3A9882', desc:'Bébé ne se reconnaît pas encore mais le miroir fascine. Il découvre qu\'il peut provoquer un mouvement en bougeant.' },
+    { ic:'🖐️', bg:'#D0EEF4', t:'Attraper un hochet', s:'Motricité fine', dur:'10 min', dc:'#3A98B8', desc:'La préhension volontaire se développe vers 4-5 mois. Chaque objet attrapé renforce la connexion cerveau-main.' },
     { ic:'🎵', bg:'#F2EFF9', t:'Comptines avec gestes', s:'Langage & rythme', dur:'10 min', dc:'#8A78CC', desc:'Associer geste et son prépare à la communication. Bébé cherche à imiter tes mains avant même tes mots.' },
     { ic:'🫧', bg:'#FFF3CD', t:'Bulles de savon', s:'Vision & poursuite', dur:'10 min', dc:'#A07820', desc:'Les bulles bougent lentement, éclatent et réapparaissent. Parfait pour exercer le suivi visuel et la surprise.' },
-    { ic:'🧸', bg:'#F0EBFA', t:'Tummy time', s:'Motricité globale', dur:'5 min', dc:'#9B84D4', desc:'Indispensable pour renforcer la nuque, le dos et préparer le 4 pattes. 5 minutes plusieurs fois par jour suffisent.' },
-    { ic:'🌿', bg:'#FAE0EE', t:'Textures à toucher', s:'Sensoriel', dur:'10 min', dc:'#C07840', desc:'Tissu doux, éponge, papier froissé... chaque nouvelle texture crée de nouveaux chemins dans le cerveau sensoriel.' },
+    { ic:'🧸', bg:'#D4F4EC', t:'Tummy time', s:'Motricité globale', dur:'5 min', dc:'#3A9882', desc:'Indispensable pour renforcer la nuque, le dos et préparer le 4 pattes. 5 minutes plusieurs fois par jour suffisent.' },
+    { ic:'🌿', bg:'#D0EEF4', t:'Textures à toucher', s:'Sensoriel', dur:'10 min', dc:'#3A98B8', desc:'Tissu doux, éponge, papier froissé... chaque nouvelle texture crée de nouveaux chemins dans le cerveau sensoriel.' },
     { ic:'📚', bg:'#F2EFF9', t:'Livre tissu & images', s:'Langage', dur:'10 min', dc:'#8A78CC', desc:'Les bébés lus dès le plus jeune âge développent un vocabulaire plus riche. Le toucher des pages stimule aussi le sensoriel.' },
     { ic:'🎶', bg:'#FFF3CD', t:'Instruments doux', s:'Éveil musical', dur:'10 min', dc:'#A07820', desc:'Maracas, clochettes, tambourin... les sons variés stimulent l\'oreille musicale qui se forme très tôt.' },
   ],
   '7-9': [
-    { ic:'🎨', bg:'#FAE0EE', t:'Peinture aux doigts', s:'Sensoriel & créativité', dur:'15 min', dc:'#C07840', desc:'Mélanger les couleurs avec les mains éveille la créativité et enrichit le vécu sensoriel. Utilise des peintures pour bébé non toxiques.' },
+    { ic:'🎨', bg:'#D0EEF4', t:'Peinture aux doigts', s:'Sensoriel & créativité', dur:'15 min', dc:'#3A98B8', desc:'Mélanger les couleurs avec les mains éveille la créativité et enrichit le vécu sensoriel. Utilise des peintures pour bébé non toxiques.' },
     { ic:'🎵', bg:'#F2EFF9', t:'Comptines avec gestes', s:'Langage & rythme', dur:'10 min', dc:'#8A78CC', desc:'À cet âge bébé commence à imiter les gestes. "Promenons-nous dans les bois", "Ainsi font font"... elle adore les surprises.' },
-    { ic:'🧱', bg:'#F0EBFA', t:'Tour d\'empilage', s:'Logique & motricité', dur:'10 min', dc:'#9B84D4', desc:'Empiler des blocs puis les renverser apprend la notion de cause à effet et développe la coordination main-œil.' },
+    { ic:'🧱', bg:'#D4F4EC', t:'Tour d\'empilage', s:'Logique & motricité', dur:'10 min', dc:'#3A9882', desc:'Empiler des blocs puis les renverser apprend la notion de cause à effet et développe la coordination main-œil.' },
     { ic:'🧺', bg:'#FFF3CD', t:'Vider & Remplir', s:'Logique', dur:'10 min', dc:'#A07820', desc:'Une boîte et des petits objets sécurisés — bébé peut passer 20 minutes à vider et remplir. C\'est sa façon d\'apprendre la permanence.' },
-    { ic:'🪞', bg:'#F0EBFA', t:'Miroir & grimaces', s:'Imitation', dur:'10 min', dc:'#9B84D4', desc:'Elle commence à imiter les expressions du visage. Tire la langue, ouvre grand la bouche... elle va reproduire !' },
-    { ic:'🫂', bg:'#FAE0EE', t:'Coucou-caché', s:'Permanence des objets', dur:'10 min', dc:'#C07840', desc:'Apprend à bébé que les personnes existent même quand il ne les voit plus. Première clé pour apprivoiser la séparation.' },
+    { ic:'🪞', bg:'#D4F4EC', t:'Miroir & grimaces', s:'Imitation', dur:'10 min', dc:'#3A9882', desc:'Elle commence à imiter les expressions du visage. Tire la langue, ouvre grand la bouche... elle va reproduire !' },
+    { ic:'🫂', bg:'#D0EEF4', t:'Coucou-caché', s:'Permanence des objets', dur:'10 min', dc:'#3A98B8', desc:'Apprend à bébé que les personnes existent même quand il ne les voit plus. Première clé pour apprivoiser la séparation.' },
     { ic:'🌿', bg:'#F2EFF9', t:'Bac sensoriel', s:'Exploration', dur:'20 min', dc:'#8A78CC', desc:'Riz, sable, eau... un bac rempli de matières à explorer captive les bébés de cet âge et stimule tous les sens.' },
     { ic:'📦', bg:'#FFF3CD', t:'Objet caché sous boîte', s:'Permanence', dur:'10 min', dc:'#A07820', desc:'Cache un jouet sous une tasse devant elle. Si elle soulève pour chercher, c\'est la permanence des objets acquise !' },
-    { ic:'🏀', bg:'#FAE0EE', t:'Balle roulante', s:'Motricité globale', dur:'15 min', dc:'#C07840', desc:'Faire rouler une balle et la récupérer développe l\'anticipation du mouvement et encourage le déplacement.' },
-    { ic:'📚', bg:'#F0EBFA', t:'Livre cartonné', s:'Langage', dur:'10 min', dc:'#9B84D4', desc:'À cet âge elle tourne les pages toute seule. Nommer les images ensemble enrichit son vocabulaire passif.' },
+    { ic:'🏀', bg:'#D0EEF4', t:'Balle roulante', s:'Motricité globale', dur:'15 min', dc:'#3A98B8', desc:'Faire rouler une balle et la récupérer développe l\'anticipation du mouvement et encourage le déplacement.' },
+    { ic:'📚', bg:'#D4F4EC', t:'Livre cartonné', s:'Langage', dur:'10 min', dc:'#3A9882', desc:'À cet âge elle tourne les pages toute seule. Nommer les images ensemble enrichit son vocabulaire passif.' },
     { ic:'🎶', bg:'#F2EFF9', t:'Maracas & tambourin', s:'Éveil musical', dur:'10 min', dc:'#8A78CC', desc:'Bébé adore faire du bruit et découvrir qu\'elle en est la cause. Ça stimule aussi la coordination main-bras.' },
     { ic:'🖐️', bg:'#FFF3CD', t:'Attraper & Lâcher', s:'Motricité fine', dur:'15 min', dc:'#A07820', desc:'Développe la pince pouce-index. Chaque objet attrapé puis lâché crée de nouvelles connexions dans son cerveau.' },
   ],
   '10-12': [
-    { ic:'🧱', bg:'#F0EBFA', t:'Empiler & Renverser', s:'Logique & motricité', dur:'10 min', dc:'#9B84D4', desc:'À cet âge la tour monte plus haut avant de tomber. Et renverser devient un jeu délibéré — c\'est de la physique bébé !' },
-    { ic:'🎨', bg:'#FAE0EE', t:'Peinture aux doigts', s:'Créativité', dur:'15 min', dc:'#C07840', desc:'Elle contrôle mieux ses mains maintenant. Laisse-la explorer librement — les traces qu\'elle laisse sont ses premières œuvres.' },
+    { ic:'🧱', bg:'#D4F4EC', t:'Empiler & Renverser', s:'Logique & motricité', dur:'10 min', dc:'#3A9882', desc:'À cet âge la tour monte plus haut avant de tomber. Et renverser devient un jeu délibéré — c\'est de la physique bébé !' },
+    { ic:'🎨', bg:'#D0EEF4', t:'Peinture aux doigts', s:'Créativité', dur:'15 min', dc:'#3A98B8', desc:'Elle contrôle mieux ses mains maintenant. Laisse-la explorer librement — les traces qu\'elle laisse sont ses premières œuvres.' },
     { ic:'🚶', bg:'#F2EFF9', t:'Premiers pas aidés', s:'Motricité globale', dur:'15 min', dc:'#8A78CC', desc:'Tenir les deux mains puis une seule, laisser les pieds nus pour sentir le sol. Chaque pas renforce confiance et équilibre.' },
     { ic:'🫴', bg:'#FFF3CD', t:'Pointer & Nommer', s:'Langage', dur:'10 min', dc:'#A07820', desc:'Quand elle pointe quelque chose, nomme-le immédiatement. C\'est le mécanisme d\'apprentissage du vocabulaire le plus puissant.' },
-    { ic:'🪣', bg:'#F0EBFA', t:'Eau & gobelets', s:'Exploration', dur:'15 min', dc:'#9B84D4', desc:'Transvaser de l\'eau entre des gobelets est fascinant à cet âge. Imperméable et bonne humeur recommandés !' },
-    { ic:'🎵', bg:'#FAE0EE', t:'Comptines dansantes', s:'Rythme & coordination', dur:'10 min', dc:'#C07840', desc:'Elle commence à bouger en rythme avec la musique. Danser ensemble renforce l\'équilibre et la joie de bouger.' },
+    { ic:'🪣', bg:'#D4F4EC', t:'Eau & gobelets', s:'Exploration', dur:'15 min', dc:'#3A9882', desc:'Transvaser de l\'eau entre des gobelets est fascinant à cet âge. Imperméable et bonne humeur recommandés !' },
+    { ic:'🎵', bg:'#D0EEF4', t:'Comptines dansantes', s:'Rythme & coordination', dur:'10 min', dc:'#3A98B8', desc:'Elle commence à bouger en rythme avec la musique. Danser ensemble renforce l\'équilibre et la joie de bouger.' },
     { ic:'🧩', bg:'#F2EFF9', t:'Puzzle 2 pièces', s:'Logique', dur:'10 min', dc:'#8A78CC', desc:'Les premiers puzzles développent la résolution de problèmes et la persévérance. Commence avec des formes simples.' },
     { ic:'🚗', bg:'#FFF3CD', t:'Voiture à pousser', s:'Motricité globale', dur:'15 min', dc:'#A07820', desc:'Pousser un chariot ou une voiture aide à préparer la marche autonome en offrant un point d\'appui sécurisé.' },
-    { ic:'📚', bg:'#F0EBFA', t:'Nommer les images', s:'Langage', dur:'10 min', dc:'#9B84D4', desc:'Montre une image, dis le mot, laisse-la pointer à son tour. Ce dialogue simple construit son vocabulaire à toute vitesse.' },
-    { ic:'🥄', bg:'#FAE0EE', t:'Manger à la cuillère', s:'Autonomie', dur:'20 min', dc:'#C07840', desc:'Même si c\'est le bazar, la laisser tenir la cuillère développe la motricité fine et l\'autonomie à table.' },
+    { ic:'📚', bg:'#D4F4EC', t:'Nommer les images', s:'Langage', dur:'10 min', dc:'#3A9882', desc:'Montre une image, dis le mot, laisse-la pointer à son tour. Ce dialogue simple construit son vocabulaire à toute vitesse.' },
+    { ic:'🥄', bg:'#D0EEF4', t:'Manger à la cuillère', s:'Autonomie', dur:'20 min', dc:'#3A98B8', desc:'Même si c\'est le bazar, la laisser tenir la cuillère développe la motricité fine et l\'autonomie à table.' },
   ],
   '13-18': [
-    { ic:'✏️', bg:'#FAE0EE', t:'Gribouillage libre', s:'Créativité', dur:'15 min', dc:'#C07840', desc:'Ses premiers gribouillages sont de l\'art ! Chaque trait intentionnel prouve qu\'elle contrôle ses gestes.' },
+    { ic:'✏️', bg:'#D0EEF4', t:'Gribouillage libre', s:'Créativité', dur:'15 min', dc:'#3A98B8', desc:'Ses premiers gribouillages sont de l\'art ! Chaque trait intentionnel prouve qu\'elle contrôle ses gestes.' },
     { ic:'🧩', bg:'#F2EFF9', t:'Encastrements simples', s:'Logique', dur:'15 min', dc:'#8A78CC', desc:'Formes à insérer dans les bons trous — développe la reconnaissance des formes, la patience et la logique spatiale.' },
-    { ic:'🚶', bg:'#F0EBFA', t:'Marche en extérieur', s:'Motricité globale', dur:'20 min', dc:'#9B84D4', desc:'Marcher sur des surfaces variées (herbe, gravier, bitume) affine l\'équilibre et nourrit la curiosité sensorielle.' },
+    { ic:'🚶', bg:'#D4F4EC', t:'Marche en extérieur', s:'Motricité globale', dur:'20 min', dc:'#3A9882', desc:'Marcher sur des surfaces variées (herbe, gravier, bitume) affine l\'équilibre et nourrit la curiosité sensorielle.' },
     { ic:'🎵', bg:'#FFF3CD', t:'Danser ensemble', s:'Rythme & lien', dur:'10 min', dc:'#A07820', desc:'Mettre de la musique et danser ensemble est l\'une des activités les plus complètes : lien, rythme, équilibre et joie.' },
-    { ic:'🏠', bg:'#FAE0EE', t:'Jeu symbolique maison', s:'Imitation', dur:'15 min', dc:'#C07840', desc:'Faire semblant de cuisiner, de téléphoner, d\'endormir une poupée — c\'est le début de l\'imaginaire et de l\'empathie.' },
-    { ic:'📖', bg:'#F0EBFA', t:'Lire des histoires', s:'Langage', dur:'15 min', dc:'#9B84D4', desc:'À cet âge elle comprend le fil de l\'histoire. Lui poser des questions simples ("Où est le chat ?") booste la compréhension.' },
+    { ic:'🏠', bg:'#D0EEF4', t:'Jeu symbolique maison', s:'Imitation', dur:'15 min', dc:'#3A98B8', desc:'Faire semblant de cuisiner, de téléphoner, d\'endormir une poupée — c\'est le début de l\'imaginaire et de l\'empathie.' },
+    { ic:'📖', bg:'#D4F4EC', t:'Lire des histoires', s:'Langage', dur:'15 min', dc:'#3A9882', desc:'À cet âge elle comprend le fil de l\'histoire. Lui poser des questions simples ("Où est le chat ?") booste la compréhension.' },
     { ic:'🌿', bg:'#F2EFF9', t:'Jardinage bébé', s:'Nature & motricité', dur:'20 min', dc:'#8A78CC', desc:'Creuser la terre, planter une graine, arroser — contact avec la nature, motricité et patience au programme.' },
     { ic:'🧱', bg:'#FFF3CD', t:'Construction Duplo', s:'Logique & créativité', dur:'15 min', dc:'#A07820', desc:'Les Duplo développent la créativité, la motricité fine et la pensée spatiale. Construire ensemble puis imiter.' },
-    { ic:'🪣', bg:'#FAE0EE', t:'Eau & transvasement', s:'Exploration', dur:'15 min', dc:'#C07840', desc:'Verser de l\'eau entre des récipients de formes différentes développe la logique (quantités) et la coordination.' },
-    { ic:'🎨', bg:'#F0EBFA', t:'Collage & déchirer', s:'Créativité & motricité', dur:'15 min', dc:'#9B84D4', desc:'Déchirer du papier et coller des morceaux renforce les doigts et éveille la créativité de façon très libre.' },
+    { ic:'🪣', bg:'#D0EEF4', t:'Eau & transvasement', s:'Exploration', dur:'15 min', dc:'#3A98B8', desc:'Verser de l\'eau entre des récipients de formes différentes développe la logique (quantités) et la coordination.' },
+    { ic:'🎨', bg:'#D4F4EC', t:'Collage & déchirer', s:'Créativité & motricité', dur:'15 min', dc:'#3A9882', desc:'Déchirer du papier et coller des morceaux renforce les doigts et éveille la créativité de façon très libre.' },
   ],
   '19-24': [
-    { ic:'🎨', bg:'#FAE0EE', t:'Peinture au pinceau', s:'Créativité', dur:'20 min', dc:'#C07840', desc:'Elle tient mieux le pinceau maintenant. Laisse-la choisir les couleurs et peindre librement — sans modèle imposé.' },
+    { ic:'🎨', bg:'#D0EEF4', t:'Peinture au pinceau', s:'Créativité', dur:'20 min', dc:'#3A98B8', desc:'Elle tient mieux le pinceau maintenant. Laisse-la choisir les couleurs et peindre librement — sans modèle imposé.' },
     { ic:'🧩', bg:'#F2EFF9', t:'Puzzle 4-6 pièces', s:'Logique', dur:'15 min', dc:'#8A78CC', desc:'Les puzzles développent la mémoire visuelle, la résolution de problèmes et la persévérance face à la frustration.' },
-    { ic:'📖', bg:'#F0EBFA', t:'Raconter une histoire', s:'Langage', dur:'15 min', dc:'#9B84D4', desc:'Montre-lui les images et laisse-la "lire" à sa façon. Elle invente déjà des histoires — c\'est de l\'imagination pure.' },
+    { ic:'📖', bg:'#D4F4EC', t:'Raconter une histoire', s:'Langage', dur:'15 min', dc:'#3A9882', desc:'Montre-lui les images et laisse-la "lire" à sa façon. Elle invente déjà des histoires — c\'est de l\'imagination pure.' },
     { ic:'🚴', bg:'#FFF3CD', t:'Draisienne', s:'Équilibre', dur:'20 min', dc:'#A07820', desc:'La draisienne développe l\'équilibre avant le vélo. Pieds au sol d\'abord, puis lever les pieds par instants.' },
-    { ic:'🏠', bg:'#FAE0EE', t:'Jeu de rôle', s:'Imagination', dur:'20 min', dc:'#C07840', desc:'Marchande, médecin, cuisinière... le jeu de rôle développe l\'empathie, le langage et la compréhension du monde.' },
-    { ic:'✂️', bg:'#F0EBFA', t:'Découpage sécurisé', s:'Motricité fine', dur:'15 min', dc:'#9B84D4', desc:'Des ciseaux à bouts ronds et du papier épais — découper prépare à l\'écriture et développe la force des doigts.' },
+    { ic:'🏠', bg:'#D0EEF4', t:'Jeu de rôle', s:'Imagination', dur:'20 min', dc:'#3A98B8', desc:'Marchande, médecin, cuisinière... le jeu de rôle développe l\'empathie, le langage et la compréhension du monde.' },
+    { ic:'✂️', bg:'#D4F4EC', t:'Découpage sécurisé', s:'Motricité fine', dur:'15 min', dc:'#3A9882', desc:'Des ciseaux à bouts ronds et du papier épais — découper prépare à l\'écriture et développe la force des doigts.' },
     { ic:'🌿', bg:'#F2EFF9', t:'Sortie nature', s:'Éveil & curiosité', dur:'30 min', dc:'#8A78CC', desc:'Ramasser des cailloux, observer des fourmis, toucher des feuilles — la nature est la meilleure salle de classe.' },
     { ic:'🎵', bg:'#FFF3CD', t:'Instruments de musique', s:'Créativité', dur:'15 min', dc:'#A07820', desc:'Tambourin, xylophone, maracas — explorer les sons développe l\'oreille musicale et la coordination.' },
-    { ic:'🧱', bg:'#FAE0EE', t:'Construire une tour', s:'Logique & patience', dur:'15 min', dc:'#C07840', desc:'Combien de blocs avant que ça tombe ? Elle expérimente la hauteur, l\'équilibre et la gravité sans le savoir.' },
-    { ic:'👗', bg:'#F0EBFA', t:"S'habiller seul", s:'Autonomie', dur:'15 min', dc:'#9B84D4', desc:"Lui laisser le temps d'enfiler ses chaussures, son chapeau, sa veste — même si ça prend 10 minutes. L'autonomie se construit là." },
+    { ic:'🧱', bg:'#D0EEF4', t:'Construire une tour', s:'Logique & patience', dur:'15 min', dc:'#3A98B8', desc:'Combien de blocs avant que ça tombe ? Elle expérimente la hauteur, l\'équilibre et la gravité sans le savoir.' },
+    { ic:'👗', bg:'#D4F4EC', t:"S'habiller seul", s:'Autonomie', dur:'15 min', dc:'#3A9882', desc:"Lui laisser le temps d'enfiler ses chaussures, son chapeau, sa veste — même si ça prend 10 minutes. L'autonomie se construit là." },
   ],
 };
 
