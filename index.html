@@ -6691,13 +6691,7 @@ function openCarrefour() {
   }
 }
 function openLeclerc() {
-  var data = getCoursesData();
-  var items = data.items.filter(function(it){ return !it.done; });
-  if (items.length) {
-    window.open('https://courses.e.leclerc/search?query='+encodeURIComponent(items[0].text), '_blank');
-  } else {
-    window.open('https://courses.e.leclerc/', '_blank');
-  }
+  window.open('https://www.e.leclerc/', '_blank');
 }
 function loadCoursesScreen() {
   var data = getCoursesData();
