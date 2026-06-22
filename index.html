@@ -2878,13 +2878,13 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <!-- Header sticky (même style que accueil parents) -->
     <div style="background:linear-gradient(160deg,#F0EEFF 0%,#E6DEFF 100%);padding:10px 20px 22px;position:sticky;top:0;z-index:10;">
 
-      <!-- Status bar -->
-      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:44px;margin-bottom:16px;">
-        <div style="display:flex;align-items:center;gap:9px;">
-          <img src="PETIT.png" style="height:28px;mix-blend-mode:multiply;" />
-          <span style="font-size:17px;font-weight:800;color:#2C3E50;letter-spacing:-0.3px;">Petit Pousse</span>
+      <!-- Logo centré + déconnexion -->
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:44px;margin-bottom:8px;">
+        <div style="width:100px;"></div>
+        <img src="PETIT.png" style="width:44%;mix-blend-mode:multiply;" />
+        <div style="width:100px;display:flex;justify-content:flex-end;">
+          <button onclick="doLogout()" style="background:rgba(123,104,238,0.12);border:none;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;color:#7B68EE;font-family:Montserrat,sans-serif;cursor:pointer;">Déconnexion</button>
         </div>
-        <button onclick="doLogout()" style="background:rgba(123,104,238,0.12);border:none;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;color:#7B68EE;font-family:Montserrat,sans-serif;cursor:pointer;">Déconnexion</button>
       </div>
 
       <!-- Greeting -->
