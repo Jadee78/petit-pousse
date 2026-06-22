@@ -536,6 +536,31 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
         <div onclick="obTriggerPhoto()" style="font-size:13px;color:var(--green);font-weight:700;cursor:pointer;margin-bottom:8px;">&#128194; Choisir dans la galerie</div>
       </div>
 
+      <!-- ÉTAPE 16 — Assistante maternelle -->
+      <div id="ob-s16" class="ob-content" style="display:none;">
+        <div class="ob-illus">👩‍🍼</div>
+        <div class="ob-title" id="ob-assmat-title">Une assistante maternelle&nbsp;?</div>
+        <div class="ob-sub" id="ob-assmat-sub">Si bébé est gardé par une assmat, elle pourra remplir le journal de sa journée directement dans l'app.</div>
+        <div style="display:flex;gap:12px;width:100%;margin:24px 0 8px;">
+          <div id="ob-assmat-oui" onclick="obSelectAssmat(true)" style="flex:1;border:2px solid #E8E0F4;border-radius:16px;padding:18px 8px;text-align:center;cursor:pointer;background:#fff;transition:all 0.2s;">
+            <div style="font-size:28px;margin-bottom:6px;">✅</div>
+            <div style="font-size:14px;font-weight:700;color:#2C3E50;">Oui</div>
+          </div>
+          <div id="ob-assmat-non" onclick="obSelectAssmat(false)" style="flex:1;border:2px solid #E8E0F4;border-radius:16px;padding:18px 8px;text-align:center;cursor:pointer;background:#fff;transition:all 0.2s;">
+            <div style="font-size:28px;margin-bottom:6px;">❌</div>
+            <div style="font-size:14px;font-weight:700;color:#2C3E50;">Non</div>
+          </div>
+        </div>
+        <div id="ob-assmat-name-block" style="display:none;width:100%;margin-top:8px;">
+          <div style="font-size:11px;font-weight:700;color:#7B68EE;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;text-align:left;">Comment elle s'appelle ?</div>
+          <input id="ob-assmat-name" type="text" placeholder="Ex: Nathalie, Nounou Rose…" class="ob-input" style="margin-top:0;" />
+          <div style="background:#F0EEFF;border-radius:14px;padding:14px;margin-top:14px;text-align:left;">
+            <div style="font-size:12px;font-weight:700;color:#7B68EE;margin-bottom:6px;">📱 Comment ça marche ?</div>
+            <div style="font-size:12px;color:#5A50D0;line-height:1.6;">Une fois inscrite, va dans <strong>Profil → Mon code famille</strong> et montre le QR code à ton assmat. Elle le scanne dans son app et voit la journée de bébé directement !</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Boutons -->
@@ -4141,7 +4166,7 @@ function obUpdateDots(n) {
 }
 function obShowStep(n) {
   obStep = n; obUpdateDots(n);
-  for (var i=1;i<=15;i++) {
+  for (var i=1;i<=16;i++) {
     var s=document.getElementById("ob-s"+i); if(!s) continue;
     s.style.display = i===n ? "flex" : "none";
     if(i===n){s.style.flexDirection="column";s.style.alignItems="center";}
@@ -4236,7 +4261,7 @@ function obShowStep(n) {
     obData.photo=null;
     var prev=document.getElementById("ob-photo-preview");
     if(prev) prev.innerHTML='<span style="font-size:56px;">'+(obData.sexe==="garcon"?"👦":"👧")+'</span>';
-    mb.style.display="block"; mb.textContent="C'est parti ! 🌱";
+    mb.style.display="block"; mb.textContent="Suivant →";
     gb.style.display="block"; gb.textContent="Passer";
   } else if(n===14) {
     var dn=obData.surnom||obData.prenom;
@@ -4258,7 +4283,20 @@ function obShowStep(n) {
       (obData.prenom2?obRowEdit("Fratrie","+ "+obData.prenom2,13):obRowEdit("Fratrie","Aucune",12))+
       obRowEdit("Tu es",rl,1)+(obData.contact?obRowEdit("Contact",obData.contact,2):"")+
       '<div style="font-size:11px;color:#B0B8C1;text-align:center;margin-top:8px;">Appuie sur une ligne pour modifier</div></div>';
+    mb.style.display="block"; mb.textContent="Suivant →";
+  } else if(n===16) {
+    var fn16=obData.surnom||obData.prenom;
+    document.getElementById("ob-assmat-title").textContent=fn16+" a une assistante maternelle ?";
+    document.getElementById("ob-assmat-sub").textContent="Si oui, elle pourra noter les repas, dodo et changes de "+fn16+" directement dans l'app.";
+    obData.assmat=null;
+    document.getElementById("ob-assmat-name-block").style.display="none";
+    document.getElementById("ob-assmat-name").value="";
+    ["ob-assmat-oui","ob-assmat-non"].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el){el.style.borderColor="#E8E0F4";el.style.background="#fff";}
+    });
     mb.style.display="block"; mb.textContent="C'est parti ! 🌱";
+    gb.style.display="block"; gb.textContent="Passer";
   }
 }
 function obRow(l,v){return'<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;"><span style="font-size:13px;color:#7F8C8D;">'+l+'</span><span style="font-size:13px;font-weight:700;color:#2C3E50;">'+v+'</span></div>';}
@@ -4420,6 +4458,16 @@ function obNext() {
   } else if(obStep===14) {
     obGoTo(15);
   } else if(obStep===15) {
+    obGoTo(16);
+  } else if(obStep===16) {
+    var assmatName = (document.getElementById("ob-assmat-name")||{}).value || "";
+    if (obData.assmat && assmatName.trim()) {
+      var cfg = JSON.parse(localStorage.getItem("parent_assmat_config") || "{}");
+      cfg.name = assmatName.trim();
+      cfg.enabled = true;
+      cfg.open = true;
+      localStorage.setItem("parent_assmat_config", JSON.stringify(cfg));
+    }
     obFinish();
   }
 }
@@ -4430,7 +4478,18 @@ function obGhost() {
   else if(obStep===8) { obData.poids=null; obData.taille=null; obGoTo(9); }
   else if(obStep===11) { obData.rgoTraitement=false; obData.rgoMed=null; obData.rgoDateFin=null; obGoTo(12); }
   else if(obStep===13) { obData.prenom2=null; obData.sexe2=null; obData.dob2=null; obData.poids2=null; obData.taille2=null; obGoTo(14); }
-  else if(obStep===15) { obData.photo=null; obFinish(); }
+  else if(obStep===15) { obData.photo=null; obGoTo(16); }
+  else if(obStep===16) { obData.assmat=false; obFinish(); }
+}
+
+function obSelectAssmat(hasAssmat) {
+  obData.assmat = hasAssmat;
+  var oui = document.getElementById("ob-assmat-oui");
+  var non = document.getElementById("ob-assmat-non");
+  var block = document.getElementById("ob-assmat-name-block");
+  if (oui) oui.style.cssText += ';border-color:' + (hasAssmat ? '#7B68EE' : '#E8E0F4') + ';background:' + (hasAssmat ? '#F0EEFF' : '#fff');
+  if (non) non.style.cssText += ';border-color:' + (!hasAssmat ? '#7B68EE' : '#E8E0F4') + ';background:' + (!hasAssmat ? '#F0EEFF' : '#fff');
+  if (block) block.style.display = hasAssmat ? "block" : "none";
 }
 function obSkipSurnom() { obGhost(); }
 
