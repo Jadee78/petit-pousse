@@ -7217,6 +7217,7 @@ async function sendParentMessage() {
   try {
     var { error } = await sb.from("assmat_messages").insert({ parent_id: currentUser.id, assmat_id: assmatId, texte: texte, de: "parent" });
     if (error) { showToast("Erreur : " + error.message); return; }
+    createDbNotification(assmatId, "💬 Message des parents", texte, 'message');
     var o = document.getElementById("parent-msg-overlay");
     if (o) { document.body.removeChild(o); openParentMessaging(); }
   } catch(e) { showToast("Erreur : " + e.message); }
@@ -7996,6 +7997,9 @@ async function pushJournalToSupabase(j) {
       showToast("⚠️ Synchro échouée : " + res.error.message);
     } else {
       showToast("✓ Synchronisé avec les parents");
+      var childProfs = JSON.parse(localStorage.getItem('childProfiles') || '[]');
+      var childName = (childProfs[currentJournalChildIdx || 0] || {}).prenom || 'bébé';
+      createDbNotification(currentJournalParentId, "📋 Journal mis à jour", "L'assmat a renseigné le journal de " + childName, 'journal');
     }
   } catch(e) {
     console.error("pushJournal catch:", e);
@@ -8328,6 +8332,7 @@ async function sendMessage() {
   try {
     var { error } = await sb.from("assmat_messages").insert({ parent_id: currentJournalParentId, assmat_id: currentUser.id, texte: texte, de: "assmat" });
     if (error) { showToast("Erreur : " + error.message); return; }
+    createDbNotification(currentJournalParentId, "💬 Message de l'assmat", texte, 'message');
     renderMessages();
     updateJournalCounts();
   } catch(e) { showToast("Erreur : " + e.message); }
@@ -8581,6 +8586,30 @@ function uploadChildPhoto(parentId, fi, ci) {
   document.body.appendChild(inp);
 })();
 
+// ── Notifications Supabase (version sans OneSignal REST key) ──
+async function createDbNotification(userId, title, body, type) {
+  if (!sb || !userId) return;
+  try { await sb.from("notifications").insert({ user_id: String(userId), title: title, body: body, type: type || 'message' }); } catch(e) {}
+}
+
+async function checkPendingNotifications() {
+  if (!sb || !currentUser) return;
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  try {
+    var { data } = await sb.from("notifications").select("*")
+      .eq("user_id", String(currentUser.id)).eq("read", false)
+      .order("created_at", { ascending: true }).limit(10);
+    if (!data || !data.length) return;
+    data.forEach(function(n, i) {
+      setTimeout(function() {
+        try { new Notification(n.title, { body: n.body, icon: '/petit-pousse/PETIT.png', badge: '/petit-pousse/PETIT.png' }); } catch(e) {}
+      }, i * 800);
+    });
+    var ids = data.map(function(n) { return n.id; });
+    await sb.from("notifications").update({ read: true }).in("id", ids);
+  } catch(e) {}
+}
+
 // ── Courbe de croissance ──
 function getGrowthMeasures(idx) {
   return JSON.parse(localStorage.getItem('growthMeasures_' + idx) || '[]');
@@ -8763,7 +8792,7 @@ async function initNotifications() {
   });
 
   // Notifs locales en complément (vaccins, médicaments)
-  if (Notification.permission === 'granted') scheduleReminders();
+  if (Notification.permission === 'granted') { scheduleReminders(); setTimeout(checkPendingNotifications, 3000); }
 }
 
 function scheduleReminders() {
