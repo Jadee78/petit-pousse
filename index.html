@@ -2172,6 +2172,7 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
     <div style="padding:10px 20px 20px;background:linear-gradient(160deg,#f0ebf8,#e8e0f4);">
       <div style="font-size:22px;font-weight:800;color:#2C3E50;letter-spacing:-0.5px;">Profil</div>
+      <button onclick="testNotifications()" style="margin-top:10px;width:100%;background:#9B84D4;color:#fff;border:none;border-radius:14px;padding:13px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">🔔 Tester les notifications</button>
     </div>
     <!-- Paramètres allaitement -->
     <div style="margin:16px 16px 0;">
@@ -8520,6 +8521,36 @@ function scheduleNotif(id, title, body, delay) {
       });
     }
   }, delay || 1000);
+}
+
+function testNotifications() {
+  if (Notification.permission !== 'granted') {
+    Notification.requestPermission().then(function(p) {
+      if (p === 'granted') testNotifications();
+    });
+    return;
+  }
+  var name = 'Camille';
+  var profiles = JSON.parse(localStorage.getItem('childProfiles') || '[]');
+  var idx = parseInt(localStorage.getItem('activeChildIdx') || '0');
+  if (profiles[idx]) name = profiles[idx].surnom || profiles[idx].prenom || name;
+
+  var tests = [
+    { delay: 500,  title: '🎂 8 mois !',            body: name + ' a 8 mois aujourd\'hui ! Joyeux moisiversaire 🌱' },
+    { delay: 2000, title: '💊 Doliprane — Matin',    body: 'C\'est l\'heure de la prise du matin pour ' + name + ' (2,5ml)' },
+    { delay: 3500, title: '💉 Vaccin dans 7 jours',  body: 'Le vaccin DTP-Hib approche — pense à prendre RDV si pas encore fait.' },
+    { delay: 5000, title: '📅 RDV demain',           body: 'Pédiatre demain à 10h30 — prépare le carnet de santé.' },
+    { delay: 6500, title: '📅 RDV dans 1h !',        body: 'Pédiatre dans 1h. N\'oublie pas le carnet de santé !' },
+  ];
+  tests.forEach(function(t) {
+    setTimeout(function() {
+      new Notification(t.title, {
+        body: t.body,
+        icon: '/petit-pousse/logo.png',
+        tag: 'test_' + t.delay
+      });
+    }, t.delay);
+  });
 }
 
 // Lancer après chargement + toutes les heures
