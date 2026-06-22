@@ -590,11 +590,12 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <span class="st-icons">&#9679;&#9679;&#9679; &#128267;</span>
     </div>
     <div class="home-header">
-      <div class="hd-row">
-        <div class="brand">
-          <img src="logo.svg" style="width:44px;height:44px;" />
-          <span class="brand-name">Petit Pousse</span>
-        </div>
+      <!-- Logo centré -->
+      <div style="text-align:center;margin-bottom:6px;">
+        <img src="PETIT.png" style="height:64px;mix-blend-mode:multiply;" />
+      </div>
+      <div class="hd-row" style="margin-bottom:0;">
+        <div></div>
         <div onclick="refreshMeteo()" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;min-width:42px;">
           <div id="meteo-icon" style="font-size:30px;line-height:1;text-align:center;">⛅</div>
           <div id="meteo-temp" style="font-size:15px;font-weight:800;color:#2C3E50;line-height:1;">—°</div>
