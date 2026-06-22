@@ -2172,7 +2172,6 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
     <div style="padding:10px 20px 20px;background:linear-gradient(160deg,#f0ebf8,#e8e0f4);">
       <div style="font-size:22px;font-weight:800;color:#2C3E50;letter-spacing:-0.5px;">Profil</div>
-      <button onclick="testNotifications()" style="margin-top:10px;width:100%;background:#9B84D4;color:#fff;border:none;border-radius:14px;padding:13px;font-size:13px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">🔔 Tester les notifications</button>
     </div>
     <!-- Paramètres allaitement -->
     <div style="margin:16px 16px 0;">
@@ -2266,6 +2265,12 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Contacts</div>
       <div id="contacts-list" style="display:flex;flex-direction:column;gap:8px;"></div>
       <button onclick="openAddContact()" style="width:100%;margin-top:8px;background:#F0EBFA;border:1.5px dashed #C8B0E8;border-radius:14px;padding:12px;font-size:13px;font-weight:700;color:#9B84D4;font-family:Montserrat,sans-serif;cursor:pointer;">+ Ajouter un contact</button>
+    </div>
+    <!-- Bouton test notifs -->
+    <div style="margin:16px 16px 30px;">
+      <button onclick="testNotifications()" style="width:100%;background:#9B84D4;color:#fff;border:none;border-radius:14px;padding:15px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">🔔 Tester les notifications</button>
+    </div>
+    <div style="display:none">
     </div>
     <!-- Modal ajouter contact -->
     <div id="modal-contact" style="display:none;position:fixed;inset:0;background:rgba(44,62,80,0.5);z-index:999;align-items:flex-end;" onclick="closeAddContact()">
