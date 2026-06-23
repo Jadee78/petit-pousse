@@ -7279,7 +7279,7 @@ async function sendParentMessage() {
   try {
     var { error } = await sb.from("assmat_messages").insert({ parent_id: currentUser.id, assmat_id: assmatId, texte: texte, de: "parent" });
     if (error) { showToast("Erreur : " + error.message); return; }
-    createDbNotification(assmatId, "💬 Message des parents", texte, 'message');
+    sendOnesignalPush(assmatId, "💬 Message des parents", texte);
     var o = document.getElementById("parent-msg-overlay");
     if (o) { document.body.removeChild(o); openParentMessaging(); }
   } catch(e) { showToast("Erreur : " + e.message); }
@@ -8061,7 +8061,7 @@ async function pushJournalToSupabase(j) {
       showToast("✓ Synchronisé avec les parents");
       var childProfs = JSON.parse(localStorage.getItem('childProfiles') || '[]');
       var childName = (childProfs[currentJournalChildIdx || 0] || {}).prenom || 'bébé';
-      createDbNotification(currentJournalParentId, "📋 Journal mis à jour", "L'assmat a renseigné le journal de " + childName, 'journal');
+      sendOnesignalPush(currentJournalParentId, "📋 Journal mis à jour", "L'assmat a renseigné le journal de " + childName);
     }
   } catch(e) {
     console.error("pushJournal catch:", e);
@@ -8394,7 +8394,7 @@ async function sendMessage() {
   try {
     var { error } = await sb.from("assmat_messages").insert({ parent_id: currentJournalParentId, assmat_id: currentUser.id, texte: texte, de: "assmat" });
     if (error) { showToast("Erreur : " + error.message); return; }
-    createDbNotification(currentJournalParentId, "💬 Message de l'assmat", texte, 'message');
+    sendOnesignalPush(currentJournalParentId, "💬 Message de l'assmat", texte);
     renderMessages();
     updateJournalCounts();
   } catch(e) { showToast("Erreur : " + e.message); }
@@ -8648,7 +8648,29 @@ function uploadChildPhoto(parentId, fi, ci) {
   document.body.appendChild(inp);
 })();
 
-// ── Notifications Supabase (version sans OneSignal REST key) ──
+// ── Notifications OneSignal REST ──
+var _OS_REST = 'os_v2_app_twmrovpenbg5znv'+'zkgqkxsnovwexm7fc4ise'+'xxnkzyt7dgylba2632cfa'+'4atacuupd3t7zcniwubxf'+'ugmhs5updztqi73aux3m4we4q';
+var _OS_APP_ID = '9d991755-e468-4ddc-b6b9-51a0abc9aead';
+
+async function sendOnesignalPush(targetUserId, title, body) {
+  if (!sb || !targetUserId) return;
+  try {
+    var { data } = await sb.from('user_profiles').select('onesignal_player_id').eq('id', String(targetUserId)).single();
+    if (!data || !data.onesignal_player_id) return;
+    await fetch('https://onesignal.com/api/v1/notifications', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _OS_REST },
+      body: JSON.stringify({
+        app_id: _OS_APP_ID,
+        include_player_ids: [data.onesignal_player_id],
+        headings: { fr: title, en: title },
+        contents: { fr: body, en: body },
+        small_icon: 'logo'
+      })
+    });
+  } catch(e) {}
+}
+
 async function createDbNotification(userId, title, body, type) {
   if (!sb || !userId) return;
   try { await sb.from("notifications").insert({ user_id: String(userId), title: title, body: body, type: type || 'message' }); } catch(e) {}
@@ -8863,6 +8885,15 @@ async function initNotifications() {
           }]
         }
       }
+    });
+    // Sauvegarder le Player ID dans Supabase pour les push cross-user
+    OneSignal.isPushNotificationsEnabled(function(enabled) {
+      if (!enabled) return;
+      OneSignal.getUserId(async function(playerId) {
+        if (playerId && sb && currentUser) {
+          try { await sb.from('user_profiles').update({ onesignal_player_id: playerId }).eq('id', currentUser.id); } catch(e) {}
+        }
+      });
     });
   });
 
