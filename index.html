@@ -177,13 +177,6 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 .lock-key { background:#fff; border:none; border-radius:18px; height:64px; font-size:24px; font-weight:700; color:var(--text); font-family:Montserrat,sans-serif; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,0.07); transition:background .1s; -webkit-tap-highlight-color:transparent; }
 .lock-key:active { background:var(--green-lt); }
 .lock-err { font-size:13px; color:#E74C3C; margin-top:14px; min-height:20px; text-align:center; }
-/* ══ PIN CRÉATION (onboarding) ══ */
-.ob-pin-dots { display:flex; gap:14px; margin:24px 0 18px; }
-.ob-pin-dot { width:18px; height:18px; border-radius:50%; background:rgba(90,158,130,0.2); transition:background .15s; }
-.ob-pin-dot.filled { background:var(--green); }
-.ob-pin-pad { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; width:100%; max-width:280px; }
-.ob-pin-key { background:#fff; border:none; border-radius:16px; height:58px; font-size:22px; font-weight:700; color:var(--text); font-family:Montserrat,sans-serif; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.06); transition:background .1s; -webkit-tap-highlight-color:transparent; }
-.ob-pin-key:active { background:var(--green-lt); }
 /* ══ CONTACT TOGGLE ══ */
 .ob-contact-toggle { display:flex; background:rgba(44,62,80,0.07); border-radius:14px; padding:3px; margin-top:20px; width:100%; }
 .ob-ct-btn { flex:1; text-align:center; font-size:13px; font-weight:700; padding:10px; border-radius:11px; cursor:pointer; transition:all .2s; color:var(--sub); }
@@ -275,34 +268,6 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
           <div class="ob-ct-btn" id="ob-ct-phone" onclick="obSelectContact('phone')">T&#233;l&#233;phone</div>
         </div>
         <input id="ob-contact-input" class="ob-input" type="email" placeholder="ton@email.com" autocomplete="off" style="margin-top:14px;" />
-      </div>
-
-      <!-- Étape 3 : PIN création -->
-      <div id="ob-s3" class="ob-content" style="display:none;">
-        <div class="ob-illus">&#128272;</div>
-        <div class="ob-title" id="ob-pin-title">Cr&#233;e ton code secret</div>
-        <div class="ob-sub" id="ob-pin-sub">4 chiffres &#183; Garde-le bien&nbsp;!</div>
-        <div class="ob-pin-dots">
-          <div class="ob-pin-dot" id="opd-1"></div>
-          <div class="ob-pin-dot" id="opd-2"></div>
-          <div class="ob-pin-dot" id="opd-3"></div>
-          <div class="ob-pin-dot" id="opd-4"></div>
-        </div>
-        <div class="ob-pin-pad">
-          <button class="ob-pin-key" onclick="obPinKey('1')">1</button>
-          <button class="ob-pin-key" onclick="obPinKey('2')">2</button>
-          <button class="ob-pin-key" onclick="obPinKey('3')">3</button>
-          <button class="ob-pin-key" onclick="obPinKey('4')">4</button>
-          <button class="ob-pin-key" onclick="obPinKey('5')">5</button>
-          <button class="ob-pin-key" onclick="obPinKey('6')">6</button>
-          <button class="ob-pin-key" onclick="obPinKey('7')">7</button>
-          <button class="ob-pin-key" onclick="obPinKey('8')">8</button>
-          <button class="ob-pin-key" onclick="obPinKey('9')">9</button>
-          <div></div>
-          <button class="ob-pin-key" onclick="obPinKey('0')">0</button>
-          <button class="ob-pin-key" style="font-size:18px;" onclick="obPinDel()">&#9003;</button>
-        </div>
-        <div id="ob-pin-err" style="font-size:13px;color:#E74C3C;margin-top:12px;min-height:18px;text-align:center;"></div>
       </div>
 
       <!-- Étape 4 : Prénom -->
@@ -4021,10 +3986,18 @@ async function afterLogin() {
 }
 
 async function enterParentMode() {
-  var childRes = await sb.from("children").select("*").eq("parent_id", currentUser.id).order("sort_order");
+  var childRes = await sb.from("children").select("*").eq("parent_id", currentUser.id).order("id", {ascending: false});
   if (childRes.data && childRes.data.length > 0) {
+    // Dédupliquer par sort_order en gardant le plus récent (id le plus grand)
+    var seen = {};
+    var deduped = [];
+    childRes.data.forEach(function(c) {
+      var key = c.sort_order !== null && c.sort_order !== undefined ? c.sort_order : c.prenom;
+      if (!seen[key]) { seen[key] = true; deduped.push(c); }
+    });
+    deduped.sort(function(a, b){ return (a.sort_order||0) - (b.sort_order||0); });
     var localProfiles = JSON.parse(localStorage.getItem("childProfiles") || "[]");
-    var profiles = childRes.data.map(function(c, i) {
+    var profiles = deduped.map(function(c, i) {
       var local = localProfiles[i] || {};
       return { id: c.id, prenom: c.prenom, displayName: c.display_name||c.prenom, sexe: c.sexe, dob: c.dob, poids: c.poids, taille: c.taille, role: c.role_parent, rgo: c.rgo, rgoTraitement: c.rgo_traitement, rgoMed: c.rgo_med, rgoDateFin: c.rgo_date_fin,
         premieresFois: local.premieresFois || [], allergies: local.allergies || [] };
@@ -4156,7 +4129,7 @@ function goToApp() {
 }
 // ══ ONBOARDING ══
 var obStep = 0;
-var obData = { role:null, contact:null, contactType:"email", pin:null, pinConfirm:null, pinPhase:1, pinEntry:"", prenom:null, sexe:null, dob:null, surnom:null, poids:null, taille:null, allaitement:null, rgo:null, rgoTraitement:false, rgoMed:null, rgoDateFin:null, fratrie:null, prenom2:null, sexe2:null, dob2:null, poids2:null, taille2:null };
+var obData = { role:null, contact:null, contactType:"email", prenom:null, sexe:null, dob:null, surnom:null, poids:null, taille:null, allaitement:null, rgo:null, rgoTraitement:false, rgoMed:null, rgoDateFin:null, fratrie:null, prenom2:null, sexe2:null, dob2:null, poids2:null, taille2:null };
 var obAnimating = false;
 
 // Dot mapping: step → dot index (9 dots total)
@@ -4197,13 +4170,6 @@ function obShowStep(n) {
   } else if(n===2) {
     mb.style.display="block"; mb.textContent="Suivant →";
     gb.style.display="block"; gb.textContent="Passer pour l'instant";
-  } else if(n===3) {
-    // PIN pad — no button, auto-advance on 4 digits
-    obData.pinPhase=1; obData.pinEntry=""; obData.pin=null; obData.pinConfirm=null;
-    document.getElementById("ob-pin-title").textContent="Crée ton code secret";
-    document.getElementById("ob-pin-sub").textContent="4 chiffres · Garde-le bien !";
-    document.getElementById("ob-pin-err").textContent="";
-    obUpdatePinDots(0);
   } else if(n===4) {
     mb.style.display="block"; mb.textContent="Suivant →";
     document.getElementById("ob-prenom").style.borderColor="";
@@ -4319,44 +4285,6 @@ function obSelectContact(type) {
   inp.value="";
 }
 
-// PIN creation pad
-function obUpdatePinDots(len) {
-  for(var i=1;i<=4;i++){
-    var d=document.getElementById("opd-"+i); if(d) d.className="ob-pin-dot"+(i<=len?" filled":"");
-  }
-}
-function obPinKey(k) {
-  if(obData.pinEntry.length>=4) return;
-  obData.pinEntry+=k;
-  obUpdatePinDots(obData.pinEntry.length);
-  if(obData.pinEntry.length===4) {
-    setTimeout(function(){
-      if(obData.pinPhase===1) {
-        obData.pin=obData.pinEntry; obData.pinEntry="";
-        obData.pinPhase=2;
-        document.getElementById("ob-pin-title").textContent="Confirme ton code";
-        document.getElementById("ob-pin-sub").textContent="Entre-le une 2e fois";
-        document.getElementById("ob-pin-err").textContent="";
-        obUpdatePinDots(0);
-      } else {
-        if(obData.pinEntry===obData.pin) {
-          obData.pinConfirm=obData.pinEntry;
-          obGoTo(4);
-        } else {
-          obData.pinEntry=""; obUpdatePinDots(0);
-          document.getElementById("ob-pin-err").textContent="Code incorrect, réessaie";
-          obData.pinPhase=1; obData.pin=null;
-          document.getElementById("ob-pin-title").textContent="Crée ton code secret";
-          document.getElementById("ob-pin-sub").textContent="4 chiffres · Garde-le bien !";
-        }
-      }
-    },180);
-  }
-}
-function obPinDel() {
-  if(obData.pinEntry.length>0) { obData.pinEntry=obData.pinEntry.slice(0,-1); obUpdatePinDots(obData.pinEntry.length); }
-}
-
 function obSelectRole(role) {
   if(obAnimating) return;
   obData.role=role;
@@ -4423,7 +4351,7 @@ function obNext() {
   if(obStep===2) {
     var v=document.getElementById("ob-contact-input").value.trim();
     obData.contact=v||null;
-    obGoTo(3);
+    obGoTo(4);
   } else if(obStep===4) {
     var v=document.getElementById("ob-prenom").value.trim();
     if(!v){document.getElementById("ob-prenom").style.borderColor="#E74C3C";return;}
@@ -4479,7 +4407,7 @@ function obNext() {
 }
 function obGhost() {
   if(obAnimating) return;
-  if(obStep===2) { obData.contact=null; obGoTo(3); }
+  if(obStep===2) { obData.contact=null; obGoTo(4); }
   else if(obStep===7) { obData.surnom=null; obGoTo(8); }
   else if(obStep===8) { obData.poids=null; obData.taille=null; obGoTo(9); }
   else if(obStep===11) { obData.rgoTraitement=false; obData.rgoMed=null; obData.rgoDateFin=null; obGoTo(12); }
@@ -4542,6 +4470,8 @@ async function obFinish() {
   localStorage.setItem("activeChildIdx","0");
   // Sauvegarder dans Supabase si connecté
   if (currentUser) {
+    // Supprimer les anciens enfants avant d'insérer pour éviter les doublons
+    await sb.from("children").delete().eq("parent_id", currentUser.id);
     var rows = profiles.map(function(p, i) {
       return { parent_id: currentUser.id, prenom: p.prenom, display_name: p.displayName, sexe: p.sexe, dob: p.dob||null, poids: p.poids||null, taille: p.taille||null, role_parent: p.role||"maman", rgo: p.rgo||"non", rgo_traitement: !!p.rgoTraitement, rgo_med: p.rgoMed||null, rgo_date_fin: p.rgoDateFin||null, sort_order: i };
     });
