@@ -897,10 +897,10 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
 
     <!-- Conseil texture -->
     <div style="margin:12px 16px 0;background:#FFF8F0;border-radius:16px;padding:13px 14px;display:flex;gap:11px;align-items:flex-start;border-left:3px solid #D4884A;">
-      <span style="font-size:20px;flex-shrink:0;">&#9986;&#65039;</span>
+      <span style="font-size:20px;flex-shrink:0;" id="alim-conseil-icon">&#9986;&#65039;</span>
       <div>
-        <div style="font-size:13px;font-weight:700;color:#B46828;" data-child-tpl="Taille sécurisée à [age]">Taille sécurisée à 8 mois</div>
-        <div style="font-size:12px;color:#7A5828;margin-top:3px;line-height:1.5;">Bâtonnets épais, morceaux mous, bien cuits. Tomate cerise → couper en 4. Raisin → couper en 4 dans la longueur. Jamais d'aliment dur ou rond entier.</div>
+        <div style="font-size:13px;font-weight:700;color:#B46828;" id="alim-conseil-titre">Taille sécurisée à 8 mois</div>
+        <div style="font-size:12px;color:#7A5828;margin-top:3px;line-height:1.5;" id="alim-conseil-texte">Bâtonnets épais, morceaux mous, bien cuits. Tomate cerise → couper en 4. Raisin → couper en 4 dans la longueur. Jamais d'aliment dur ou rond entier.</div>
       </div>
     </div>
 
@@ -1124,8 +1124,8 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     <div style="margin:12px 16px 0;background:#F0EBFA;border-radius:16px;padding:13px 14px;display:flex;gap:11px;align-items:flex-start;">
       <span style="font-size:20px;">&#128161;</span>
       <div>
-        <div style="font-size:13px;font-weight:700;color:#9B84D4;" data-child-tpl="Conseil à [age]">Conseil à 8 mois</div>
-        <div style="font-size:12px;color:#2C5050;margin-top:3px;line-height:1.5;" data-child-tpl="[name] a besoin de 12 à 15h de sommeil par jour. 2 siestes encore normales à cet âge.">Camille a besoin de 12 à 15h de sommeil par jour. 2 siestes encore normales à cet âge.</div>
+        <div style="font-size:13px;font-weight:700;color:#9B84D4;" id="sommeil-conseil-titre">Conseil à 8 mois</div>
+        <div style="font-size:12px;color:#2C5050;margin-top:3px;line-height:1.5;" id="sommeil-conseil-texte">Bébé a besoin de 12 à 15h de sommeil par jour. 2 siestes encore normales à cet âge.</div>
       </div>
     </div>
 
@@ -5159,6 +5159,49 @@ function regenEveilActivites() {
   setTimeout(function(){ renderEveilActivites(); grid.style.opacity='1'; }, 200);
 }
 
+// ── CONSEILS PAR ÂGE ──
+var AGE_ADVICE = [
+  { max:3,
+    sommeil: { titre:"Les premiers mois", texte:"Les nouveau-nés dorment 14 à 17h par jour en cycles courts de 2-3h. Pas de rythme fixe encore — c'est tout à fait normal !" },
+    alim:    { icon:"🤱", titre:"Lait exclusif", texte:"Seul le lait maternel ou maternisé est recommandé jusqu'à 6 mois. Aucun solide, aucune eau avant cet âge." }
+  },
+  { max:5,
+    sommeil: { titre:"Vers un premier rythme", texte:"Bébé dort 14 à 16h. La régression des 4 mois peut perturber les nuits — c'est temporaire. Un rituel du soir peut commencer à s'installer." },
+    alim:    { icon:"🤱", titre:"Lait encore exclusif", texte:"La diversification n'est pas encore recommandée avant 6 mois. Lait maternel ou maternisé à volonté." }
+  },
+  { max:7,
+    sommeil: { titre:"2 siestes, c'est normal", texte:"Bébé a besoin de 12 à 16h de sommeil. 2 siestes par jour sont normales. Le soir, un rituel fixe aide à l'endormissement." },
+    alim:    { icon:"🥣", titre:"Début de la diversification", texte:"Commence par des purées lisses : carotte, courgette, patate douce, pomme, poire. 1 nouvel aliment à la fois, attends 3 jours avant d'en introduire un autre." }
+  },
+  { max:9,
+    sommeil: { titre:"Régression des 8-10 mois", texte:"12 à 15h de sommeil par jour, 2 siestes normales. La régression des 8-10 mois peut arriver — tiens bon, ça passe en quelques semaines." },
+    alim:    { icon:"✂️", titre:"Morceaux mous à cet âge", texte:"Bâtonnets épais, morceaux mous et bien cuits. Couper tomates cerises et raisins en 4. Jamais d'aliment dur ou rond entier. DME possible en parallèle." }
+  },
+  { max:12,
+    sommeil: { titre:"Vers 1 seule sieste", texte:"12 à 14h de sommeil par jour. La transition vers 1 sieste peut démarrer vers 12-15 mois — ne la précipite pas si bébé tient encore bien 2 siestes." },
+    alim:    { icon:"🍗", titre:"Protéines et textures variées", texte:"Morceaux tendres à écraser entre les gencives. Introduire viande, poisson, œuf bien cuit. Jamais de noix entières ni d'aliments durs." }
+  },
+  { max:18,
+    sommeil: { titre:"1 sieste longue le midi", texte:"11 à 14h de sommeil. 1 sieste longue de 1h à 2h le midi idéalement. La sieste du matin disparaît progressivement — c'est normal." },
+    alim:    { icon:"🍽", titre:"À table avec la famille !", texte:"Partage les repas en adaptant en petits morceaux. Attention aux aliments durs, ronds ou collants. Évite le sel et le sucre ajoutés." }
+  },
+  { max:24,
+    sommeil: { titre:"Terreurs nocturnes fréquentes", texte:"11 à 14h de sommeil. 1 sieste de 1h à 2h le midi. Les terreurs nocturnes sont courantes à cet âge — restez calmes, ça passe." },
+    alim:    { icon:"🍽", titre:"Alimentation variée", texte:"Tous les aliments sont autorisés en textures adaptées. 3 repas + 1-2 collations. Respecte les signaux de faim et de satiété." }
+  },
+  { max:999,
+    sommeil: { titre:"La sieste, encore précieuse", texte:"10 à 13h de sommeil. La sieste peut disparaître vers 3 ans. Un rituel du soir fixe aide à l'endormissement et améliore la qualité du sommeil." },
+    alim:    { icon:"🍽", titre:"Comme la famille", texte:"Partage tous vos repas. Variez légumes, fruits, protéines. Attention aux sucres cachés dans les produits ultra-transformés." }
+  }
+];
+
+function getAgeAdvice(months) {
+  for (var i = 0; i < AGE_ADVICE.length; i++) {
+    if (months <= AGE_ADVICE[i].max) return AGE_ADVICE[i];
+  }
+  return AGE_ADVICE[AGE_ADVICE.length - 1];
+}
+
 function applyChildProfile(profile) {
   if(!profile) return;
   var name = profile.displayName||profile.prenom||"bébé";
@@ -5252,6 +5295,19 @@ function applyChildProfile(profile) {
   updateSanteTempHeader();
   renderAntecedents();
   loadSanteNotes();
+  // Conseils adaptés à l'âge
+  var advice = getAgeAdvice(months);
+  var elSomTitre = document.getElementById('sommeil-conseil-titre');
+  var elSomTexte = document.getElementById('sommeil-conseil-texte');
+  if (elSomTitre) elSomTitre.textContent = advice.sommeil.titre;
+  if (elSomTexte) elSomTexte.textContent = advice.sommeil.texte.replace(/\[name\]/g, name);
+  var elAlimIcon  = document.getElementById('alim-conseil-icon');
+  var elAlimTitre = document.getElementById('alim-conseil-titre');
+  var elAlimTexte = document.getElementById('alim-conseil-texte');
+  if (elAlimIcon)  elAlimIcon.textContent  = advice.alim.icon;
+  if (elAlimTitre) elAlimTitre.textContent = advice.alim.titre;
+  if (elAlimTexte) elAlimTexte.textContent = advice.alim.texte.replace(/\[name\]/g, name);
+
   // Alim + Sommeil
   renderAlimGrid();
   updateAlimStats();
