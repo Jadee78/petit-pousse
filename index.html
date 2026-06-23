@@ -2259,6 +2259,27 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       <div id="contacts-list" style="display:flex;flex-direction:column;gap:8px;"></div>
       <button onclick="openAddContact()" style="width:100%;margin-top:8px;background:#F0EBFA;border:1.5px dashed #C8B0E8;border-radius:14px;padding:12px;font-size:13px;font-weight:700;color:#9B84D4;font-family:Montserrat,sans-serif;cursor:pointer;">+ Ajouter un contact</button>
     </div>
+    <!-- Récap du soir -->
+    <div style="margin:16px 16px 0;">
+      <div style="font-size:11px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Notifications</div>
+      <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+        <div style="padding:16px;display:flex;align-items:center;gap:14px;">
+          <div style="font-size:24px;">🌙</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:#2C3E50;">Récap du soir</div>
+            <div style="font-size:12px;color:#7F8C8D;margin-top:2px;">Résumé de la journée + prévu demain</div>
+          </div>
+          <div id="recap-toggle" onclick="toggleRecap()" data-on="0" style="width:50px;height:28px;border-radius:14px;background:#C8C8C8;display:flex;align-items:center;padding:3px;justify-content:flex-start;cursor:pointer;transition:all .3s;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.2);transition:transform .3s;"></div>
+          </div>
+        </div>
+        <div id="recap-time-row" style="padding:0 16px 16px;display:none;border-top:0.5px solid #EAE4F4;">
+          <div style="font-size:12px;color:#7F8C8D;margin-bottom:8px;margin-top:12px;">Heure de la notification :</div>
+          <input type="time" id="recap-time-input" onchange="saveRecapTime()" value="20:00" style="width:100%;box-sizing:border-box;border:1.5px solid #EAE4F4;border-radius:12px;padding:10px 14px;font-size:15px;font-family:Montserrat,sans-serif;color:#2C3E50;outline:none;background:#F8F9FA;">
+          <div onclick="showRecapJour()" style="margin-top:10px;text-align:center;font-size:12px;color:#9B84D4;font-weight:600;cursor:pointer;">Voir le récap maintenant →</div>
+        </div>
+      </div>
+    </div>
     <!-- Bouton test notifs -->
     <div style="margin:16px 16px 30px;">
       <button onclick="testNotifications()" style="width:100%;background:#9B84D4;color:#fff;border:none;border-radius:14px;padding:15px;font-size:14px;font-weight:700;font-family:Montserrat,sans-serif;cursor:pointer;">🔔 Tester les notifications</button>
@@ -3441,6 +3462,13 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
     </div>
   </div>
 
+  <!-- MODAL RÉCAP DU JOUR -->
+  <div id="modal-recap-jour" style="display:none;position:fixed;inset:0;background:rgba(44,62,80,0.55);z-index:1000;align-items:flex-end;" onclick="closeRecapJour()">
+    <div onclick="event.stopPropagation()" style="background:#F5F0FB;border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;box-sizing:border-box;max-height:88vh;overflow-y:auto;">
+      <div id="recap-content"></div>
+    </div>
+  </div>
+
   <!-- TABBAR -->
   <div id="tabbar">
     <div class="tab active" id="tab-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-lbl">Accueil</div></div>
@@ -3488,6 +3516,7 @@ function switchTab(id) {
   if (tab) tab.classList.add("active");
   setTimeout(function(){ maybeShowRubriqueMsg(id); }, 300);
   if (id === "home") setTimeout(function() { loadAssmatParentModule(); }, 400);
+  if (id === "profil") loadRecapSettings();
 }
 function goTo(id) {
   showScreen(id); hist.push(id);
@@ -4019,6 +4048,12 @@ async function enterParentMode() {
     });
     localStorage.setItem("childProfiles", JSON.stringify(profiles));
     localStorage.setItem("activeChildIdx", "0");
+    // Initialiser growthMeasures depuis Supabase si vides (nouvel appareil)
+    profiles.forEach(function(p, i) {
+      if (p.poids && getGrowthMeasures(i).length === 0) {
+        saveGrowthMeasuresData(i, [{ date: p.dob || new Date().toISOString().slice(0,10), poids: parseFloat(p.poids)||null, taille: parseFloat(p.taille)||null }]);
+      }
+    });
     hideAllScreens();
     document.getElementById("screen-home").classList.add("active");
     document.getElementById("tabbar").style.display = "flex";
@@ -5852,7 +5887,7 @@ function epSelectSexe(s) {
     el.style.background = v===s ? "#F0EBFA" : "#fff";
   });
 }
-function saveEditProfil() {
+async function saveEditProfil() {
   var prenom = document.getElementById("ep-prenom").value.trim();
   if (!prenom) { document.getElementById("ep-prenom").style.borderColor="#E74C3C"; document.getElementById("ep-prenom").focus(); return; }
   var surnom = document.getElementById("ep-surnom").value.trim();
@@ -5872,6 +5907,20 @@ function saveEditProfil() {
   if (poids) profiles[idx].poids = parseFloat(poids);
   if (taille) profiles[idx].taille = parseFloat(taille);
   localStorage.setItem("childProfiles", JSON.stringify(profiles));
+  // Sync vers Supabase pour que la reconnexion conserve poids/taille
+  if (currentUser && profiles[idx].id) {
+    try {
+      await sb.from("children").update({
+        prenom: prenom,
+        display_name: surnom || prenom,
+        dob: profiles[idx].dob || null,
+        sexe: profiles[idx].sexe || null,
+        role_parent: profiles[idx].role || null,
+        poids: profiles[idx].poids || null,
+        taille: profiles[idx].taille || null
+      }).eq("id", profiles[idx].id);
+    } catch(e) {}
+  }
   hideEditProfil();
   applyChildProfile(profiles[idx]);
   updateChildSelectors();
@@ -8687,6 +8736,140 @@ function uploadChildPhoto(parentId, fi, ci) {
   document.body.appendChild(inp);
 })();
 
+// ── Récap du soir ──
+function loadRecapSettings() {
+  var on = localStorage.getItem('recap-enabled') === '1';
+  var time = localStorage.getItem('recap-time') || '20:00';
+  var toggle = document.getElementById('recap-toggle');
+  var row = document.getElementById('recap-time-row');
+  var input = document.getElementById('recap-time-input');
+  if (!toggle) return;
+  toggle.dataset.on = on ? '1' : '0';
+  toggle.style.background = on ? '#9B84D4' : '#C8C8C8';
+  toggle.style.justifyContent = on ? 'flex-end' : 'flex-start';
+  if (row) row.style.display = on ? 'block' : 'none';
+  if (input) input.value = time;
+}
+function toggleRecap() {
+  var toggle = document.getElementById('recap-toggle');
+  if (!toggle) return;
+  var on = toggle.dataset.on !== '1';
+  toggle.dataset.on = on ? '1' : '0';
+  toggle.style.background = on ? '#9B84D4' : '#C8C8C8';
+  toggle.style.justifyContent = on ? 'flex-end' : 'flex-start';
+  var row = document.getElementById('recap-time-row');
+  if (row) row.style.display = on ? 'block' : 'none';
+  localStorage.setItem('recap-enabled', on ? '1' : '0');
+}
+function saveRecapTime() {
+  var v = document.getElementById('recap-time-input');
+  if (v) localStorage.setItem('recap-time', v.value);
+}
+function checkRecapTime() {
+  if (localStorage.getItem('recap-enabled') !== '1') return;
+  if (!currentUser) return;
+  var recapTime = localStorage.getItem('recap-time') || '20:00';
+  var now = new Date();
+  var hhmm = (now.getHours()<10?'0':'')+now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+  var today = now.toISOString().slice(0,10);
+  if (hhmm === recapTime && localStorage.getItem('recap-last-sent') !== today) {
+    localStorage.setItem('recap-last-sent', today);
+    sendRecapPush();
+  }
+}
+async function sendRecapPush() {
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var profiles = JSON.parse(localStorage.getItem('childProfiles')||'[]');
+  var child = profiles[idx];
+  if (!child) return;
+  var name = child.displayName || child.prenom || 'bébé';
+  var today = new Date().toISOString().slice(0,10);
+  var logs = JSON.parse(localStorage.getItem('sommeil-logs-'+idx)||'[]');
+  var todayLogs = logs.filter(function(l){ return l.date === today; });
+  var totalSleep = todayLogs.reduce(function(acc,l){ return acc+(l.duration||0); }, 0);
+  var menu = getMenuData(today);
+  var repasCount = [menu.matin, menu.midi, menu.soir].filter(function(r){ return r && r.trim(); }).length;
+  var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+  var tomorrowStr = tomorrow.toISOString().slice(0,10);
+  var agenda = getAgendaData();
+  var tomorrowRDV = agenda.filter(function(r){ return r.date === tomorrowStr && !r.done; });
+  var body = totalSleep > 0 ? fmtDuration(totalSleep)+' de sommeil · ' : '';
+  body += repasCount + (repasCount>1?' repas':' repas');
+  if (tomorrowRDV.length) body += ' · Demain : '+tomorrowRDV[0].type;
+  await sendOnesignalPush(currentUser.id, '🌙 Récap de '+name, body);
+}
+function showRecapJour() {
+  var idx = parseInt(localStorage.getItem('activeChildIdx')||'0');
+  var profiles = JSON.parse(localStorage.getItem('childProfiles')||'[]');
+  var child = profiles[idx];
+  if (!child) return;
+  var name = child.displayName || child.prenom || 'bébé';
+  var today = new Date().toISOString().slice(0,10);
+  var logs = JSON.parse(localStorage.getItem('sommeil-logs-'+idx)||'[]');
+  var todayLogs = logs.filter(function(l){ return l.date === today; });
+  var nuitLogs = todayLogs.filter(function(l){ return l.type==='nuit'; });
+  var siesteLogs = todayLogs.filter(function(l){ return l.type==='sieste'; });
+  var totalNuit = nuitLogs.reduce(function(acc,l){ return acc+(l.duration||0); }, 0);
+  var totalSieste = siesteLogs.reduce(function(acc,l){ return acc+(l.duration||0); }, 0);
+  var menu = getMenuData(today);
+  var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+  var tomorrowStr = tomorrow.toISOString().slice(0,10);
+  var menuDemain = getMenuData(tomorrowStr);
+  var agenda = getAgendaData();
+  var tomorrowRDV = agenda.filter(function(r){ return r.date === tomorrowStr && !r.done; });
+  var joursL = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  var moisL = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  var now = new Date();
+  var h = '';
+  h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">';
+  h += '<div style="font-size:18px;font-weight:800;color:#2C3E50;">🌙 Journée de '+name+'</div>';
+  h += '<div onclick="closeRecapJour()" style="font-size:22px;color:#C0B8E8;cursor:pointer;line-height:1;">✕</div>';
+  h += '</div>';
+  h += '<div style="font-size:12px;color:#9BA8B5;margin-bottom:18px;">'+joursL[now.getDay()]+' '+now.getDate()+' '+moisL[now.getMonth()]+'</div>';
+  // Sommeil
+  h += '<div style="background:#EEF0FF;border-radius:16px;padding:16px;margin-bottom:12px;">';
+  h += '<div style="font-size:11px;font-weight:700;color:#7878C8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">💤 Sommeil</div>';
+  if (!todayLogs.length) {
+    h += '<div style="font-size:13px;color:#9BA8B5;">Aucune session enregistrée</div>';
+  } else {
+    if (nuitLogs.length) h += '<div style="font-size:13px;color:#2C3E50;margin-bottom:5px;">🌙 Nuit : <strong>'+fmtDuration(totalNuit)+'</strong></div>';
+    if (siesteLogs.length) h += '<div style="font-size:13px;color:#2C3E50;margin-bottom:5px;">☀️ Sieste'+(siesteLogs.length>1?'s':'')+' : <strong>'+fmtDuration(totalSieste)+'</strong> ('+siesteLogs.length+'x)</div>';
+    if (nuitLogs.length && siesteLogs.length) h += '<div style="font-size:12px;color:#7878C8;margin-top:4px;">Total : <strong>'+fmtDuration(totalNuit+totalSieste)+'</strong></div>';
+  }
+  h += '</div>';
+  // Repas
+  h += '<div style="background:#FFF0F8;border-radius:16px;padding:16px;margin-bottom:12px;">';
+  h += '<div style="font-size:11px;font-weight:700;color:#C878A8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">🍽️ Repas aujourd\'hui</div>';
+  if (!menu.matin && !menu.midi && !menu.soir) {
+    h += '<div style="font-size:13px;color:#9BA8B5;">Aucun repas noté pour aujourd\'hui</div>';
+  } else {
+    if (menu.matin) h += '<div style="font-size:13px;color:#2C3E50;margin-bottom:5px;">🌅 Matin : <em>'+menu.matin+'</em></div>';
+    if (menu.midi) h += '<div style="font-size:13px;color:#2C3E50;margin-bottom:5px;">☀️ Midi : <em>'+menu.midi+'</em></div>';
+    if (menu.soir) h += '<div style="font-size:13px;color:#2C3E50;">🌙 Soir : <em>'+menu.soir+'</em></div>';
+  }
+  h += '</div>';
+  // Demain
+  var hasDemain = tomorrowRDV.length || menuDemain.matin || menuDemain.midi || menuDemain.soir;
+  h += '<div style="background:#E8FAF8;border-radius:16px;padding:16px;">';
+  h += '<div style="font-size:11px;font-weight:700;color:#3AADA8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">📅 À prévoir demain</div>';
+  if (!hasDemain) {
+    h += '<div style="font-size:13px;color:#9BA8B5;">Rien de prévu pour l\'instant</div>';
+  } else {
+    tomorrowRDV.forEach(function(rdv) {
+      h += '<div style="font-size:13px;color:#2C3E50;margin-bottom:5px;">'+rdv.emoji+' '+rdv.type+(rdv.time?' à '+rdv.time:'')+(rdv.praticien?' — '+rdv.praticien:'')+'</div>';
+    });
+    if (menuDemain.matin) h += '<div style="font-size:13px;color:#2C3E50;margin-bottom:5px;">🌅 Matin : <em>'+menuDemain.matin+'</em></div>';
+    if (menuDemain.midi) h += '<div style="font-size:13px;color:#2C3E50;margin-bottom:5px;">☀️ Midi : <em>'+menuDemain.midi+'</em></div>';
+    if (menuDemain.soir) h += '<div style="font-size:13px;color:#2C3E50;">🌙 Soir : <em>'+menuDemain.soir+'</em></div>';
+  }
+  h += '</div>';
+  document.getElementById('recap-content').innerHTML = h;
+  document.getElementById('modal-recap-jour').style.display = 'flex';
+}
+function closeRecapJour() {
+  document.getElementById('modal-recap-jour').style.display = 'none';
+}
+
 // ── Notifications OneSignal REST ──
 var _OS_REST = 'os_v2_app_twmrovpenbg5znv'+'zkgqkxsnovwexm7fc4ise'+'xxnkzyt7dgylba2632cfa'+'4atacuupd3t7zcniwubxf'+'ugmhs5updztqi73aux3m4we4q';
 var _OS_APP_ID = '9d991755-e468-4ddc-b6b9-51a0abc9aead';
@@ -9086,6 +9269,9 @@ setInterval(function() {
     scheduleReminders();
   }
 }, 3600000);
+
+// Vérification récap du soir toutes les minutes
+setInterval(checkRecapTime, 60000);
 
 </script>
 </body>
