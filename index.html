@@ -4544,7 +4544,11 @@ async function obFinish() {
     });
     for (var ri = 0; ri < rows.length; ri++) {
       var res = await sb.from("children").insert(rows[ri]).select("id").single();
-      if (res.data) profiles[ri].id = res.data.id;
+      if (res.data) {
+        profiles[ri].id = res.data.id;
+      } else if (res.error) {
+        console.error("Erreur sauvegarde enfant " + ri + " :", res.error.message);
+      }
     }
     localStorage.setItem("childProfiles", JSON.stringify(profiles));
   }
@@ -4555,6 +4559,7 @@ async function obFinish() {
   document.getElementById("screen-onboarding").classList.remove("active");
   document.getElementById("screen-home").classList.add("active");
   document.getElementById("tabbar").style.display="flex";
+  setTimeout(function() { initAssmatParentModuleUI(); }, 300);
   setTimeout(showToastBienvenue, 800);
 }
 
@@ -4700,7 +4705,13 @@ async function submitNewChild() {
       display_name: profile.displayName,
       sexe: profile.sexe,
       dob: profile.dob||null,
+      poids: profile.poids||null,
+      taille: profile.taille||null,
       role_parent: "maman",
+      rgo: "non",
+      rgo_traitement: false,
+      rgo_med: null,
+      rgo_date_fin: null,
       sort_order: profiles.length-1
     }).select("id").single();
     if (res.data) {
@@ -4708,6 +4719,8 @@ async function submitNewChild() {
       var p = JSON.parse(localStorage.getItem("childProfiles")||"[]");
       p[p.length-1] = profile;
       localStorage.setItem("childProfiles", JSON.stringify(p));
+    } else if (res.error) {
+      console.error("Erreur ajout enfant Supabase :", res.error.message);
     }
   }
   hideAddChild();
@@ -5252,7 +5265,7 @@ function applyChildProfile(profile) {
   // Poids / taille sur écran profil enfant
   var pp = document.getElementById("profil-poids");
   var pt = document.getElementById("profil-taille");
-  var idx = activeChildIdx || 0;
+  var idx = parseInt(localStorage.getItem("activeChildIdx")||"0");
   var gm = getGrowthMeasures(idx);
   var lastP = gm.filter(function(m){return m.poids;}).slice(-1)[0];
   var lastT = gm.filter(function(m){return m.taille;}).slice(-1)[0];
