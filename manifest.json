@@ -1,0 +1,22 @@
+{
+  "name": "Petit Pousse",
+  "short_name": "Petit Pousse",
+  "description": "Suivi bébé et diversification alimentaire",
+  "start_url": "/petit-pousse/",
+  "display": "standalone",
+  "background_color": "#F5F0FB",
+  "theme_color": "#9B84D4",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/petit-pousse/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/petit-pousse/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
