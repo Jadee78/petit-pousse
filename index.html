@@ -4023,8 +4023,11 @@ async function afterLogin() {
 async function enterParentMode() {
   var childRes = await sb.from("children").select("*").eq("parent_id", currentUser.id).order("sort_order");
   if (childRes.data && childRes.data.length > 0) {
-    var profiles = childRes.data.map(function(c) {
-      return { id: c.id, prenom: c.prenom, displayName: c.display_name||c.prenom, sexe: c.sexe, dob: c.dob, poids: c.poids, taille: c.taille, role: c.role_parent, rgo: c.rgo, rgoTraitement: c.rgo_traitement, rgoMed: c.rgo_med, rgoDateFin: c.rgo_date_fin };
+    var localProfiles = JSON.parse(localStorage.getItem("childProfiles") || "[]");
+    var profiles = childRes.data.map(function(c, i) {
+      var local = localProfiles[i] || {};
+      return { id: c.id, prenom: c.prenom, displayName: c.display_name||c.prenom, sexe: c.sexe, dob: c.dob, poids: c.poids, taille: c.taille, role: c.role_parent, rgo: c.rgo, rgoTraitement: c.rgo_traitement, rgoMed: c.rgo_med, rgoDateFin: c.rgo_date_fin,
+        premieresFois: local.premieresFois || [], allergies: local.allergies || [] };
     });
     localStorage.setItem("childProfiles", JSON.stringify(profiles));
     localStorage.setItem("activeChildIdx", "0");
@@ -5080,12 +5083,14 @@ function getAvatarHTML(profile, size, fontSize) {
 /* ── ÉVEIL : banque d'activités par âge ── */
 var EVEIL_BANQUE = {
   '0-3': [
-    { ic:'👁️', bg:'#D4F4EC', t:'Contraste noir & blanc', s:'Stimulation visuelle', dur:'5 min', dc:'#3A9882', desc:'Les bébés voient d\'abord les contrastes forts. Montrer des images noir et blanc stimule fortement le cortex visuel en développement.' },
+    { ic:'🖤', bg:'#F0F0F0', t:'Cartes noir & blanc', s:'Stimulation visuelle', dur:'5 min', dc:'#333333', desc:'Le nouveau-né voit d\'abord les contrastes forts. Des cartes noir et blanc à 20-30 cm de son visage stimulent puissamment le cortex visuel en développement.' },
+    { ic:'👁️', bg:'#D4F4EC', t:'Mobile contrasté', s:'Suivi visuel', dur:'10 min', dc:'#3A9882', desc:'Accrocher un mobile noir & blanc au-dessus de bébé développe le suivi visuel et la coordination œil-cerveau dès les premières semaines.' },
+    { ic:'🐢', bg:'#FEF0E4', t:'Tummy time', s:'Motricité & nuque', dur:'3-5 min', dc:'#D4884A', desc:'Quelques minutes sur le ventre plusieurs fois par jour renforcent la nuque et le dos. Indispensable dès la naissance pour éviter la tête plate.' },
     { ic:'🤲', bg:'#D0EEF4', t:'Massage doux', s:'Éveil corporel', dur:'10 min', dc:'#3A98B8', desc:'Le toucher libère de l\'ocytocine chez bébé et renforce le lien d\'attachement. Privilégie des mouvements lents et doux.' },
     { ic:'🎵', bg:'#F2EFF9', t:'Comptines douces', s:'Langage & rythme', dur:'5 min', dc:'#8A78CC', desc:'Ta voix est le son préféré de bébé. Les comptines répétitives posent les bases du rythme et du langage.' },
-    { ic:'🌀', bg:'#FFF3CD', t:'Mobile au-dessus', s:'Suivi visuel', dur:'10 min', dc:'#A07820', desc:'Suivre un objet en mouvement développe la coordination œil-cerveau et renforce les muscles oculaires.' },
     { ic:'🗣️', bg:'#D4F4EC', t:'Parler à bébé', s:'Lien & langage', dur:'10 min', dc:'#3A9882', desc:'Même sans comprendre les mots, bébé enregistre l\'intonation, le rythme et le vocabulaire. C\'est son premier cours de langue.' },
     { ic:'🤱', bg:'#D0EEF4', t:'Peau à peau', s:'Attachement', dur:'15 min', dc:'#3A98B8', desc:'Régule la température, le rythme cardiaque et le cortisol de bébé. Le contact peau à peau est fondamental les premiers mois.' },
+    { ic:'🌀', bg:'#FFF3CD', t:'Suivre un objet', s:'Suivi visuel', dur:'5 min', dc:'#A07820', desc:'Déplace lentement un objet coloré devant bébé. Suivre du regard développe la coordination œil-cerveau et renforce les muscles oculaires.' },
   ],
   '4-6': [
     { ic:'🪞', bg:'#D4F4EC', t:'Miroir mon ami', s:'Conscience de soi', dur:'10 min', dc:'#3A9882', desc:'Bébé ne se reconnaît pas encore mais le miroir fascine. Il découvre qu\'il peut provoquer un mouvement en bougeant.' },
@@ -5162,7 +5167,7 @@ function eveilGetTranche(m) {
 }
 
 function renderEveilActivites(months) {
-  _eveilCurrentMonths = months || _eveilCurrentMonths;
+  _eveilCurrentMonths = (typeof months === 'number' && months >= 0) ? months : _eveilCurrentMonths;
   var pool = EVEIL_BANQUE[eveilGetTranche(_eveilCurrentMonths)] || EVEIL_BANQUE['7-9'];
   var shuffled = pool.slice().sort(function(){ return Math.random()-0.5; });
   var nouvelles = shuffled.filter(function(a){ return _eveilLastSelection.indexOf(a.t) === -1; });
@@ -6406,8 +6411,11 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Essayer de charger les enfants depuis Supabase
     var childRes = await sb.from("children").select("*").eq("parent_id", currentUser.id).order("sort_order");
     if (childRes.data && childRes.data.length > 0) {
-      var profiles = childRes.data.map(function(c) {
-        return { id: c.id, prenom: c.prenom, displayName: c.display_name||c.prenom, sexe: c.sexe, dob: c.dob, poids: c.poids, taille: c.taille, role: c.role_parent, rgo: c.rgo, rgoTraitement: c.rgo_traitement, rgoMed: c.rgo_med, rgoDateFin: c.rgo_date_fin };
+      var localProfiles = JSON.parse(localStorage.getItem("childProfiles") || "[]");
+      var profiles = childRes.data.map(function(c, i) {
+        var local = localProfiles[i] || {};
+        return { id: c.id, prenom: c.prenom, displayName: c.display_name||c.prenom, sexe: c.sexe, dob: c.dob, poids: c.poids, taille: c.taille, role: c.role_parent, rgo: c.rgo, rgoTraitement: c.rgo_traitement, rgoMed: c.rgo_med, rgoDateFin: c.rgo_date_fin,
+          premieresFois: local.premieresFois || [], allergies: local.allergies || [] };
       });
       localStorage.setItem("childProfiles", JSON.stringify(profiles));
       localStorage.setItem("activeChildIdx", "0");
