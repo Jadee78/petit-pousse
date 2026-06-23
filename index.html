@@ -774,12 +774,12 @@ html,body { height:100%; overflow:hidden; font-family:"Montserrat","Helvetica Ne
       </div>
     </div>
 
-    <!-- Alerte -->
-    <div style="margin:10px 16px 0;background:#FFF3CD;border-radius:16px;padding:13px 14px;display:flex;gap:10px;align-items:flex-start;border-left:3px solid #D4A820;">
+    <!-- Alerte RDV vaccin (visible uniquement ≤ 28 jours avant) -->
+    <div id="vacc-reminder-alert" style="display:none;margin:10px 16px 0;background:#FFF3CD;border-radius:16px;padding:13px 14px;flex-gap:10px;align-items:flex-start;border-left:3px solid #D4A820;">
       <span style="font-size:18px;flex-shrink:0;">&#9888;&#65039;</span>
       <div>
         <div style="font-size:13px;font-weight:700;color:#7A6800;">Pense à prendre RDV !</div>
-        <div style="font-size:12px;color:#9A8000;margin-top:3px;line-height:1.45;" data-child-tpl="Le vaccin des 9 mois de [name] approche. Appelle le pédiatre cette semaine.">Le vaccin des 9 mois de Camille approche. Appelle le pédiatre cette semaine.</div>
+        <div id="vacc-reminder-text" style="font-size:12px;color:#9A8000;margin-top:3px;line-height:1.45;"></div>
       </div>
     </div>
 
@@ -4739,6 +4739,8 @@ function updateDynamicHome(profile) {
   }
   // Vaccin alert
   var vacc=calcNextVaccine(profile.dob);
+  var vaccAlert=document.getElementById("vacc-reminder-alert");
+  var vaccTxt=document.getElementById("vacc-reminder-text");
   if(vacc) {
     // Module badge
     var mb=document.getElementById("mod-badge-vaccin");
@@ -4753,6 +4755,18 @@ function updateDynamicHome(profile) {
       vd.textContent=vacc.date.getDate()+" "+mo[vacc.date.getMonth()]+" "+vacc.date.getFullYear();
     }
     if(vdy) vdy.textContent = vacc.days<=0 ? "Dès maintenant !" : "Dans "+vacc.days+" jour"+(vacc.days>1?"s":"");
+    // Alerte RDV : visible seulement entre 1 et 28 jours avant le vaccin
+    var dn2=profile.displayName||profile.prenom||"bébé";
+    if(vaccAlert && vaccTxt) {
+      if(vacc.days > 0 && vacc.days <= 28) {
+        vaccTxt.textContent = "Le "+vacc.name+" de "+dn2+" approche (J-"+vacc.days+"). Appelle le pédiatre pour prendre RDV.";
+        vaccAlert.style.display="flex";
+      } else {
+        vaccAlert.style.display="none";
+      }
+    }
+  } else {
+    if(vaccAlert) vaccAlert.style.display="none";
   }
 }
 
