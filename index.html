@@ -3460,6 +3460,21 @@ const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
 var currentUser = null;
 
+// Gère le retour depuis le lien de confirmation email
+sb.auth.onAuthStateChange(async function(event, session) {
+  if (event === 'SIGNED_IN' && session && !currentUser) {
+    currentUser = session.user;
+    // Nettoyer le hash de l'URL pour ne pas refaire la boucle
+    if (window.location.hash && window.location.hash.indexOf('access_token') !== -1) {
+      history.replaceState(null, '', window.location.pathname);
+    }
+    var profileRes = await sb.from("user_profiles").select("role,is_parent,is_assmat").eq("id", currentUser.id).single();
+    var isAssmat = profileRes.data ? (profileRes.data.is_assmat || profileRes.data.role === 'assmat') : false;
+    if (isAssmat) { showAssmatInterface(); return; }
+    enterParentMode();
+  }
+});
+
 let hist = ["home"];
 function showScreen(id) {
   document.querySelectorAll(".screen").forEach(s => { s.classList.remove("active"); s.style.display = ""; });
@@ -3920,7 +3935,7 @@ async function doSignup() {
   if (!email || !pwd) { errEl.textContent = "Remplis tous les champs"; return; }
   if (pwd.length < 6) { errEl.textContent = "Mot de passe trop court (min. 6 caractères)"; return; }
   btn.textContent = "Création…"; btn.style.opacity = "0.7";
-  var result = await sb.auth.signUp({ email: email, password: pwd });
+  var result = await sb.auth.signUp({ email: email, password: pwd, options: { emailRedirectTo: 'https://jadee78.github.io/petit-pousse/' } });
   btn.textContent = "Créer mon compte"; btn.style.opacity = "1";
   if (result.error) { errEl.textContent = result.error.message; return; }
   currentUser = result.data.user;
@@ -3938,7 +3953,7 @@ async function doSignup() {
     loginTab('connect');
     var conf = document.getElementById('login-err');
     conf.style.color = '#9B84D4';
-    conf.textContent = '📧 Un email de confirmation a été envoyé à ' + email + '. Clique sur le lien pour activer ton compte, puis connecte-toi.';
+    conf.textContent = '📧 Un email de confirmation a été envoyé à ' + email + '. Clique sur le lien dans l\'email pour activer ton compte. Si tu ne le vois pas, vérifie tes indésirables (spam).';
     document.getElementById("signup-email").value = "";
     document.getElementById("signup-password").value = "";
     var cguEl = document.getElementById("signup-cgu");
